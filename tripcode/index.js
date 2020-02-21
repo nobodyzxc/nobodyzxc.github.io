@@ -78,6 +78,18 @@ function randCode(){
     }
 }
 
+function valid_drrrtrip(password){
+    var pass = password.split(""), msg = '';
+    var d = pass.map((d) => digits.includes(d) ? 1 : 0).reduce((a, b) => a + b);
+    var c = pass.map((c) => chars.includes(c) ? 1 : 0).reduce((a, b) => a + b);
+    var s = pass.map((c) => ' '.includes(c) ? 1 : 0).reduce((a, b) => a + b);
+    if(password.length < 6) msg = 'must longer than 6 characters on drrr.com'
+    else if(!(d > 0 && c > 0)) msg = 'at least 1 character and 1 digits'
+    else if(d + c + s !== password.length) msg = 'some characters may not guarantee the same transformation on drrr.com'
+    console.log(d, c, s);
+    return [d + c + s >= 6 && d > 0 && c > 0 && d + c + s === password.length, msg];
+}
+
 var O = {
     range: function(from, to) {
         var ar = [];
@@ -290,6 +302,36 @@ $(document).ready(function(){
     $("#test-regex").on('keyup', function (e) {
         if (e.keyCode === 13) $('#search').click().focus();
     });
+
+
+    $('#test-password').on('input focus',function(e){
+        var val = $('#test-password').val().replace(/\s+$/, ''); // drrr trim right auto
+        if(!val.length){
+            $('#test-trip').text('[tripcode]');
+            setStatus('#test-password-status', 'has-sucess');
+            setIcon('#test-password-icon', 'glyphicon-ok');
+            $('#warn-pass').hide();
+            $('#example-list').removeClass('list-group-item-warning');
+        }
+        else{
+            var [valid, msg] = valid_drrrtrip(val);
+            if(valid){
+                setStatus('#test-password-status', 'has-sucess');
+                setIcon('#test-password-icon', 'glyphicon-ok');
+                $('#warn-pass').hide();
+                $('#example-list').removeClass('list-group-item-warning');
+            }
+            else{
+                $('#example-list').addClass('list-group-item-warning');
+                setStatus('#test-password-status', 'has-warning', msg);
+                setIcon('#test-password-icon', 'glyphicon-warning-sign');
+                $('#warn-pass').show();
+            }
+            var trip = tripcode(val)
+            $('#test-trip').text(trip.length ? trip : '[tripcode]');
+        }
+
+    })
 
     /* checkboxes */
     $('#sequential').on("click", function(){

@@ -19,8 +19,8 @@
 
                 <div class="form-group has-success has-feedback">
                     <button id="search" type="button" 
-                            onclick="searchCodes();"
-                            class="btn btn-default fix-btn">Search</button>
+                                        onclick="searchCodes();"
+                                        class="btn btn-default fix-btn">Search</button>
                 </div>
 
                 <div id="test-string-status" class="form-group has-success has-feedback">
@@ -30,9 +30,9 @@
 
                 <div class="form-group has-success has-feedback">
                     <button id="dump" type="button" 
-                            onclick="dumpTrip();"
-                            title="download the result"
-                            class="btn btn-default fix-btn">Save</button>
+                                      onclick="dumpTrip();"
+                                      title="download the result"
+                                      class="btn btn-default fix-btn">Save</button>
                 </div>
 
                 <p> Note: for <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Special_characters_in_regular_expressions" target="_blank">RegExp</a>, use <code>\</code> to escape. ex:<code>\d</code> to match digit, <code>\\</code> to match <code>\</code> </p>
@@ -64,7 +64,16 @@
 
             <hr style="clear:both;"/>
             <div id="example" class="list-group">
-                <a href="#" class="list-group-item">tripcode<span style="font-weight:bolder;color:#00cc00">#</span>password <span id="count">(0/0)</span></a>
+
+                <a id="example-list" href="#" class="list-group-item">
+                    <form style="margin-bottom: 0px;" class="form-inline">
+                        <div id="test-password-status" class="form-group has-success has-feedback">
+                            <label><span id="test-trip">[tripcode]</span><span style="font-weight:bolder;color:#00cc00">#</span></label><input type="text" class="form-control" id="test-password" placeholder="password">
+                            <span id="test-password-icon" class="glyphicon glyphicon-ok form-control-feedback"></span>
+                        </div><span>  </span><span id="count">(0/0)</span><span id="warn-pass" style="display:none;"> May be <strong>invalid</strong> or <strong>different</strong> on drrr.com</span>
+                    </form>
+                </a>
+
             </div>
             <div id="result" class="list-group">
             </div>
