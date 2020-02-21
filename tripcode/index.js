@@ -1,4 +1,29 @@
 
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function dumpTrip(){
+    var results = $('.result');
+    if(results.length){
+        var cont = '';
+        for(var i = 0; i < results.length; i++){
+            cont += $(results[i]).text() + '\n';
+        }
+        download('tripcode.txt', cont);
+    }
+    else alert("No tripcode to download, Do search first");
+}
+
 function copyToClipboard(text) {
     var dummy = document.createElement("textarea");
     // to avoid breaking orgain page when copying more words
@@ -43,33 +68,140 @@ String.prototype.shuffle = function () {
 
 var digits = '0123456789!#$%\'()*+,-./:;=?@[\\]^_`{|}~';
 var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-function genCode(){
-    var len = getRandomInt(3) + 6;
-    var d = getRandomInt(len - 1) + 1;
-    var c = len - d;
-    var code = makeid(d, digits) + makeid(c, chars);
-    return code.shuffle();
+function randCode(){
+    return function(){
+        var len = getRandomInt(3) + 6;
+        var d = getRandomInt(len - 1) + 1;
+        var c = len - d;
+        var code = makeid(d, digits) + makeid(c, chars);
+        return code.shuffle();
+    }
+}
+
+var O = {
+    range: function(from, to) {
+        var ar = [];
+        for (var i = from; i <= to; i++) {
+            ar.push(i);
+        }
+        return ar;
+    },
+    /**
+     * nPr implements on JavaScript.
+     *
+     * @params [Integer] n
+     * @params [Integer] r
+     * @return [Integer] pattern
+     */
+    permutation: function (n, r) {
+        if (n < r) {
+            return 0;
+        }
+        return this.range((n - r) + 1, n).reduce(function(x, y) { return x * y; });
+    },
+    /**
+     * nCr implements on JavaScript.
+     *
+     * @params [Integer] n
+     * @params [Integer] r
+     * @return [Integer] pattern
+     */
+    combination: function (n, r) {
+        if (n < r) {
+            return 0;
+        }
+        var a = this.range((n - r) + 1, n).reduce(function(x, y) { return x * y; });
+        var b = this.range(1, r).reduce(function(x, y) { return x * y; });
+        return a / b;
+    }
+}
+
+function permut(string) {
+    if (string.length < 2) return string; // This is our break condition
+
+    var permutations = []; // This array will hold our permutations
+    for (var i = 0; i < string.length; i++) {
+        var char = string[i];
+
+        // Cause we don't want any duplicates:
+        if (string.indexOf(char) != i) // if char was used already
+            continue; // skip it this time
+
+        var remainingString = string.slice(0, i) + string.slice(i + 1, string.length); //Note: you can concat Strings via '+' in JS
+
+        for (var subPermutation of permut(remainingString))
+            permutations.push(char + subPermutation)
+    }
+    return permutations;
+}
+
+function genTable(digs, chrs){
+    var tot = 0;
+    var a = digs.length, b = chrs.length;
+    var table = [['', 0]]
+    for(var l = 6; l < 9; l++){
+        for(var i = 1; i < l; i++){
+            var count = (a**i) * (b**(l - i));
+            permut('d'.repeat(i) + 'c'.repeat(l - i)).forEach((s)=>{
+                tot += count;
+                table.push([s, tot])
+            })
+        }
+    }
+    return table;
+}
+
+var table = genTable(digits, chars);
+var tidx = 1;
+function find(v){
+    try{
+        if(v < table[tidx][1]){
+            if(v >= table[tidx - 1][1])
+                return [table[tidx][0], v - table[tidx - 1][1]];
+            else{ tidx -= 1; return find(v); }
+        }
+        else{ tidx += 1; return find(v); }
+    } //stop
+    catch{ searchCodes(); }
+}
+
+var rdigs = undefined;
+var rchrs = undefined;
+function seqCode(){
+    rdigs = $('#scratch').is(":checked") ? digits : digits.shuffle();
+    rchrs = $('#scratch').is(":checked") ? chars : chars.shuffle();
+    var n = { 'd' : rdigs.length, 'c' : rchrs.length }, 
+        m = { 'd' : rdigs, 'c' : rchrs };
+    return function(seq){
+        var r = '', [pat, idx] = find(seq); 
+        var i = pat.length;
+        while(i--){
+            r = m[pat[i]][idx % n[pat[i]]] + r;
+            idx = Math.floor(idx / n[pat[i]])
+        }
+        return r;
+    }
 }
 
 function colored(text, regex){
     return text.replace(regex, function(str) {return '<span style="color:#FF0000">'+str+'</span>'});
 }
 
-function searchAppend(regex, bz){
+function searchAppend(regex, bz, genCode){
     bz = Math.min(Math.max(1, bz), 5000);
     for(var iter = 0; iter < bz; iter++){
-        var pass = genCode();
+        var pass = genCode(total);
         var trip = tripcode(pass);
         var match = regex.exec(trip);
         total += 1;
         if(match != null) {
             var result = `result-${count}`;
             count += 1;
-            var entry = $(`<a href="javascript:void(0);" id="${result}" onclick='copyToClipboard(${JSON.stringify(pass)});' class="list-group-item">${colored(trip, regex)} # ${pass}</a>`);
+            var entry = $(`<a href="javascript:void(0);"
+                id="${result}" data=${JSON.stringify(pass)}
+                onclick='copyToClipboard(${JSON.stringify(pass)});'
+                class="list-group-item result">${colored(trip, regex)}<span style="font-weight:bolder;color:#00cc00">#</span>${pass}</a>`);
             entry.tooltip({title: "copied!", trigger: "click"});
-            //entry.on('click', function(){
-            //    setTimeout(function() { entry.tooltip('hide') }, 1000);
-            //});
             $('#result').append(entry);
         }
     }
@@ -87,11 +219,18 @@ function searchCodes(){
         $('#test-regex').attr('disabled', true);
         $('#result').empty();
         $('#search').text(STOP);
-        var numberOfMilliseconds = 1;
-        count = 0;
-        total = 0;
+
+        count = 0; total = 0;
+
+        var numberOfMilliseconds = 1,
+            regex = new RegExp(
+                $('#test-regex').val(),
+                $('#igcase').is(":checked") ? 'i': ''),
+            batch_size = $('#batch_size').val(),
+            method = $('#sequential').is(":checked") ? seqCode() : randCode();
+
         searching = setInterval(
-            searchAppend.bind(null, new RegExp($('#test-regex').val(), $('#igcase').is(":checked") ? 'i': ''), $('#batch_size').val()),
+            searchAppend.bind(null, regex, batch_size, method),
             numberOfMilliseconds);
     }
     else{
@@ -148,6 +287,15 @@ $(document).ready(function(){
         }
     });
 
+    $("#test-regex").on('keyup', function (e) {
+        if (e.keyCode === 13) $('#search').click().focus();
+    });
+
+    /* checkboxes */
+    $('#sequential').on("click", function(){
+        $('#scratch').attr('disabled', !$('#sequential').is(":checked"))
+        console.log($('#sequential').is(":checked"));
+    })
 })
 
 $(document).on('shown.bs.tooltip', function (e) {
