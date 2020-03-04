@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="UNCALCULABLE LIFE">
 <meta property="og:description" content="裝 Arch 第二次就上手～">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2019-11-08T02:39:33.988Z">
+<meta property="og:updated_time" content="2020-03-04T14:35:15.303Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="簡明 Arch 安裝指南">
 <meta name="twitter:description" content="裝 Arch 第二次就上手～">
@@ -499,7 +499,7 @@
 <h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
 <h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
-<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacstrap /mnt base base-devel</span><br></pre></td></tr></table></figure></p>
+<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
 <h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
 <p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
