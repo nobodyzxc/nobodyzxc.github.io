@@ -96,10 +96,14 @@
 <meta property="og:site_name" content="UNCALCULABLE LIFE">
 <meta property="og:description" content="裝 Arch 第二次就上手～">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2020-03-04T14:35:15.303Z">
+<meta property="og:image" content="http://nobodyzxc.github.io/arch_install/bootmenu.jpg">
+<meta property="og:image" content="http://nobodyzxc.github.io/arch_install/uefi.jpg">
+<meta property="og:image" content="http://nobodyzxc.github.io/arch_install/bios.jpg">
+<meta property="og:updated_time" content="2020-03-05T10:54:13.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="簡明 Arch 安裝指南">
 <meta name="twitter:description" content="裝 Arch 第二次就上手～">
+<meta name="twitter:image" content="http://nobodyzxc.github.io/arch_install/bootmenu.jpg">
 
 
 
@@ -416,7 +420,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  1.3k word(s)
+                  1.4k word(s)
                 </span>
               
 
@@ -457,6 +461,10 @@
 
 <a id="more"></a>
 <p><br><br></p>
+<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
+<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
+
+<p>可用 <code>curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw/7c3066e9db33759dbb518a06d7eeb9a85193c033/install_arch.sh | bash</code> 安裝。</p>
 <h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
 <p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
 <p>wiki:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
@@ -468,7 +476,10 @@
 <li>開啟電源後按 F12 （我的桌機）</li>
 <li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
 </ul>
-<p>選 USB。</p>
+<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
+<p><img src="/arch_install/bootmenu.jpg" alt></p>
+<p>選擇後應該會長這樣：<br><img src="/arch_install/uefi.jpg" alt></p>
+<p>選錯了會長這樣：<br><img src="/arch_install/bios.jpg" alt></p>
 <p>以 root 進入 zsh。</p>
 <h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
 <p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
@@ -796,7 +807,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝前準備"><span class="nav-number">1.</span> <span class="nav-text">安裝前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#USB-flash-installation-media"><span class="nav-number">1.1.</span> <span class="nav-text">USB flash installation media</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#開機"><span class="nav-number">1.2.</span> <span class="nav-text">開機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh-設定"><span class="nav-number">1.3.</span> <span class="nav-text">zsh 設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#硬碟切割"><span class="nav-number">1.4.</span> <span class="nav-text">硬碟切割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化硬碟"><span class="nav-number">1.5.</span> <span class="nav-text">格式化硬碟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#掛載切好的磁區"><span class="nav-number">1.6.</span> <span class="nav-text">掛載切好的磁區</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝"><span class="nav-number">2.</span> <span class="nav-text">安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#鏡像站設定（加速用，非必要）"><span class="nav-number">2.1.</span> <span class="nav-text">鏡像站設定（加速用，非必要）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系統配置"><span class="nav-number">3.</span> <span class="nav-text">系統配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fstab"><span class="nav-number">3.1.</span> <span class="nav-text">fstab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-root"><span class="nav-number">3.2.</span> <span class="nav-text">change root</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#時區-amp-語言-amp-網路"><span class="nav-number">3.3.</span> <span class="nav-text">時區 &amp; 語言 &amp; 網路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立開機映像檔-amp-設定密碼"><span class="nav-number">3.4.</span> <span class="nav-text">建立開機映像檔 &amp; 設定密碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#啟動載入程式-amp-安裝網路工具"><span class="nav-number">3.5.</span> <span class="nav-text">啟動載入程式 &amp; 安裝網路工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝系統後"><span class="nav-number">4.</span> <span class="nav-text">安裝系統後</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手動設定-DNS（防雷）"><span class="nav-number">4.1.</span> <span class="nav-text">手動設定 DNS（防雷）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用戶"><span class="nav-number">4.2.</span> <span class="nav-text">用戶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下載-yay"><span class="nav-number">4.3.</span> <span class="nav-text">下載 yay</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面環境"><span class="nav-number">4.4.</span> <span class="nav-text">桌面環境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中文化-amp-輸入法"><span class="nav-number">4.5.</span> <span class="nav-text">中文化 &amp; 輸入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-Chrome"><span class="nav-number">4.6.</span> <span class="nav-text">Google Chrome</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#script"><span class="nav-number">1.</span> <span class="nav-text">script</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝前準備"><span class="nav-number">2.</span> <span class="nav-text">安裝前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#USB-flash-installation-media"><span class="nav-number">2.1.</span> <span class="nav-text">USB flash installation media</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#開機"><span class="nav-number">2.2.</span> <span class="nav-text">開機</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh-設定"><span class="nav-number">2.3.</span> <span class="nav-text">zsh 設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#硬碟切割"><span class="nav-number">2.4.</span> <span class="nav-text">硬碟切割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化硬碟"><span class="nav-number">2.5.</span> <span class="nav-text">格式化硬碟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#掛載切好的磁區"><span class="nav-number">2.6.</span> <span class="nav-text">掛載切好的磁區</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝"><span class="nav-number">3.</span> <span class="nav-text">安裝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#鏡像站設定（加速用，非必要）"><span class="nav-number">3.1.</span> <span class="nav-text">鏡像站設定（加速用，非必要）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系統配置"><span class="nav-number">4.</span> <span class="nav-text">系統配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fstab"><span class="nav-number">4.1.</span> <span class="nav-text">fstab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-root"><span class="nav-number">4.2.</span> <span class="nav-text">change root</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#時區-amp-語言-amp-網路"><span class="nav-number">4.3.</span> <span class="nav-text">時區 &amp; 語言 &amp; 網路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立開機映像檔-amp-設定密碼"><span class="nav-number">4.4.</span> <span class="nav-text">建立開機映像檔 &amp; 設定密碼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#啟動載入程式-amp-安裝網路工具"><span class="nav-number">4.5.</span> <span class="nav-text">啟動載入程式 &amp; 安裝網路工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝系統後"><span class="nav-number">5.</span> <span class="nav-text">安裝系統後</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手動設定-DNS（防雷）"><span class="nav-number">5.1.</span> <span class="nav-text">手動設定 DNS（防雷）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用戶"><span class="nav-number">5.2.</span> <span class="nav-text">用戶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下載-yay"><span class="nav-number">5.3.</span> <span class="nav-text">下載 yay</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面環境"><span class="nav-number">5.4.</span> <span class="nav-text">桌面環境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中文化-amp-輸入法"><span class="nav-number">5.5.</span> <span class="nav-text">中文化 &amp; 輸入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-Chrome"><span class="nav-number">5.6.</span> <span class="nav-text">Google Chrome</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -837,7 +848,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">32.1k </span>
+    <span title="Site words total count">32.2k </span>
   
 </div>
 
