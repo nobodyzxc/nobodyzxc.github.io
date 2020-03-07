@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://nobodyzxc.github.io/images/arch_install/bootmenu.jpg">
 <meta property="og:image" content="http://nobodyzxc.github.io/images/arch_install/uefi.jpg">
 <meta property="og:image" content="http://nobodyzxc.github.io/images/arch_install/bios.jpg">
-<meta property="og:updated_time" content="2020-03-07T13:51:44.187Z">
+<meta property="og:updated_time" content="2020-03-07T16:02:08.973Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="簡明 Arch 安裝指南">
 <meta name="twitter:description" content="裝 Arch 第二次就上手～">
@@ -464,7 +464,7 @@
 <h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
 <script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
 
-<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw/eea38de26ece7e3193e9f4dd1c8893f9e8f762c4/install_arch.sh | bash</span><br></pre></td></tr></table></figure></p>
+<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
 <h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
 <p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
 <p>wiki:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
@@ -848,7 +848,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">32.3k </span>
+    <span title="Site words total count">32.2k </span>
   
 </div>
 
