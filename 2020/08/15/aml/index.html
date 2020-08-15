@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://i.imgur.com/2Jibg8j.png">
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
-<meta property="og:updated_time" content="2020-08-15T19:37:16.037Z">
+<meta property="og:updated_time" content="2020-08-15T19:49:41.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -614,7 +614,7 @@
 <h4 id="BM25-XGBoost-as-classifier"><a href="#BM25-XGBoost-as-classifier" class="headerlink" title="BM25 + XGBoost as classifier"></a>BM25 + XGBoost as classifier</h4><p>經由測試，XGBoost 的效果是最好的，於是我們就把 classifier 換成 XGBoost。</p>
 <h4 id="NN-model-ckip-XGBoost-rule-based-as-extractor-NER"><a href="#NN-model-ckip-XGBoost-rule-based-as-extractor-NER" class="headerlink" title="NN model (ckip) + XGBoost + rule based as extractor (NER)"></a>NN model (ckip) + XGBoost + rule based as extractor (NER)</h4><p>另外，因為比賽要求是要有 AML 犯罪相關事實的嫌疑人，所以原先採取的把所有人名都噴出來的作法或許可以再細緻化。這裡我們將一個人名前後五個 token 的 BM25 分數加起來丟給 XGBoost 去分類，接著再丟給一開始的 rule based 來優話我們的目標人名提取器。</p>
 <h3 id="Neural-Network"><a href="#Neural-Network" class="headerlink" title="Neural Network"></a>Neural Network</h3><p>在資訊檢索的課程中，教授有提到 BERT 這個神器，但我們在之前的 project 並沒有嘗試。<br>相較於 IR Task 那種大量文本的處理，BERT 比較適合小文本的任務，<br>這次的比賽就是一個非常好的發揮空間，所以我們在此次比賽也開始了對 BERT 的初次嘗試。</p>
-<p>因為先前傳統機器學習方法如 BM25, TF 之類的是用 one-hot encoding 的方法，存在特徵稀疏的問題，word embedding 相應而生。他將一個詞映射到一個低維稠密的語義空間，使相似詞可以共享上下文資訊，提升泛化能力。。深度學習在近幾年來快速發展，像是前面提到的 word2vector 還有後面開源的 ckip 斷詞工具都有利用到 word embedding。這類工具主要架構大多是用 unsupervised learning 訓練每一個詞的 word embedding，這其實就是在做一個特徵提取的動作，<br>接著再確定想要的任務，例如 ckip 的斷詞或是詞性標記、NER 等，使用先前訓練出來的 embedding 作為表達式，再做一次 supervised learning 讓他更加確定需要的上下文關係，來建立最終的 Model。</p>
+<p>因為先前傳統機器學習方法如 BM25, TF 之類的是用 one-hot encoding 的方法，存在特徵稀疏的問題，word embedding 相應而生。他將一個詞映射到一個低維稠密的語義空間，使相似詞可以共享上下文資訊，提升泛化能力。深度學習在近幾年來快速發展，像是前面提到的 word2vector 還有後面開源的 ckip 斷詞工具都有利用到 word embedding。這類工具主要架構大多是用 unsupervised learning 訓練每一個詞的 word embedding，這其實就是在做一個特徵提取的動作，<br>接著再確定想要的任務，例如 ckip 的斷詞或是詞性標記、NER 等，使用先前訓練出來的 embedding 作為表達式，再做一次 supervised learning 讓他更加確定需要的上下文關係，來建立最終的 Model。</p>
 <p>根據這種模式，近幾年來發展出了像是 ELMo、OpenAI 的 GPT、Google 的 BERT 及一堆他的變形、其他像是 CMU 的 XLNet 等。訓練 word embedding 從一開始的 RNN 到 LSTM 最後到 Attention，更多原理細節可以參考 <a href="https://www.jishuwen.com/d/2M6u/zh-tw" target="_blank" rel="noopener">這一篇介紹</a>。</p>
 <p>我們在測試賽之前嘗試使用 BERT 建立一個新的 classifier，準確度有大幅的提昇。</p>
 <h4 id="NN-model-BERT-as-classifier"><a href="#NN-model-BERT-as-classifier" class="headerlink" title="NN model (BERT) as classifier"></a>NN model (BERT) as classifier</h4><p>BERT 的使用也相當容易，python 有一個集 NLP 大成的套件庫叫做 <code>transformers</code>，<br>裡面不僅有 BERT， 也有 XLNet 等 model 。</p>
