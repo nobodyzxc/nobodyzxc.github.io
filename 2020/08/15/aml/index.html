@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://i.imgur.com/2Jibg8j.png">
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
-<meta property="og:updated_time" content="2020-08-15T22:13:37.258Z">
+<meta property="og:updated_time" content="2020-08-15T22:14:39.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -551,7 +551,7 @@
 <li>天氣/預報/：/氣流/影響/，/天氣/仍舊/不穩/，/留意/瞬間/大雨/。</li>
 <li>台灣/座落/於/西/太平洋/。</li>
 </ol>
-<p>斷詞在實做上我們是使用 <a href="https://github.com/fxsjy/jieba" target="_blank" rel="noopener">jieba</a> 的 <code>search_mode</code>。</p>
+<p>斷詞在實作上我們是使用 <a href="https://github.com/fxsjy/jieba" target="_blank" rel="noopener">jieba</a> 的 <code>search_mode</code>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line">text = <span class="string">'台灣座落於西太平洋。'</span></span><br><span class="line"></span><br><span class="line">print(jieba.lcut_for_search(text))       <span class="comment"># 搜尋引擎模式</span></span><br><span class="line"><span class="comment"># ['台灣', '座落', '於', '太平', '太平洋', '西太平洋', '。']</span></span><br><span class="line"></span><br><span class="line">print(jieba.lcut(text, cut_all = <span class="literal">True</span>))  <span class="comment"># 全模式</span></span><br><span class="line"><span class="comment"># ['台', '灣', '座落', '於', '西太平洋', '太平', '太平洋', '', '']</span></span><br><span class="line"></span><br><span class="line">print(jieba.lcut(text, cut_all = <span class="literal">False</span>)) <span class="comment"># 精確模式（如沒指定 cut_all 則為默認）</span></span><br><span class="line"><span class="comment"># ['台灣', '座落', '於', '西太平洋', '。']</span></span><br></pre></td></tr></table></figure>
 <p>把停用詞 (stopword) 等一些常用的詞去掉，例如 <code>請</code>，<code>於</code>, <code>仍舊</code>, <code>瞬間</code> 一類的詞，所有詞可以表示成一個 vector。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[太平洋, 颱風, 生成, 民眾, 關注, 天氣, 嚴防, 大雨, 預報, 氣流, 影響, 不穩, 留意, 台灣, 座落]</span><br></pre></td></tr></table></figure>
