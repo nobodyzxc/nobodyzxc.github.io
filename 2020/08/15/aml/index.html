@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://i.imgur.com/2Jibg8j.png">
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
-<meta property="og:updated_time" content="2020-08-15T17:11:34.417Z">
+<meta property="og:updated_time" content="2020-08-15T17:20:49.877Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -648,7 +648,7 @@
 </blockquote>
 <h3 id="Extend-The-DataSet"><a href="#Extend-The-DataSet" class="headerlink" title="Extend The DataSet"></a>Extend The DataSet</h3><h4 id="Reuse-The-IR-Model"><a href="#Reuse-The-IR-Model" class="headerlink" title="Reuse The IR Model"></a>Reuse The IR Model</h4><p>第一周結束的假日，我們用之前的 IR model 將主辦單位標記的三百多篇 AML 新聞當作 query，檢索回相關新聞，並標記了一千五百篇 AML 相關新聞加入 corpus。</p>
 <blockquote>
-<p>正式賽第二周開始：<br>我們成功爬回了四而隔天又掉回了五<br>加入一千五百篇的資料似乎有一點提昇<br>不過 model 似乎還要再加強一下<br>所以我們決定嘗試其他的 Model</p>
+<p>正式賽第二周開始：<br>我們成功爬回了四而隔天又掉回了五，<br>加入一千五百篇的資料似乎有一點提昇。<br>不過 model 似乎還要再加強一下，<br>所以我們決定嘗試其他的 Model。</p>
 </blockquote>
 <h3 id="Try-other-NN-Model"><a href="#Try-other-NN-Model" class="headerlink" title="Try other NN Model"></a>Try other NN Model</h3><p>我們又嘗試了其他 Model，像是 XLNet, RoBERTa, Albert 等，<br>不過效果似乎並沒有很大的提昇，不知道是不是用法錯誤（比如 XLNet 的 Mask 是 <code>&lt;sep&gt;</code> 而不是 <code>[SEP]</code>），<br>只有 RoBERTa 在 classifier 的表現上的結果有好一些。</p>
 <h4 id="NN-model-RoBERTa-as-classifier"><a href="#NN-model-RoBERTa-as-classifier" class="headerlink" title="NN model (RoBERTa) as classifier"></a>NN model (RoBERTa) as classifier</h4><p>最後，經由測試，我們將前幾天的 query 當作 valid set，<br>RoBERTa 的準確度從 96% 上到 97%，RoBERTa 的 classifier 似乎有變好，<br>於是我們將 classifier 換成 RoBERTa。</p>
