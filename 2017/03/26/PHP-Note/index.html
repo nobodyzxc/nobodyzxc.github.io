@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了，在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始，許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。">
+<meta name="description" content="這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了， 在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始， 許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。">
 <meta name="keywords" content="php,oop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP Note">
 <meta property="og:url" content="http://nobodyzxc.github.io/2017/03/26/PHP-Note/index.html">
 <meta property="og:site_name" content="UNCALCULABLE LIFE">
-<meta property="og:description" content="這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了，在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始，許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。">
+<meta property="og:description" content="這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了， 在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始， 許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。">
 <meta property="og:locale" content="zh-tw">
 <meta property="og:updated_time" content="2019-11-08T02:39:33.988Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP Note">
-<meta name="twitter:description" content="這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了，在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始，許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。">
+<meta name="twitter:description" content="這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了， 在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始， 許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。">
 
 
 
@@ -453,11 +453,15 @@
       
 
       
-        <center><br>這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了，<br>在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始，<br>許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。<br></center>
+        <center>
+這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了，
+在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始，
+許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。
+</center>
 
 <a id="more"></a>
 <p><br><br></p>
-<h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><p>跟 Python 一樣是動態語言，所謂變數只是 name binding，<br>用法跟 Python 也一樣，要用之前先 assign 一個值。<br>變數前跟著一個 <code>$</code>，跟 Shell Script 不一樣的是 assign 的時候也要跟著 <code>$</code>。<br>但是學到 OO 的部分，事情有了些變化，const 的東西不用加 <code>$</code>，或許是不把它當變數看的緣故。<br>物件內的變數宣告，方法和 Python 蠻像的，但好像蠻強調 <code>public</code> 封裝。<br>子函數習慣上也是用 <code>$this</code> 來設定 member variable。<br>尚未探究子函數內是否有像 Cpp 用 scope 直接使用 member variable，但學到的是用 <code>$this</code>，<br>所以可以用的可能性不大。但子函式又不像 Python 會把 self 傳進去。<br>一般使用<code>.</code>作為字串 connect 的 operator，所以 object 呼叫底下的東西會用<code>-&gt;</code>。<br>object 底下的變數不用再加錢號。 ex: <code>$nobodyzxc-&gt;name</code> 而不是 <code>$nobodyzxc-&gt;$name</code>。<br>static 或 const 的東西可以用 <code>ClassName::Attr</code>呼叫，和 Cpp 一樣。</p>
+<h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><p>跟 Python 一樣是動態語言，所謂變數只是 name binding，<br>用法跟 Python 也一樣，要用之前先 assign 一個值。<br>變數前跟著一個 <script type="math/tex">`，跟 Shell Script 不一樣的是 assign 的時候也要跟著 `</script>。<br>但是學到 OO 的部分，事情有了些變化，const 的東西不用加 <code>$</code>，或許是不把它當變數看的緣故。<br>物件內的變數宣告，方法和 Python 蠻像的，但好像蠻強調 <code>public</code> 封裝。<br>子函數習慣上也是用 <code>$this</code> 來設定 member variable。<br>尚未探究子函數內是否有像 Cpp 用 scope 直接使用 member variable，但學到的是用 <code>$this</code>，<br>所以可以用的可能性不大。但子函式又不像 Python 會把 self 傳進去。<br>一般使用<code>.</code>作為字串 connect 的 operator，所以 object 呼叫底下的東西會用<code>-&gt;</code>。<br>object 底下的變數不用再加錢號。 ex: <code>$nobodyzxc-&gt;name</code> 而不是 <code>$nobodyzxc-&gt;$name</code>。<br>static 或 const 的東西可以用 <code>ClassName::Attr</code>呼叫，和 Cpp 一樣。</p>
 <h2 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h2><p>簡單的 operator 略過。<br>PHP 想當然爾，對文本的操作應是相當強的，<br>但我也只學到 <code>strlen()</code> , <code>strpos()</code> , <code>str_replace()</code>，其他要用再查。<br>html 轉碼、正則等之前用過幾次用用也忘了。<br>自定義 function 寫法。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func_name</span><span class="params">($var)</span></span>&#123;</span><br><span class="line">    $rtn = blalala($var);</span><br><span class="line">    <span class="keyword">return</span> $rtn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>在函數裡宣告的變數基本上都是區域變數，如要用全域，加上<code>global</code>關鍵字。</p>
 <h2 id="Control-Flow"><a href="#Control-Flow" class="headerlink" title="Control Flow"></a>Control Flow</h2><p>基本的東西，稍微記一下。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(exp)&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">elseif</span>(exp)&#123; <span class="comment">// well , take care the key word</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span>(what)&#123;</span><br><span class="line">    <span class="keyword">case</span> cs0:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs1:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs2:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (what): <span class="comment">// syntax sugar , pythonic ?</span></span><br><span class="line">    <span class="keyword">case</span> cs0:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs1:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs2:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">endswitch</span>;</span><br></pre></td></tr></table></figure></p>
@@ -610,7 +614,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -764,7 +768,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">33.6k </span>
+    <span title="Site words total count">42.4k </span>
   
 </div>
 
@@ -1343,22 +1347,5 @@
 
   <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 </html>

@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="Codecademy 之 Ruby 速記。原來 Ruby 和 DSL 很有淵源啊（喃喃）。剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。&amp;gt;&amp;gt; On the path to enlightenment.wait to refer:  Ruby Guides done!  Lots of docs">
+<meta name="description" content="[Codecademy](https://www.codecademy.com) 之 Ruby 速記。 原來 Ruby 和 DSL 很有淵源啊（喃喃）。 剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。 &amp;gt;&amp;gt; On the path to enlightenment. wait to refer:   [Ruby Guides](http://guides">
 <meta name="keywords" content="oop,ruby">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ruby Note">
 <meta property="og:url" content="http://nobodyzxc.github.io/2017/04/27/Ruby-Note/index.html">
 <meta property="og:site_name" content="UNCALCULABLE LIFE">
-<meta property="og:description" content="Codecademy 之 Ruby 速記。原來 Ruby 和 DSL 很有淵源啊（喃喃）。剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。&amp;gt;&amp;gt; On the path to enlightenment.wait to refer:  Ruby Guides done!  Lots of docs">
+<meta property="og:description" content="[Codecademy](https://www.codecademy.com) 之 Ruby 速記。 原來 Ruby 和 DSL 很有淵源啊（喃喃）。 剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。 &amp;gt;&amp;gt; On the path to enlightenment. wait to refer:   [Ruby Guides](http://guides">
 <meta property="og:locale" content="zh-tw">
 <meta property="og:updated_time" content="2019-11-08T02:39:33.988Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ruby Note">
-<meta name="twitter:description" content="Codecademy 之 Ruby 速記。原來 Ruby 和 DSL 很有淵源啊（喃喃）。剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。&amp;gt;&amp;gt; On the path to enlightenment.wait to refer:  Ruby Guides done!  Lots of docs">
+<meta name="twitter:description" content="[Codecademy](https://www.codecademy.com) 之 Ruby 速記。 原來 Ruby 和 DSL 很有淵源啊（喃喃）。 剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。 &amp;gt;&amp;gt; On the path to enlightenment. wait to refer:   [Ruby Guides](http://guides">
 
 
 
@@ -453,7 +453,15 @@
       
 
       
-        <center><br><a href="https://www.codecademy.com" target="_blank" rel="noopener">Codecademy</a> 之 Ruby 速記。<br>原來 Ruby 和 DSL 很有淵源啊（喃喃）。<br>剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。<br>&gt;&gt; On the path to enlightenment.<br>wait to refer:<br>  <a href="http://guides.ruby.tw/ruby/index.html" target="_blank" rel="noopener">Ruby Guides</a> done!<br>  <a href="https://www.ruby-lang.org/zh_tw/documentation/" target="_blank" rel="noopener">Lots of docs</a><br></center>
+        <center>
+[Codecademy](https://www.codecademy.com) 之 Ruby 速記。
+原來 Ruby 和 DSL 很有淵源啊（喃喃）。
+剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。
+>> On the path to enlightenment.
+wait to refer:
+  [Ruby Guides](http://guides.ruby.tw/ruby/index.html) done!
+  [Lots of docs](https://www.ruby-lang.org/zh_tw/documentation/)
+</center>
 
 <a id="more"></a>
 <p><br><br></p>
@@ -555,7 +563,7 @@
 <p>對應 C++ ， Java 的 throw , catch ，Ruby 有著 begin , rescue 。</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_file_first_line</span></span></span><br><span class="line">    err_try = <span class="number">0</span></span><br><span class="line">    print <span class="string">"&gt; "</span></span><br><span class="line">    fname = gets.chomp</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        file = open(fname)</span><br><span class="line">        rtn = file.gets</span><br><span class="line">    <span class="keyword">rescue</span></span><br><span class="line">        <span class="keyword">if</span> err_try &lt; <span class="number">3</span></span><br><span class="line">            print <span class="string">"&gt; "</span></span><br><span class="line">            fname = gets.chomp</span><br><span class="line">            err_try += <span class="number">1</span></span><br><span class="line">            <span class="keyword">retry</span>               <span class="comment"># jump to begin</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">ensure</span>                      <span class="comment"># do ensure block no matter what</span></span><br><span class="line">        puts <span class="string">"Ensure close file"</span></span><br><span class="line">        file&amp;.close             <span class="comment"># &amp;. -&gt; safer func call</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    rtn</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts <span class="string">"&gt;&gt; <span class="subst">#&#123;get_file_first_line&#125;</span>"</span></span><br></pre></td></tr></table></figure>
 <hr>
-<p>inspect func – 自定義直接呼叫物件的回傳值。</p>
+<p>inspect func — 自定義直接呼叫物件的回傳值。</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Org</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inspect</span></span></span><br><span class="line">        <span class="string">"It's a Object"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">obj = Org.new</span><br><span class="line">obj           <span class="comment"># return "It's a Org" in irb</span></span><br></pre></td></tr></table></figure>
 <hr>
 
@@ -704,7 +712,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -858,7 +866,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">33.6k </span>
+    <span title="Site words total count">42.4k </span>
   
 </div>
 
@@ -1437,22 +1445,5 @@
 
   <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 </html>

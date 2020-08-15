@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="開篇謎之音：…… 寒假一直開坑，卻一直沒好好填。之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。一切都靜止下來了。一年後，突然想起，才在這裡慢慢填，主要是 w3school 的筆記。利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 stored procedure 了。">
+<meta name="description" content="開篇謎之音：...... 寒假一直開坑，卻一直沒好好填。 之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。 一切都靜止下來了。 一年後，突然想起，才在這裡慢慢填，主要是 [w3school](http://www.w3schools.com/sql/default.asp) 的筆記。 利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 sto">
 <meta name="keywords" content="sql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL Note">
 <meta property="og:url" content="http://nobodyzxc.github.io/2017/02/10/MySQL-Note/index.html">
 <meta property="og:site_name" content="UNCALCULABLE LIFE">
-<meta property="og:description" content="開篇謎之音：…… 寒假一直開坑，卻一直沒好好填。之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。一切都靜止下來了。一年後，突然想起，才在這裡慢慢填，主要是 w3school 的筆記。利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 stored procedure 了。">
+<meta property="og:description" content="開篇謎之音：...... 寒假一直開坑，卻一直沒好好填。 之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。 一切都靜止下來了。 一年後，突然想起，才在這裡慢慢填，主要是 [w3school](http://www.w3schools.com/sql/default.asp) 的筆記。 利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 sto">
 <meta property="og:locale" content="zh-tw">
 <meta property="og:updated_time" content="2019-11-08T02:39:33.988Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL Note">
-<meta name="twitter:description" content="開篇謎之音：…… 寒假一直開坑，卻一直沒好好填。之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。一切都靜止下來了。一年後，突然想起，才在這裡慢慢填，主要是 w3school 的筆記。利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 stored procedure 了。">
+<meta name="twitter:description" content="開篇謎之音：...... 寒假一直開坑，卻一直沒好好填。 之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。 一切都靜止下來了。 一年後，突然想起，才在這裡慢慢填，主要是 [w3school](http://www.w3schools.com/sql/default.asp) 的筆記。 利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 sto">
 
 
 
@@ -453,7 +453,13 @@
       
 
       
-        <center><br>開篇謎之音：…… 寒假一直開坑，卻一直沒好好填。<br>之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。<br>一切都靜止下來了。<br>一年後，突然想起，才在這裡慢慢填，主要是 <a href="http://www.w3schools.com/sql/default.asp" target="_blank" rel="noopener">w3school</a> 的筆記。<br>利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 stored procedure 了。<br></center>
+        <center>
+開篇謎之音：...... 寒假一直開坑，卻一直沒好好填。
+之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。
+一切都靜止下來了。
+一年後，突然想起，才在這裡慢慢填，主要是 [w3school](http://www.w3schools.com/sql/default.asp) 的筆記。
+利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 stored procedure 了。
+</center>
 
 <a id="more"></a>
 <p><br><br></p>
@@ -487,6 +493,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> company <span class="keyword">from</span> customers <span class="keyword">where</span> <span class="keyword">id</span> &lt; <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -558,6 +565,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li><p>order by [column] [asc|desc] , [column] [asc|desc]</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span> , company <span class="keyword">from</span> customers <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">asc</span>;</span><br></pre></td></tr></table></figure>
@@ -579,6 +587,7 @@
 <ul>
 <li>wildcard</li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -605,17 +614,18 @@
 </tr>
 </tbody>
 </table>
+</div>
 <ul>
 <li><p>alias</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">as</span> sn <span class="keyword">from</span> customers;</span><br><span class="line"><span class="keyword">select</span> c.id <span class="keyword">from</span> customers <span class="keyword">as</span> c;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>join</p>
 <ul>
-<li>inner join – 要有關聯才 show</li>
-<li>left join  – 左邊全都 show ， 右邊看關聯</li>
-<li>right join – 右邊全都 show ， 左邊看關聯</li>
-<li>full join  – 都 show , <a href="http://stackoverflow.com/questions/4796872/full-outer-join-in-MySQL" target="_blank" rel="noopener">MySQL gg</a></li>
-<li>join       – same as join<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> o.id <span class="keyword">as</span> order_id , c.first_name <span class="keyword">as</span> customer</span><br><span class="line"><span class="keyword">from</span> orders <span class="keyword">as</span> o</span><br><span class="line"><span class="keyword">inner</span> <span class="keyword">join</span> customers <span class="keyword">as</span> c</span><br><span class="line"><span class="keyword">on</span> o.customer_id = c.id</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> o.id;</span><br></pre></td></tr></table></figure>
+<li>inner join — 要有關聯才 show</li>
+<li>left join  — 左邊全都 show ， 右邊看關聯</li>
+<li>right join — 右邊全都 show ， 左邊看關聯</li>
+<li>full join  — 都 show , <a href="http://stackoverflow.com/questions/4796872/full-outer-join-in-MySQL" target="_blank" rel="noopener">MySQL gg</a></li>
+<li>join       — same as join<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> o.id <span class="keyword">as</span> order_id , c.first_name <span class="keyword">as</span> customer</span><br><span class="line"><span class="keyword">from</span> orders <span class="keyword">as</span> o</span><br><span class="line"><span class="keyword">inner</span> <span class="keyword">join</span> customers <span class="keyword">as</span> c</span><br><span class="line"><span class="keyword">on</span> o.customer_id = c.id</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> o.id;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -843,7 +853,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -997,7 +1007,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">33.6k </span>
+    <span title="Site words total count">42.4k </span>
   
 </div>
 
@@ -1576,22 +1586,5 @@
 
   <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 </html>
