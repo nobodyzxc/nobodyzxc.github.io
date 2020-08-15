@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://i.imgur.com/2Jibg8j.png">
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
-<meta property="og:updated_time" content="2020-08-15T17:25:49.980Z">
+<meta property="og:updated_time" content="2020-08-15T18:56:33.677Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -630,7 +630,7 @@
 </ul>
 <p><img src="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg" alt="BERT 四大任務"></p>
 <p>根據需求，我們使用了 BertForSequenceClassification 做了對單個篇新聞的分類（AML &amp; non-AML），但受限於 BERT 512 的 token size 限制，我們取了文章最後的 510 個 token 丟進 model 。</p>
-<p>在 valid data 上的分類準確度從剛才的 90% 直接來到了 99% 。</p>
+<p>在 validate data 上的分類準確度從剛才的 90% 直接來到了 99% 。</p>
 <p>一個比較基本可以用的 AML 犯罪名單提取系統已經差不多了。<br>時間也來到了測試賽。</p>
 <blockquote>
 <p>測試賽開始：<br>測試賽僅僅提供測試 server 的穩定度，<br>並沒有提供題目正確答案和分數。</p>
@@ -651,7 +651,7 @@
 <p>正式賽第二周開始：<br>我們成功爬回了四而隔天又掉回了五，<br>加入一千五百篇的資料似乎有一點提昇。<br>不過 model 似乎還要再加強一下，<br>所以我們決定嘗試其他的 Model。</p>
 </blockquote>
 <h3 id="Try-other-NN-Model"><a href="#Try-other-NN-Model" class="headerlink" title="Try other NN Model"></a>Try other NN Model</h3><p>我們又嘗試了其他 Model，像是 XLNet, RoBERTa, Albert 等，<br>不過效果似乎並沒有很大的提昇，不知道是不是用法錯誤（比如 XLNet 的 Mask 是 <code>&lt;sep&gt;</code> 而不是 <code>[SEP]</code>），<br>只有 RoBERTa 在 classifier 的表現上的結果有好一些。</p>
-<h4 id="NN-model-RoBERTa-as-classifier"><a href="#NN-model-RoBERTa-as-classifier" class="headerlink" title="NN model (RoBERTa) as classifier"></a>NN model (RoBERTa) as classifier</h4><p>最後，經由測試，我們將前幾天的 query 當作 valid set，<br>RoBERTa 的準確度從 96% 上到 97%，RoBERTa 的 classifier 似乎有變好，<br>於是我們將 classifier 換成 RoBERTa。</p>
+<h4 id="NN-model-RoBERTa-as-classifier"><a href="#NN-model-RoBERTa-as-classifier" class="headerlink" title="NN model (RoBERTa) as classifier"></a>NN model (RoBERTa) as classifier</h4><p>最後，經由測試，我們將前幾天的 query 當作 validate set，<br>RoBERTa 的準確度從 96% 上到 97%，RoBERTa 的 classifier 似乎有變好，<br>於是我們將 classifier 換成 RoBERTa。</p>
 <blockquote>
 <p>由於主辦單位不小心把第七天的 query 送成前一天的，故第七天沒有列入計算。<br>可能是 RoBERTa 的表現加上 1500 的標記資料生效了，最後一天我們的成績跑進了第三名。<br>至此，整個賽程結束。<br>因為我本身的研究領域不是 NLP，加上時間因素，能有這樣的成績已經是相當幸運了。<br>三個禮拜衝刺也到了一段落了 :)</p>
 </blockquote>
@@ -661,8 +661,7 @@
 <p>或許存在著更棒的 model 也說不定。</p>
 <h3 id="improve-the-pre-training-model"><a href="#improve-the-pre-training-model" class="headerlink" title="improve the pre-training model"></a>improve the pre-training model</h3><p>拿將新聞 corpus 繼續做 pre-training 的 unsupervised learning，<br>應該可以加強 pre-training domain specific 的能力，效果也可能因此提昇。</p>
 <h3 id="expand-the-data"><a href="#expand-the-data" class="headerlink" title="expand the data"></a>expand the data</h3><p>NER 的部份，也可以將一千五百篇的人名做標記，如此 NER 的效果可能會提昇一些。</p>
-<h3 id="data-augmentation"><a href="#data-augmentation" class="headerlink" title="data augmentation"></a>data augmentation</h3><p>跟圖片一樣，NLP 的分類也可以使用 augmentation，這似乎也是一個研究的方向。</p>
-<p><a href="https://github.com/zhanlaoban/EDA_NLP_for_Chinese" target="_blank" rel="noopener">一個中文數據增強的實現</a>。</p>
+<h3 id="data-augmentation"><a href="#data-augmentation" class="headerlink" title="data augmentation"></a>data augmentation</h3><p>跟圖片一樣，NLP 的分類也可以使用 augmentation，<br>這似乎也是一個研究的方向：<a href="https://github.com/zhanlaoban/EDA_NLP_for_Chinese" target="_blank" rel="noopener">一個中文數據增強的實現</a>。</p>
 
       
     </div>
