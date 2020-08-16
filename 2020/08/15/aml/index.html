@@ -98,7 +98,8 @@
 <meta property="og:image" content="https://i.imgur.com/2Jibg8j.png">
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
-<meta property="og:updated_time" content="2020-08-16T14:28:56.787Z">
+<meta property="og:image" content="https://i.imgur.com/4durE7N.png">
+<meta property="og:updated_time" content="2020-08-16T15:18:42.805Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -419,7 +420,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  8.9k word(s)
+                  9k word(s)
                 </span>
               
 
@@ -579,8 +580,8 @@
 <p>或者我們採取了一個比較簡單的作法，直接利用 IR model，取前三百篇，看這三百篇裡面，主辦單位標記的 AML 文章 recall 是多少。一樣也要取個 threshold。這邊我們大概就用三百篇和其他非 AML 相關新聞的 recall 下去抓，其實已經有不錯的分類能力了，不過還是有些新聞，例如大樂透開獎會歸進 AML 新聞。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query29: 【2019理財大事5】跌破...</span><br><span class="line">[ x  11 / 300 = 0.036667 score =   5.58 ] Query30: 公開資訊觀測站...</span><br><span class="line">[ v 223 / 300 = 0.743333 score = 195.94 ] Query31: 涉貪圖利 東檢聲押前台...</span><br><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query32: 昂山素姬明出席國際法 ...</span><br><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query33: 繼思想改造集中營之後 ...</span><br><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query34: 山頂纜車機件故障暫停 ...</span><br><span class="line">[ v 251 / 300 = 0.836667 score = 215.47 ] Query35: 直銷妹誆「1年帶你住帝...</span><br><span class="line">[ v 262 / 300 = 0.873333 score = 224.46 ] Query36: 潤寅詐貸案延燒 上市公...</span><br><span class="line">[ v 206 / 300 = 0.686667 score = 179.18 ] Query37: 花蓮縣3議員涉收賄 貪 ...</span><br><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query38: 週三晚起東北季風增強 ...</span><br><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query39: 「灰天鵝」拉警報 | An...</span><br><span class="line">[ x   1 / 300 = 0.003333 score =   0.61 ] Query40: 柯媽爆料：柯文哲絕對 ...</span><br><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query41: 媒體：特朗普涉嫌威脅 ...</span><br><span class="line">[ x   0 / 300 = 0.000000 score =   0.00 ] Query42: 國銀海外投資豐收 8月O...</span><br></pre></td></tr></table></figure>
 <h3 id="Named-Entity-Recognition"><a href="#Named-Entity-Recognition" class="headerlink" title="Named Entity Recognition"></a>Named Entity Recognition</h3><p>人名提取是本次比賽的重點。<br>在 NLP 中 Named Entity Recognition 可以識別出特殊的名詞，例如人物、組織和地點等。</p>
-<h4 id="NN-model-ckip-rule-based-as-extractor-NER"><a href="#NN-model-ckip-rule-based-as-extractor-NER" class="headerlink" title="NN model (ckip) + rule based as extractor (NER)"></a>NN model (ckip) + rule based as extractor (NER)</h4><p>而在去年九月，中研院的 ckip 開源了一套新的斷詞系統 <a href="https://github.com/ckiplab/ckiptagger" target="_blank" rel="noopener">ckiptagger</a>，與舊的不同處在於這一套是用深度學習的方法，利用 BiLSTM 訓練出來的模型。他一樣利用 pre-training 的 word embedding，然後搭配 BiLSTM 訓練出一套斷詞系統。而後透過斷詞出來的結果再加上詞向量訓練出詞性標注。</p>
-<p>而最後最重要的 NER 也是由 BiLSTM 訓練而成，需要拿前面的詞向量 + 斷詞結果 + 詞性標注當作輸入。有了這一整套系統，我們就有基本的中文 NER 可以用了。這套斷詞系統相當精確，也有許多類別，地點、組織等都會標記出來，我們只要取用人物的部份即可。</p>
+<h4 id="NN-model-ckip-rule-based-as-extractor-NER"><a href="#NN-model-ckip-rule-based-as-extractor-NER" class="headerlink" title="NN model (ckip) + rule based as extractor (NER)"></a>NN model (ckip) + rule based as extractor (NER)</h4><p>而在去年九月，中研院的 ckip 開源了一套新的斷詞系統 <a href="https://github.com/ckiplab/ckiptagger" target="_blank" rel="noopener">ckiptagger</a>，與舊的不同處在於這一套是用深度學習的方法，利用 BiLSTM 訓練出來的模型。他一樣利用 pre-training 的 word embedding，然後搭配 BiLSTM 訓練出一套斷詞系統。而後透過斷詞出來的結果再加上 word embedding 訓練出詞性標注。</p>
+<p>而最後最重要的 NER 也是由 BiLSTM 訓練而成，需要拿前面的 word embedding + 斷詞結果 + 詞性標注當作輸入。有了這一整套系統，我們就有基本的中文 NER 可以用了。這套斷詞系統相當精確，也有許多類別，地點、組織等都會標記出來，我們只要取用人物的部份即可。</p>
 <p>不過人物的部份，他會連一些簡稱（張嫌、陳婦）都標記出來，<br>所以我們這邊會做一個簡單的 filter 去過濾這些結果。</p>
 <p>ckiptagger 的版本需求：</p>
 <ul>
@@ -626,6 +627,8 @@
 <p>根據這種模式，近幾年來發展出了像是 ELMo、OpenAI 的 GPT、Google 的 BERT 及一堆他的變形、其他像是 CMU 的 XLNet 等。訓練 word embedding 從一開始的 RNN 到 LSTM 最後到 Attention，更多原理細節可以參考 <a href="https://www.jishuwen.com/d/2M6u/zh-tw" target="_blank" rel="noopener">這一篇介紹</a>。</p>
 <p>我們在測試賽之前嘗試使用 BERT 建立一個新的 classifier，準確度有大幅的提昇。</p>
 <h4 id="NN-model-BERT-as-classifier"><a href="#NN-model-BERT-as-classifier" class="headerlink" title="NN model (BERT) as classifier"></a>NN model (BERT) as classifier</h4><p>BERT 的使用也相當容易，python 有一個集 NLP 大成的套件庫叫做 <code>transformers</code>，<br>裡面不僅有 BERT， 也有 XLNet 等 model 。</p>
+<p>詳細的實作教學可以參考 <a href="https://leemeng.tw/attack_on_bert_transfer_learning_in_nlp.html" target="_blank" rel="noopener">進擊的 BERT：NLP 界的巨人之力與遷移學習</a>。</p>
+<p>而原理可參考李宏毅教授的 <a href="https://www.youtube.com/watch?v=UYPa347-DdE" target="_blank" rel="noopener">BERT 的教學影片</a>。</p>
 <p>要下載 BERT 的 pre-training 相當容易，只要把填好 pre-training 的名稱，<br>他跑下去發現沒有的話，就會自己去載了。</p>
 <p>至於有哪些 pre-training，除了上網 Google 外，基本上可以來 <a href="https://huggingface.co/models" target="_blank" rel="noopener">hugface 的網站</a> 上面找，<br>因為此次是中文的比賽，所以我們使用了最基本款 <code>bert-base-chinese</code> 即可。</p>
 <p>基本上 BERT 的使用細節都可以透過這篇 <a href="https://leemeng.tw/attack_on_bert_transfer_learning_in_nlp.html" target="_blank" rel="noopener">教學文</a> 學到，裡面也有範例程式碼，學習起來算是相當的容易。</p>
@@ -645,7 +648,7 @@
 </blockquote>
 <h2 id="進階模型-Advenced-Model"><a href="#進階模型-Advenced-Model" class="headerlink" title="進階模型 Advenced Model"></a>進階模型 Advenced Model</h2><p>藉由 BERT，我們的 Model 來到了一個嶄新的境界，<br>想必剛剛各位也有留意到，BERT 也有提供 NER 的任務訓練，<br>而 ckip 的 NER 是用在廣泛用途的，那何不用 BERT 自己也 train 一個呢？</p>
 <h3 id="Make-our-NER"><a href="#Make-our-NER" class="headerlink" title="Make our NER"></a>Make our NER</h3><p>根據主辦單位的標記資料，每一篇 AML 文章都有對應的人名集合。</p>
-<p>要把資料輸進 BERT 做 NER 還需要把每個 token 做標記。<br>這邊我們根據 <a href="https://en.wikipedia.org/wiki/Inside%E2%80%93outside%E2%80%93beginning_(tagging" target="_blank" rel="noopener">IOB format</a>)，只要把目標人名用 <code>B-PER</code>, <code>I-PER</code> 標起來即可。</p>
+<p>要把資料輸進 BERT 做 NER 還需要把每個 token 做標記。<br>這邊我們根據 <a href="https://en.wikipedia.org/wiki/Inside%E2%80%93outside%E2%80%93beginning_(tagging" target="_blank" rel="noopener">IOB format</a>，只要把目標人名用 <code>B-PER</code>, <code>I-PER</code> 標起來即可。</p>
 <p>首先我們先用 BERT 載入 <code>bert-base-chinese</code>，使用他的 tokenizer 為每篇 AML 新聞做 tokenization。</p>
 <p>接著根據幫匹配的人名標上標記，其餘的標上 <code>O</code> 即可。</p>
 <p>只要寫個小小的 script 轉換完資料，<br>接著使用 BertForTokenClassification 就可以開始愉快的 train NER 囉！</p>
@@ -660,8 +663,10 @@
 </blockquote>
 <h3 id="Try-other-NN-Model"><a href="#Try-other-NN-Model" class="headerlink" title="Try other NN Model"></a>Try other NN Model</h3><p>我們又嘗試了其他 Model，像是 XLNet, RoBERTa, Albert 等，<br>不過效果似乎並沒有很大的提昇，不知道是不是用法錯誤（比如 XLNet 的 Mask 是 <code>&lt;sep&gt;</code> 而不是 <code>[SEP]</code>），<br>只有 RoBERTa 在 classifier 的表現上的結果有好一些。</p>
 <h4 id="NN-model-RoBERTa-as-classifier"><a href="#NN-model-RoBERTa-as-classifier" class="headerlink" title="NN model (RoBERTa) as classifier"></a>NN model (RoBERTa) as classifier</h4><p>最後，經由測試，我們將前幾天的 query 當作 validation set，<br>RoBERTa 的準確度從 96% 上到 97%，RoBERTa 的 classifier 似乎有變好，<br>於是我們將 classifier 換成 RoBERTa。</p>
+<p>下圖是我們的最終架構圖：</p>
+<p><img src="https://i.imgur.com/4durE7N.png" alt></p>
 <blockquote>
-<p>由於主辦單位不小心把第七天的 query 送成前一天的，故第七天沒有列入計算。<br>可能是 RoBERTa 的表現加上 1500 的標記資料生效了，最後一天我們的成績跑進了第三名。<br>至此，整個賽程結束。<br>因為我本身的研究領域不是 NLP，加上時間因素，能有這樣的成績已經是相當幸運了。<br>三個禮拜衝刺也到了一段落了 :)</p>
+<p>由於主辦單位不小心把第七天的 query 送成前一天的，故第七天沒有列入計算。<br>可能是 RoBERTa 的表現加上 1500 的標記資料生效了，最後一天我們的成績跑到了第三名。<br>至此，整個賽程結束。<br>因為我本身的研究領域不是 NLP，加上時間因素，能有這樣的成績已經是相當幸運了。<br>三個禮拜衝刺也到了一段落了 :)</p>
 </blockquote>
 <h2 id="其他-Others"><a href="#其他-Others" class="headerlink" title="其他 Others"></a>其他 Others</h2><p>除了先前的嘗試，其實我們也有想到一些增強 model 的方法，<br>不過礙於時間關係，我們沒來得及做這些嘗試。</p>
 <h3 id="evoluationary-computation"><a href="#evoluationary-computation" class="headerlink" title="evoluationary computation"></a>evoluationary computation</h3><p>我們在嘗試前面的 Model 時，有嘗試用演化計算來調整參數。<br>不過後來 Model 都轉移到 NN 上，我們在傳統機器學習方法上就沒再做更多嘗試了。<br>其實演化計算的應用很廣，或許可以應用在現在 Model 的參數微調上。</p>
