@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="UNCALCULABLE LIFE">
 <meta property="og:description" content="開篇謎之音：...... 寒假一直開坑，卻一直沒好好填。 之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。 一切都靜止下來了。 一年後，突然想起，才在這裡慢慢填，主要是 w3school 的筆記。 利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 stored procedure 了。">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2020-08-16T12:11:34.142Z">
+<meta property="og:updated_time" content="2020-08-16T14:29:18.340Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL Note">
 <meta name="twitter:description" content="開篇謎之音：...... 寒假一直開坑，卻一直沒好好填。 之前想寫個 OJ 所以才接觸 MySQL，但一碰 MySQL 後 OJ 卻沒甚麼動力去玩了。 一切都靜止下來了。 一年後，突然想起，才在這裡慢慢填，主要是 w3school 的筆記。 利益相關：老爸是寫 ERP 管理資料庫的，然後他表示現在都用 stored procedure 了。">
@@ -463,6 +463,7 @@
 
 
 <a id="more"></a>
+<p><br><br></p>
 <h2 id="環境配置"><a href="#環境配置" class="headerlink" title="環境配置"></a>環境配置</h2><p>還是在 Cygwin 上，相關辦法可以參考不才的<a href="http://no8dyzxc.pixnet.net/blog/post/103827086" target="_blank" rel="noopener">這篇</a>。<br>練習的 database 就用 <a href="http://www.w3schools.com/sql/default.asp" target="_blank" rel="noopener">w3school</a> 教的 <a href="https://github.com/dalers/mywind" target="_blank" rel="noopener">northwind</a> 吧。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/dalers/mywind.git</span><br><span class="line">cat northwind.sql | mysql -u root -p</span><br><span class="line">cat northwind-default-current-timestamp.sql | mysql -u root -p</span><br><span class="line">cat northwind-data.sql | mysql -u root -p</span><br><span class="line"><span class="comment"># -u 引數看你的配置</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="筆-ㄉㄨㄟ-記-ㄐㄧ-開始"><a href="#筆-ㄉㄨㄟ-記-ㄐㄧ-開始" class="headerlink" title="筆 (ㄉㄨㄟ) 記 (ㄐㄧ) 開始"></a>筆 (ㄉㄨㄟ) 記 (ㄐㄧ) 開始</h2><ul>
 <li><p>create , show</p>
