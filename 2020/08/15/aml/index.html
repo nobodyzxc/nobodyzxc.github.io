@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://i.imgur.com/2Jibg8j.png">
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
-<meta property="og:updated_time" content="2020-08-16T06:29:45.435Z">
+<meta property="og:updated_time" content="2020-08-16T06:43:42.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -419,7 +419,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  8.8k word(s)
+                  8.9k word(s)
                 </span>
               
 
@@ -435,7 +435,7 @@
                   <span class="post-meta-item-text">閱讀時長 &asymp;</span>
                 
                 <span title="閱讀時長">
-                  35 min(s)
+                  36 min(s)
                 </span>
               
             </div>
@@ -600,13 +600,16 @@
 <p>inference:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">answer_cache = &#123;&#125;</span><br><span class="line"><span class="meta">@app.route('/inference', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inference</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">""" API that return your model predictions when E.SUN calls this API """</span></span><br><span class="line">    data = request.get_json(force=<span class="literal">True</span>)</span><br><span class="line">    esun_timestamp = data[<span class="string">'esun_timestamp'</span>] <span class="comment">#自行取用</span></span><br><span class="line">    server_timestamp = datetime.datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line"></span><br><span class="line">    ts = str(int(datetime.datetime.now().utcnow().timestamp()))</span><br><span class="line">    server_uuid = generate_server_uuid(CAPTAIN_EMAIL+ts)</span><br><span class="line"></span><br><span class="line">    answer_template = <span class="keyword">lambda</span> ans: jsonify(&#123;</span><br><span class="line">            <span class="string">'esun_timestamp'</span>: data[<span class="string">'esun_timestamp'</span>],</span><br><span class="line">            <span class="string">'server_uuid'</span>: server_uuid,</span><br><span class="line">            <span class="string">'answer'</span>: ans,</span><br><span class="line">            <span class="string">'server_timestamp'</span>: server_timestamp,</span><br><span class="line">            <span class="string">'esun_uuid'</span>: data[<span class="string">'esun_uuid'</span>]</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> data[<span class="string">'esun_uuid'</span>] <span class="keyword">in</span> cache_answer:</span><br><span class="line">        <span class="keyword">if</span> cache_answer[data[<span class="string">'esun_uuid'</span>]] != <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> answer_template(cache_answer[data[<span class="string">'esun_uuid'</span>]])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">while</span> cache_answer[data[<span class="string">'esun_uuid'</span>]] == <span class="literal">None</span>:</span><br><span class="line">                sleep(<span class="number">4</span>)</span><br><span class="line">            <span class="keyword">return</span> answer_template(cache_answer[data[<span class="string">'esun_uuid'</span>]])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cache_answer[data[<span class="string">'esun_uuid'</span>]] = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            log(data[<span class="string">'news'</span>])</span><br><span class="line">            answer = predict(data[<span class="string">'news'</span>])</span><br><span class="line">            log(answer)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            log(<span class="string">'model error'</span>)</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Model error.'</span>)</span><br><span class="line"></span><br><span class="line">        cache_answer[data[<span class="string">'esun_uuid'</span>]] = answer</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> answer_template(answer)</span><br></pre></td></tr></table></figure></p>
 <p>從上面的 code 可以發現，我們在 inference 做了 cache，<br>原因是一個 inference 時間上限為五秒，逾時就會重新發 request 過來，次數上限為三次。</p>
 <p>為了避免逾時而重複 inference，所以我們做了 cache。<br>不過 inference 通常滿快的，一兩秒內就可以算完了。</p>
-<h3 id="static-IP"><a href="#static-IP" class="headerlink" title="static IP"></a>static IP</h3><p>Azure 不開放 80 和 443 以外的 port，所以原則上把服務開在其中一個 port 即可。</p>
+<h3 id="static-IP"><a href="#static-IP" class="headerlink" title="static IP"></a>static IP</h3><p>Azure 對外不開放 80 和 443 以外的 port，所以原則上把服務開在其中一個 port 即可。</p>
 <p>那如果手上有比較好的顯卡，覺得 K80 跑得太慢，但該電腦又沒有固定 IP 的話怎麼辦呢？</p>
 <p>這時可以使用 ssh port forwarding 的功能，forwarding 分作兩種，正向代理和反向代理。正向代理是將伺服器端的 port forwarding 到我們的電腦上，所以我們可以把伺服器端的服務拿到我們客戶端的 port 來用。反過來想，今天我們是要把我們客戶端提供的服務放到伺服器上，所以用的是反向代理，假設我們把 flask 開在 8080 port 上，那只要 forwarding 到伺服器的 80 port 上，那外面的人只要用 http protocol 瀏覽伺服器的 IP 位置即可。</p>
 <p>值得注意的一點是，<code>/etc/ssh/sshd_config</code> 裡面的 <code>AllowTcpForwarding</code> 必須是 <code>yes</code>，才可以 forwarding。<br>剛改完記得要重啟 ssh server。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd.service</span><br></pre></td></tr></table></figure>
 <p>然後因為 ssh 容易掉，我這邊使用 autossh 讓他自動重連就穩多了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">autossh -M 20000 -i ~/.ssh/id_rsa -NfR  :80:localhost:8080 user@azure</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">autossh -M 20000 -i ~/.ssh/id_rsa -NfR  :8080:localhost:8080 user@azure</span><br><span class="line"># foward local 8080 to remote 8080</span><br></pre></td></tr></table></figure>
+<p>可以看到，我將本機端的 8080 port forwarding 到遠端的 8080 port，<br>因為遠端的 80 port 需要 root 權限，但有時 ssh 會關掉 root 遠端登入（只允許 console）。<br>所以這邊可以透過 <a href="https://github.com/vinodpandey/python-port-forward" target="_blank" rel="noopener">python-port-forward</a>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python2.7 port-forward.py 80:localhost:8080</span><br></pre></td></tr></table></figure>
+<p>將 8080 port 再 forward 到 80 port，我們就可以使用 azure 的 IP 了。</p>
 <p>原則上有靜態 IP，有 ssh 的 server 都可以使用 forwading，<br>像這次比賽基本上都是由家中 NAS 提供服務。</p>
 <h3 id="slack"><a href="#slack" class="headerlink" title="slack"></a>slack</h3><p>前置作業都完成後，只要把 web hook 掛給官方提供的 slack bot 即可。之後比賽他就會去戳你給的 IP address 了。</p>
 <p><img src="https://i.imgur.com/0cjPF0C.png" alt></p>
@@ -955,7 +958,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">42.6k </span>
+    <span title="Site words total count">42.7k </span>
   
 </div>
 
