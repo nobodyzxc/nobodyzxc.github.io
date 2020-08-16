@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
 <meta property="og:image" content="https://i.imgur.com/4durE7N.png">
-<meta property="og:updated_time" content="2020-08-16T15:18:42.805Z">
+<meta property="og:updated_time" content="2020-08-16T15:22:34.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -627,11 +627,10 @@
 <p>根據這種模式，近幾年來發展出了像是 ELMo、OpenAI 的 GPT、Google 的 BERT 及一堆他的變形、其他像是 CMU 的 XLNet 等。訓練 word embedding 從一開始的 RNN 到 LSTM 最後到 Attention，更多原理細節可以參考 <a href="https://www.jishuwen.com/d/2M6u/zh-tw" target="_blank" rel="noopener">這一篇介紹</a>。</p>
 <p>我們在測試賽之前嘗試使用 BERT 建立一個新的 classifier，準確度有大幅的提昇。</p>
 <h4 id="NN-model-BERT-as-classifier"><a href="#NN-model-BERT-as-classifier" class="headerlink" title="NN model (BERT) as classifier"></a>NN model (BERT) as classifier</h4><p>BERT 的使用也相當容易，python 有一個集 NLP 大成的套件庫叫做 <code>transformers</code>，<br>裡面不僅有 BERT， 也有 XLNet 等 model 。</p>
-<p>詳細的實作教學可以參考 <a href="https://leemeng.tw/attack_on_bert_transfer_learning_in_nlp.html" target="_blank" rel="noopener">進擊的 BERT：NLP 界的巨人之力與遷移學習</a>。</p>
-<p>而原理可參考李宏毅教授的 <a href="https://www.youtube.com/watch?v=UYPa347-DdE" target="_blank" rel="noopener">BERT 的教學影片</a>。</p>
 <p>要下載 BERT 的 pre-training 相當容易，只要把填好 pre-training 的名稱，<br>他跑下去發現沒有的話，就會自己去載了。</p>
 <p>至於有哪些 pre-training，除了上網 Google 外，基本上可以來 <a href="https://huggingface.co/models" target="_blank" rel="noopener">hugface 的網站</a> 上面找，<br>因為此次是中文的比賽，所以我們使用了最基本款 <code>bert-base-chinese</code> 即可。</p>
-<p>基本上 BERT 的使用細節都可以透過這篇 <a href="https://leemeng.tw/attack_on_bert_transfer_learning_in_nlp.html" target="_blank" rel="noopener">教學文</a> 學到，裡面也有範例程式碼，學習起來算是相當的容易。</p>
+<p>基本上 BERT 的使用細節都可以透過這篇 <a href="https://leemeng.tw/attack_on_bert_transfer_learning_in_nlp.html" target="_blank" rel="noopener">進擊的 BERT：NLP 界的巨人之力與遷移學習</a> 學到，<br>裡面也有範例程式碼，學習起來算是相當的容易。</p>
+<p>而原理可參考李宏毅教授的 <a href="https://www.youtube.com/watch?v=UYPa347-DdE" target="_blank" rel="noopener">BERT 的教學影片</a>。</p>
 <p>BERT 提供了四大下游任務（就是四個 supervised 的 NN Model），我們可以根據我們的需求，<br>選用適合的任務模型來使用。關於更詳細的四大任務介紹可以參考這篇 <a href="https://zhuanlan.zhihu.com/p/102208639" target="_blank" rel="noopener">知乎專欄</a></p>
 <ul>
 <li>BertForSequenceClassification：下圖的 (a) 和 (b)，只差在一個 <code>[SEP]</code>，可以用作分類。</li>
