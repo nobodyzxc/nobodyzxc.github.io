@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://i.imgur.com/0cjPF0C.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c101ddc3b2f4dbd3dc20999f900c71ba_720w.jpg">
 <meta property="og:image" content="https://i.imgur.com/4durE7N.png">
-<meta property="og:updated_time" content="2020-08-16T15:22:34.979Z">
+<meta property="og:updated_time" content="2020-08-18T14:41:13.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="玉山 NLP 應用挑戰賽">
 <meta name="twitter:description" content="暑假花了一點時間和同學做起來的 project，來場經驗分享吧！">
@@ -650,6 +650,7 @@
 <p>要把資料輸進 BERT 做 NER 還需要把每個 token 做標記。<br>這邊我們根據 <a href="https://en.wikipedia.org/wiki/Inside%E2%80%93outside%E2%80%93beginning_(tagging" target="_blank" rel="noopener">IOB format</a>，只要把目標人名用 <code>B-PER</code>, <code>I-PER</code> 標起來即可。</p>
 <p>首先我們先用 BERT 載入 <code>bert-base-chinese</code>，使用他的 tokenizer 為每篇 AML 新聞做 tokenization。</p>
 <p>接著根據幫匹配的人名標上標記，其餘的標上 <code>O</code> 即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;法官怕周麗真逃亡&quot;, [&quot;周麗真&quot;]</span><br><span class="line">[&apos;法&apos;, &apos;官&apos;, &apos;怕&apos;,    &apos;周&apos;,     &apos;麗&apos;,    &apos;真&apos;,&apos;逃&apos;, &apos;亡&apos;]</span><br><span class="line">[&apos;O&apos;,  &apos;O&apos;,  &apos;O&apos;, &apos;B-PER&apos;, &apos;I-PER&apos;, &apos;I-PER&apos;, &apos;O&apos;,  &apos;O&apos;]</span><br></pre></td></tr></table></figure>
 <p>只要寫個小小的 script 轉換完資料，<br>接著使用 BertForTokenClassification 就可以開始愉快的 train NER 囉！</p>
 <h4 id="NN-model-BERT-as-extractor-NER"><a href="#NN-model-BERT-as-extractor-NER" class="headerlink" title="NN model (BERT) as extractor (NER)"></a>NN model (BERT) as extractor (NER)</h4><p>蠻出乎意料之外的一點是，可能是僅僅標記 AML 目標人物的關係，<br>NER 出來的結果似乎就有了簡單的分類能力，可以避開一些非 AML 相關的人名。<br>所以我們使用 BERT NER 抓出來的結果就不丟進 XGBoost 做分類過濾了。</p>
 <p>到這裡，基本的模型已經構建完畢，這就是我們進行正式賽的 Model。</p>
@@ -962,7 +963,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">42.6k </span>
+    <span title="Site words total count">42.7k </span>
   
 </div>
 
