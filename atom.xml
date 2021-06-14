@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://nobodyzxc.github.io/"/>
-  <updated>2020-11-18T15:10:05.492Z</updated>
+  <updated>2021-06-14T05:38:56.065Z</updated>
   <id>http://nobodyzxc.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Vim Node (Basic Configuration)</title>
+    <title>Vim Note (Basic Configuration)</title>
     <link href="http://nobodyzxc.github.io/2020/11/18/vim-1/"/>
     <id>http://nobodyzxc.github.io/2020/11/18/vim-1/</id>
     <published>2020-11-18T13:59:21.000Z</published>
-    <updated>2020-11-18T15:10:05.492Z</updated>
+    <updated>2021-06-14T05:38:56.065Z</updated>
     
     <content type="html"><![CDATA[<center>距離上一篇已經過了三年多，<br>這五年多來的 Vim 之旅似乎還沒落幕。</center><a id="more"></a><p><br><br></p><h2 id="基本配置篇"><a href="#基本配置篇" class="headerlink" title="基本配置篇"></a>基本配置篇</h2><h3 id="認識-vimrc"><a href="#認識-vimrc" class="headerlink" title="認識 vimrc"></a>認識 vimrc</h3><p>基本上一個空的 vim 設定應該是連行號都沒有的。<br>那如果要叫出行號，就必須使用指令 <code>:set nu</code>，<br>但每次都要打似乎太麻煩了，<br>這時，我們就可以寫個設定檔。</p><p>在類 Unix 環境下，家目錄下面，可以創立一個 <code>.vimrc</code> 檔案，然後寫一些設定進去。<br>而在 Windows 下，Cygwin 也是在加目錄，而 gvim 那些的設定檔可能就請參考 <a href="https://stackoverflow.com/questions/9120500/vim-settings-file-on-windows" target="_blank" rel="noopener">這邊</a>。</p><p>以下是某位學長的設定檔，系上工作站大家的帳號一開始都是從這個設定檔入門的。<br>有趣的小功能算不少，但最有用的就是用 tab 補全代碼吧 :)</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">set nocompatible</span><br><span class="line">set secure</span><br><span class="line"></span><br><span class="line">set backspace=2         &quot; allow backspacing over everything in insert mode</span><br><span class="line">set viminfo=&apos;20,\&quot;50    &quot; read/write a .viminfo file, don&apos;t store more</span><br><span class="line">                        &quot; than 50 lines of registers</span><br><span class="line">set history=50          &quot; keep 50 lines of command line history</span><br><span class="line">set ruler               &quot; show the cursor position all the time</span><br><span class="line">&quot;set dictionary=~/.dict  &quot; my dictionary :p</span><br><span class="line"></span><br><span class="line">&quot;set expandtab           &quot; expand tabs to spaces.</span><br><span class="line">set wildchar=&lt;TAB&gt;      &quot; such as &lt;TAB&gt; in shell</span><br><span class="line">set smarttab</span><br><span class="line">set tabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line"></span><br><span class="line">set nu</span><br><span class="line">set t_Co=8              &quot; number of colors</span><br><span class="line">set t_Sf=[1;3%p1%dm   &quot; set foreground color</span><br><span class="line">set t_Sb=[1;4%p1%dm   &quot; set background color</span><br><span class="line">set showcmd             &quot; show command</span><br><span class="line">set showmode            &quot; show current mode</span><br><span class="line">set incsearch           &quot; While typing a search pattern, show immediately</span><br><span class="line">                        &quot; where the so far typed pattern matches.</span><br><span class="line">set hlsearch            &quot; When there is a previous search pattern,</span><br><span class="line">                        &quot; highlight all its matches.</span><br><span class="line">syntax on               &quot; show parts of the text in another font or color</span><br><span class="line"></span><br><span class="line">set fileencodings=utf-8,cp936,big5,latin1</span><br><span class="line">set background=dark</span><br><span class="line"></span><br><span class="line">autocmd FileType c,cpp,cc,java call PROG()</span><br><span class="line">autocmd FileType make setlocal noexpandtab</span><br><span class="line"></span><br><span class="line">colorscheme default</span><br><span class="line"></span><br><span class="line">function PROG()</span><br><span class="line">    set showmatch</span><br><span class="line">    set nosmartindent</span><br><span class="line">    set cindent comments=sr:/*,mb:*,el:*/,:// cino=&gt;s,e0,n0,f0,&#123;0,&#125;0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30</span><br><span class="line">    set cinoptions=t0</span><br><span class="line">    imap &lt;C-a&gt;f &lt;END&gt;&lt;CR&gt;for(;;) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt;</span><br><span class="line">                \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;</span><br><span class="line">    imap &lt;C-a&gt;w &lt;END&gt;&lt;CR&gt;while( ) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt;</span><br><span class="line">                \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;END&gt;&lt;LEFT&gt;&lt;LEFT&gt;</span><br><span class="line">    set formatoptions=tcqr</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">highlight Comment    ctermfg=DarkCyan</span><br><span class="line">highlight SpecialKey ctermfg=Yellow</span><br><span class="line"></span><br><span class="line">map &lt;F2&gt; :update&lt;CR&gt;                    &quot; using :update to replace :w</span><br><span class="line">map &lt;F3&gt; :update&lt;CR&gt;:q&lt;CR&gt;</span><br><span class="line">map &lt;F4&gt; :q!&lt;CR&gt;</span><br><span class="line">map &lt;F5&gt; :bp&lt;CR&gt;</span><br><span class="line">map &lt;F6&gt; :bn&lt;CR&gt;</span><br><span class="line">&quot; map &lt;F8&gt; :set hls!&lt;BAR&gt;set hls?&lt;CR&gt;     &quot; toggle on/off highlightsearch</span><br><span class="line">map &lt;F8&gt; :set paste!&lt;BAR&gt;set paste?&lt;CR&gt; &quot; toggle on/off paste mode</span><br><span class="line">set pastetoggle=&lt;F8&gt;</span><br><span class="line">map &lt;F9&gt; :!make %:r &lt;CR&gt;</span><br><span class="line"></span><br><span class="line">map &lt;F7&gt; :if exists(&quot;syntax_on&quot;) &lt;BAR&gt;  &quot; press &lt;F7&gt; syntax on/off</span><br><span class="line">        \   syntax off &lt;bar&gt;&lt;cr&gt;</span><br><span class="line">        \ else &lt;BAR&gt;</span><br><span class="line">        \   syntax on &lt;BAR&gt;</span><br><span class="line">        \ endif &lt;CR&gt;</span><br><span class="line"></span><br><span class="line">map &lt;F10&gt; &lt;ESC&gt;:read !date&lt;CR&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;smart mapping for tab completion</span><br><span class="line">function InsertTabWrapper()</span><br><span class="line">    let col = col(&apos;.&apos;) - 1</span><br><span class="line">    if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos;</span><br><span class="line">        return &quot;\&lt;tab&gt;&quot;</span><br><span class="line">    else</span><br><span class="line">        return &quot;\&lt;c-p&gt;&quot;</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">inoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt;</span><br></pre></td></tr></table></figure><p>後來，我為了比賽重新翻修，去蕪存菁：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">source /etc/vimrc</span><br><span class="line">set nu &quot;num line</span><br><span class="line">set tabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line">set cindent</span><br><span class="line">set smarttab</span><br><span class="line">set expandtab &quot;set tab to space</span><br><span class="line">set autoindent</span><br><span class="line">syntax on</span><br><span class="line">&quot;hi comment ctermfg=cyan</span><br><span class="line">hi comment ctermfg=blue</span><br><span class="line">&quot;prefer ^</span><br><span class="line">&quot;let comment color be blue. instead of dark blue</span><br><span class="line">&quot;super TAB</span><br><span class="line">function InsertTabWrapper()</span><br><span class="line">    let col = col(&apos;.&apos;) - 1</span><br><span class="line">    if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos;</span><br><span class="line">        return &quot;\&lt;tab&gt;&quot;</span><br><span class="line">    else</span><br><span class="line">        return &quot;\&lt;c-p&gt;&quot;</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line">inoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt;</span><br><span class="line">&quot;my rc</span><br><span class="line">imap jk &lt;ESC&gt;</span><br><span class="line">let mapleader = &quot;\&lt;Space&gt;&quot;</span><br><span class="line">nmap &lt;Leader&gt;r :&lt;C-P&gt;&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;x :x&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;w :w&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;q :q&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;n :n&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;N :N&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;jq :q!&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;/ :noh&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;; :</span><br><span class="line">nmap &lt;Leader&gt;= mcHmhLmlgg=G`h`l`c</span><br><span class="line">noremap H ^</span><br><span class="line">noremap L $</span><br><span class="line">set clipboard=unnamedplus</span><br><span class="line">set hlsearch</span><br></pre></td></tr></table></figure><h3 id="認識-Vundle"><a href="#認識-Vundle" class="headerlink" title="認識 Vundle"></a>認識 Vundle</h3><p>學會了一些簡單的 vim 配置之後，就可以嘗試別人寫的套件。<br>vim 有很多套件管理器，像是 <code>vundle</code>, <code>vim-plug</code> 等。</p><p>我只用過 vundle，簡單來說他就是可以抓 GitHub 上別人寫好的套件來用。</p><p>詳情可以參考 <a href="https://blog.gtwang.org/linux/vundle-vim-bundle-plugin-manager/" target="_blank" rel="noopener">這篇</a>。</p><p>簡單來說就是先 clone vundle 到 .vim 下面的目錄，然後在 .vimrc 裡面加上一下設定。</p><p>接著在 vimrc 裡面新增想要的套件，接著再 <code>:PluginInstall</code> 即可。</p><p>之前的 tab 補全是學長簡單用 vim script 寫得，<br>想要進階一點可以改用 youcompleteme （但好像不太好裝）或是用簡單的 <code>ervandew/supertab</code>。</p><p>lisp 愛好者不能錯過 <code>luochen1990/rainbow</code>。<br><code>majutsushi/tagbar</code> 也可以讓他變得更像 IDE，搭配 <code>scrooloose/nerdtree</code> 就更潮了。</p><p>再加上個 <code>vim-airline/vim-airline</code> 加上 powerline 字型直呼完美。</p><p>如果你是盤古之白的信仰者，還可以裝個 <code>hotoo/pangu.vim</code>。</p><p><code>shougo/vimshell.vim</code> 也挺好玩的，當然，好玩的東西還有很多，待各位探索。</p><h3 id="認識-SapceVim"><a href="#認識-SapceVim" class="headerlink" title="認識 SapceVim"></a>認識 SapceVim</h3><p>SpaceVim 集各家大成，我一直到了第五年才入坑。<br>之前一直覺得自己用用 Vundle 就夠了，這樣自訂性也高，<br>但後來用得東西越來越雜，設定檔修修補補也越來越無心維護。</p><p>那有沒有設定更少，然後功能更強的方法？我遇到了 SpaceVim。</p><p>大概是在接觸 ale 後，覺得要 trace code 和 syntax check 上還是需要精進，<br>但是自己又懶得折騰，這時同學提到了 Language Server Protocol (LSP)。</p><p>他在代碼補全，trace code 和 syntax check 上都可以使用，而且幾乎每個語言都有實作可以接。</p><p>裝了 vim-lsp，但覺得禁不起太多次折騰。這時我發現了 SpaceVim 的 layer 有 lsp 可以用！</p><p>而且 SpaceVim 安裝簡單，只要一行： <code>curl -sLf https://spacevim.org/install.sh | bash</code>。</p><p>比較麻煩的可能就是要另外安裝字型吧，不過裝完後也就挺漂亮就是了。</p><p>功能很多，使用上不時會發現一些意想不到的快捷鍵 :)</p><p>不過我還是會把之前習慣的 binding 蓋上去就是了w</p>]]></content>
     
@@ -37,9 +37,9 @@
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
-      <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
-    
       <category term="vim" scheme="http://nobodyzxc.github.io/tags/vim/"/>
+    
+      <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
     
   </entry>
   
@@ -141,9 +141,9 @@
     
       <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
     
-      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
-    
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
+    
+      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
     
       <category term="lisp" scheme="http://nobodyzxc.github.io/tags/lisp/"/>
     
@@ -312,9 +312,9 @@
     
       <category term="haskell" scheme="http://nobodyzxc.github.io/tags/haskell/"/>
     
-      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
-    
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
+    
+      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
     
   </entry>
   
@@ -388,9 +388,9 @@ wait to refer:&lt;a href=&quot;http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html&quot
       <category term="Fun" scheme="http://nobodyzxc.github.io/categories/Fun/"/>
     
     
-      <category term="cygwin" scheme="http://nobodyzxc.github.io/tags/cygwin/"/>
-    
       <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
+    
+      <category term="cygwin" scheme="http://nobodyzxc.github.io/tags/cygwin/"/>
     
   </entry>
   
@@ -447,9 +447,9 @@ wait to refer:&lt;br&gt;
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
-      <category term="oop" scheme="http://nobodyzxc.github.io/tags/oop/"/>
-    
       <category term="ruby" scheme="http://nobodyzxc.github.io/tags/ruby/"/>
+    
+      <category term="oop" scheme="http://nobodyzxc.github.io/tags/oop/"/>
     
   </entry>
   
@@ -475,9 +475,9 @@ wait to refer:&lt;br&gt;
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
-      <category term="php" scheme="http://nobodyzxc.github.io/tags/php/"/>
-    
       <category term="oop" scheme="http://nobodyzxc.github.io/tags/oop/"/>
+    
+      <category term="php" scheme="http://nobodyzxc.github.io/tags/php/"/>
     
   </entry>
   
@@ -565,9 +565,9 @@ Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim �
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
-      <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
-    
       <category term="vim" scheme="http://nobodyzxc.github.io/tags/vim/"/>
+    
+      <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
     
   </entry>
   

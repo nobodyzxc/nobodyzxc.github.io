@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[Vim Node (Basic Configuration)]]></title>
+    <title><![CDATA[Vim Note (Basic Configuration)]]></title>
     <url>%2F2020%2F11%2F18%2Fvim-1%2F</url>
     <content type="text"><![CDATA[距離上一篇已經過了三年多， 這五年多來的 Vim 之旅似乎還沒落幕。 基本配置篇認識 vimrc基本上一個空的 vim 設定應該是連行號都沒有的。那如果要叫出行號，就必須使用指令 :set nu，但每次都要打似乎太麻煩了，這時，我們就可以寫個設定檔。 在類 Unix 環境下，家目錄下面，可以創立一個 .vimrc 檔案，然後寫一些設定進去。而在 Windows 下，Cygwin 也是在加目錄，而 gvim 那些的設定檔可能就請參考 這邊。 以下是某位學長的設定檔，系上工作站大家的帳號一開始都是從這個設定檔入門的。有趣的小功能算不少，但最有用的就是用 tab 補全代碼吧 :) 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182set nocompatibleset secureset backspace=2 &quot; allow backspacing over everything in insert modeset viminfo=&apos;20,\&quot;50 &quot; read/write a .viminfo file, don&apos;t store more &quot; than 50 lines of registersset history=50 &quot; keep 50 lines of command line historyset ruler &quot; show the cursor position all the time&quot;set dictionary=~/.dict &quot; my dictionary :p&quot;set expandtab &quot; expand tabs to spaces.set wildchar=&lt;TAB&gt; &quot; such as &lt;TAB&gt; in shellset smarttabset tabstop=4set shiftwidth=4set nuset t_Co=8 &quot; number of colorsset t_Sf=[1;3%p1%dm &quot; set foreground colorset t_Sb=[1;4%p1%dm &quot; set background colorset showcmd &quot; show commandset showmode &quot; show current modeset incsearch &quot; While typing a search pattern, show immediately &quot; where the so far typed pattern matches.set hlsearch &quot; When there is a previous search pattern, &quot; highlight all its matches.syntax on &quot; show parts of the text in another font or colorset fileencodings=utf-8,cp936,big5,latin1set background=darkautocmd FileType c,cpp,cc,java call PROG()autocmd FileType make setlocal noexpandtabcolorscheme defaultfunction PROG() set showmatch set nosmartindent set cindent comments=sr:/*,mb:*,el:*/,:// cino=&gt;s,e0,n0,f0,&#123;0,&#125;0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30 set cinoptions=t0 imap &lt;C-a&gt;f &lt;END&gt;&lt;CR&gt;for(;;) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt; \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt; imap &lt;C-a&gt;w &lt;END&gt;&lt;CR&gt;while( ) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt; \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;END&gt;&lt;LEFT&gt;&lt;LEFT&gt; set formatoptions=tcqrendfunctionhighlight Comment ctermfg=DarkCyanhighlight SpecialKey ctermfg=Yellowmap &lt;F2&gt; :update&lt;CR&gt; &quot; using :update to replace :wmap &lt;F3&gt; :update&lt;CR&gt;:q&lt;CR&gt;map &lt;F4&gt; :q!&lt;CR&gt;map &lt;F5&gt; :bp&lt;CR&gt;map &lt;F6&gt; :bn&lt;CR&gt;&quot; map &lt;F8&gt; :set hls!&lt;BAR&gt;set hls?&lt;CR&gt; &quot; toggle on/off highlightsearchmap &lt;F8&gt; :set paste!&lt;BAR&gt;set paste?&lt;CR&gt; &quot; toggle on/off paste modeset pastetoggle=&lt;F8&gt;map &lt;F9&gt; :!make %:r &lt;CR&gt;map &lt;F7&gt; :if exists(&quot;syntax_on&quot;) &lt;BAR&gt; &quot; press &lt;F7&gt; syntax on/off \ syntax off &lt;bar&gt;&lt;cr&gt; \ else &lt;BAR&gt; \ syntax on &lt;BAR&gt; \ endif &lt;CR&gt;map &lt;F10&gt; &lt;ESC&gt;:read !date&lt;CR&gt;&quot;smart mapping for tab completionfunction InsertTabWrapper() let col = col(&apos;.&apos;) - 1 if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos; return &quot;\&lt;tab&gt;&quot; else return &quot;\&lt;c-p&gt;&quot; endifendfunctioninoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt; 後來，我為了比賽重新翻修，去蕪存菁： 12345678910111213141516171819202122232425262728293031323334353637383940source /etc/vimrcset nu &quot;num lineset tabstop=4set shiftwidth=4set cindentset smarttabset expandtab &quot;set tab to spaceset autoindentsyntax on&quot;hi comment ctermfg=cyanhi comment ctermfg=blue&quot;prefer ^&quot;let comment color be blue. instead of dark blue&quot;super TABfunction InsertTabWrapper() let col = col(&apos;.&apos;) - 1 if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos; return &quot;\&lt;tab&gt;&quot; else return &quot;\&lt;c-p&gt;&quot; endifendfunctioninoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt;&quot;my rcimap jk &lt;ESC&gt;let mapleader = &quot;\&lt;Space&gt;&quot;nmap &lt;Leader&gt;r :&lt;C-P&gt;&lt;CR&gt;nmap &lt;Leader&gt;x :x&lt;CR&gt;nmap &lt;Leader&gt;w :w&lt;CR&gt;nmap &lt;Leader&gt;q :q&lt;CR&gt;nmap &lt;Leader&gt;n :n&lt;CR&gt;nmap &lt;Leader&gt;N :N&lt;CR&gt;nmap &lt;Leader&gt;jq :q!&lt;CR&gt;nmap &lt;Leader&gt;/ :noh&lt;CR&gt;nmap &lt;Leader&gt;; :nmap &lt;Leader&gt;= mcHmhLmlgg=G`h`l`cnoremap H ^noremap L $set clipboard=unnamedplusset hlsearch 認識 Vundle學會了一些簡單的 vim 配置之後，就可以嘗試別人寫的套件。vim 有很多套件管理器，像是 vundle, vim-plug 等。 我只用過 vundle，簡單來說他就是可以抓 GitHub 上別人寫好的套件來用。 詳情可以參考 這篇。 簡單來說就是先 clone vundle 到 .vim 下面的目錄，然後在 .vimrc 裡面加上一下設定。 接著在 vimrc 裡面新增想要的套件，接著再 :PluginInstall 即可。 之前的 tab 補全是學長簡單用 vim script 寫得，想要進階一點可以改用 youcompleteme （但好像不太好裝）或是用簡單的 ervandew/supertab。 lisp 愛好者不能錯過 luochen1990/rainbow。majutsushi/tagbar 也可以讓他變得更像 IDE，搭配 scrooloose/nerdtree 就更潮了。 再加上個 vim-airline/vim-airline 加上 powerline 字型直呼完美。 如果你是盤古之白的信仰者，還可以裝個 hotoo/pangu.vim。 shougo/vimshell.vim 也挺好玩的，當然，好玩的東西還有很多，待各位探索。 認識 SapceVimSpaceVim 集各家大成，我一直到了第五年才入坑。之前一直覺得自己用用 Vundle 就夠了，這樣自訂性也高，但後來用得東西越來越雜，設定檔修修補補也越來越無心維護。 那有沒有設定更少，然後功能更強的方法？我遇到了 SpaceVim。 大概是在接觸 ale 後，覺得要 trace code 和 syntax check 上還是需要精進，但是自己又懶得折騰，這時同學提到了 Language Server Protocol (LSP)。 他在代碼補全，trace code 和 syntax check 上都可以使用，而且幾乎每個語言都有實作可以接。 裝了 vim-lsp，但覺得禁不起太多次折騰。這時我發現了 SpaceVim 的 layer 有 lsp 可以用！ 而且 SpaceVim 安裝簡單，只要一行： curl -sLf https://spacevim.org/install.sh | bash。 比較麻煩的可能就是要另外安裝字型吧，不過裝完後也就挺漂亮就是了。 功能很多，使用上不時會發現一些意想不到的快捷鍵 :) 不過我還是會把之前習慣的 binding 蓋上去就是了w]]></content>
       <categories>
         <category>Note</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>vim</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -50,8 +50,8 @@
       </categories>
       <tags>
         <tag>fp</tag>
-        <tag>scheme</tag>
         <tag>lambda</tag>
+        <tag>scheme</tag>
         <tag>lisp</tag>
         <tag>continuation</tag>
       </tags>
@@ -123,8 +123,8 @@
       <tags>
         <tag>fp</tag>
         <tag>haskell</tag>
-        <tag>scheme</tag>
         <tag>lambda</tag>
+        <tag>scheme</tag>
       </tags>
   </entry>
   <entry>
@@ -155,8 +155,8 @@
         <category>Fun</category>
       </categories>
       <tags>
-        <tag>cygwin</tag>
         <tag>linux</tag>
+        <tag>cygwin</tag>
       </tags>
   </entry>
   <entry>
@@ -179,8 +179,8 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>oop</tag>
         <tag>ruby</tag>
+        <tag>oop</tag>
       </tags>
   </entry>
   <entry>
@@ -191,8 +191,8 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>php</tag>
         <tag>oop</tag>
+        <tag>php</tag>
       </tags>
   </entry>
   <entry>
@@ -227,8 +227,8 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>vim</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
