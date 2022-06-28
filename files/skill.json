@@ -1,0 +1,168 @@
+{
+ "name": "skills",
+ "children": [
+  {
+   "name": "system",
+   "children": [
+    {
+     "name": "os",
+     "children": [
+      {"name": "Windows/Cygwin", "value": 25},
+      {"name": "Ubuntu/Mint", "value": 30},
+      {"name": "Archlinux/Antergos", "value": 35},
+      {"name": "Nix", "value": 10}
+     ]
+    },
+    {
+     "name": "tool",
+     "children": [
+      {"name": "vim", "value": 65},
+      {"name": "git", "value": 60},
+      {"name": "shell/GNU utility", "value": 65},
+      {"name": "hexo", "value": 30}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "lang",
+   "children": [
+    {
+     "name": "dev",
+     "children": [
+      {"name": "c", "value": 75},
+      {"name": "cpp", "value": 70},
+      {"name": "python", "value": 70},
+      {"name": "shell script", "value": 30}
+     ]
+    },
+    {
+     "name": "interest",
+     "children": [
+      {"name": "haskell", "value": 40},
+      {"name": "scheme", "value": 50},
+      {"name": "ocaml", "value": 30},
+      {"name": "prolog", "value": 30}
+     ]
+    },
+    {
+     "name": "fun",
+     "children": [
+      {"name": "vb6", "value": 30},
+      {"name": "c#", "value": 30},
+      {"name": "js", "value": 50},
+      {"name": "java", "value": 20},
+      {"name": "php", "value": 30},
+      {"name": "ruby", "value": 20},
+      {"name": "sql", "value": 30},
+      {"name": "solidity/evm-op", "value": 15}
+     ]
+    },
+    {
+     "name": "doc",
+     "children": [
+      {"name": "html/css", "value": 40},
+      {"name": "markdown", "value": 60},
+      {"name": "latex", "value": 20}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "cv/cg",
+   "children": [
+    {
+     "name": "game",
+     "children": [
+      {"name": "unity", "value": 40},
+      {"name": "vr", "value": 30}
+     ]
+    },
+    { "name": "opengl", "value":10 },
+    { "name": "opencv", "value":15 }
+   ]
+  },
+  {
+   "name": "blk chn",
+   "children": [
+    {
+     "name": "ETH",
+     "children": [
+      {"name": "solidity", "value": 15},
+      {"name": "yellow paper/evm", "VALUE": 30}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "data sci",
+   "children": [
+    {
+     "name": "DL",
+     "children": [
+      {"name": "knowledge", "value": 30},
+      {"name": "keras", "value": 25},
+      {"name": "pytorch", "value": 10}
+     ]
+    },
+    {
+     "name": "IR",
+     "children": [
+      {"name": "knowledge", "value": 40},
+      {"name": "(sklearn, gensim...)", "value": 20},
+      {"name": "indri", "value": 25}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "web",
+   "children": [
+    {
+     "name": "front",
+     "children": [
+      {"name": "vue", "value": 10},
+      {"name": "jquery", "value": 40},
+      {"name": "bootstrap", "value": 25}
+     ]
+    },
+    {
+     "name": "back",
+     "children": [
+      {"name": "wordpress", "value": 15},
+      {"name": "flask", "value": 20},
+      {"name": "php", "value": 25}
+     ]
+    }
+   ]
+  },
+  {
+   "name": "plt",
+   "children": [
+    {
+     "name": "lang desg",
+     "children": [
+      {"name": "type system", "value": 5},
+      {"name": "lambda calculas", "value": 20},
+      {"name": "object oriented", "value": 25},
+      {"name": "functional programming", "value": 20}
+     ]
+    },
+    {
+     "name": "xalter",
+     "children": [
+      {"name": "mini-scheme", "value": 15}
+     ]
+    },
+    {
+     "name": "ver",
+     "children": [
+      {"name": "string analysis", "value": 5},
+      {"name": "fixed-point", "value": 5},
+      {"name": "smart contract", "value": 10}
+     ]
+    }
+   ]
+  }
+ ]
+}

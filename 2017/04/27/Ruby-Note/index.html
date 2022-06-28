@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="oop,ruby,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="UNCALCULABLE LIFE" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Codecademy 之 Ruby 速記。 原來 Ruby 和 DSL 很有淵源啊（喃喃）。 剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。 On the path to enlightenment. wait to refer:   Ruby Guides done!   Lots of docs">
+<meta name="keywords" content="oop,ruby">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby Note">
+<meta property="og:url" content="http://nobodyzxc.github.io/2017/04/27/Ruby-Note/index.html">
+<meta property="og:site_name" content="UNCALCULABLE LIFE">
+<meta property="og:description" content="Codecademy 之 Ruby 速記。 原來 Ruby 和 DSL 很有淵源啊（喃喃）。 剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。 On the path to enlightenment. wait to refer:   Ruby Guides done!   Lots of docs">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2021-04-23T20:37:09.390Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby Note">
+<meta name="twitter:description" content="Codecademy 之 Ruby 速記。 原來 Ruby 和 DSL 很有淵源啊（喃喃）。 剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。 On the path to enlightenment. wait to refer:   Ruby Guides done!   Lots of docs">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://nobodyzxc.github.io/2017/04/27/Ruby-Note/">
+
+
+
+
+
+  <title>Ruby Note | UNCALCULABLE LIFE</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+<a href="https://github.com/nobodyzxc" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="top-scroll-bar"></div>
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">UNCALCULABLE LIFE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-wiki">
+          <a href="/wiki/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-wikipedia-w"></i> <br>
+            
+            維基
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nobodyzxc.github.io/2017/04/27/Ruby-Note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lambda.catノ">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="UNCALCULABLE LIFE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ruby Note</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-27T03:03:03+08:00">
+                2017-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/27/Ruby-Note/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/27/Ruby-Note/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>times
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  3.6k word(s)
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">閱讀時長 &asymp;</span>
+                
+                <span title="閱讀時長">
+                  18 min(s)
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center>
+<a href="https://www.codecademy.com" target="_blank" rel="noopener">Codecademy</a> 之 Ruby 速記。<br>
+原來 Ruby 和 DSL 很有淵源啊（喃喃）。<br>
+剛學沒多久教授就提到了，Ruby 主要是 SmallTalk + Lisp 佐一點 C。<br>
+On the path to enlightenment.<br>
+wait to refer:<br>
+  <a href="http://guides.ruby.tw/ruby/index.html" target="_blank" rel="noopener">Ruby Guides</a> done!<br>
+  <a href="https://www.ruby-lang.org/zh_tw/documentation/" target="_blank" rel="noopener">Lots of docs</a>
+
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<p><script src="/files/ruby-syntax-patch.js"></script></p>
+<p><link href="/files/scheme-syntax-patch.css" rel="stylesheet" type="text/css"></p>
+<h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><p>跟 Python 一樣是動態、腳本語言，所謂變數只是 name binding，<br>(Philosophy 可是很不同呢～)</p>
+<p>用法跟 Python 也一樣， assignment 即宣告。<br>every thing is object。</p>
+<p>basic special operator<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span> ** <span class="number">4</span> <span class="comment"># 16</span></span><br><span class="line">[<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>] &lt;=&gt; [<span class="number">3</span> , <span class="number">1</span>] <span class="comment"># cmp recursively</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Comment"><a href="#Comment" class="headerlink" title="Comment"></a>Comment</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># single line comment</span></span><br><span class="line"></span><br><span class="line"><span class="comment">=begin</span></span><br><span class="line"><span class="comment">multiple line comment</span></span><br><span class="line"><span class="comment">=end</span></span><br></pre></td></tr></table></figure>
+<h2 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h2><p><code>!</code>語法糖，將 Method 返回結果回存 Object。<br><code>.</code>，function chainning 在 OO 可以玩得很溜。</p>
+<p>IO<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gets.chomp</span><br><span class="line"><span class="comment"># chomp 去除前後空白字元，包括 \n \t 一類</span></span><br><span class="line"></span><br><span class="line">puts <span class="string">"<span class="subst">#&#123;var&#125;</span> with new line"</span></span><br><span class="line"></span><br><span class="line">print <span class="string">"<span class="subst">#&#123;var&#125;</span> without new line"</span></span><br></pre></td></tr></table></figure></p>
+<p>array object’s methods<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr = [<span class="number">1</span> , <span class="number">4</span> , <span class="number">2</span> , <span class="number">5</span> , <span class="number">3</span>]</span><br><span class="line">arr.sort!</span><br><span class="line">arr.sort! &#123; <span class="params">|a , b|</span> -(a &lt;=&gt; b) &#125; <span class="comment"># lambda is great!</span></span><br></pre></td></tr></table></figure></p>
+<p>string object’s methods<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不用加括弧啊</span></span><br><span class="line"><span class="string">"string"</span>.to_sym <span class="comment"># symbol will explain later</span></span><br><span class="line"><span class="string">"string"</span>.intern <span class="comment"># "string" =&gt; :symbol</span></span><br><span class="line"><span class="string">"string"</span>.length</span><br><span class="line"><span class="string">"string"</span>.reverse</span><br><span class="line"><span class="string">"string"</span>.upcase</span><br><span class="line"><span class="string">"string"</span>.downcase</span><br><span class="line"><span class="string">"string"</span>.capitalize</span><br><span class="line"><span class="string">"string"</span>.<span class="keyword">include</span>? <span class="string">"des to search"</span> <span class="comment"># 回傳 bool，很有 lisp style 的 ?</span></span><br><span class="line"><span class="string">"string"</span>.gsub(<span class="regexp">/replace/</span> , <span class="string">"new string"</span>)</span><br><span class="line"><span class="string">"string"</span>.gsub!(<span class="regexp">/replace/</span> , <span class="string">"new string"</span>) <span class="comment"># 直接取代，我只是要強調 ! 的位置</span></span><br><span class="line"><span class="string">"string"</span>.split <span class="comment"># split string to array of string</span></span><br></pre></td></tr></table></figure></p>
+<p>define a function<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">functionName</span><span class="params">(argA , argB)</span></span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 由於靈活的語法，可以 omit ()</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span> <span class="title">x</span> , <span class="title">y</span></span></span><br><span class="line">    x + y      <span class="comment"># omit return will take last exp as return value</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Control-Flow"><a href="#Control-Flow" class="headerlink" title="Control Flow"></a>Control Flow</h2><p>基本的東西，稍微記一下。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">1</span> == <span class="number">1</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">elsif</span> <span class="string">'a'</span> == <span class="string">'b'</span> <span class="comment"># 注意 keyword</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 有點微妙，因為有 end ，所以不用管縮排，儘管看起來跟 python 有點像。</span></span><br><span class="line"><span class="comment"># 但 if statement 後沒有 : 或 &#123; 表示開頭（他拿 \n 做辨認？)。</span></span><br><span class="line"><span class="comment"># 不，如果寫成 one line 還是要加 ;</span></span><br><span class="line"><span class="keyword">if</span> <span class="literal">true</span>; puts <span class="string">"true"</span> <span class="keyword">end</span></span><br><span class="line"><span class="comment"># 可是有更潮的 one line if （後面）</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># if not , syntax sugar</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">unless</span> what</span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 這個語法糖，我也是醉了， do something if what</span></span><br><span class="line">statement <span class="keyword">unless</span> exp</span><br><span class="line">statement <span class="keyword">if</span> exp</span><br><span class="line"><span class="comment"># Ruby 之禪 discuss later</span></span><br></pre></td></tr></table></figure>
+<h2 id="Loop"><a href="#Loop" class="headerlink" title="Loop"></a>Loop</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> exp</span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># the syntax sugar of 'while not'</span></span><br><span class="line"><span class="keyword">until</span> exp</span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1 2 3 4</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>...<span class="number">5</span></span><br><span class="line">    print <span class="string">"<span class="subst">#&#123;i&#125;</span> "</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1 2 3 4 5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span>..<span class="number">5</span></span><br><span class="line">    print <span class="string">"<span class="subst">#&#123;i&#125;</span> "</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">loop <span class="keyword">do</span></span><br><span class="line">    <span class="comment"># do something</span></span><br><span class="line">    <span class="keyword">next</span> <span class="keyword">if</span> <span class="keyword">while</span> <span class="comment"># same as 'continue' in C's</span></span><br><span class="line">    <span class="keyword">break</span> <span class="keyword">if</span> what</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">loop &#123; <span class="comment"># do something &#125; # inf loop</span></span><br><span class="line"></span><br><span class="line">number = <span class="number">10</span></span><br><span class="line">number.times&#123; print <span class="string">"Do you need some Wow?"</span> &#125; <span class="comment"># wow...(doge</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Array 會提及物間迭代器用法 - each</span></span><br></pre></td></tr></table></figure>
+<p>關於 loop 的流程控制</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;         <span class="comment"># block of loop</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># redo jump here to restart it , so amazing...</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">redo</span> <span class="keyword">if</span> doRedo</span><br><span class="line"><span class="keyword">break</span> <span class="keyword">if</span> doBreak</span><br><span class="line"><span class="keyword">next</span> <span class="keyword">if</span> doNext</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">if</span> doReturn <span class="comment"># return func (not loop)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># next jump here wait to start a new iteration</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># break jump to here</span></span><br></pre></td></tr></table></figure>
+<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">array = [<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span>]</span><br><span class="line">array = [<span class="number">1</span>..<span class="number">4</span>] <span class="comment"># not the same !!</span></span><br><span class="line"><span class="comment"># 這是 array 塞一個 range 物件，做迭代會迭出一個物件</span></span><br><span class="line">array = (<span class="number">1</span>..<span class="number">4</span>).to_a <span class="comment"># this !</span></span><br><span class="line"></span><br><span class="line">array.each <span class="keyword">do</span> <span class="params">|var|</span></span><br><span class="line">    print <span class="string">"<span class="subst">#&#123;var&#125;</span>"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">(<span class="number">1</span>..<span class="number">4</span>).each <span class="keyword">do</span> <span class="params">|var|</span> <span class="comment"># 直接用 range 物件迭代就一樣了</span></span><br><span class="line">    print <span class="string">"<span class="subst">#&#123;var&#125;</span>"</span>   <span class="comment"># 體會一下</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment"># iteration</span></span><br><span class="line">array.each &#123; <span class="params">|var|</span> print <span class="string">"<span class="subst">#&#123;var&#125;</span>"</span> &#125; <span class="comment"># lambda in haskell ?</span></span><br></pre></td></tr></table></figure>
+<h2 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">hashTb = &#123; <span class="string">"one"</span> =&gt; <span class="number">1</span> , <span class="string">"two"</span> =&gt; <span class="number">2</span> , <span class="string">"three"</span> =&gt; <span class="number">3</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># we can take symbol as key , too!</span></span><br><span class="line">symTb = &#123; <span class="symbol">:one</span> =&gt; <span class="number">1</span> , <span class="symbol">:two</span> =&gt; <span class="number">2</span> , <span class="symbol">:three</span> =&gt; <span class="number">3</span> &#125;</span><br><span class="line"></span><br><span class="line">symTbInRuby1pt9 = &#123; <span class="symbol">one:</span> <span class="number">1</span> , <span class="symbol">two:</span> <span class="number">2</span> , <span class="symbol">three:</span> <span class="number">3</span> &#125;</span><br><span class="line"><span class="comment"># 冒號要跟緊 symbol，不然不會過</span></span><br><span class="line"></span><br><span class="line">puts hashTb[<span class="string">"one"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># create empty hash</span></span><br><span class="line">aHash = Hash.new</span><br><span class="line">aHash[<span class="string">"A"</span>] = <span class="string">"a"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># iteration</span></span><br><span class="line">hashTb.each&#123; <span class="params">|key , value|</span> puts <span class="string">"<span class="subst">#&#123;key&#125;</span> , <span class="subst">#&#123;value&#125;</span>"</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># special iterations</span></span><br><span class="line">hashTb.each_key &#123; <span class="params">|key|</span> puts k &#125;</span><br><span class="line">hashTb.each_value &#123; <span class="params">|value|</span> puts value &#125;</span><br><span class="line"></span><br><span class="line">hashTb.each <span class="keyword">do</span> <span class="params">|key , value|</span></span><br><span class="line">    puts <span class="string">"<span class="subst">#&#123;key&#125;</span> , <span class="subst">#&#123;value&#125;</span>"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># if acess no exist key will get nil (fp? wwwwww)</span></span><br><span class="line"><span class="comment"># you can set default "nil" to other value</span></span><br><span class="line">my_hash = Hash.new(<span class="string">"no such key , sorry"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># select 用法，wow 有 database 的感覺呢。</span></span><br><span class="line"><span class="comment"># 等等，他就是 FP 的 filter 嘛...</span></span><br><span class="line">puts symTb.select&#123; <span class="params">|k , v|</span> v % <span class="number">2</span> == <span class="number">1</span> &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Symbol"><a href="#Symbol" class="headerlink" title="Symbol"></a>Symbol</h2><p>這個資料型態也很潮，<br>跟字串不一樣，相同的字面值只佔一個空間。<br>（因為這個特性，所以做 hash 比較優秀嗎？)<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">puts <span class="string">"string"</span>.object_id</span><br><span class="line"><span class="comment"># 12886316620</span></span><br><span class="line">puts <span class="string">"string"</span>.object_id</span><br><span class="line"><span class="comment"># 12886316480</span></span><br><span class="line"></span><br><span class="line">puts <span class="symbol">:symbol</span>.object_id</span><br><span class="line"><span class="comment"># 801628</span></span><br><span class="line">puts <span class="symbol">:symbol</span>.object_id</span><br><span class="line"><span class="comment"># 801628</span></span><br><span class="line"></span><br><span class="line">sym = <span class="symbol">:my_symbol</span> <span class="comment"># : 後面要連起來</span></span><br><span class="line"></span><br><span class="line">s_sym = sym.to_s <span class="comment"># 轉成 string</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Symbol-vs-String-in-Hash-from-Codecademy"><a href="#Symbol-vs-String-in-Hash-from-Codecademy" class="headerlink" title="Symbol vs String in Hash from Codecademy"></a>Symbol vs String in Hash from <a href="https://www.codecademy.com" target="_blank" rel="noopener">Codecademy</a></h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">'benchmark'</span></span><br><span class="line"></span><br><span class="line">string_AZ = Hash[(<span class="string">"a"</span>..<span class="string">"z"</span>).to_a.zip((<span class="number">1</span>..<span class="number">26</span>).to_a)]</span><br><span class="line">symbol_AZ = Hash[(<span class="symbol">:a</span>..<span class="symbol">:z</span>).to_a.zip((<span class="number">1</span>..<span class="number">26</span>).to_a)]</span><br><span class="line"></span><br><span class="line">string_time = Benchmark.realtime <span class="keyword">do</span></span><br><span class="line">  <span class="number">100_000</span>.times &#123; string_AZ[<span class="string">"r"</span>] &#125;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">symbol_time = Benchmark.realtime <span class="keyword">do</span></span><br><span class="line">  <span class="number">100_000</span>.times &#123; symbol_AZ[<span class="symbol">:r</span>] &#125;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts <span class="string">"String time: <span class="subst">#&#123;string_time&#125;</span> seconds."</span></span><br><span class="line">puts <span class="string">"Symbol time: <span class="subst">#&#123;symbol_time&#125;</span> seconds."</span></span><br></pre></td></tr></table></figure>
+<h2 id="Zen-of-Ruby-Improvement-of-Syntax"><a href="#Zen-of-Ruby-Improvement-of-Syntax" class="headerlink" title="Zen of Ruby (Improvement of Syntax)"></a>Zen of Ruby (Improvement of Syntax)</h2><p>one line 系列，不用 end。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">puts <span class="string">"She will accept me"</span> <span class="keyword">if</span> she_love_me</span><br><span class="line"></span><br><span class="line">puts <span class="string">"She will reject me"</span> <span class="keyword">unless</span> she_love_me</span><br></pre></td></tr></table></figure></p>
+<p>swich case in c , select case in vb , case when in ruby!<br>非常之靈活。<br>注意 then and else(without then)。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基本用法，像 C</span></span><br><span class="line"><span class="keyword">case</span> lang</span><br><span class="line">    <span class="keyword">when</span> <span class="string">"java"</span> <span class="keyword">then</span> puts <span class="string">"so long..."</span>  <span class="comment"># add then if whole command in one line</span></span><br><span class="line">    <span class="keyword">when</span> <span class="string">"cpp"</span></span><br><span class="line">        puts <span class="string">"so powerful..."</span>           <span class="comment"># or omit then with a new line</span></span><br><span class="line">    <span class="keyword">when</span> <span class="string">"ruby"</span></span><br><span class="line">        puts <span class="string">"so fun!"</span></span><br><span class="line">    <span class="keyword">else</span> puts <span class="string">"I like the else!"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> lang</span><br><span class="line">    <span class="keyword">when</span> <span class="string">"chinese"</span> , <span class="string">"english"</span>          <span class="comment"># 逗號</span></span><br><span class="line">        puts <span class="string">"I can"</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        puts <span class="string">"I can't"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> num</span><br><span class="line">    <span class="keyword">when</span> <span class="number">1</span>..<span class="number">10</span> <span class="keyword">then</span> puts <span class="string">"1 to 10"</span>      <span class="comment"># GNU extension 也有</span></span><br><span class="line">    <span class="keyword">when</span> <span class="number">11</span>..<span class="number">20</span> <span class="keyword">then</span> puts <span class="string">"2 to 20"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span>                                    <span class="comment"># 如果 case 沒給，甚至可以像 VB 用 expr</span></span><br><span class="line">    <span class="keyword">when</span> <span class="literal">false</span> <span class="keyword">then</span> puts <span class="string">"false"</span></span><br><span class="line">    <span class="keyword">when</span> <span class="number">1</span> + <span class="number">1</span> == <span class="number">2</span> <span class="keyword">then</span> puts <span class="string">"true"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>magic operator! (for me)<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">contain = <span class="literal">nil</span></span><br><span class="line">puts contain</span><br><span class="line">contain <span class="params">||</span>= <span class="string">"not nil"</span>  <span class="comment"># re assignment if nil</span></span><br><span class="line">puts contain</span><br><span class="line">contain <span class="params">||</span>= <span class="string">"re assignment"</span> <span class="comment"># won't re assignment because it's not nil</span></span><br><span class="line">puts contain</span><br></pre></td></tr></table></figure></p>
+<p>zen of iterations<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">object of num</span><br><span class="line"><span class="number">5</span>.times&#123; <span class="params">|n|</span> somthing.. &#125;</span><br><span class="line"></span><br><span class="line">object of list , map <span class="keyword">or</span> other</span><br><span class="line">obj.each&#123; <span class="params">|a , ... |</span> somthing... &#125;</span><br><span class="line"></span><br><span class="line">object which can enum (num , char ...)</span><br><span class="line"><span class="number">5</span>.upto(<span class="number">6</span>)&#123; <span class="params">|x|</span> puts x &#125;</span><br><span class="line"><span class="string">'a'</span>.upto(<span class="string">'z'</span>)&#123; <span class="params">|x|</span> puts x &#125;</span><br></pre></td></tr></table></figure></p>
+<p>check if obj will response the method or not<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.respond_to?(<span class="symbol">:func</span>) <span class="comment"># take care , it take a functino name(symbol) as param</span></span><br></pre></td></tr></table></figure></p>
+<p>pushy ( <code>&lt;&lt;</code> operator )<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span>].push(<span class="number">5</span>)</span><br><span class="line"><span class="comment"># equal to</span></span><br><span class="line">[<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span>] &lt;&lt; <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="string">"asdf "</span> + <span class="string">"asdf"</span></span><br><span class="line"><span class="comment"># equal to</span></span><br><span class="line"><span class="string">"asdf "</span> &lt;&lt; <span class="string">"asdf"</span></span><br></pre></td></tr></table></figure></p>
+<p>string interpolation<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts <span class="string">"list to string <span class="subst">#&#123;[<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span>, <span class="number">5</span>]&#125;</span>"</span> <span class="comment"># eq to to_s function</span></span><br></pre></td></tr></table></figure></p>
+<p>ternary operator<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">true</span> ? <span class="number">1</span> : <span class="number">2</span> <span class="comment"># like c</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Implicit-Return"><a href="#Implicit-Return" class="headerlink" title="Implicit Return"></a>Implicit Return</h2><p>Lisp 的感覺，當在 let 執行多個 expression 會回傳最後一個 expression。<br>Ruby 是將 function 看成 let 回傳最後一個 statement。</p>
+<h2 id="Blocks-Procs-and-Lambdas"><a href="#Blocks-Procs-and-Lambdas" class="headerlink" title="Blocks , Procs , and Lambdas"></a>Blocks , Procs , and Lambdas</h2><p>前面看了這麼多東西，應該可以察覺 lambda 的概念在哪了吧，<br>沒錯，就是 <strong>block</strong> !（然而這不是 Ruby 真正的 lambda ，他還有個 lambda obj)<br><code>{ |x| x * 2 }</code> 和<br><code>\x -&gt; x * 2</code> in Haskell 和<br><code>lambda x : x * 2</code> in Python 和<br><code>(lambda (x) (* x 2))</code> in Scheme 和<br><code>function(x) { return x * 2 }</code> in JavaScript 都是 lambda。<br>不知不覺也學了好多 lambda 呢，不過我在思考可不可以直接拿來 apply 這件事。<br>Haskell 和 Scheme 不用說，Python 可，<s>JavaScript 和 Ruby 目前不會用。</s><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lambda&#123; <span class="params">|x|</span> puts x &#125;.call(<span class="number">8</span>)         <span class="comment"># Ruby</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">x</span>)</span>&#123; <span class="built_in">console</span>.log(x); &#125;)(<span class="number">8</span>) <span class="comment">// JavaScript</span></span><br></pre></td></tr></table></figure>
+<p>High Order Function<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># collect 就是 FP 中常用的 map</span></span><br><span class="line">[<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>].collect &#123; <span class="params">|n|</span> n % <span class="number">2</span> == <span class="number">0</span> &#125;</span><br><span class="line">[<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>].map &#123; <span class="params">|n|</span> n % <span class="number">2</span> == <span class="number">0</span> &#125; <span class="comment"># 也有 map 這個 function</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>yield =&gt; 傳入的 lambda function 代名詞（變數名）。<br>一般我們 FP 在定義 High Order Function 時都要為 take 的 function 取變數名。<br>但 Ruby 在只有傳入一個 function 時，可以直接拿 yield 做關鍵字來 take function。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我做一個簡單的 map</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myMap</span> <span class="title">li</span></span></span><br><span class="line">    rtn = []</span><br><span class="line">    li.each&#123; <span class="params">|e|</span> rtn &lt;&lt; <span class="keyword">yield</span>(e) &#125;</span><br><span class="line">    rtn <span class="comment"># Implicit return</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts <span class="string">"<span class="subst">#&#123;myMap [<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span>] &#123; <span class="params">|x|</span> x ** <span class="number">2</span> &#125;</span>&#125;"</span></span><br><span class="line"><span class="comment"># 藉由 ruby 強大的 DSL 能力，括號少很多</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>Proc To DRY<br>感覺可以用 JavaScript 的 lambda fn 和其 name binding 體會一下差異<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ruby 要將 lambda(Proc) 綁到變數上，注意 P 大寫</span></span><br><span class="line">mul = Proc.new &#123; <span class="params">|a , b|</span> a * b &#125; <span class="comment"># create a block and =&gt; new proc object</span></span><br><span class="line">                                 <span class="comment"># proc obj 比 block obj 成熟</span></span><br><span class="line">                                 <span class="comment"># 且可以用 call method 重複呼叫</span></span><br><span class="line">                                 <span class="comment"># block 是一次性的</span></span><br><span class="line">puts mul.call <span class="number">1</span> , <span class="number">2</span></span><br><span class="line"><span class="comment"># 因為是物件導向 Proc 物件要當 Function 用要用 call</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mul = <span class="function"><span class="keyword">function</span>(<span class="params">x , y</span>)</span>&#123; <span class="keyword">return</span> x * y &#125;</span><br><span class="line"><span class="comment">// create lambda and bind it to a new name</span></span><br><span class="line"><span class="built_in">console</span>.log(mul(<span class="number">1</span> , <span class="number">2</span>));</span><br><span class="line"><span class="comment">// 剛好相反，因為物件都是 Function 模擬的 w</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>Proc to Block<br>可以體會到，把 Block 綁到 Proc 是常用的手段，<br>但要 Proc 如何用在 High Order Function 呢？<br>前面我們學到 Block 使用是在 function 後加 Block 然後使用 yield 關鍵字。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">用前面的 myMap 再加一個 double 為例子。</span><br><span class="line">double = Proc.new &#123; <span class="params">|x|</span> x * <span class="number">2</span> &#125;</span><br><span class="line">puts myMap([<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>] , &amp;double) <span class="comment"># &amp; 號 做的就是把 Proc =&gt; Block</span></span><br><span class="line"><span class="comment"># equal to</span></span><br><span class="line">puts myMap([<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>]) &#123; <span class="params">|x|</span> x * <span class="number">2</span> &#125;</span><br><span class="line"><span class="comment"># but</span></span><br><span class="line">puts myMap([<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>] , &#123; <span class="params">|x|</span> x * <span class="number">2</span> &#125;) <span class="comment"># error</span></span><br><span class="line">puts myMap([<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>]) &amp;double         <span class="comment"># error</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>Proc 應用在 map 上。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">num_s = [<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>].map(&amp;<span class="symbol">:to_s</span>)</span><br><span class="line"><span class="comment"># 注意冒號，要用 symbol 轉 proc 來 call</span></span><br><span class="line"><span class="comment"># （其實我在想是不是 obj method 的關係）</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>補：Codecademy 上沒有講，但我覺得很奇怪的一點－難道我只能用 yield 嗎？<br>FP 上都可以把 function 傳進來用變數表示，Ruby 要怎麼做？<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 這樣做（重寫 myMap)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myMap</span> <span class="title">li</span> , <span class="title">&amp;</span><span class="title">fn</span> <span class="comment"># 記得傳進來要當 proc or lambda 物件來看了</span></span></span><br><span class="line">    rtn = []</span><br><span class="line">    li.each&#123; <span class="params">|e|</span> rtn &lt;&lt; fn.call(e) &#125; <span class="comment"># 所以要用 call method</span></span><br><span class="line">    rtn <span class="comment"># Implicit return</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">double = Proc.new&#123; <span class="params">|e|</span> e * <span class="number">2</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#以下兩種都可以過</span></span><br><span class="line">puts <span class="string">"<span class="subst">#&#123;myMap([<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span>] , &amp;double&#125;</span>"</span></span><br><span class="line">puts <span class="string">"<span class="subst">#&#123;myMap([<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span> , <span class="number">4</span>])&#123; <span class="params">|e|</span> e * <span class="number">2</span> &#125;</span>&#125;"</span></span><br></pre></td></tr></table></figure></p>
+<p>所以看起來 yield 的優勢是將它當成 function 看。<br>而這種方式則是當作 object 看。</p>
+<hr>
+<p>真正要介紹 Ruby 的 lambda 了，由於是 OO 語言，所以 lambda 是 obj。<br>用法基本和 proc 相似。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proc_double = Proc.new &#123; <span class="params">|x|</span> x * <span class="number">2</span> &#125;</span><br><span class="line">lambda_double = lambda &#123; <span class="params">|x|</span> x * <span class="number">2</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>difference between lambda and Proc</p>
+<ol>
+<li>lambda 會檢查 param 數量，Proc 若沒吃夠直接當 nil</li>
+<li>lambda 會返回控制權， Proc 回直接執行<br>（對 2. 我有一套自己的解釋法但不知對不對，詳見例）</li>
+</ol>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ProcTst</span></span></span><br><span class="line">    proc_s = Proc.new&#123; <span class="keyword">return</span> <span class="string">"inner Proc"</span> &#125;</span><br><span class="line">                                    <span class="comment"># 我視 proc.call 為直接像 macro 炸開</span></span><br><span class="line">    proc_s.call                     <span class="comment"># 所以該行替換成 return "inner Proc"</span></span><br><span class="line">                                    <span class="comment"># 所以就直接 return 了</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"ProcTst"</span>                <span class="comment"># 不走這行</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts ProcTst <span class="comment"># ==&gt; "inner ProcTst"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LbdaTst</span></span></span><br><span class="line">    lbda_s = lambda &#123; <span class="keyword">return</span> <span class="string">"inner Lbda"</span> &#125;</span><br><span class="line">                                    <span class="comment"># lambda 直接再進一個 stack</span></span><br><span class="line">    lambda.call                     <span class="comment"># 所以該行回傳結果是 "inner Lbda"</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"LbdaTst"</span>                <span class="comment"># 然後 return "LbdaTst"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts LbdaTst <span class="comment"># ==&gt; "LbdaTst"</span></span><br></pre></td></tr></table></figure>
+<p>應該只有我會這麼亂想吧…<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ReturnTst</span></span></span><br><span class="line">    <span class="keyword">yield</span>                           <span class="comment"># 所以該行回傳結果是 "inner Lbda"</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"ReturnTst"</span>                <span class="comment"># 然後 return "LbdaTst"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts ReturnTst&#123; <span class="keyword">return</span> <span class="string">"rtn of block"</span> &#125;</span><br><span class="line">puts ReturnTst &amp;Proc.new&#123; <span class="keyword">return</span> <span class="string">"rtn of Proc"</span> &#125;</span><br><span class="line">puts ReturnTst &amp;lambda&#123; <span class="keyword">return</span> <span class="string">"rtn of lambda"</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># =&gt; 結果都是 unexpect return</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>結語，要用一次性且只有一個的 function 用 block + yield 就好<br>然後一次性多個 就傳 lambda or Proc object 加上 &amp; 吧。</p>
+<h2 id="OOP"><a href="#OOP" class="headerlink" title="OOP"></a>OOP</h2><p>Capitalize your class name<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>                <span class="comment"># =&gt; 強制大寫，不然不給過，立意良善</span></span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">doge = Dog.new <span class="string">"lion"</span>    <span class="comment"># create a instance</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>constructor - initialize<br>他的建構子不是拿 class 的名字<br>不過說實在的，我覺得 initialize 有點冗長…<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span></span></span><br><span class="line">        @name = name     <span class="comment"># 詳見下例</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>variable type - global , class , instance<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$animal_num = <span class="number">0</span>          <span class="comment"># 全域變數，帶 $ 字頭</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span></span><br><span class="line">    @@dog_count = <span class="number">0</span>      <span class="comment"># 屬於 class 的 var，就是 static 啦，帶 @@ 字頭</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span></span></span><br><span class="line">        @name = name     <span class="comment"># 帶 @代表成員變數，哼哼不用煩惱變數就是爽</span></span><br><span class="line">        @@dog_count += <span class="number">1</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>function belongs class -&gt; self.fn or ClassName.fn<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span></span><br><span class="line">    @@dog_count = <span class="number">0</span>      <span class="comment"># 屬於 class 的 var，就是 static 啦，帶 @@ 字頭</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span></span></span><br><span class="line">        @name = name     <span class="comment"># 帶 @代表成員變數，哼哼不用煩惱變數就是爽</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">                         <span class="comment"># class function 就是 static 的 function 啦</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">get_dog_num</span>;</span> @@dog_count <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">                         <span class="comment"># 意會一下用 ; 而不用換行（想一想為啥 end 前不用呢）</span></span><br><span class="line"><span class="comment">=begin 或者可以寫成</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">    def Dog.get_dog_num</span></span><br><span class="line"><span class="comment">        @<span class="doctag">@dog</span>_count</span></span><br><span class="line"><span class="comment">    end</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">=end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>inheritance with <code>&lt;</code></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">sound</span></span></span><br><span class="line">        @sound = sound</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">howling</span></span></span><br><span class="line">        puts @sound</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> &lt; Animal</span></span><br><span class="line">    @@dog_count = <span class="number">0</span>      <span class="comment"># 屬於 class 的 var，就是 static 啦，帶 @@ 字頭</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span></span></span><br><span class="line">        @name = name     <span class="comment"># 帶 @代表成員變數，哼哼不用煩惱變數就是爽</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">get_dog_num</span>      <span class="comment"># 就是 static 的 function 啦</span></span></span><br><span class="line">        @@dog_count</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">doge = Dog.new <span class="string">"lion"</span></span><br><span class="line">doge.howling             <span class="comment"># 糟糕，doge 叫不出來，怎麼辦</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>需要 overriide ，因為 doge 叫不出來。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> &lt; Animal</span></span><br><span class="line">    @@dog_count = <span class="number">0</span>      <span class="comment"># 屬於 class 的 var，就是 static 啦，帶 @@ 字頭</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span></span></span><br><span class="line">        @name = name     <span class="comment"># 帶 @代表成員變數，哼哼不用煩惱變數就是爽</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#       <span class="doctag">@sound</span> = "Wolf!" # 除了 overriide，也可以將 sound 直接改掉</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">get_dog_num</span>      <span class="comment"># 就是 static 的 function 啦</span></span></span><br><span class="line">        @@dog_count</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">howling</span>          <span class="comment"># overriide howling</span></span></span><br><span class="line">        puts <span class="string">"Wolf!"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">doge = Dog.new <span class="string">"lion"</span></span><br><span class="line">doge.howling             <span class="comment"># doge 叫出來了</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>super =&gt; 調用 parent 的 <strong>同名 function</strong>（不只是 initialize 喔）<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> &lt; Animal</span></span><br><span class="line">    @@dog_count = <span class="number">0</span>      <span class="comment"># 屬於 class 的 var，就是 static 啦，帶 @@ 字頭</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span></span></span><br><span class="line">        @name = name     <span class="comment"># 帶 @代表成員變數，哼哼不用煩惱變數就是爽</span></span><br><span class="line">        <span class="keyword">super</span> <span class="string">"Wolf!"</span>    <span class="comment"># 剛剛的直接取代不漂亮，直接調用 Animal 的 initialize</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">get_dog_num</span>      <span class="comment"># 就是 static 的 function 啦</span></span></span><br><span class="line">        @@dog_count</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">doge = Dog.new <span class="string">"lion"</span></span><br><span class="line">doge.howling             <span class="comment"># doge 叫出來了</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="Ruby-不支援多重繼承，因為-so-ugly，他用-mixin-mod-class"><a href="#Ruby-不支援多重繼承，因為-so-ugly，他用-mixin-mod-class" class="headerlink" title="Ruby 不支援多重繼承，因為 so ugly，他用 mixin(mod + class)!"></a>Ruby 不支援多重繼承，因為 <strong>so ugly</strong>，他用 mixin(mod + class)!</h2><hr>
+<p>public , private , protect<br>class var , instance var 預設都是 private<br>class function , instance function 預設都是 public<br>protect 就是繼承者可用嘛，不多說。<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> &lt; Animal</span></span><br><span class="line">    @@dog_count = <span class="number">0</span>      <span class="comment"># 屬於 class 的 var，就是 static 啦，帶 @@ 字頭</span></span><br><span class="line"></span><br><span class="line">    public</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span>;</span> @name = name; <span class="keyword">super</span> <span class="string">"Wolf!"</span> <span class="keyword">end</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">get_dog_num</span>;</span> @@dog_count <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    private</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">any_fn_you_want_to_be_private</span>;</span> <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span> &lt; Animal</span></span><br><span class="line">    @@dog_count = <span class="number">0</span>      <span class="comment"># 屬於 class 的 var，就是 static 啦，帶 @@ 字頭</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span>;</span> @name = name; <span class="keyword">super</span> <span class="string">"Wolf!"</span> <span class="keyword">end</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">get_dog_num</span>;</span> @@dog_count <span class="keyword">end</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">any_fn_you_want_to_be_public</span>;</span> <span class="keyword">end</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">any_fn_you_want_to_be_private</span>;</span> <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    public <span class="symbol">:any_fn_you_want_to_be_public</span>     <span class="comment"># 注意是用 symbol</span></span><br><span class="line">    private <span class="symbol">:any_fn_you_want_to_be_private</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 對 class fn 做 public , private 比較特別</span></span><br><span class="line">    <span class="comment"># 要使用 private_class_method 這個關鍵字</span></span><br><span class="line">    <span class="comment"># 在此略過不討論</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>attr_reader , attr_writer , attr_accessor<br>我們常常在 OOP 使用 get 和 set ，但實在太冗了，<br>Ruby 給我們自動製造 function 的方法。用起來和 public 變數一樣。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span></span><br><span class="line">    <span class="keyword">attr_reader</span> <span class="symbol">:age</span>              <span class="comment"># 為 age 做 get 的 function</span></span><br><span class="line">    <span class="keyword">attr_writer</span> <span class="symbol">:food</span>             <span class="comment"># 抱歉，江郎才盡了</span></span><br><span class="line">    <span class="keyword">attr_accessor</span> <span class="symbol">:name</span>           <span class="comment"># get and set both</span></span><br><span class="line">    <span class="comment"># 注意後面是加 symbol</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">name</span> , <span class="title">age</span> , <span class="title">food</span></span></span><br><span class="line">        @name = name</span><br><span class="line">        @age = age</span><br><span class="line">        @food = food</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">doge = Dog.new <span class="string">"lion"</span> , <span class="number">3</span> , <span class="string">"null"</span></span><br><span class="line">puts doge.name</span><br><span class="line">doge.name = <span class="string">"frog"</span></span><br><span class="line">puts <span class="string">"<span class="subst">#&#123;doge.name&#125;</span> : <span class="subst">#&#123;doge.age&#125;</span>"</span></span><br><span class="line">doge.food = <span class="string">"meat"</span></span><br></pre></td></tr></table></figure>
+<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><p>module Name =&gt; 一樣 Capitalized<br>module 只能有 Const（大寫的 name)<br>namespace 呼叫 （和 C++ 一樣可以用 <code>::</code>)<br>require ModuleName （就是 import in python 啦）<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">require</span> <span class="string">"date"</span> <span class="comment"># 可以使用 Date module 的東西，注意小寫及 string</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Rectangle</span></span></span><br><span class="line">    Edge = <span class="number">4</span>   <span class="comment"># 廢話</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Rectangle</span>.<span class="title">area</span> <span class="title">wid</span> , <span class="title">len</span></span></span><br><span class="line">        len * wid</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">Rectangle</span>.<span class="title">perimeter</span> <span class="title">wid</span> , <span class="title">len</span></span></span><br><span class="line">        (len + wid) * <span class="number">2</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shape</span></span></span><br><span class="line">        <span class="string">"Rectangle"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts Rectangle::Edge</span><br><span class="line">puts Rectangle.area <span class="number">5</span> , <span class="number">10</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>include module in class<br>mixin -&gt; imitating multiple inheritance<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Paper</span> <span class="comment"># Ummm...</span></span></span><br><span class="line">    <span class="keyword">include</span> Rectangle</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span> <span class="title">len</span> , <span class="title">wid</span></span></span><br><span class="line">        @len = len</span><br><span class="line">        @wid = wid</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts m.shape   <span class="comment"># Rectangle</span></span><br></pre></td></tr></table></figure></p>
+<p>但我在想 Rectangle 的 area 如果寫成 instance fn 的話<br>給 Paper inheritance ，area 怎麼直接用到 Paper 的 wid &amp; len 呢…</p>
+<hr>
+<p>extend -&gt; as class fn<br>拿 parent 的 <strong>instance fn</strong> 當自己的 <strong>class fn</strong><br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Rectangle</span></span></span><br><span class="line">    Edge = <span class="number">4</span>   <span class="comment"># 廢話</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">area</span> <span class="title">wid</span> , <span class="title">len</span>      <span class="comment"># 注意 area , class fn =&gt; instance fn</span></span></span><br><span class="line">        len * wid</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">shape</span></span></span><br><span class="line">        <span class="string">"Rectangle"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">module</span> <span class="title">Square</span>  <span class="comment"># class 也可以用 extend 喔，效果一樣</span></span></span><br><span class="line">    extend Rectangle</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts Square.area <span class="number">5</span> , <span class="number">5</span> <span class="comment"># 就是這樣</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>結語，其實我覺得還是有許多問題的，不過這真的是 OOP 面的問題。</p>
+<h2 id="寫在後面"><a href="#寫在後面" class="headerlink" title="寫在後面"></a>寫在後面</h2><p>Ruby 還有一些比較特別的東西，記在最後面。</p>
+<hr>
+<p>單件方法 (singleton method)</p>
+<p>就是 instance create 後，可以直接重新 def instName.func。<br>據說是從 prototype-based 來的。(JavaScript 就是 prototype-based)</p>
+<hr>
+<p>恩，有點 WTF 的東西…<br>感覺整個 obj_new 是個 lambda…<br>v 是 obj_new closure 裡的 name binding。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">obj_new</span></span></span><br><span class="line">    v = <span class="number">0</span></span><br><span class="line">    get = lambda&#123; v &#125;</span><br><span class="line">    set = lambda&#123; <span class="params">|x|</span> v = x &#125;</span><br><span class="line">    <span class="keyword">return</span> get , set</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">obj_r , obj_w = obj_new</span><br><span class="line"></span><br><span class="line">puts obj_r.call</span><br><span class="line">obj_w.call <span class="number">5</span></span><br><span class="line">puts obj_r.call</span><br></pre></td></tr></table></figure>
+<p>恕我用癟腳的 Scheme 模擬一下。<br>最近剛好在教 FP 模擬 OOP :)<br><figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> obj-new</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (v)</span><br><span class="line">    (<span class="name"><span class="builtin-name">list</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> () v)</span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (x) (<span class="name"><span class="builtin-name">set!</span></span> v x))</span><br><span class="line">      )</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> obj (<span class="name">obj-new</span> <span class="number">0</span>))</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> obj-r (<span class="name"><span class="builtin-name">car</span></span> obj))</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> obj-w (<span class="name"><span class="builtin-name">cadr</span></span> obj)) <span class="comment">; 沒有 pattern matching 真麻煩</span></span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">display</span></span> (<span class="name">obj-r</span>)) (<span class="name"><span class="builtin-name">newline</span></span>)</span><br><span class="line">(<span class="name">obj-w</span> <span class="number">5</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">display</span></span> (<span class="name">obj-r</span>)) (<span class="name"><span class="builtin-name">newline</span></span>)</span><br></pre></td></tr></table></figure></p>
+<p>其實如果不要照 Ruby 的範例，我 scheme 是比較想寫成</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> obj-new</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (v)</span><br><span class="line">    (<span class="name"><span class="builtin-name">lambda</span></span> (sym . param)</span><br><span class="line">      (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">        ((<span class="name"><span class="builtin-name">equal?</span></span> sym <span class="symbol">'get</span>) v)</span><br><span class="line">        ((<span class="name"><span class="builtin-name">equal?</span></span> sym <span class="symbol">'set</span>) (<span class="name"><span class="builtin-name">set!</span></span> v (<span class="name"><span class="builtin-name">car</span></span> param)))</span><br><span class="line">        (<span class="name"><span class="builtin-name">else</span></span> <span class="symbol">'func-not-def</span>)</span><br><span class="line">        )</span><br><span class="line">      )</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> obj (<span class="name">obj-new</span> <span class="number">0</span>))</span><br><span class="line">(<span class="name"><span class="builtin-name">display</span></span> (<span class="name">obj</span> <span class="symbol">'get</span>)) (<span class="name"><span class="builtin-name">newline</span></span>)</span><br><span class="line">(<span class="name">obj</span> <span class="symbol">'set</span> <span class="number">5</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">display</span></span> (<span class="name">obj</span> <span class="symbol">'get</span>)) (<span class="name"><span class="builtin-name">newline</span></span>)</span><br></pre></td></tr></table></figure>
+<hr>
+<p>例外處理</p>
+<p>對應 C++ ， Java 的 throw , catch ，Ruby 有著 begin , rescue 。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_file_first_line</span></span></span><br><span class="line">    err_try = <span class="number">0</span></span><br><span class="line">    print <span class="string">"&gt; "</span></span><br><span class="line">    fname = gets.chomp</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        file = open(fname)</span><br><span class="line">        rtn = file.gets</span><br><span class="line">    <span class="keyword">rescue</span></span><br><span class="line">        <span class="keyword">if</span> err_try &lt; <span class="number">3</span></span><br><span class="line">            print <span class="string">"&gt; "</span></span><br><span class="line">            fname = gets.chomp</span><br><span class="line">            err_try += <span class="number">1</span></span><br><span class="line">            <span class="keyword">retry</span>               <span class="comment"># jump to begin</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">ensure</span>                      <span class="comment"># do ensure block no matter what</span></span><br><span class="line">        puts <span class="string">"Ensure close file"</span></span><br><span class="line">        file&amp;.close             <span class="comment"># &amp;. -&gt; safer func call</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    rtn</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">puts <span class="string">"&gt;&gt; <span class="subst">#&#123;get_file_first_line&#125;</span>"</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>inspect func — 自定義直接呼叫物件的回傳值。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Org</span></span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inspect</span></span></span><br><span class="line">        <span class="string">"It's a Object"</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">obj = Org.new</span><br><span class="line">obj           <span class="comment"># return "It's a Org" in irb</span></span><br></pre></td></tr></table></figure>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- EOF -------------</div>
+    
+</div>
+
+  
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/oop/" rel="tag"><i class="fa fa-tag"></i> oop</a>
+          
+            <a href="/tags/ruby/" rel="tag"><i class="fa fa-tag"></i> ruby</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/26/PHP-Note/" rel="next" title="PHP Note">
+                <i class="fa fa-chevron-left"></i> PHP Note
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/29/python-container/" rel="prev" title="About Python's container">
+                About Python's container <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+            <a href="/about/">
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="lambda.catノ">
+            
+              <p class="site-author-name" itemprop="name">lambda.catノ</p>
+            </a>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/nobodyzxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://t.me/nobodyzxc" target="_blank" title="Telegram">
+                      
+                        <i class="fa fa-fw fa-telegram"></i>Telegram</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://incalpcs.blogspot.com" target="_blank" title="Blogger">
+                      
+                        <i class="fa fa-fw fa-google"></i>Blogger</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.youtube.com/channel/UCPgvp2rLwglsLVCrqVlQXuA" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/nobodyzxc.tw" target="_blank" title="FaceBook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FaceBook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.instagram.com/nobodyzxc.tw/" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+  <div id="myCanvasContainer" class="widget tagcloud">
+    <canvas width="220" height="220" id="resCanvas" style="width=100%">
+        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/conference/">conference</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/continuation/">continuation</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/coscup/">coscup</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cygwin/">cygwin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flolac/">flolac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fp/">fp</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/">game</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/haskell/">haskell</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lisp/">lisp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logic/">logic</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/">oop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opensource/">opensource</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ruby/">ruby</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scheme/">scheme</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stl/">stl</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">2</span></li></ul>
+    </canvas>
+  </div>
+</div>
+
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic"><span class="nav-number">1.</span> <span class="nav-text">Basic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comment"><span class="nav-number">2.</span> <span class="nav-text">Comment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Functions"><span class="nav-number">3.</span> <span class="nav-text">Functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Control-Flow"><span class="nav-number">4.</span> <span class="nav-text">Control Flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loop"><span class="nav-number">5.</span> <span class="nav-text">Loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Array"><span class="nav-number">6.</span> <span class="nav-text">Array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash"><span class="nav-number">7.</span> <span class="nav-text">Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbol"><span class="nav-number">8.</span> <span class="nav-text">Symbol</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Symbol-vs-String-in-Hash-from-Codecademy"><span class="nav-number">9.</span> <span class="nav-text">Symbol vs String in Hash from Codecademy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zen-of-Ruby-Improvement-of-Syntax"><span class="nav-number">10.</span> <span class="nav-text">Zen of Ruby (Improvement of Syntax)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Implicit-Return"><span class="nav-number">11.</span> <span class="nav-text">Implicit Return</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Blocks-Procs-and-Lambdas"><span class="nav-number">12.</span> <span class="nav-text">Blocks , Procs , and Lambdas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OOP"><span class="nav-number">13.</span> <span class="nav-text">OOP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ruby-不支援多重繼承，因為-so-ugly，他用-mixin-mod-class"><span class="nav-number">14.</span> <span class="nav-text">Ruby 不支援多重繼承，因為 so ugly，他用 mixin(mod + class)!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Module"><span class="nav-number">15.</span> <span class="nav-text">Module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寫在後面"><span class="nav-number">16.</span> <span class="nav-text">寫在後面</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lambda.catノ</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46k </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/files/typed.js"></script>
+    <script defer type="text/javascript">
+      function load_script(url){
+        var ukagaka_script = document.createElement('script');
+        ukagaka_script.setAttribute('src', url);
+        document.head.appendChild(ukagaka_script);
+      }
+      function load_style(url){
+        var ukagaka_css = document.createElement('link');
+        ukagaka_css.setAttribute('rel', 'stylesheet');
+        ukagaka_css.setAttribute('type', type='text/css');
+        ukagaka_css.setAttribute('href', url);
+        document.head.appendChild(ukagaka_css);
+      }
+
+      document.onreadystatechange = function () {
+          if (document.readyState == "interactive") {
+              load_script('/files/reconnecting-websocket.min.js');
+              load_style('/files/ukagaka.css');
+              load_script('/files/jquery-ui.js');
+              //load_script('/files/typed.js');
+              load_script('/files/ukagaka.js');
+              //load_script('/files/jquery.morris.ukagaka.resource.js');
+          }
+      }
+    </script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      visitors:
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      <i class="fa fa-user"></i>
+    </span>
+  
+
+  
+    <span class="site-pv">
+      visit count:
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      🐾
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/custom.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-nobodyzxc-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://nobodyzxc.github.io/2017/04/27/Ruby-Note/';
+          this.page.identifier = '2017/04/27/Ruby-Note/';
+          this.page.title = 'Ruby Note';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-nobodyzxc-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+</html>
