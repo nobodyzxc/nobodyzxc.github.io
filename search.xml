@@ -49,9 +49,9 @@
         <category>Note</category>
       </categories>
       <tags>
+        <tag>fp</tag>
         <tag>scheme</tag>
         <tag>lambda</tag>
-        <tag>fp</tag>
         <tag>lisp</tag>
         <tag>continuation</tag>
       </tags>
@@ -86,9 +86,9 @@
         <category>Memoir</category>
       </categories>
       <tags>
-        <tag>lambda</tag>
-        <tag>fp</tag>
         <tag>logic</tag>
+        <tag>fp</tag>
+        <tag>lambda</tag>
         <tag>flolac</tag>
       </tags>
   </entry>
@@ -108,9 +108,9 @@
         <category>Fun</category>
       </categories>
       <tags>
-        <tag>fp</tag>
         <tag>game</tag>
         <tag>logic</tag>
+        <tag>fp</tag>
       </tags>
   </entry>
   <entry>
@@ -121,10 +121,10 @@
         <category>Note</category>
       </categories>
       <tags>
+        <tag>fp</tag>
         <tag>haskell</tag>
         <tag>scheme</tag>
         <tag>lambda</tag>
-        <tag>fp</tag>
       </tags>
   </entry>
   <entry>
@@ -155,8 +155,8 @@
         <category>Fun</category>
       </categories>
       <tags>
-        <tag>cygwin</tag>
         <tag>linux</tag>
+        <tag>cygwin</tag>
       </tags>
   </entry>
   <entry>
@@ -214,9 +214,9 @@
         <category>Note</category>
       </categories>
       <tags>
+        <tag>fp</tag>
         <tag>haskell</tag>
         <tag>lambda</tag>
-        <tag>fp</tag>
       </tags>
   </entry>
   <entry>

@@ -139,11 +139,11 @@
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
+      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
+    
       <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
     
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
-    
-      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
     
       <category term="lisp" scheme="http://nobodyzxc.github.io/tags/lisp/"/>
     
@@ -219,11 +219,11 @@
       <category term="Memoir" scheme="http://nobodyzxc.github.io/categories/Memoir/"/>
     
     
-      <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
+      <category term="logic" scheme="http://nobodyzxc.github.io/tags/logic/"/>
     
       <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
     
-      <category term="logic" scheme="http://nobodyzxc.github.io/tags/logic/"/>
+      <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
     
       <category term="flolac" scheme="http://nobodyzxc.github.io/tags/flolac/"/>
     
@@ -275,11 +275,11 @@
       <category term="Fun" scheme="http://nobodyzxc.github.io/categories/Fun/"/>
     
     
-      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
-    
       <category term="game" scheme="http://nobodyzxc.github.io/tags/game/"/>
     
       <category term="logic" scheme="http://nobodyzxc.github.io/tags/logic/"/>
+    
+      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
     
   </entry>
   
@@ -308,13 +308,13 @@
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
+      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
+    
       <category term="haskell" scheme="http://nobodyzxc.github.io/tags/haskell/"/>
     
       <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
     
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
-    
-      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
     
   </entry>
   
@@ -388,9 +388,9 @@ wait to refer:&lt;a href=&quot;http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html&quot
       <category term="Fun" scheme="http://nobodyzxc.github.io/categories/Fun/"/>
     
     
-      <category term="cygwin" scheme="http://nobodyzxc.github.io/tags/cygwin/"/>
-    
       <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
+    
+      <category term="cygwin" scheme="http://nobodyzxc.github.io/tags/cygwin/"/>
     
   </entry>
   
@@ -532,11 +532,11 @@ A world without loop , but recursion。&lt;br&gt;
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
+      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
+    
       <category term="haskell" scheme="http://nobodyzxc.github.io/tags/haskell/"/>
     
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
-    
-      <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
     
   </entry>
   
