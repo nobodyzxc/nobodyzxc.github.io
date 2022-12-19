@@ -114,12 +114,9 @@ function resetMode(){
 }
 
 function showNote(){
-  console.log('showNote')
   $(`.strings > li`)
     .css({opacity: 1});
-  $('.open-notes li').get().forEach(e => {
-    $(e).text($(e).attr('note'));
-  });
+  changeOpenNotes();
 }
 
 function rerunMode(){
