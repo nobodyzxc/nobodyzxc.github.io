@@ -7,3 +7,5 @@ Add number display to practice patterns
 Add pattern lat. sequential, follow metronome
 
 All practice follow metronome
+
+Add tuner
