@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Guitar Fretboard Visualization</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<h1>Guitar Fretboard Visualization</h1>
+
+		  <div style="position:absolute; display: table;right:0%;">
+			<select id="mode" style=" display: table-cell;">
+			  <option value="showNote">
+				Show Note
+			  </option>
+			  <option value="randomNote">
+				Random Note
+			  </option>
+			</select>
+			&nbsp;
+			<input id="modeInterval" type="number" style="display: table-cell; width:15%; right: 0px;text-align: center; " value="5"/>
+			&nbsp;
+			<input id="answerTimeout" type="number" style="display: table-cell; width:15%; right: 0px;text-align: center; " value="2"/>
+		  </div>
+
+	<div class="guitar-neck">
+
+
+		<div class="fret first"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+		<div class="fret"></div>
+
+		<ul class="dots low-dots">
+			<li></li>
+		</ul>
+
+		<ul class="dots mid-dots">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+
+		<ul class="dots high-dots">
+			<li></li>
+		</ul>
+
+		<ul class="strings">
+			<li style="opacity: 0"></li>
+			<li style="opacity: 0"></li>
+			<li style="opacity: 0"></li>
+			<li style="opacity: 0"></li>
+			<li style="opacity: 0"></li>
+			<li style="opacity: 0"></li>
+		</ul>
+
+		<ul class="open-notes">
+			<li note="E" class="low-e">E</li>
+			<li note="B" class="b">B</li>
+			<li note="G" class="g">G</li>
+			<li note="D" class="d">D</li>
+			<li note="A" class="a">A</li>
+			<li note="E" class="high-e">E</li>
+		</ul>
+		<div class="notes">
+			<div class="mask low-e"><ul></ul></div>
+			<div class="mask a"><ul></ul></div>
+			<div class="mask d"><ul></ul></div>
+			<div class="mask g"><ul></ul></div>
+			<div class="mask b"><ul></ul></div>
+			<div class="mask high-e"><ul></ul></div>
+		</div>
+	</div>
+
+	<div class="controls">
+		<a class="up" href="#">Tune 1/2 Step Up</a>
+		<a class="down" href="#">Tune 1/2 Step Down</a>
+
+		<h2>Choose note to show:</h2>
+		<!-- <h2>Choose Mode: </h2> -->
+		<ul>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;All</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;A</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;A#</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;B</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;C</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;C#</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;D</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;D#</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;E</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;F</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;F#</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;G</li>
+			<li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;G#</li>
+		</ul>
+	</div>
+<!-- partial -->
+  <script src='./jquery.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>
