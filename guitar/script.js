@@ -203,5 +203,11 @@ $(document).ready(function(){
     resetMode();
     window[$('#mode').val()]?.();
   });
+
+  $('#answerTimeout').change(function(){
+    console.log("reset")
+    resetMode();
+    window[$('#mode').val()]?.();
+  });
   showNotes();
 });
