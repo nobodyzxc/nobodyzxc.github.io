@@ -20,6 +20,7 @@ var notes = {
 function showNotes(noteToShow = '', mode = 1){
   noteToShow = noteToShow.trim();
   if(!noteToShow || noteToShow == 'No'){
+    $('.selectNote').prop('checked', false);
     return $('.guitar-neck .notes li').css({opacity:0});
   }
 
@@ -93,9 +94,9 @@ function _randomNote(){
   }
 
   if (mode.tick == Number($('#modeInterval').val())) {
-    $('.guitar-neck .notes li')
-      .not(`[note="${_randomNote.sel}"]`)
-      .animate({opacity:0}, 500);
+    // $('.guitar-neck .notes li')
+    //   .not(`[note="${_randomNote.sel}"]`)
+    //   .animate({opacity:0}, 500);
     $(`.guitar-neck .notes
       .mask:nth-child(${7 - _randomNote.strIdx})
       li[note="${_randomNote.sel}"]`)
@@ -158,7 +159,8 @@ $(document).ready(function(){
 
       el.animate({right: -268 + noteOffset}, slideSpeed);
       setTimeout(function(){
-        el.find('ul').prepend( "<li note="+nextNote+">"+nextNote+"</li>" );
+        let opacity = Number($(`.selectNote[note="${nextNote}"]`).is(':checked'));
+        el.find('ul').prepend( `<li style="opacity: ${opacity}" note="${nextNote}">${nextNote}</li>` );
         el.find('li:last-child').remove();
         el.css({right: -189 + noteOffset});
       }, slideSpeed+20)
@@ -166,7 +168,7 @@ $(document).ready(function(){
 
     setTimeout(function(){
       changeOpenNotes();
-      showNotes(noteToShow);
+      // showNotes(noteToShow);
       canClick = true;
     }, slideSpeed+20)
 
@@ -181,7 +183,9 @@ $(document).ready(function(){
       var el = $(this);
       var nextNote = el.find('li:nth-child(2)').text();
 
-      $( "<li note="+nextNote+">"+nextNote+"</li>" ).appendTo(el.find('ul'));
+      let opacity = Number($(`.selectNote[note="${nextNote}"]`).is(':checked'));
+
+      $( `<li style="opacity: ${opacity}" note="${nextNote}">${nextNote}</li>` ).appendTo(el.find('ul'));
       el.css({right: -268 + noteOffset});
       el.find('li:first-child').remove();
       el.animate({right: -189 + noteOffset}, slideSpeed);
@@ -189,7 +193,7 @@ $(document).ready(function(){
     });
 
     changeOpenNotes();
-    showNotes(noteToShow);
+    // showNotes(noteToShow);
 
     setTimeout(function(){
       canClick = true;
@@ -205,7 +209,7 @@ $(document).ready(function(){
 
   $('.selectNote').click(function(event){
     event.stopPropagation();
-    noteToShow = $(this).parent().text().trim();
+    noteToShow = $(this).attr('note')
 
     if (noteToShow == 'All') {
       $('.selectNote').prop('checked', this.checked);

@@ -11,6 +11,27 @@
     <!-- partial:index.partial.html -->
     <h1>Guitar Fretboard Visualization</h1>
 
+    <div style="position:relative; left: 50%; margin-left: -450px; margin-top: 10px; width:60%">
+      <!-- Trigger/Open The Modal -->
+      <select id="mode" style=" display: table-cell;">
+        <option value="showNote">
+        Show Note
+        </option>
+        <option value="randomNote" selected="selected">
+        Random Note
+        </option>
+      </select>
+      &nbsp;
+      <button id="toggle-metronome">Play</button>
+      &nbsp;
+      <button id="metronome">Metronome</button>
+      &nbsp;
+      <label class="mode-controls mode-controls-randomNote" for="modeInterval">Question Beats: </label>
+      <input class="mode-controls mode-controls-randomNote" id="modeInterval" type="number" style="display: table-cell; width:10%; right: 0px;text-align: center; " value="2" min="0"/>
+      &nbsp;
+      <label class="mode-controls mode-controls-randomNote" for="answerTimeout">Answer Beats: </label>
+      <input class="mode-controls mode-controls-randomNote" id="answerTimeout" type="number" style="display: table-cell; width:10%; right: 0px;text-align: center; " value="2" min="0"/>
+    </div>
     <!-- The Modal -->
     <div id="myModal" class="modal">
 
@@ -128,52 +149,28 @@
       </div>
     </div>
 
-    <br>
-    <div style="position:absolute; display: table; left:5.5%;">
-      <!-- Trigger/Open The Modal -->
-      <select id="mode" style=" display: table-cell;">
-        <option value="showNote">
-        Show Note
-        </option>
-        <option value="randomNote" selected="selected">
-        Random Note
-        </option>
-      </select>
-      &nbsp;
-      <button id="metronome">Metronome</button>
-      &nbsp;
-      <button id="toggle-metronome">Play</button>
-      &nbsp;
-      <label class="mode-controls mode-controls-randomNote" for="modeInterval">Question Beats: </label>
-      <input class="mode-controls mode-controls-randomNote" id="modeInterval" type="number" style="display: table-cell; width:10%; right: 0px;text-align: center; " value="2" min="0"/>
-      &nbsp;
-      <label class="mode-controls mode-controls-randomNote" for="answerTimeout">Answer Beats: </label>
-      <input class="mode-controls mode-controls-randomNote" id="answerTimeout" type="number" style="display: table-cell; width:10%; right: 0px;text-align: center; " value="2" min="0"/>
-    </div>
-    <br>
-    <br>
-    <hr>
-
     <div class="controls">
       <a class="up" href="#">Tune 1/2 Step Up</a>
       <a class="down" href="#">Tune 1/2 Step Down</a>
 
-      <h2>Choose note to show:</h2>
+      <!-- <h2>Choose note to show:</h2> -->
       <!-- <h2>Choose Mode: </h2> -->
+      <br>
+      <br>
       <ul>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;All</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;A</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;A#</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;B</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;C</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;C#</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;D</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;D#</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;E</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;F</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;F#</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;G</li>
-        <li><input class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;G#</li>
+        <li><input note="All" class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;All</li>
+        <li><input note="A"   class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;A</li>
+        <li><input note="A#"  class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;A#</li>
+        <li><input note="B"   class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;B</li>
+        <li><input note="C"   class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;C</li>
+        <li><input note="C#"  class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;C#</li>
+        <li><input note="D"   class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;D</li>
+        <li><input note="D#"  class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;D#</li>
+        <li><input note="E"   class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;E</li>
+        <li><input note="F"   class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;F</li>
+        <li><input note="F#"  class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;F#</li>
+        <li><input note="G"   class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;G</li>
+        <li><input note="G#"  class="selectNote" style="margin:3px" type="checkbox"/>&nbsp;G#</li>
       </ul>
     </div>
     <!-- partial -->
