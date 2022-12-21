@@ -17,22 +17,21 @@ var notes = {
   b: ['B','C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 }
 
-function showNotes(noteToShow = ''){
+function showNotes(noteToShow = '', mode = 1){
   noteToShow = noteToShow.trim();
   if(!noteToShow || noteToShow == 'No'){
-    $('.guitar-neck .notes li')
-      .css({opacity:0});
+    return $('.guitar-neck .notes li').css({opacity:0});
   }
-  else if(noteToShow == "All"){
-    $('.guitar-neck .notes li')
-      .animate({opacity:1}, 500);
-  } else {
-    $('.guitar-neck .notes li')
-      .not('[note="'+noteToShow+'"]')
-      .animate({opacity:0}, 500);
-    $('.guitar-neck .notes li[note="'+noteToShow+'"]')
-      .animate({opacity:1}, 500);
-  }
+
+  let sel = noteToShow == "All" ?
+    $('.guitar-neck .notes li') :
+    $(`.guitar-neck .notes li[note="${noteToShow}"]`);
+
+  let opacity =  mode >= 0 ? mode :
+    1 - sel.get().map(x => $(x).css('opacity'))
+                 .some(x => x == '1');
+
+  sel.animate({opacity}, 500);
 }
 
 function changeOpenNotes(){
@@ -53,14 +52,6 @@ function getRandomInt(min, max) {
   // and the minimum is inclusive
 }
 
-function getModeInterval(){
-  return Number($('#modeInterval').val()) * 1000;
-}
-
-function getAnswerTimeout(){
-  return Number($('#answerTimeout').val()) * 1000;
-}
-
 function randomSelectNote(){
   return $('.selectNote:checked')
     .get().map(e =>
@@ -68,42 +59,54 @@ function randomSelectNote(){
       .random() || 'C';
 }
 
-var prevStrIdx = -1;
-function _randomNote(){
+var modeTick = -1;
 
-  let strIdx = -1;
-  do { strIdx = getRandomInt(1, 7); }
-  while(prevStrIdx > 0 && strIdx == prevStrIdx);
-
-  prevStrIdx = strIdx;
-
-  showNotes();
-  $('.strings > li').get().forEach(
-    (e, i) => {
-      $(e).css({
-        opacity: Number(i == strIdx - 1)
-      });
-    });
-  let sel = randomSelectNote();
-  $(`.open-notes li`).get().forEach(
-    (e, i) => {
-      $(e).text(i == strIdx - 1 ?
-        sel : 'O');
-    });
-  setTimeout(() => {
-    $('.guitar-neck .notes li')
-      .not('[note="'+sel+'"]')
-      .animate({opacity:0}, 500);
-    $(`.guitar-neck .notes .mask:nth-child(${7 - strIdx}) li[note="${sel}"]`)
-      .animate({opacity:1}, 500);
-  }, getModeInterval());
+var mode = {
+  tick: -1,
+  reset: function(){ this.tick = -1; },
+  step: function(){
+    mode.tick += 1;
+    window[`_${$('#mode').val()}`]?.();
+  }
 }
 
-function randomNote(){
-  _randomNote();
-  modeItvlID = setInterval(() => {
-    _randomNote();
-  }, getModeInterval() + getAnswerTimeout());
+var prevStrIdx = -1;
+function _randomNote(){
+  if (!mode.tick) {
+    _randomNote.strIdx = -1;
+    do { _randomNote.strIdx = getRandomInt(1, 7); }
+    while(prevStrIdx > 0 && _randomNote.strIdx == prevStrIdx);
+    prevStrIdx = _randomNote.strIdx;
+    showNotes();
+    $('.strings > li').get().forEach(
+      (e, i) => {
+        $(e).css({
+          opacity: Number(i == _randomNote.strIdx - 1)
+        });
+      });
+    _randomNote.sel = randomSelectNote();
+    $(`.open-notes li`).get().forEach(
+      (e, i) => {
+        $(e).text(i == _randomNote.strIdx - 1 ?
+          _randomNote.sel : 'O');
+      });
+  }
+
+  if (mode.tick == Number($('#modeInterval').val())) {
+    $('.guitar-neck .notes li')
+      .not(`[note="${_randomNote.sel}"]`)
+      .animate({opacity:0}, 500);
+    $(`.guitar-neck .notes
+      .mask:nth-child(${7 - _randomNote.strIdx})
+      li[note="${_randomNote.sel}"]`)
+      .animate({opacity:1}, 500);
+  }
+
+  if (mode.tick == Number($('#modeInterval').val())
+                 + Number($('#answerTimeout').val())
+                 - 1) {
+    mode.tick = -1;
+  }
 }
 
 function resetMode(){
@@ -121,7 +124,10 @@ function showNote(){
 
 function rerunMode(){
   resetMode();
+  mode.reset();
   window[$('#mode').val()]?.();
+  $('.mode-controls').hide();
+  $(`.mode-controls-${$('#mode').val()}`).show();
 }
 
 $(document).ready(function(){
@@ -192,20 +198,43 @@ $(document).ready(function(){
   });
 
   $('.controls li').click(function(){
-    noteToShow = $(this).text();
-    showNotes(noteToShow);
+    $(this).find('.selectNote').click();
+    // noteToShow = $(this).text();
+    // showNotes(noteToShow, -1);
+  });
+
+  $('.selectNote').click(function(event){
+    event.stopPropagation();
+    noteToShow = $(this).parent().text().trim();
+
+    if (noteToShow == 'All') {
+      $('.selectNote').prop('checked', this.checked);
+      $('.controls li').get().forEach(li => {
+        showNotes($(li).text(), this.checked);
+      });
+    }
+    else {
+      let all = $('.selectNote').get()
+        .every((box, idx) => box.checked || !idx)
+      $($('.selectNote')[0]).prop('checked', all);
+      return showNotes(noteToShow, this.checked);
+    }
   });
 
   $('#mode').change(rerunMode).change();
   $('#modeInterval').change(rerunMode);
   $('#answerTimeout').change(rerunMode);
+  $('#toggle-metronome').click(function(){
+    $(".play-btn").click();
+    $(this).text($(".play-btn").text());
+  })
   showNotes();
 
   // Get the modal
   var modal = document.getElementById("myModal");
 
   // Get the button that opens the modal
-  var btn = document.getElementById("myBtn");
+  var btn = document.getElementById("metronome");
 
   // Get the <span> element that closes the modal
   var span = document.getElementsByClassName("close")[0];

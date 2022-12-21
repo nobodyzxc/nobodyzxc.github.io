@@ -16,6 +16,7 @@ Scheduling Help by: https://www.html5rocks.com/en/tutorials/audio/scheduling/
 */
 function schedule() {
  while(curTime < context.currentTime + 0.1) {
+  mode.step();
   playNote(curTime);
   updateTime();
  }

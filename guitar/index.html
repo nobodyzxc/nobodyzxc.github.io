@@ -49,7 +49,7 @@
             <div class="options">
               <i class="fa fa-caret-down up"></i>
               <label>Off Beat Pitch: <input type="range" min="0" max="500" value="200" class="beat-range" /></label>
-              <label>Accent Pitch: <input type="range" min="0" max="500" value="380" class="accent-range" /></label>
+              <label>Accent Pitch: <input type="range" min="1" max="500" value="380" class="accent-range" /></label>
             </div>
           </section>
         </div>
@@ -67,27 +67,6 @@
         <script src="./metronome.js"></script>
       </div>
 
-    </div>
-
-
-    <div style="position:absolute; display: table;right:0%;">
-
-      <!-- Trigger/Open The Modal -->
-      <button id="myBtn">Metronome</button>
-      &nbsp;
-
-      <select id="mode" style=" display: table-cell;">
-        <option value="showNote">
-        Show Note
-        </option>
-        <option value="randomNote">
-        Random Note
-        </option>
-      </select>
-      &nbsp;
-      <input id="modeInterval" type="number" style="display: table-cell; width:15%; right: 0px;text-align: center; " value="2" min="0"/>
-      &nbsp;
-      <input id="answerTimeout" type="number" style="display: table-cell; width:15%; right: 0px;text-align: center; " value="2" min="0"/>
     </div>
 
     <div class="guitar-neck">
@@ -148,6 +127,32 @@
         <div class="mask high-e"><ul></ul></div>
       </div>
     </div>
+
+    <br>
+    <div style="position:absolute; display: table; left:5.5%;">
+      <!-- Trigger/Open The Modal -->
+      <select id="mode" style=" display: table-cell;">
+        <option value="showNote">
+        Show Note
+        </option>
+        <option value="randomNote" selected="selected">
+        Random Note
+        </option>
+      </select>
+      &nbsp;
+      <button id="metronome">Metronome</button>
+      &nbsp;
+      <button id="toggle-metronome">Play</button>
+      &nbsp;
+      <label class="mode-controls mode-controls-randomNote" for="modeInterval">Question Beats: </label>
+      <input class="mode-controls mode-controls-randomNote" id="modeInterval" type="number" style="display: table-cell; width:10%; right: 0px;text-align: center; " value="2" min="0"/>
+      &nbsp;
+      <label class="mode-controls mode-controls-randomNote" for="answerTimeout">Answer Beats: </label>
+      <input class="mode-controls mode-controls-randomNote" id="answerTimeout" type="number" style="display: table-cell; width:10%; right: 0px;text-align: center; " value="2" min="0"/>
+    </div>
+    <br>
+    <br>
+    <hr>
 
     <div class="controls">
       <a class="up" href="#">Tune 1/2 Step Up</a>
