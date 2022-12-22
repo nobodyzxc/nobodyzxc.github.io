@@ -17,10 +17,10 @@ var notes = {
   b: ['B','C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
 }
 
-function showNotes(noteToShow = '', mode = 1){
+function showNotes(noteToShow = '', mode = 1, uncheck = 1){
   noteToShow = noteToShow.trim();
   if(!noteToShow || noteToShow == 'No'){
-    $('.selectNote').prop('checked', false);
+    if(uncheck) $('.selectNote').prop('checked', false);
     return $('.guitar-neck .notes li').css({opacity:0});
   }
 
@@ -78,7 +78,7 @@ function _randomNote(){
     do { _randomNote.strIdx = getRandomInt(1, 7); }
     while(prevStrIdx > 0 && _randomNote.strIdx == prevStrIdx);
     prevStrIdx = _randomNote.strIdx;
-    showNotes();
+    showNotes('', 0, 0);
     $('.strings > li').get().forEach(
       (e, i) => {
         $(e).css({
