@@ -232,6 +232,8 @@ $(document).ready(function(){
     $(".play-btn").click();
     $(this).text($(".play-btn").text());
   });
+
+  // sync the play/stop button
   (new MutationObserver(function(mutations){
     mutations.forEach(function(mutation) {
       $('#toggle-metronome').text($(".play-btn").text());
