@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,cygwin,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="UNCALCULABLE LIFE" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。">
+<meta name="keywords" content="linux,cygwin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cygwin Beginner Guide">
+<meta property="og:url" content="http://nobodyzxc.github.io/2017/05/30/basic-linux/index.html">
+<meta property="og:site_name" content="UNCALCULABLE LIFE">
+<meta property="og:description" content="本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:updated_time" content="2021-04-23T20:37:09.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cygwin Beginner Guide">
+<meta name="twitter:description" content="本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://nobodyzxc.github.io/2017/05/30/basic-linux/">
+
+
+
+
+
+  <title>Cygwin Beginner Guide | UNCALCULABLE LIFE</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+<a href="https://github.com/nobodyzxc" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="top-scroll-bar"></div>
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">UNCALCULABLE LIFE</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-wiki">
+          <a href="/wiki/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-wikipedia-w"></i> <br>
+            
+            維基
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://nobodyzxc.github.io/2017/05/30/basic-linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lambda.catノ">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="UNCALCULABLE LIFE">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Cygwin Beginner Guide</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-05-30T22:41:52+08:00">
+                2017-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Fun/" itemprop="url" rel="index">
+                    <span itemprop="name">Fun</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/30/basic-linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/05/30/basic-linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-eye"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>times
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  2.6k word(s)
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">閱讀時長 &asymp;</span>
+                
+                <span title="閱讀時長">
+                  9 min(s)
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center>
+本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。
+</center>
+
+
+<a id="more"></a>
+<p><br><br><br>事先聲明 Cygwin != Linux，它是 Windows 下一個模擬 Linux terminal 的介面。</p>
+<p>關於 Cygwin 的<a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=47282" target="_blank" rel="noopener">安裝</a>。</p>
+<p>不過可以注意的是套件的部分只要多載一個 wget 就夠了，其他部分（如 vim 等）用 <a href="https://github.com/transcode-open/apt-cyg" target="_blank" rel="noopener">apt-cyg</a> 下載就好。<br>(apt-cyg 的使用置於文末）</p>
+<p>當你開啟 Cygwin 時，先不要嫌它醜，這之後可以慢慢調。<br>（或是直接抓現成的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/cygwin.bashrc.sh" target="_blank" rel="noopener">設定檔</a> 存到<code>~/.bashrc</code>）</p>
+<h2 id="WHERE-AM-I"><a href="#WHERE-AM-I" class="headerlink" title="WHERE AM I ?"></a>WHERE AM I ?</h2><p>首先，你可以看到有個命令列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">userName@computerName ~</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<p>記住，你現在位置為家目錄，如果沒有特別改命令列的話，你可以發現命令列是以<code>~</code>表示家目錄。</p>
+<p>你現在有的只有簡單命令列，你可以先下個<code>pwd</code>指令來確認自己現在在檔案系統中的位置。</p>
+<p>不過你會發現這個位置有點奇怪，怎麼在 windows 的檔案總管中沒有見過，</p>
+<p>這是因為 Cygwin 要模擬 linux 的檔案環境，</p>
+<p>將你當初安裝的路徑選為根目錄 (root)，長出一套類似 linux 的檔案環境（樹狀）。<br>（而且 windows 的檔案分層是使用<code>\</code>，linux 則是使用<code>/</code>）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/                &lt;- 根目錄 (root)，為 windows 下的某個資料夾</span><br><span class="line">|</span><br><span class="line">├── bin          &lt;- 很多指令（程式）存放的位置</span><br><span class="line">├── cygdrive</span><br><span class="line">│   ├── c        &lt;- 注意！這裡可以切到 C 槽</span><br><span class="line">│   └── d        &lt;- 注意！這裡可以切到 D 槽</span><br><span class="line">├── dev          &lt;- 對 linux 來說，這裡有很多硬體裝置有關的檔案</span><br><span class="line">├── etc          &lt;- Linux 開機（這裡就是開 Cygwin) 的一些設定檔</span><br><span class="line">├── home</span><br><span class="line">│   └── ~        &lt;- 家目錄，你現在的位置</span><br><span class="line">├── lib          &lt;- 程式語言的一堆 library</span><br><span class="line">├── sbin         &lt;- 放著系統管理者常用的指令</span><br><span class="line">├── tmp          &lt;- 一般使用者暫存檔案的地方，重要的東西不要放這</span><br><span class="line">├── usr          &lt;- 跟系統息息相關的目錄</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── etc</span><br><span class="line">│   ├── include</span><br><span class="line">│   ├── lib</span><br><span class="line">│   └── tmp</span><br><span class="line">└── var          &lt;- 系統工作預設的工作目錄。</span><br></pre></td></tr></table></figure></p>
+<p>你現在的位置其實和 windows 還是有應對關係的，</p>
+<p>你可以下個<br><code>cygpath -w $HOME</code>來確認自己家目錄在 windows 的位置。<br><code>cygpath -w $PWD</code>來確認自己當前  在 windows 的位置。</p>
+<h2 id="動身"><a href="#動身" class="headerlink" title="動身"></a>動身</h2><p>知道了自己的位置後，接下來就是改變位置了，</p>
+<p>想像一下，你現在是一個人，每個資料夾是個房間，你現在知道自己的位置，再來就是走來走去了。</p>
+<p>你可以先下個<code>ls</code>指令，看一下現在的房間和哪幾間相連著。(ls 是 list 的縮寫）</p>
+<p>沒意外的話是空空如也啊。</p>
+<p>可以再下個<code>ls -a</code>，(a 是 all 的意思），把所有隱藏的房間（和物品 -&gt;文件） show 出來。<br>(<code>ls -la</code> 可以詳列更多訊息，l 是 long list format 的意思）</p>
+<p>你可以發現多了 <code>.</code> 和 <code>..</code> 這兩個房間。</p>
+<p><code>.</code>表示當前這間房間。至於為啥要有這種設計，你之後就會知道了。<br><code>..</code>則是上一層房間。方才我們說過，linux 的檔案系統是以樹狀的結構存在。</p>
+<p>接下了可以開始切換了，可以使用<code>cd dirname</code>切換路徑。<br>使用<code>cd ..</code>切到上一層。(cd 是 change directory 的縮寫）<br>沒有任何 output，只是命令列 (prompt) 稍稍改變了一下，這代表你成功切到上一層了。</p>
+<blockquote>
+<p>沒有消息就是好消息。—— linux 的哲學</p>
+</blockquote>
+<p>沒有 output 大多就是程序正常運行。</p>
+<p>接著下<code>ls</code>，看到的目錄應該就是你的家目錄，注意一點的是，名字為什麼不是<code>~</code>呢？</p>
+<p>因為<code>~</code>只是個縮寫啦。</p>
+<p>關於回到家目錄，你可以用<code>cd ~</code> 或 <code>cd</code>。</p>
+<blockquote>
+<p>對於路徑，<a href="http://linux.vbird.org/linux_basic/0220filemanager.php#dir_pathway" target="_blank" rel="noopener">這裡</a> 有更詳細的說明。</p>
+</blockquote>
+<h2 id="建立捷徑"><a href="#建立捷徑" class="headerlink" title="建立捷徑"></a>建立捷徑</h2><p>linux 和 windows 的捷徑其實是不太一樣的，在 cygwin 中不可用 .lnk 的捷徑。</p>
+<p>在家目錄如果想要建一個到桌面的捷徑，<br>你可以下 <code>ln -s /cygdrive/c/Users/$USER/Desktop/ ~/desktop</code>。</p>
+<p>然後你在家目錄可以使用 <code>cd desktop</code> 移動到桌面了。</p>
+<h2 id="創建、刪除與移動"><a href="#創建、刪除與移動" class="headerlink" title="創建、刪除與移動"></a>創建、刪除與移動</h2><ul>
+<li><p>創建<br>當你要創建一個資料夾的時候使用 <code>mkdir dirname</code>。<br>當你要創建一個空文檔的時候使用 <code>touch filename</code>。</p>
+<blockquote>
+<p>補充一點，檔案大致分為兩種類型 text 和 binary，<br><a href="https://en.wikipedia.org/wiki/Text_file" target="_blank" rel="noopener">text</a> 是存 ASCII 和 UTF-8 一類，一般用 vim 或記事本等編輯。<br><a href="https://en.wikipedia.org/wiki/Binary_file" target="_blank" rel="noopener">binary</a> 是 non-text file，例如可執行的二進制檔案。<br>不過 .py 檔是純文本也可執行，因為它是直譯的。<br>但是說到底，在電腦裡都是以二進制的方式儲存啦 :P</p>
+</blockquote>
+</li>
+<li><p>刪除<br>當你要移除一個檔案時 <code>rm filename</code>。<br>當你要移除一個<em>空</em>資料夾的時候 <code>rmdir dirname</code>。<br>當你要移除一個資料夾（空或非空都適用）和裡面的東西 <code>rm -r dirname</code>。<br>(-r flag 是 recursively 的意思）</p>
+<blockquote>
+<p>注意！使用 rm 刪除資料就真的回不來了，它沒有資源回收垃圾桶。</p>
+</blockquote>
+</li>
+<li><p>移動（或更名）<br>當你要移動檔案（或資料夾）A 到資料夾 B 時 <code>mv a b</code>。<br>當你要重新命名檔案（或資料夾） A 為 B 時 <code>mv a b</code>。</p>
+<blockquote>
+<p>看出來了嗎，若 B <strong>資料夾</strong>不存在，則會視為更名，存在則是移動。<br>要非常小心的一點是 B 如果是已存在的<strong>檔案</strong>時，B 會被 A 覆蓋，而 A 命名為 B。<br>還有一點要注意的是，Windows 下大小寫其實是不分的。<br>（但你在 Cygwin 中打字還是要分大小寫）。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="關於強大的-TAB-和-Arrow-Keys-快捷鍵等"><a href="#關於強大的-TAB-和-Arrow-Keys-快捷鍵等" class="headerlink" title="關於強大的 TAB 和 Arrow Keys , 快捷鍵等"></a>關於強大的 TAB 和 Arrow Keys , 快捷鍵等</h2><ul>
+<li><p>tab<br>假設你要切換到一個名字很長的資料夾時，<br><code>cd aDirWithALongLongLongName</code>，你可能會打到瘋掉，<br>這時可以適時的使用 tab 鍵。<br><code>cd aDirW</code> 打幾個字後敲一下 tab 鍵，他會盡可能挑出當前可能的選項幫你補上去。</p>
+</li>
+<li><p>arrow keys<br>你方才輸過的指令可以用方向鍵上下來叫出來。</p>
+</li>
+<li><p>快捷鍵（有興趣請走<a href="https://wiki.archlinux.org/index.php/Keyboard_shortcuts" target="_blank" rel="noopener">這</a>)<br>輸過的指令也可以按<code>ctrl-r</code>然後敲幾個字來叫出，<br>如果不是想要的那個，繼續按<code>ctrl-r</code>，選到後按<code>enter</code>。</p>
+</li>
+</ul>
+<h2 id="指令幫助"><a href="#指令幫助" class="headerlink" title="指令幫助"></a>指令幫助</h2><p>每一道指令都是一支程式，在 linux 下你可以用以下方法得到使用說明。</p>
+<ul>
+<li><p><code>man 指令名稱</code><br>其實 man 就是一支程式，它會幫你去找其他指令的相關使用說明。</p>
+</li>
+<li><p><code>指令名稱 -h</code></p>
+</li>
+<li><code>指令名稱 --help</code><br>一般來說程式會內建一些使用說明，加個 flag 試試看吧。</li>
+</ul>
+<h2 id="資料流重導向"><a href="#資料流重導向" class="headerlink" title="資料流重導向"></a>資料流重導向</h2><p>使用資料流也是一項很重要的技能。<br>簡單來說資料流可以分做 stdin , stdout , stderr。</p>
+<ul>
+<li><p>stdin 是檔案內容輸入至程式（指令）的一條流向。<br>（鍵盤輸入 — linux 下裝置也有檔案，在 /dev 中，也是 stdin）</p>
+<p>當你寫好一支簡單的程式 (output.py)，他會要求輸入，然後輸出至螢幕。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(input())</span><br></pre></td></tr></table></figure>
+<p>但你每次要輸一長串相同的東西很麻煩，<br>這時候你可以寫在檔案 (input.txt) 裡面。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hello world! It&apos;s my first python script ......</span><br></pre></td></tr></table></figure>
+<p>每次就不用執行<code>python output.py</code>再從鍵盤輸入同樣的東西了。<br>寫好 input.txt 後只要下<code>python output.py &lt; input.txt</code>，<br>它就會幫你把 input.txt 的內容輸進 output.py。</p>
+</li>
+<li><p>stdout 程式輸出至檔案的那條流向（螢幕在 linux 下也是檔案喔）。</p>
+<p>你現在下個 <code>ls</code> 的指令，它會輸出至螢幕，如果你要將它重導至檔案 (justLsOut.txt)，<br>可以下個<code>ls &gt; justLsOut.txt</code>。<br>如果本來沒有 justLsOut.txt 檔案，它會創一個 justLsOut.txt，然後把內容塞進去。<br>如果已經有 justLsOut.txt 的話，它會覆蓋掉 justLsOut.txt 的內容，然後塞 ls 的結果進去。</p>
+<p>但如果你不想要覆蓋掉原本內容呢？你也可以將 ls 的結果加在 justLsOut.txt 後面。<br>使用 <code>ls &gt;&gt; justLsOut.txt</code> 就好了。<code>&gt;&gt;</code>是 append 的用法。</p>
+</li>
+<li><p>stderr 是當有錯誤發生時，程式輸出至檔案的那條流向。<br>不過一般是跟 stdout 一起輸到螢幕。<br>如果你將 stdout 導到其他地方，螢幕剩下的就是 stderr 了。</p>
+</li>
+</ul>
+<blockquote>
+<p>更多如 <code>cat &gt; file.txt &lt;&lt; end</code> , <code>ls nonexsitfile.txt &gt; out.txt 2&amp;&gt;1</code> 用法請走<a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node14.html" target="_blank" rel="noopener">這</a><br>除此之外，你還可以學學 <a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node15.html" target="_blank" rel="noopener">pipe</a></p>
+</blockquote>
+<h2 id="使用-apt-cyg-管理套件"><a href="#使用-apt-cyg-管理套件" class="headerlink" title="使用 apt-cyg 管理套件"></a>使用 apt-cyg 管理套件</h2><p>cygwin 安裝的 setup.exe 基本上就是一個套件管理器，但是它是 GUI 的，而且還要點一堆選項，感覺很慢。</p>
+<p>如果你追求速度又 prefer Text Mode 的話，你可以試試別人寫的 shell script － apt-cyg。</p>
+<p>用起來感覺就像 apt-get 一樣。</p>
+<p>apt-cyg 如何使用呢？首先先把 <a href="https://github.com/transcode-open/apt-cyg/blob/master/apt-cyg" target="_blank" rel="noopener">apt-cyg 的 script</a> 複製下來，</p>
+<p>接著你有以下幾種方式（任選其一即可）把內容貼到檔案，放到家目錄。</p>
+<ol>
+<li>貼在記事本裡面，<strong>不要用 word</strong>，然後存到家目錄 (<code>cpath -w $HOME</code>) 中，假設存為 <code>script.txt</code>。</li>
+<li>下指令<code>cat &gt; script.txt</code> 然後滑鼠右鍵貼上，按 enter，接著<code>ctrl-d</code>跳出。<blockquote>
+<p>你可以下<code>cat script.txt</code>看貼上有沒有成功，<br><code>cat</code>指令是將檔案內容輸出至螢幕（沒有參數時是將鍵盤輸入輸出）。<br>接著可以用 <code>mv script.txt apt-cyg</code>。（別懷疑，我會將檔案叫做 script.txt 只是要你練習 mv）<br></p>
+</blockquote>
+</li>
+<li>有裝 wget 的話，在家目錄使用<blockquote>
+<p><code>wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg</code><br>  （你可以 cat 一下 apt-cyg 看看有沒有下載成功）</p>
+</blockquote>
+</li>
+</ol>
+<p>再來 <code>chmod a+x apt-cyg</code>。<br>（讓這個腳本擁有執行權限，有興趣看看關於 linux <a href="http://linux.vbird.org/linux_basic/0210filepermission.php" target="_blank" rel="noopener">檔案權限</a> 的內容）</p>
+<p>接著 <code>./apt-cyg install vim</code>。你就有 vim 可以用了。（我的 vim 入門可以走<a href="/2017/01/22/vim-0/#more">這</a>)<br>（和 Windows 不一樣的是，當前目錄可執行的檔案要執行一定要加 <code>./</code>)</p>
+<p>你可以將 <code>apt-cyg</code> 移到 <code>/bin</code> （根目錄底下的 bin 目錄），<br>這樣就能在任何地方呼叫它而不用使用<code>./</code>了。</p>
+<p><code>mv apt-cyg /bin</code>。（對這方面有興趣可以看看<code>$PATH</code>的<a href="https://www.phpini.com/linux/set-path-var" target="_blank" rel="noopener">介紹</a>）</p>
+<p>然後如果對有帶<code>$</code>號的變數有興趣的話，可以看看<a href="http://linux.vbird.org/linux_basic/0320bash.php#variable_environ" target="_blank" rel="noopener">環境變數</a>。</p>
+<blockquote>
+<p>其實如果檔案沒有執行權限，可以使用<code>bash file.sh</code> 來執行一個 shell 腳本。<br>道理和 python 一樣。</p>
+</blockquote>
+<h2 id="其他有用套件"><a href="#其他有用套件" class="headerlink" title="其他有用套件"></a>其他有用套件</h2><p><code>tmux</code> — 一項強大的終端切割螢幕工具。使用 <code>apt-cyg install tmux</code> 取得。<br>在沒有設定檔的情形下<code>ctrl-b</code>是 prefix 鍵。 使用<code>ctrl-b ?</code>開始玩玩看吧。<br>也可以使用我調校過的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/tmux.conf" target="_blank" rel="noopener">設定檔</a> (prefix 是 <code>ctrl-a</code>)，將設定檔存為 <code>~/.tmux.conf</code>。</p>
+<h2 id="結束"><a href="#結束" class="headerlink" title="結束"></a>結束</h2><p>你玩完 Cygwin 後，可以不用按右上角的<code>X</code>，你可以打個 <code>exit</code> 或按<code>ctrl-d</code>來結束它。</p>
+
+      
+    </div>
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------------- EOF -------------</div>
+    
+</div>
+
+  
+</div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/cygwin/" rel="tag"><i class="fa fa-tag"></i> cygwin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/29/python-container/" rel="next" title="About Python's container">
+                <i class="fa fa-chevron-left"></i> About Python's container
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/15/ctype2en/" rel="prev" title="C Type Defination to English">
+                C Type Defination to English <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+            <a href="/about/">
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="lambda.catノ">
+            
+              <p class="site-author-name" itemprop="name">lambda.catノ</p>
+            </a>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/nobodyzxc" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://t.me/nobodyzxc" target="_blank" title="Telegram">
+                      
+                        <i class="fa fa-fw fa-telegram"></i>Telegram</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://incalpcs.blogspot.com" target="_blank" title="Blogger">
+                      
+                        <i class="fa fa-fw fa-google"></i>Blogger</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.youtube.com/channel/UCPgvp2rLwglsLVCrqVlQXuA" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/nobodyzxc.tw" target="_blank" title="FaceBook">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FaceBook</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.instagram.com/nobodyzxc.tw/" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+<script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script>
+<div class="widget-wrap">
+  <div id="myCanvasContainer" class="widget tagcloud">
+    <canvas width="220" height="220" id="resCanvas" style="width=100%">
+        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/conference/">conference</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/continuation/">continuation</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/coscup/">coscup</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cpp/">cpp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cygwin/">cygwin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flolac/">flolac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fp/">fp</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/">game</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/haskell/">haskell</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lambda/">lambda</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/lisp/">lisp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/logic/">logic</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/oop/">oop</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/opensource/">opensource</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ruby/">ruby</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scheme/">scheme</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sql/">sql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/stl/">stl</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/">vim</a><span class="tag-list-count">2</span></li></ul>
+    </canvas>
+  </div>
+</div>
+
+
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#WHERE-AM-I"><span class="nav-number">1.</span> <span class="nav-text">WHERE AM I ?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#動身"><span class="nav-number">2.</span> <span class="nav-text">動身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立捷徑"><span class="nav-number">3.</span> <span class="nav-text">建立捷徑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#創建、刪除與移動"><span class="nav-number">4.</span> <span class="nav-text">創建、刪除與移動</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#關於強大的-TAB-和-Arrow-Keys-快捷鍵等"><span class="nav-number">5.</span> <span class="nav-text">關於強大的 TAB 和 Arrow Keys , 快捷鍵等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令幫助"><span class="nav-number">6.</span> <span class="nav-text">指令幫助</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#資料流重導向"><span class="nav-number">7.</span> <span class="nav-text">資料流重導向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-apt-cyg-管理套件"><span class="nav-number">8.</span> <span class="nav-text">使用 apt-cyg 管理套件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他有用套件"><span class="nav-number">9.</span> <span class="nav-text">其他有用套件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結束"><span class="nav-number">10.</span> <span class="nav-text">結束</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lambda.catノ</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46k </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="/files/typed.js"></script>
+    <script defer type="text/javascript">
+      function load_script(url){
+        var ukagaka_script = document.createElement('script');
+        ukagaka_script.setAttribute('src', url);
+        document.head.appendChild(ukagaka_script);
+      }
+      function load_style(url){
+        var ukagaka_css = document.createElement('link');
+        ukagaka_css.setAttribute('rel', 'stylesheet');
+        ukagaka_css.setAttribute('type', type='text/css');
+        ukagaka_css.setAttribute('href', url);
+        document.head.appendChild(ukagaka_css);
+      }
+
+      document.onreadystatechange = function () {
+          if (document.readyState == "interactive") {
+              load_script('/files/reconnecting-websocket.min.js');
+              load_style('/files/ukagaka.css');
+              load_script('/files/jquery-ui.js');
+              //load_script('/files/typed.js');
+              load_script('/files/ukagaka.js');
+              //load_script('/files/jquery.morris.ukagaka.resource.js');
+          }
+      }
+    </script>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      visitors:
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      <i class="fa fa-user"></i>
+    </span>
+  
+
+  
+    <span class="site-pv">
+      visit count:
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      🐾
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/custom.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://https-nobodyzxc-github-io.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://nobodyzxc.github.io/2017/05/30/basic-linux/';
+          this.page.identifier = '2017/05/30/basic-linux/';
+          this.page.title = 'Cygwin Beginner Guide';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-nobodyzxc-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@^3.1.3/lib/L2Dwidget.min.js"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"superSample":4,"width":200,"height":400,"position":"right","hOffset":0,"vOffset":-95},"mobile":{"show":true,"scale":1},"react":{"opacity":0.7,"opacityDefault":0.3,"opacityOnHover":0.2},"log":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
+</html>
