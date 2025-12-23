@@ -834,144 +834,6 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
       </tags>
   </entry>
   <entry>
-    <title>Vim Note (Basic Configuration)</title>
-    <url>/2020/11/18/vim-1/</url>
-    <content><![CDATA[<center>
-距離上一篇已經過了三年多，<br>
-這五年多來的 Vim 之旅似乎還沒落幕。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="基本配置篇"><a href="#基本配置篇" class="headerlink" title="基本配置篇"></a>基本配置篇</h2><h3 id="認識-vimrc"><a href="#認識-vimrc" class="headerlink" title="認識 vimrc"></a>認識 vimrc</h3><p>基本上一個空的 vim 設定應該是連行號都沒有的。<br>那如果要叫出行號，就必須使用指令 <code>:set nu</code>，<br>但每次都要打似乎太麻煩了，<br>這時，我們就可以寫個設定檔。</p>
-<p>在類 Unix 環境下，家目錄下面，可以創立一個 <code>.vimrc</code> 檔案，然後寫一些設定進去。<br>而在 Windows 下，Cygwin 也是在加目錄，而 gvim 那些的設定檔可能就請參考 <a href="https://stackoverflow.com/questions/9120500/vim-settings-file-on-windows" target="_blank" rel="noopener">這邊</a>。</p>
-<p>以下是某位學長的設定檔，系上工作站大家的帳號一開始都是從這個設定檔入門的。<br>有趣的小功能算不少，但最有用的就是用 tab 補全代碼吧 :)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set nocompatible</span><br><span class="line">set secure</span><br><span class="line"></span><br><span class="line">set backspace=2         &quot; allow backspacing over everything in insert mode</span><br><span class="line">set viminfo=&apos;20,\&quot;50    &quot; read/write a .viminfo file, don&apos;t store more</span><br><span class="line">                        &quot; than 50 lines of registers</span><br><span class="line">set history=50          &quot; keep 50 lines of command line history</span><br><span class="line">set ruler               &quot; show the cursor position all the time</span><br><span class="line">&quot;set dictionary=~/.dict  &quot; my dictionary :p</span><br><span class="line"></span><br><span class="line">&quot;set expandtab           &quot; expand tabs to spaces.</span><br><span class="line">set wildchar=&lt;TAB&gt;      &quot; such as &lt;TAB&gt; in shell</span><br><span class="line">set smarttab</span><br><span class="line">set tabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line"></span><br><span class="line">set nu</span><br><span class="line">set t_Co=8              &quot; number of colors</span><br><span class="line">set t_Sf=[1;3%p1%dm   &quot; set foreground color</span><br><span class="line">set t_Sb=[1;4%p1%dm   &quot; set background color</span><br><span class="line">set showcmd             &quot; show command</span><br><span class="line">set showmode            &quot; show current mode</span><br><span class="line">set incsearch           &quot; While typing a search pattern, show immediately</span><br><span class="line">                        &quot; where the so far typed pattern matches.</span><br><span class="line">set hlsearch            &quot; When there is a previous search pattern,</span><br><span class="line">                        &quot; highlight all its matches.</span><br><span class="line">syntax on               &quot; show parts of the text in another font or color</span><br><span class="line"></span><br><span class="line">set fileencodings=utf-8,cp936,big5,latin1</span><br><span class="line">set background=dark</span><br><span class="line"></span><br><span class="line">autocmd FileType c,cpp,cc,java call PROG()</span><br><span class="line">autocmd FileType make setlocal noexpandtab</span><br><span class="line"></span><br><span class="line">colorscheme default</span><br><span class="line"></span><br><span class="line">function PROG()</span><br><span class="line">    set showmatch</span><br><span class="line">    set nosmartindent</span><br><span class="line">    set cindent comments=sr:/*,mb:*,el:*/,:// cino=&gt;s,e0,n0,f0,&#123;0,&#125;0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30</span><br><span class="line">    set cinoptions=t0</span><br><span class="line">    imap &lt;C-a&gt;f &lt;END&gt;&lt;CR&gt;for(;;) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt;</span><br><span class="line">                \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;</span><br><span class="line">    imap &lt;C-a&gt;w &lt;END&gt;&lt;CR&gt;while( ) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt;</span><br><span class="line">                \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;END&gt;&lt;LEFT&gt;&lt;LEFT&gt;</span><br><span class="line">    set formatoptions=tcqr</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">highlight Comment    ctermfg=DarkCyan</span><br><span class="line">highlight SpecialKey ctermfg=Yellow</span><br><span class="line"></span><br><span class="line">map &lt;F2&gt; :update&lt;CR&gt;                    &quot; using :update to replace :w</span><br><span class="line">map &lt;F3&gt; :update&lt;CR&gt;:q&lt;CR&gt;</span><br><span class="line">map &lt;F4&gt; :q!&lt;CR&gt;</span><br><span class="line">map &lt;F5&gt; :bp&lt;CR&gt;</span><br><span class="line">map &lt;F6&gt; :bn&lt;CR&gt;</span><br><span class="line">&quot; map &lt;F8&gt; :set hls!&lt;BAR&gt;set hls?&lt;CR&gt;     &quot; toggle on/off highlightsearch</span><br><span class="line">map &lt;F8&gt; :set paste!&lt;BAR&gt;set paste?&lt;CR&gt; &quot; toggle on/off paste mode</span><br><span class="line">set pastetoggle=&lt;F8&gt;</span><br><span class="line">map &lt;F9&gt; :!make %:r &lt;CR&gt;</span><br><span class="line"></span><br><span class="line">map &lt;F7&gt; :if exists(&quot;syntax_on&quot;) &lt;BAR&gt;  &quot; press &lt;F7&gt; syntax on/off</span><br><span class="line">        \   syntax off &lt;bar&gt;&lt;cr&gt;</span><br><span class="line">        \ else &lt;BAR&gt;</span><br><span class="line">        \   syntax on &lt;BAR&gt;</span><br><span class="line">        \ endif &lt;CR&gt;</span><br><span class="line"></span><br><span class="line">map &lt;F10&gt; &lt;ESC&gt;:read !date&lt;CR&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;smart mapping for tab completion</span><br><span class="line">function InsertTabWrapper()</span><br><span class="line">    let col = col(&apos;.&apos;) - 1</span><br><span class="line">    if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos;</span><br><span class="line">        return &quot;\&lt;tab&gt;&quot;</span><br><span class="line">    else</span><br><span class="line">        return &quot;\&lt;c-p&gt;&quot;</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">inoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt;</span><br></pre></td></tr></table></figure>
-<p>後來，我為了比賽重新翻修，去蕪存菁：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source /etc/vimrc</span><br><span class="line">set nu &quot;num line</span><br><span class="line">set tabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line">set cindent</span><br><span class="line">set smarttab</span><br><span class="line">set expandtab &quot;set tab to space</span><br><span class="line">set autoindent</span><br><span class="line">syntax on</span><br><span class="line">&quot;hi comment ctermfg=cyan</span><br><span class="line">hi comment ctermfg=blue</span><br><span class="line">&quot;prefer ^</span><br><span class="line">&quot;let comment color be blue. instead of dark blue</span><br><span class="line">&quot;super TAB</span><br><span class="line">function InsertTabWrapper()</span><br><span class="line">    let col = col(&apos;.&apos;) - 1</span><br><span class="line">    if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos;</span><br><span class="line">        return &quot;\&lt;tab&gt;&quot;</span><br><span class="line">    else</span><br><span class="line">        return &quot;\&lt;c-p&gt;&quot;</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line">inoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt;</span><br><span class="line">&quot;my rc</span><br><span class="line">imap jk &lt;ESC&gt;</span><br><span class="line">let mapleader = &quot;\&lt;Space&gt;&quot;</span><br><span class="line">nmap &lt;Leader&gt;r :&lt;C-P&gt;&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;x :x&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;w :w&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;q :q&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;n :n&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;N :N&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;jq :q!&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;/ :noh&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;; :</span><br><span class="line">nmap &lt;Leader&gt;= mcHmhLmlgg=G`h`l`c</span><br><span class="line">noremap H ^</span><br><span class="line">noremap L $</span><br><span class="line">set clipboard=unnamedplus</span><br><span class="line">set hlsearch</span><br></pre></td></tr></table></figure>
-<h3 id="認識-Vundle"><a href="#認識-Vundle" class="headerlink" title="認識 Vundle"></a>認識 Vundle</h3><p>學會了一些簡單的 vim 配置之後，就可以嘗試別人寫的套件。<br>vim 有很多套件管理器，像是 <code>vundle</code>, <code>vim-plug</code> 等。</p>
-<p>我只用過 vundle，簡單來說他就是可以抓 GitHub 上別人寫好的套件來用。</p>
-<p>詳情可以參考 <a href="https://blog.gtwang.org/linux/vundle-vim-bundle-plugin-manager/" target="_blank" rel="noopener">這篇</a>。</p>
-<p>簡單來說就是先 clone vundle 到 .vim 下面的目錄，然後在 .vimrc 裡面加上一下設定。</p>
-<p>接著在 vimrc 裡面新增想要的套件，接著再 <code>:PluginInstall</code> 即可。</p>
-<p>之前的 tab 補全是學長簡單用 vim script 寫得，<br>想要進階一點可以改用 youcompleteme （但好像不太好裝）或是用簡單的 <code>ervandew/supertab</code>。</p>
-<p>lisp 愛好者不能錯過 <code>luochen1990/rainbow</code>。<br><code>majutsushi/tagbar</code> 也可以讓他變得更像 IDE，搭配 <code>scrooloose/nerdtree</code> 就更潮了。</p>
-<p>再加上個 <code>vim-airline/vim-airline</code> 加上 powerline 字型直呼完美。</p>
-<p>如果你是盤古之白的信仰者，還可以裝個 <code>hotoo/pangu.vim</code>。</p>
-<p><code>shougo/vimshell.vim</code> 也挺好玩的，當然，好玩的東西還有很多，待各位探索。</p>
-<h3 id="認識-SapceVim"><a href="#認識-SapceVim" class="headerlink" title="認識 SapceVim"></a>認識 SapceVim</h3><p>SpaceVim 集各家大成，我一直到了第五年才入坑。<br>之前一直覺得自己用用 Vundle 就夠了，這樣自訂性也高，<br>但後來用得東西越來越雜，設定檔修修補補也越來越無心維護。</p>
-<p>那有沒有設定更少，然後功能更強的方法？我遇到了 SpaceVim。</p>
-<p>大概是在接觸 ale 後，覺得要 trace code 和 syntax check 上還是需要精進，<br>但是自己又懶得折騰，這時同學提到了 Language Server Protocol (LSP)。</p>
-<p>他在代碼補全，trace code 和 syntax check 上都可以使用，而且幾乎每個語言都有實作可以接。</p>
-<p>裝了 vim-lsp，但覺得禁不起太多次折騰。這時我發現了 SpaceVim 的 layer 有 lsp 可以用！</p>
-<p>而且 SpaceVim 安裝簡單，只要一行： <code>curl -sLf https://spacevim.org/install.sh | bash</code>。</p>
-<p>比較麻煩的可能就是要另外安裝字型吧，不過裝完後也就挺漂亮就是了。</p>
-<p>功能很多，使用上不時會發現一些意想不到的快捷鍵 :)</p>
-<p>不過我還是會把之前習慣的 binding 蓋上去就是了w</p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>vim</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vim Note (Basic Manipulation)</title>
-    <url>/2017/01/22/vim-0/</url>
-    <content><![CDATA[<center>
-結識 vim 一年多了，一切的一切算得上機緣巧遇。<br>
-一路走來的點點滴滴，想來不禁百感交集。<br>
-這篇文章會不定期更新，隨著我的 vim skill。<br>
-這段旅途的終點，大概就是我不用 vim 的那天吧！<br>
-（可能是入 emacs 教，或是真香 IDE 了吧）<br>
-Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim 教吧。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="基本操作篇"><a href="#基本操作篇" class="headerlink" title="基本操作篇"></a>基本操作篇</h2><p>要編輯一個存在的文檔<code>tst.txt</code>時只要在 terminal 下 <code>vim tst.txt</code>。<br>如果要建立一個新檔，叫做<code>new.txt</code>，也只要下 <code>vim new.txt</code>，只是離開記得存。<br>如果還沒想到要存什麼名字，只要下<code>vim</code>就好了，離開再命名就好了。</p>
-<p>vim 有三種模式 normal , insert , visual。一開始進到 vim 時即是 normal 模式。</p>
-<p><code>&lt;ESC&gt;</code>進 normal mode ，<br>normal mode 下，<code>i</code>（注意是小寫），可以讓游標在<strong>原位</strong>進入 insert mode，<br>normal mode 下，<code>v</code>，可以進入 visual mode。</p>
-<p>看起來，normal mode 是一切 mode 的橋樑。</p>
-<p>敏銳的人可以發現， normal mode 左下並沒有特別的東西。<br>insert mode 會出現 <code>-- INSERT --</code>， visual mode 則是 <code>-- VISUAL --</code>。</p>
-<h3 id="normal-mode"><a href="#normal-mode" class="headerlink" title="- normal mode"></a>- normal mode</h3><p>normal 模式主要有兩種功能，快速移動游標、簡易文檔操作和下指令。<br>其中離開指令就是在 normal mode 下的。<br>要切換 normal mode 只要按<code>esc</code>鍵就好了，vim script 會表示成<code>&lt;ESC&gt;</code>。<br>要下指令，只要在 normal mode 按<code>:</code>，再下指令。</p>
-<ol>
-<li><p>移動</p>
-<p>要移動最簡單的就是按方向鍵，但是 vim 習慣上會使用 <code>jkhl</code> ， 分別對應上下左右。<br>（方向鍵在所有模式是通用的）</p>
-<p>不想一格格移動的話可以先鍵入一個數字再移動，比如 <code>15j</code> 是向下移動十五行。<br>在很多操作下都有搭配數字的用法，有興趣不妨試一下。</p>
-<p>要把游標移動到行首，可以直接按數字 <code>0</code>。<br>要把游標移動到行尾，可以直接按符號 <code>$</code>(shift + 4)。<br>要把游標移動到首行，可以直接按字母 <code>gg</code>。<br>要把游標移動到尾行，可以直接按字母 <code>G</code>(shift + g)。</p>
-<p>vim 上某些建議是不要鎖住 caps lock 鍵，要大寫盡量用 shift 鍵。</p>
-</li>
-<li><p>文檔操作</p>
-<ul>
-<li>copy   : 整行 copy 按 <code>yy</code>，或是按<code>v</code>進入 visual mode 選取再按 <code>y</code>。</li>
-<li>paste  : 按<code>p</code>。</li>
-<li>delete : 用法跟 copy 很像，字母<code>d</code>和<code>x</code>，try 一下吧，帶有剪下的功能。</li>
-<li>search : 按下 <code>/</code> ， 鍵入搜尋字串然後<code>enter</code>，<code>n</code>下一筆，<code>N</code>上一筆。</li>
-<li>replace: <code>:%s/ 目標字串 / 取代成字串 /g</code>，<code>g</code>是對每行的目標字串替換，<br>沒加只會取代每行第一個。 （亦可進入 visual 進行取代，就不用使用<code>%</code>)<br> （關於 vim regex 請走<a href="http://vimregex.com/" target="_blank" rel="noopener">這</a>）</li>
-</ul>
-</li>
-<li><p>指令</p>
-<p>進到 vim 之後先講一下離開吧。<br>有句有名的話是這樣說的。</p>
-<blockquote>
-<p>要產生一個隨機字串，就是讓一個新手離開 vim</p>
-</blockquote>
-<p>離開的指令是<code>q</code>，所以假設我們不知道現在是什麼模式，</p>
-<p>只要按下<code>&lt;ESC&gt;:q</code>，就能離開。<br>不過你可能會遇到這種情況</p>
-<blockquote>
-<p><code>E37: No write since last change (add ! to override)</code></p>
-</blockquote>
-<p>意思就是你對檔案有了改動， vim 不確定你是否要儲存再離開，所以詢問。<br>道理和用 Word 離開會跳出 msgbox 一樣。<br>如果沒有要儲存，照著提示，只要下<code>:q!</code>，即可。<br>若要儲存，只要下<code>:wq</code>。<br>到了這裡，有沒有發現一件事，所謂指令，好像有著某種組合關係。</p>
-<blockquote>
-<p>沒錯， vim 的精隨就在於<strong>組合</strong>！</p>
-</blockquote>
-<p>像是要把該行往下 shift 一行，就可以使用 <code>ddp</code>。</p>
-<p><code>w</code>是儲存的指令，<code>:wq</code>，就是儲存後離開。<br>直接下<code>:w</code>當然就是儲存啊，養成隨時儲存的習慣， vim 因為斷線掛掉可是很折騰的。</p>
-<blockquote>
-<p>不要只會<code>:wq</code>啊，<code>:w</code>要舉一反三直接理解</p>
-</blockquote>
-<p>前面提到，若沒取檔名，只要在離開使用<code>:wq filename</code>即可存成該檔並離開。<br><code>filename</code> 這個參數主要是餵給 <code>w</code> 使用，所以單獨用<code>:w filename</code>也可以。</p>
-<p>若 vim 在一開始就開檔了呢？這時此種用法就會變成另存新檔囉，很好理解吧。</p>
-<p><code>!</code>是強制的意思，<code>:q!</code>，解釋為強制離開。<br>有時是文檔的擁有者，但是沒有給自己加上 w 權限，<br>這時 vim 左下角就會出現<code>[readonly]</code>。<br>normal mode 下 <code>:wq</code>時就會出現</p>
-<blockquote>
-<p><code>W10: Warning: Changing a readonly file</code></p>
-</blockquote>
-<p>這時也只要加個驚嘆號就可以了。（當然，不是文檔擁有者不管用）<br>那<code>:qw</code>可以執行嗎？很遺憾，所謂指令是有順序的，想想看，這合理嗎？<br>也是可以試試看，程序員鼓勵試錯精神。</p>
-<blockquote>
-<p><code>:wq</code> 有快捷，他等價於<code>:x</code>，但我覺得要按<code>&lt;ESC&gt;</code>的話，<br>計入移動手的成本，其實也沒快到哪裡。<br>還有個快捷是<code>ZZ</code>。</p>
-</blockquote>
-</li>
-</ol>
-<p>normal mode 已經說了個大概，更進階的之後會在 vimrc section 中討論。</p>
-<h3 id="insert-mode"><a href="#insert-mode" class="headerlink" title="- insert mode"></a>- insert mode</h3><p>主要就是打字，沒什麼好說的，有幾種指令可以由 normal mode 進入 insert mode。</p>
-<ul>
-<li><code>i</code> : 由游標位置進入。</li>
-<li><code>I</code> : 插入該行第一個字元位置。</li>
-<li><code>a</code> : 游標位置往後一位插入。</li>
-<li><code>A</code> : 插入行尾。</li>
-<li><code>o</code> : 插入下一行。</li>
-<li><code>O</code> : 插入上一行。</li>
-<li><code>s</code> : 消除一字元並進入。</li>
-<li><code>S</code> : 清除該行。</li>
-</ul>
-<h3 id="visual-mode"><a href="#visual-mode" class="headerlink" title="- visual mode"></a>- visual mode</h3><p>  一鍵縮排很實用，選起來再按 <code>=</code> 即可。<br>  所以要全文縮排就可以使用 <code>ggvG=</code> 或是 <code>gg=G</code>。</p>
-<p>  還有值得一提的是 column 模式。<br>  按<code>v</code>進入 visual mode，往下選取需要的行。<br>  <code>ctrl-v</code>進入 column 模式。</p>
-<p>  然後可以做啥咧？按<code>I</code>進入 insert mode，鍵入幾個字。<br>  <code>esc</code> 跳出。<br>  在每行插入剛剛打的字母。</p>
-<p>參考資料：<a href="https://www.fprintf.net/vimCheatSheet.html" target="_blank" rel="noopener">vim cheat sheet</a></p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>vim</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>About Python&#39;s container</title>
     <url>/2017/05/29/python-container/</url>
     <content><![CDATA[<center>
@@ -1185,6 +1047,144 @@ Python 感覺入門很久了，但對於容器的使用一直感到很生疏，�
       <tags>
         <tag>oop</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vim Note (Basic Manipulation)</title>
+    <url>/2017/01/22/vim-0/</url>
+    <content><![CDATA[<center>
+結識 vim 一年多了，一切的一切算得上機緣巧遇。<br>
+一路走來的點點滴滴，想來不禁百感交集。<br>
+這篇文章會不定期更新，隨著我的 vim skill。<br>
+這段旅途的終點，大概就是我不用 vim 的那天吧！<br>
+（可能是入 emacs 教，或是真香 IDE 了吧）<br>
+Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim 教吧。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="基本操作篇"><a href="#基本操作篇" class="headerlink" title="基本操作篇"></a>基本操作篇</h2><p>要編輯一個存在的文檔<code>tst.txt</code>時只要在 terminal 下 <code>vim tst.txt</code>。<br>如果要建立一個新檔，叫做<code>new.txt</code>，也只要下 <code>vim new.txt</code>，只是離開記得存。<br>如果還沒想到要存什麼名字，只要下<code>vim</code>就好了，離開再命名就好了。</p>
+<p>vim 有三種模式 normal , insert , visual。一開始進到 vim 時即是 normal 模式。</p>
+<p><code>&lt;ESC&gt;</code>進 normal mode ，<br>normal mode 下，<code>i</code>（注意是小寫），可以讓游標在<strong>原位</strong>進入 insert mode，<br>normal mode 下，<code>v</code>，可以進入 visual mode。</p>
+<p>看起來，normal mode 是一切 mode 的橋樑。</p>
+<p>敏銳的人可以發現， normal mode 左下並沒有特別的東西。<br>insert mode 會出現 <code>-- INSERT --</code>， visual mode 則是 <code>-- VISUAL --</code>。</p>
+<h3 id="normal-mode"><a href="#normal-mode" class="headerlink" title="- normal mode"></a>- normal mode</h3><p>normal 模式主要有兩種功能，快速移動游標、簡易文檔操作和下指令。<br>其中離開指令就是在 normal mode 下的。<br>要切換 normal mode 只要按<code>esc</code>鍵就好了，vim script 會表示成<code>&lt;ESC&gt;</code>。<br>要下指令，只要在 normal mode 按<code>:</code>，再下指令。</p>
+<ol>
+<li><p>移動</p>
+<p>要移動最簡單的就是按方向鍵，但是 vim 習慣上會使用 <code>jkhl</code> ， 分別對應上下左右。<br>（方向鍵在所有模式是通用的）</p>
+<p>不想一格格移動的話可以先鍵入一個數字再移動，比如 <code>15j</code> 是向下移動十五行。<br>在很多操作下都有搭配數字的用法，有興趣不妨試一下。</p>
+<p>要把游標移動到行首，可以直接按數字 <code>0</code>。<br>要把游標移動到行尾，可以直接按符號 <code>$</code>(shift + 4)。<br>要把游標移動到首行，可以直接按字母 <code>gg</code>。<br>要把游標移動到尾行，可以直接按字母 <code>G</code>(shift + g)。</p>
+<p>vim 上某些建議是不要鎖住 caps lock 鍵，要大寫盡量用 shift 鍵。</p>
+</li>
+<li><p>文檔操作</p>
+<ul>
+<li>copy   : 整行 copy 按 <code>yy</code>，或是按<code>v</code>進入 visual mode 選取再按 <code>y</code>。</li>
+<li>paste  : 按<code>p</code>。</li>
+<li>delete : 用法跟 copy 很像，字母<code>d</code>和<code>x</code>，try 一下吧，帶有剪下的功能。</li>
+<li>search : 按下 <code>/</code> ， 鍵入搜尋字串然後<code>enter</code>，<code>n</code>下一筆，<code>N</code>上一筆。</li>
+<li>replace: <code>:%s/ 目標字串 / 取代成字串 /g</code>，<code>g</code>是對每行的目標字串替換，<br>沒加只會取代每行第一個。 （亦可進入 visual 進行取代，就不用使用<code>%</code>)<br> （關於 vim regex 請走<a href="http://vimregex.com/" target="_blank" rel="noopener">這</a>）</li>
+</ul>
+</li>
+<li><p>指令</p>
+<p>進到 vim 之後先講一下離開吧。<br>有句有名的話是這樣說的。</p>
+<blockquote>
+<p>要產生一個隨機字串，就是讓一個新手離開 vim</p>
+</blockquote>
+<p>離開的指令是<code>q</code>，所以假設我們不知道現在是什麼模式，</p>
+<p>只要按下<code>&lt;ESC&gt;:q</code>，就能離開。<br>不過你可能會遇到這種情況</p>
+<blockquote>
+<p><code>E37: No write since last change (add ! to override)</code></p>
+</blockquote>
+<p>意思就是你對檔案有了改動， vim 不確定你是否要儲存再離開，所以詢問。<br>道理和用 Word 離開會跳出 msgbox 一樣。<br>如果沒有要儲存，照著提示，只要下<code>:q!</code>，即可。<br>若要儲存，只要下<code>:wq</code>。<br>到了這裡，有沒有發現一件事，所謂指令，好像有著某種組合關係。</p>
+<blockquote>
+<p>沒錯， vim 的精隨就在於<strong>組合</strong>！</p>
+</blockquote>
+<p>像是要把該行往下 shift 一行，就可以使用 <code>ddp</code>。</p>
+<p><code>w</code>是儲存的指令，<code>:wq</code>，就是儲存後離開。<br>直接下<code>:w</code>當然就是儲存啊，養成隨時儲存的習慣， vim 因為斷線掛掉可是很折騰的。</p>
+<blockquote>
+<p>不要只會<code>:wq</code>啊，<code>:w</code>要舉一反三直接理解</p>
+</blockquote>
+<p>前面提到，若沒取檔名，只要在離開使用<code>:wq filename</code>即可存成該檔並離開。<br><code>filename</code> 這個參數主要是餵給 <code>w</code> 使用，所以單獨用<code>:w filename</code>也可以。</p>
+<p>若 vim 在一開始就開檔了呢？這時此種用法就會變成另存新檔囉，很好理解吧。</p>
+<p><code>!</code>是強制的意思，<code>:q!</code>，解釋為強制離開。<br>有時是文檔的擁有者，但是沒有給自己加上 w 權限，<br>這時 vim 左下角就會出現<code>[readonly]</code>。<br>normal mode 下 <code>:wq</code>時就會出現</p>
+<blockquote>
+<p><code>W10: Warning: Changing a readonly file</code></p>
+</blockquote>
+<p>這時也只要加個驚嘆號就可以了。（當然，不是文檔擁有者不管用）<br>那<code>:qw</code>可以執行嗎？很遺憾，所謂指令是有順序的，想想看，這合理嗎？<br>也是可以試試看，程序員鼓勵試錯精神。</p>
+<blockquote>
+<p><code>:wq</code> 有快捷，他等價於<code>:x</code>，但我覺得要按<code>&lt;ESC&gt;</code>的話，<br>計入移動手的成本，其實也沒快到哪裡。<br>還有個快捷是<code>ZZ</code>。</p>
+</blockquote>
+</li>
+</ol>
+<p>normal mode 已經說了個大概，更進階的之後會在 vimrc section 中討論。</p>
+<h3 id="insert-mode"><a href="#insert-mode" class="headerlink" title="- insert mode"></a>- insert mode</h3><p>主要就是打字，沒什麼好說的，有幾種指令可以由 normal mode 進入 insert mode。</p>
+<ul>
+<li><code>i</code> : 由游標位置進入。</li>
+<li><code>I</code> : 插入該行第一個字元位置。</li>
+<li><code>a</code> : 游標位置往後一位插入。</li>
+<li><code>A</code> : 插入行尾。</li>
+<li><code>o</code> : 插入下一行。</li>
+<li><code>O</code> : 插入上一行。</li>
+<li><code>s</code> : 消除一字元並進入。</li>
+<li><code>S</code> : 清除該行。</li>
+</ul>
+<h3 id="visual-mode"><a href="#visual-mode" class="headerlink" title="- visual mode"></a>- visual mode</h3><p>  一鍵縮排很實用，選起來再按 <code>=</code> 即可。<br>  所以要全文縮排就可以使用 <code>ggvG=</code> 或是 <code>gg=G</code>。</p>
+<p>  還有值得一提的是 column 模式。<br>  按<code>v</code>進入 visual mode，往下選取需要的行。<br>  <code>ctrl-v</code>進入 column 模式。</p>
+<p>  然後可以做啥咧？按<code>I</code>進入 insert mode，鍵入幾個字。<br>  <code>esc</code> 跳出。<br>  在每行插入剛剛打的字母。</p>
+<p>參考資料：<a href="https://www.fprintf.net/vimCheatSheet.html" target="_blank" rel="noopener">vim cheat sheet</a></p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>vim</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vim Note (Basic Configuration)</title>
+    <url>/2020/11/18/vim-1/</url>
+    <content><![CDATA[<center>
+距離上一篇已經過了三年多，<br>
+這五年多來的 Vim 之旅似乎還沒落幕。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="基本配置篇"><a href="#基本配置篇" class="headerlink" title="基本配置篇"></a>基本配置篇</h2><h3 id="認識-vimrc"><a href="#認識-vimrc" class="headerlink" title="認識 vimrc"></a>認識 vimrc</h3><p>基本上一個空的 vim 設定應該是連行號都沒有的。<br>那如果要叫出行號，就必須使用指令 <code>:set nu</code>，<br>但每次都要打似乎太麻煩了，<br>這時，我們就可以寫個設定檔。</p>
+<p>在類 Unix 環境下，家目錄下面，可以創立一個 <code>.vimrc</code> 檔案，然後寫一些設定進去。<br>而在 Windows 下，Cygwin 也是在加目錄，而 gvim 那些的設定檔可能就請參考 <a href="https://stackoverflow.com/questions/9120500/vim-settings-file-on-windows" target="_blank" rel="noopener">這邊</a>。</p>
+<p>以下是某位學長的設定檔，系上工作站大家的帳號一開始都是從這個設定檔入門的。<br>有趣的小功能算不少，但最有用的就是用 tab 補全代碼吧 :)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set nocompatible</span><br><span class="line">set secure</span><br><span class="line"></span><br><span class="line">set backspace=2         &quot; allow backspacing over everything in insert mode</span><br><span class="line">set viminfo=&apos;20,\&quot;50    &quot; read/write a .viminfo file, don&apos;t store more</span><br><span class="line">                        &quot; than 50 lines of registers</span><br><span class="line">set history=50          &quot; keep 50 lines of command line history</span><br><span class="line">set ruler               &quot; show the cursor position all the time</span><br><span class="line">&quot;set dictionary=~/.dict  &quot; my dictionary :p</span><br><span class="line"></span><br><span class="line">&quot;set expandtab           &quot; expand tabs to spaces.</span><br><span class="line">set wildchar=&lt;TAB&gt;      &quot; such as &lt;TAB&gt; in shell</span><br><span class="line">set smarttab</span><br><span class="line">set tabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line"></span><br><span class="line">set nu</span><br><span class="line">set t_Co=8              &quot; number of colors</span><br><span class="line">set t_Sf=[1;3%p1%dm   &quot; set foreground color</span><br><span class="line">set t_Sb=[1;4%p1%dm   &quot; set background color</span><br><span class="line">set showcmd             &quot; show command</span><br><span class="line">set showmode            &quot; show current mode</span><br><span class="line">set incsearch           &quot; While typing a search pattern, show immediately</span><br><span class="line">                        &quot; where the so far typed pattern matches.</span><br><span class="line">set hlsearch            &quot; When there is a previous search pattern,</span><br><span class="line">                        &quot; highlight all its matches.</span><br><span class="line">syntax on               &quot; show parts of the text in another font or color</span><br><span class="line"></span><br><span class="line">set fileencodings=utf-8,cp936,big5,latin1</span><br><span class="line">set background=dark</span><br><span class="line"></span><br><span class="line">autocmd FileType c,cpp,cc,java call PROG()</span><br><span class="line">autocmd FileType make setlocal noexpandtab</span><br><span class="line"></span><br><span class="line">colorscheme default</span><br><span class="line"></span><br><span class="line">function PROG()</span><br><span class="line">    set showmatch</span><br><span class="line">    set nosmartindent</span><br><span class="line">    set cindent comments=sr:/*,mb:*,el:*/,:// cino=&gt;s,e0,n0,f0,&#123;0,&#125;0,^-1s,:0,=s,g0,h1s,p2,t0,+2,(2,)20,*30</span><br><span class="line">    set cinoptions=t0</span><br><span class="line">    imap &lt;C-a&gt;f &lt;END&gt;&lt;CR&gt;for(;;) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt;</span><br><span class="line">                \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;&lt;RIGHT&gt;</span><br><span class="line">    imap &lt;C-a&gt;w &lt;END&gt;&lt;CR&gt;while( ) &#123;&lt;CR&gt;&#125;&lt;LEFT&gt;</span><br><span class="line">                \&lt;CR&gt;&lt;UP&gt;&lt;UP&gt;&lt;UP&gt;&lt;END&gt;&lt;LEFT&gt;&lt;LEFT&gt;</span><br><span class="line">    set formatoptions=tcqr</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">highlight Comment    ctermfg=DarkCyan</span><br><span class="line">highlight SpecialKey ctermfg=Yellow</span><br><span class="line"></span><br><span class="line">map &lt;F2&gt; :update&lt;CR&gt;                    &quot; using :update to replace :w</span><br><span class="line">map &lt;F3&gt; :update&lt;CR&gt;:q&lt;CR&gt;</span><br><span class="line">map &lt;F4&gt; :q!&lt;CR&gt;</span><br><span class="line">map &lt;F5&gt; :bp&lt;CR&gt;</span><br><span class="line">map &lt;F6&gt; :bn&lt;CR&gt;</span><br><span class="line">&quot; map &lt;F8&gt; :set hls!&lt;BAR&gt;set hls?&lt;CR&gt;     &quot; toggle on/off highlightsearch</span><br><span class="line">map &lt;F8&gt; :set paste!&lt;BAR&gt;set paste?&lt;CR&gt; &quot; toggle on/off paste mode</span><br><span class="line">set pastetoggle=&lt;F8&gt;</span><br><span class="line">map &lt;F9&gt; :!make %:r &lt;CR&gt;</span><br><span class="line"></span><br><span class="line">map &lt;F7&gt; :if exists(&quot;syntax_on&quot;) &lt;BAR&gt;  &quot; press &lt;F7&gt; syntax on/off</span><br><span class="line">        \   syntax off &lt;bar&gt;&lt;cr&gt;</span><br><span class="line">        \ else &lt;BAR&gt;</span><br><span class="line">        \   syntax on &lt;BAR&gt;</span><br><span class="line">        \ endif &lt;CR&gt;</span><br><span class="line"></span><br><span class="line">map &lt;F10&gt; &lt;ESC&gt;:read !date&lt;CR&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;smart mapping for tab completion</span><br><span class="line">function InsertTabWrapper()</span><br><span class="line">    let col = col(&apos;.&apos;) - 1</span><br><span class="line">    if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos;</span><br><span class="line">        return &quot;\&lt;tab&gt;&quot;</span><br><span class="line">    else</span><br><span class="line">        return &quot;\&lt;c-p&gt;&quot;</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line"></span><br><span class="line">inoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt;</span><br></pre></td></tr></table></figure>
+<p>後來，我為了比賽重新翻修，去蕪存菁：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source /etc/vimrc</span><br><span class="line">set nu &quot;num line</span><br><span class="line">set tabstop=4</span><br><span class="line">set shiftwidth=4</span><br><span class="line">set cindent</span><br><span class="line">set smarttab</span><br><span class="line">set expandtab &quot;set tab to space</span><br><span class="line">set autoindent</span><br><span class="line">syntax on</span><br><span class="line">&quot;hi comment ctermfg=cyan</span><br><span class="line">hi comment ctermfg=blue</span><br><span class="line">&quot;prefer ^</span><br><span class="line">&quot;let comment color be blue. instead of dark blue</span><br><span class="line">&quot;super TAB</span><br><span class="line">function InsertTabWrapper()</span><br><span class="line">    let col = col(&apos;.&apos;) - 1</span><br><span class="line">    if !col || getline(&apos;.&apos;)[col - 1] !~ &apos;\k&apos;</span><br><span class="line">        return &quot;\&lt;tab&gt;&quot;</span><br><span class="line">    else</span><br><span class="line">        return &quot;\&lt;c-p&gt;&quot;</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br><span class="line">inoremap &lt;TAB&gt; &lt;C-R&gt;=InsertTabWrapper()&lt;CR&gt;</span><br><span class="line">&quot;my rc</span><br><span class="line">imap jk &lt;ESC&gt;</span><br><span class="line">let mapleader = &quot;\&lt;Space&gt;&quot;</span><br><span class="line">nmap &lt;Leader&gt;r :&lt;C-P&gt;&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;x :x&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;w :w&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;q :q&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;n :n&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;N :N&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;jq :q!&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;/ :noh&lt;CR&gt;</span><br><span class="line">nmap &lt;Leader&gt;; :</span><br><span class="line">nmap &lt;Leader&gt;= mcHmhLmlgg=G`h`l`c</span><br><span class="line">noremap H ^</span><br><span class="line">noremap L $</span><br><span class="line">set clipboard=unnamedplus</span><br><span class="line">set hlsearch</span><br></pre></td></tr></table></figure>
+<h3 id="認識-Vundle"><a href="#認識-Vundle" class="headerlink" title="認識 Vundle"></a>認識 Vundle</h3><p>學會了一些簡單的 vim 配置之後，就可以嘗試別人寫的套件。<br>vim 有很多套件管理器，像是 <code>vundle</code>, <code>vim-plug</code> 等。</p>
+<p>我只用過 vundle，簡單來說他就是可以抓 GitHub 上別人寫好的套件來用。</p>
+<p>詳情可以參考 <a href="https://blog.gtwang.org/linux/vundle-vim-bundle-plugin-manager/" target="_blank" rel="noopener">這篇</a>。</p>
+<p>簡單來說就是先 clone vundle 到 .vim 下面的目錄，然後在 .vimrc 裡面加上一下設定。</p>
+<p>接著在 vimrc 裡面新增想要的套件，接著再 <code>:PluginInstall</code> 即可。</p>
+<p>之前的 tab 補全是學長簡單用 vim script 寫得，<br>想要進階一點可以改用 youcompleteme （但好像不太好裝）或是用簡單的 <code>ervandew/supertab</code>。</p>
+<p>lisp 愛好者不能錯過 <code>luochen1990/rainbow</code>。<br><code>majutsushi/tagbar</code> 也可以讓他變得更像 IDE，搭配 <code>scrooloose/nerdtree</code> 就更潮了。</p>
+<p>再加上個 <code>vim-airline/vim-airline</code> 加上 powerline 字型直呼完美。</p>
+<p>如果你是盤古之白的信仰者，還可以裝個 <code>hotoo/pangu.vim</code>。</p>
+<p><code>shougo/vimshell.vim</code> 也挺好玩的，當然，好玩的東西還有很多，待各位探索。</p>
+<h3 id="認識-SapceVim"><a href="#認識-SapceVim" class="headerlink" title="認識 SapceVim"></a>認識 SapceVim</h3><p>SpaceVim 集各家大成，我一直到了第五年才入坑。<br>之前一直覺得自己用用 Vundle 就夠了，這樣自訂性也高，<br>但後來用得東西越來越雜，設定檔修修補補也越來越無心維護。</p>
+<p>那有沒有設定更少，然後功能更強的方法？我遇到了 SpaceVim。</p>
+<p>大概是在接觸 ale 後，覺得要 trace code 和 syntax check 上還是需要精進，<br>但是自己又懶得折騰，這時同學提到了 Language Server Protocol (LSP)。</p>
+<p>他在代碼補全，trace code 和 syntax check 上都可以使用，而且幾乎每個語言都有實作可以接。</p>
+<p>裝了 vim-lsp，但覺得禁不起太多次折騰。這時我發現了 SpaceVim 的 layer 有 lsp 可以用！</p>
+<p>而且 SpaceVim 安裝簡單，只要一行： <code>curl -sLf https://spacevim.org/install.sh | bash</code>。</p>
+<p>比較麻煩的可能就是要另外安裝字型吧，不過裝完後也就挺漂亮就是了。</p>
+<p>功能很多，使用上不時會發現一些意想不到的快捷鍵 :)</p>
+<p>不過我還是會把之前習慣的 binding 蓋上去就是了w</p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>vim</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
