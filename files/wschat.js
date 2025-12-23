@@ -6,7 +6,7 @@ if (window.location.protocol == "https:") {
 };
 
 
-//var inbox = new ReconnectingWebSocket(ws_scheme + location.host + "/receive");
+var inbox = new ReconnectingWebSocket(ws_scheme + location.host + "/receive");
 var outbox = new ReconnectingWebSocket(ws_scheme + location.host + "/wschat");
 
 inbox.onmessage = function(message) {

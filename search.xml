@@ -287,6 +287,129 @@
       </tags>
   </entry>
   <entry>
+    <title>C Type Defination to English</title>
+    <url>/2017/07/15/ctype2en/</url>
+    <content><![CDATA[<center>
+PL 教授給的 <a href="https://www.google.com.tw/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwiYrNTC6orVAhXEebwKHVxyDXIQFgglMAA&amp;url=http%3A%2F%2Fwww2.mta.ac.il%2F~hbinsky%2Fc%2520content%2FFunction%2520Pointer.pdf&amp;usg=AFQjCNEzZ-0v-7fvdH5Z8sEVHbebcpV4mg" target="_blank" rel="noopener">8 頁 Func Ptr 閱讀材料</a>。<br>
+那就來玩一下吧。<br>
+wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="noopener">rule</a>
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<p><script src="/files/c-syntax-patch.js"></script></p>
+<link href="/files/c-syntax-patch.css" rel="stylesheet" type="text/css">
+
+<blockquote>
+<p>The flip side of this is that you have to deal with old mistakes and with compatibility problems. For example, I consider the C declarator syntax an experiment that failed.-Bjarne Stroustrup, in his SlashDot interview on 2/25/2000.</p>
+<p>我嘗試寫成 Haskell 的定義型態。<br>那個 Type* 能理解就好了 （逃</p>
+</blockquote>
+<p><a href="https://cdecl.org/" target="_blank" rel="noopener">https://cdecl.org/</a></p>
+<ol>
+<li><p><code class="patch">long *a(int)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare a as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">a</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*b(int))</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare b as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">b</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*c)(int)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare c as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">c</span> :: (<span class="type">Int</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long *d(int)(char)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare d as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">d</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>*)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*e(int))(char)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare e as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">e</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*f)(int)(char)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare f as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> :: (<span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>))*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">void qsort(void *, size_t, size_t,int (*)(const void *, const void *))</code></p>
+ <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="function">declare qsort as <span class="title">function</span> <span class="params">(pointer to <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           pointer to function (pointer to <span class="keyword">const</span> <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                pointer to <span class="keyword">const</span> <span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"><span class="params">                            )</span></span></span><br><span class="line">                 returning int) returning void</span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">qsort</span> :: <span class="type">Void</span>* -&gt; <span class="type">Size_t</span> -&gt; <span class="type">Size_t</span> -&gt; (<span class="type">Void</span>* -&gt; <span class="type">Void</span>*)* -&gt; <span class="type">Void</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>start with the identifier</p>
+</li>
+<li>look to the right for brackets[ ] or parentheses()</li>
+<li>look to the left for asterisks</li>
+<li>remember that parentheses group</li>
+<li>finally, look at the type (eg. int)</li>
+</ol>
+<p><a href="http://cseweb.ucsd.edu/~ricko/rt_lt.rule.html" target="_blank" rel="noopener">reference link</a></p>
+<p>重點是先往右讀，然後讀到括號，再往左讀，如此往復。<br>先找變數宣告名稱，\w+ 後跟的是 ( ，則此宣告為一函數，否則為變數。</p>
+<p>先往右，遇到 <code>(</code>，為函數，參數為 fnArg。<br>往左讀，遇到 <code>*</code>，回傳為一指標，指向 long。<br><code>long *fn(fnArg)</code> -&gt; <code>fn :: FnArg -&gt; Long*</code></p>
+<p>如果再右邊還有括號，則他的回傳指標為函數指標，其參數為該括號內容。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)</code> -&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; Long)*</code></p>
+<p>如果後面一直有括號，其指的函數類型就一直向右 eval 括號就好了。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long*))</code></p>
+<p>注意指標可能出現的位置。<br><code>long (*fn(fnArg)(argOfAfnRtnedByAFn))(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long)*)</code></p>
+<p><code>long (*fn(fnArg))(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long))*</code></p>
+<p>有時指標不只一個，看著辦吧。</p>
+<blockquote>
+<p>Illegal combinations include:<br>     <a href></a> - cannot have an array of functions<br>     ()() - cannot have a function that returns a function<br>     ()[] - cannot have a function that returns an array</p>
+</blockquote>
+<p>所以其實上面五項，應該只有幾個是 Illegal 的（from reference）</p>
+<blockquote>
+<p>其實回傳函數指標和回傳函數在 C 裡是一樣的事情</p>
+</blockquote>
+<p>變數名前有<code>*</code>代表他是一個指標，<br><code>long *ptr</code> -&gt; <code>ptr :: Long*</code></p>
+<p>如果右邊有閉括號，代表他是一個函數指標。<br><code>long (*ptr)(argOfApointedFn)</code> -&gt; <code>ptr :: (ArgOfApointedFn -&gt; Long)*</code></p>
+<p>其指的函數類型就一直向右 eval 括號就好了。<br><code>long (*ptr)(argOfApointedFn)(argOfAFnRtnedByAFnPointedByAPtr)</code><br>-&gt; <code>ptr :: (ArgOfApointedFn -&gt; (ArgOfAFnRtnedByAFnPointedByAPtr -&gt; Long))*</code></p>
+<p>一樣，有時指標不只一個，看著辦吧。</p>
+<p>我都快搞不清我在寫啥了（<br>Haskell 的 Type 表達比較好理解（</p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>feedback</title>
+    <url>/2018/05/22/feedback/</url>
+    <content><![CDATA[<center>
+上程式語言課，給老師的回饋。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<blockquote>
+<p>葉丙成老師兩篇關於主修 CS 的文章</p>
+<p>102657 ( CK ) 2018-03-06 10:59 0<br>想聽聽聽同學對這篇文章的看法。</p>
+<p> 現在學 CS 會不會太晚？在程式設計之外，更該想「如何創造價值」</p>
+<p><a href="https://opinion.cw.com.tw/blog/profile/215/article/6232" target="_blank" rel="noopener">https://opinion.cw.com.tw/blog/profile/215/article/6232</a></p>
+</blockquote>
+<p>CS 學生的優勢就是浸淫 CS 的時間比別人長。</p>
+<p>隨著各種技術的發展，整個工具鏈的架構也越來越複雜。<br>雖說抽象化降低了工具使用的難度，<br>但是有些工具的使用也是需要經驗累積的。</p>
+<p>那些工具、技術可能就是資訊科系學生可以投資的吧。<br>比如 server 管理等等。</p>
+<p>而以上終究只是混口飯吃的等級罷了。<br>只要別人肯下苦工，終究還是會被替代掉的。</p>
+<p>相對於工具的使用，CS 的學生應培養解決問題的能力。<br>更準確的說，是用程式化思維或是用電腦來解決問題的能力。<br>（用程式化、抽象化思維看待所有事物的能力？）</p>
+<p>CS 學生對整個 CS 領域見識應具有廣度和深度。<br>別人也會程式，但我會的比你深比你多。<br>別人會的是工具的使用，我們會的是工具的挑選甚至是工具的創造。</p>
+<p>好的工具可以事半功倍。<br>或許是在培養對好工具的獨到眼光。</p>
+<p>就像 GUI 工具只會限制用戶，<br>Text Mode 才能釋放所有能量 (X</p>
+<p>學過 CS 的人，層次要是更高的。<br>我覺得甚至是要具備一些哲學層面的東西。</p>
+<p>設計哲學、解決問題的哲學、甚至是生活的哲學 (Link) 等等。</p>
+<p>如此開發效率才能更高，產物才能更優雅。<br>其他科系的可能就只是堪用而已。</p>
+<p>遇到問題，應該要能快速擬出相關的解決辦法。<br>而遇到的問題類型可以是很廣的。</p>
+<p>學習洞悉問題的本質，才能對全局掌握更加透徹。</p>
+<p>也算是在培養觸類旁通（抽象）的能力吧。</p>
+<p>還有一點是快速上手工具的能力。<br>玩 Linux 的東西也是為了培養這種能力吧。</p>
+<p>折騰過得東西多了，該如何解決甚至是找替代方案，<br>都會比較有 sense。</p>
+<p>培養減少繞路的情況發生。<br>能對問題有獨到的見解，以更抽象通用迅捷的方式解決問題。</p>
+<p>身邊的例子。同學會，同學都確立方向，很多人都要往 AI 走。<br>電資學院、電機系、資工系。<br>看到電機系 CS 組使用 python。<br>因為性質相似，所以想和資工的同學討論語言的東西。</p>
+<p>發現他摸過得語言比較少。python 摸過，但是覺得把 python 當工具用。</p>
+<p>不把 python 只是當工具，<br>對語言本身的思想哲學有更深入的理解，<br>應該就會有相對其他系有相對的優勢了。</p>
+<p>有更好的答案，<br>就是<a href="https://www.zhihu.com/question/31034164/answer/553533545" target="_blank" rel="noopener">編程的能力</a> Orz</p>
+]]></content>
+      <categories>
+        <category>Thinking</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Cpp STL Hack</title>
     <url>/2017/10/05/cpp-stl/</url>
     <content><![CDATA[<center>
@@ -560,129 +683,6 @@
       </tags>
   </entry>
   <entry>
-    <title>C Type Defination to English</title>
-    <url>/2017/07/15/ctype2en/</url>
-    <content><![CDATA[<center>
-PL 教授給的 <a href="https://www.google.com.tw/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwiYrNTC6orVAhXEebwKHVxyDXIQFgglMAA&amp;url=http%3A%2F%2Fwww2.mta.ac.il%2F~hbinsky%2Fc%2520content%2FFunction%2520Pointer.pdf&amp;usg=AFQjCNEzZ-0v-7fvdH5Z8sEVHbebcpV4mg" target="_blank" rel="noopener">8 頁 Func Ptr 閱讀材料</a>。<br>
-那就來玩一下吧。<br>
-wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="noopener">rule</a>
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<p><script src="/files/c-syntax-patch.js"></script></p>
-<link href="/files/c-syntax-patch.css" rel="stylesheet" type="text/css">
-
-<blockquote>
-<p>The flip side of this is that you have to deal with old mistakes and with compatibility problems. For example, I consider the C declarator syntax an experiment that failed.-Bjarne Stroustrup, in his SlashDot interview on 2/25/2000.</p>
-<p>我嘗試寫成 Haskell 的定義型態。<br>那個 Type* 能理解就好了 （逃</p>
-</blockquote>
-<p><a href="https://cdecl.org/" target="_blank" rel="noopener">https://cdecl.org/</a></p>
-<ol>
-<li><p><code class="patch">long *a(int)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare a as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">a</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*b(int))</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare b as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">b</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*c)(int)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare c as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">c</span> :: (<span class="type">Int</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long *d(int)(char)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare d as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">d</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>*)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*e(int))(char)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare e as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">e</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*f)(int)(char)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare f as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> :: (<span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>))*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">void qsort(void *, size_t, size_t,int (*)(const void *, const void *))</code></p>
- <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="function">declare qsort as <span class="title">function</span> <span class="params">(pointer to <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           pointer to function (pointer to <span class="keyword">const</span> <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                pointer to <span class="keyword">const</span> <span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"><span class="params">                            )</span></span></span><br><span class="line">                 returning int) returning void</span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">qsort</span> :: <span class="type">Void</span>* -&gt; <span class="type">Size_t</span> -&gt; <span class="type">Size_t</span> -&gt; (<span class="type">Void</span>* -&gt; <span class="type">Void</span>*)* -&gt; <span class="type">Void</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>start with the identifier</p>
-</li>
-<li>look to the right for brackets[ ] or parentheses()</li>
-<li>look to the left for asterisks</li>
-<li>remember that parentheses group</li>
-<li>finally, look at the type (eg. int)</li>
-</ol>
-<p><a href="http://cseweb.ucsd.edu/~ricko/rt_lt.rule.html" target="_blank" rel="noopener">reference link</a></p>
-<p>重點是先往右讀，然後讀到括號，再往左讀，如此往復。<br>先找變數宣告名稱，\w+ 後跟的是 ( ，則此宣告為一函數，否則為變數。</p>
-<p>先往右，遇到 <code>(</code>，為函數，參數為 fnArg。<br>往左讀，遇到 <code>*</code>，回傳為一指標，指向 long。<br><code>long *fn(fnArg)</code> -&gt; <code>fn :: FnArg -&gt; Long*</code></p>
-<p>如果再右邊還有括號，則他的回傳指標為函數指標，其參數為該括號內容。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)</code> -&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; Long)*</code></p>
-<p>如果後面一直有括號，其指的函數類型就一直向右 eval 括號就好了。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long*))</code></p>
-<p>注意指標可能出現的位置。<br><code>long (*fn(fnArg)(argOfAfnRtnedByAFn))(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long)*)</code></p>
-<p><code>long (*fn(fnArg))(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long))*</code></p>
-<p>有時指標不只一個，看著辦吧。</p>
-<blockquote>
-<p>Illegal combinations include:<br>     <a href></a> - cannot have an array of functions<br>     ()() - cannot have a function that returns a function<br>     ()[] - cannot have a function that returns an array</p>
-</blockquote>
-<p>所以其實上面五項，應該只有幾個是 Illegal 的（from reference）</p>
-<blockquote>
-<p>其實回傳函數指標和回傳函數在 C 裡是一樣的事情</p>
-</blockquote>
-<p>變數名前有<code>*</code>代表他是一個指標，<br><code>long *ptr</code> -&gt; <code>ptr :: Long*</code></p>
-<p>如果右邊有閉括號，代表他是一個函數指標。<br><code>long (*ptr)(argOfApointedFn)</code> -&gt; <code>ptr :: (ArgOfApointedFn -&gt; Long)*</code></p>
-<p>其指的函數類型就一直向右 eval 括號就好了。<br><code>long (*ptr)(argOfApointedFn)(argOfAFnRtnedByAFnPointedByAPtr)</code><br>-&gt; <code>ptr :: (ArgOfApointedFn -&gt; (ArgOfAFnRtnedByAFnPointedByAPtr -&gt; Long))*</code></p>
-<p>一樣，有時指標不只一個，看著辦吧。</p>
-<p>我都快搞不清我在寫啥了（<br>Haskell 的 Type 表達比較好理解（</p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>feedback</title>
-    <url>/2018/05/22/feedback/</url>
-    <content><![CDATA[<center>
-上程式語言課，給老師的回饋。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<blockquote>
-<p>葉丙成老師兩篇關於主修 CS 的文章</p>
-<p>102657 ( CK ) 2018-03-06 10:59 0<br>想聽聽聽同學對這篇文章的看法。</p>
-<p> 現在學 CS 會不會太晚？在程式設計之外，更該想「如何創造價值」</p>
-<p><a href="https://opinion.cw.com.tw/blog/profile/215/article/6232" target="_blank" rel="noopener">https://opinion.cw.com.tw/blog/profile/215/article/6232</a></p>
-</blockquote>
-<p>CS 學生的優勢就是浸淫 CS 的時間比別人長。</p>
-<p>隨著各種技術的發展，整個工具鏈的架構也越來越複雜。<br>雖說抽象化降低了工具使用的難度，<br>但是有些工具的使用也是需要經驗累積的。</p>
-<p>那些工具、技術可能就是資訊科系學生可以投資的吧。<br>比如 server 管理等等。</p>
-<p>而以上終究只是混口飯吃的等級罷了。<br>只要別人肯下苦工，終究還是會被替代掉的。</p>
-<p>相對於工具的使用，CS 的學生應培養解決問題的能力。<br>更準確的說，是用程式化思維或是用電腦來解決問題的能力。<br>（用程式化、抽象化思維看待所有事物的能力？）</p>
-<p>CS 學生對整個 CS 領域見識應具有廣度和深度。<br>別人也會程式，但我會的比你深比你多。<br>別人會的是工具的使用，我們會的是工具的挑選甚至是工具的創造。</p>
-<p>好的工具可以事半功倍。<br>或許是在培養對好工具的獨到眼光。</p>
-<p>就像 GUI 工具只會限制用戶，<br>Text Mode 才能釋放所有能量 (X</p>
-<p>學過 CS 的人，層次要是更高的。<br>我覺得甚至是要具備一些哲學層面的東西。</p>
-<p>設計哲學、解決問題的哲學、甚至是生活的哲學 (Link) 等等。</p>
-<p>如此開發效率才能更高，產物才能更優雅。<br>其他科系的可能就只是堪用而已。</p>
-<p>遇到問題，應該要能快速擬出相關的解決辦法。<br>而遇到的問題類型可以是很廣的。</p>
-<p>學習洞悉問題的本質，才能對全局掌握更加透徹。</p>
-<p>也算是在培養觸類旁通（抽象）的能力吧。</p>
-<p>還有一點是快速上手工具的能力。<br>玩 Linux 的東西也是為了培養這種能力吧。</p>
-<p>折騰過得東西多了，該如何解決甚至是找替代方案，<br>都會比較有 sense。</p>
-<p>培養減少繞路的情況發生。<br>能對問題有獨到的見解，以更抽象通用迅捷的方式解決問題。</p>
-<p>身邊的例子。同學會，同學都確立方向，很多人都要往 AI 走。<br>電資學院、電機系、資工系。<br>看到電機系 CS 組使用 python。<br>因為性質相似，所以想和資工的同學討論語言的東西。</p>
-<p>發現他摸過得語言比較少。python 摸過，但是覺得把 python 當工具用。</p>
-<p>不把 python 只是當工具，<br>對語言本身的思想哲學有更深入的理解，<br>應該就會有相對其他系有相對的優勢了。</p>
-<p>有更好的答案，<br>就是<a href="https://www.zhihu.com/question/31034164/answer/553533545" target="_blank" rel="noopener">編程的能力</a> Orz</p>
-]]></content>
-      <categories>
-        <category>Thinking</category>
-      </categories>
-  </entry>
-  <entry>
     <title>guitar-handout</title>
     <url>/2022/12/24/guitar-handout/</url>
     <content><![CDATA[<center>
@@ -831,6 +831,99 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
       </categories>
       <tags>
         <tag>lambda</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vim Note (Basic Manipulation)</title>
+    <url>/2017/01/22/vim-0/</url>
+    <content><![CDATA[<center>
+結識 vim 一年多了，一切的一切算得上機緣巧遇。<br>
+一路走來的點點滴滴，想來不禁百感交集。<br>
+這篇文章會不定期更新，隨著我的 vim skill。<br>
+這段旅途的終點，大概就是我不用 vim 的那天吧！<br>
+（可能是入 emacs 教，或是真香 IDE 了吧）<br>
+Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim 教吧。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="基本操作篇"><a href="#基本操作篇" class="headerlink" title="基本操作篇"></a>基本操作篇</h2><p>要編輯一個存在的文檔<code>tst.txt</code>時只要在 terminal 下 <code>vim tst.txt</code>。<br>如果要建立一個新檔，叫做<code>new.txt</code>，也只要下 <code>vim new.txt</code>，只是離開記得存。<br>如果還沒想到要存什麼名字，只要下<code>vim</code>就好了，離開再命名就好了。</p>
+<p>vim 有三種模式 normal , insert , visual。一開始進到 vim 時即是 normal 模式。</p>
+<p><code>&lt;ESC&gt;</code>進 normal mode ，<br>normal mode 下，<code>i</code>（注意是小寫），可以讓游標在<strong>原位</strong>進入 insert mode，<br>normal mode 下，<code>v</code>，可以進入 visual mode。</p>
+<p>看起來，normal mode 是一切 mode 的橋樑。</p>
+<p>敏銳的人可以發現， normal mode 左下並沒有特別的東西。<br>insert mode 會出現 <code>-- INSERT --</code>， visual mode 則是 <code>-- VISUAL --</code>。</p>
+<h3 id="normal-mode"><a href="#normal-mode" class="headerlink" title="- normal mode"></a>- normal mode</h3><p>normal 模式主要有兩種功能，快速移動游標、簡易文檔操作和下指令。<br>其中離開指令就是在 normal mode 下的。<br>要切換 normal mode 只要按<code>esc</code>鍵就好了，vim script 會表示成<code>&lt;ESC&gt;</code>。<br>要下指令，只要在 normal mode 按<code>:</code>，再下指令。</p>
+<ol>
+<li><p>移動</p>
+<p>要移動最簡單的就是按方向鍵，但是 vim 習慣上會使用 <code>jkhl</code> ， 分別對應上下左右。<br>（方向鍵在所有模式是通用的）</p>
+<p>不想一格格移動的話可以先鍵入一個數字再移動，比如 <code>15j</code> 是向下移動十五行。<br>在很多操作下都有搭配數字的用法，有興趣不妨試一下。</p>
+<p>要把游標移動到行首，可以直接按數字 <code>0</code>。<br>要把游標移動到行尾，可以直接按符號 <code>$</code>(shift + 4)。<br>要把游標移動到首行，可以直接按字母 <code>gg</code>。<br>要把游標移動到尾行，可以直接按字母 <code>G</code>(shift + g)。</p>
+<p>vim 上某些建議是不要鎖住 caps lock 鍵，要大寫盡量用 shift 鍵。</p>
+</li>
+<li><p>文檔操作</p>
+<ul>
+<li>copy   : 整行 copy 按 <code>yy</code>，或是按<code>v</code>進入 visual mode 選取再按 <code>y</code>。</li>
+<li>paste  : 按<code>p</code>。</li>
+<li>delete : 用法跟 copy 很像，字母<code>d</code>和<code>x</code>，try 一下吧，帶有剪下的功能。</li>
+<li>search : 按下 <code>/</code> ， 鍵入搜尋字串然後<code>enter</code>，<code>n</code>下一筆，<code>N</code>上一筆。</li>
+<li>replace: <code>:%s/ 目標字串 / 取代成字串 /g</code>，<code>g</code>是對每行的目標字串替換，<br>沒加只會取代每行第一個。 （亦可進入 visual 進行取代，就不用使用<code>%</code>)<br> （關於 vim regex 請走<a href="http://vimregex.com/" target="_blank" rel="noopener">這</a>）</li>
+</ul>
+</li>
+<li><p>指令</p>
+<p>進到 vim 之後先講一下離開吧。<br>有句有名的話是這樣說的。</p>
+<blockquote>
+<p>要產生一個隨機字串，就是讓一個新手離開 vim</p>
+</blockquote>
+<p>離開的指令是<code>q</code>，所以假設我們不知道現在是什麼模式，</p>
+<p>只要按下<code>&lt;ESC&gt;:q</code>，就能離開。<br>不過你可能會遇到這種情況</p>
+<blockquote>
+<p><code>E37: No write since last change (add ! to override)</code></p>
+</blockquote>
+<p>意思就是你對檔案有了改動， vim 不確定你是否要儲存再離開，所以詢問。<br>道理和用 Word 離開會跳出 msgbox 一樣。<br>如果沒有要儲存，照著提示，只要下<code>:q!</code>，即可。<br>若要儲存，只要下<code>:wq</code>。<br>到了這裡，有沒有發現一件事，所謂指令，好像有著某種組合關係。</p>
+<blockquote>
+<p>沒錯， vim 的精隨就在於<strong>組合</strong>！</p>
+</blockquote>
+<p>像是要把該行往下 shift 一行，就可以使用 <code>ddp</code>。</p>
+<p><code>w</code>是儲存的指令，<code>:wq</code>，就是儲存後離開。<br>直接下<code>:w</code>當然就是儲存啊，養成隨時儲存的習慣， vim 因為斷線掛掉可是很折騰的。</p>
+<blockquote>
+<p>不要只會<code>:wq</code>啊，<code>:w</code>要舉一反三直接理解</p>
+</blockquote>
+<p>前面提到，若沒取檔名，只要在離開使用<code>:wq filename</code>即可存成該檔並離開。<br><code>filename</code> 這個參數主要是餵給 <code>w</code> 使用，所以單獨用<code>:w filename</code>也可以。</p>
+<p>若 vim 在一開始就開檔了呢？這時此種用法就會變成另存新檔囉，很好理解吧。</p>
+<p><code>!</code>是強制的意思，<code>:q!</code>，解釋為強制離開。<br>有時是文檔的擁有者，但是沒有給自己加上 w 權限，<br>這時 vim 左下角就會出現<code>[readonly]</code>。<br>normal mode 下 <code>:wq</code>時就會出現</p>
+<blockquote>
+<p><code>W10: Warning: Changing a readonly file</code></p>
+</blockquote>
+<p>這時也只要加個驚嘆號就可以了。（當然，不是文檔擁有者不管用）<br>那<code>:qw</code>可以執行嗎？很遺憾，所謂指令是有順序的，想想看，這合理嗎？<br>也是可以試試看，程序員鼓勵試錯精神。</p>
+<blockquote>
+<p><code>:wq</code> 有快捷，他等價於<code>:x</code>，但我覺得要按<code>&lt;ESC&gt;</code>的話，<br>計入移動手的成本，其實也沒快到哪裡。<br>還有個快捷是<code>ZZ</code>。</p>
+</blockquote>
+</li>
+</ol>
+<p>normal mode 已經說了個大概，更進階的之後會在 vimrc section 中討論。</p>
+<h3 id="insert-mode"><a href="#insert-mode" class="headerlink" title="- insert mode"></a>- insert mode</h3><p>主要就是打字，沒什麼好說的，有幾種指令可以由 normal mode 進入 insert mode。</p>
+<ul>
+<li><code>i</code> : 由游標位置進入。</li>
+<li><code>I</code> : 插入該行第一個字元位置。</li>
+<li><code>a</code> : 游標位置往後一位插入。</li>
+<li><code>A</code> : 插入行尾。</li>
+<li><code>o</code> : 插入下一行。</li>
+<li><code>O</code> : 插入上一行。</li>
+<li><code>s</code> : 消除一字元並進入。</li>
+<li><code>S</code> : 清除該行。</li>
+</ul>
+<h3 id="visual-mode"><a href="#visual-mode" class="headerlink" title="- visual mode"></a>- visual mode</h3><p>  一鍵縮排很實用，選起來再按 <code>=</code> 即可。<br>  所以要全文縮排就可以使用 <code>ggvG=</code> 或是 <code>gg=G</code>。</p>
+<p>  還有值得一提的是 column 模式。<br>  按<code>v</code>進入 visual mode，往下選取需要的行。<br>  <code>ctrl-v</code>進入 column 模式。</p>
+<p>  然後可以做啥咧？按<code>I</code>進入 insert mode，鍵入幾個字。<br>  <code>esc</code> 跳出。<br>  在每行插入剛剛打的字母。</p>
+<p>參考資料：<a href="https://www.fprintf.net/vimCheatSheet.html" target="_blank" rel="noopener">vim cheat sheet</a></p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>vim</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1047,99 +1140,6 @@ Python 感覺入門很久了，但對於容器的使用一直感到很生疏，�
       <tags>
         <tag>oop</tag>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vim Note (Basic Manipulation)</title>
-    <url>/2017/01/22/vim-0/</url>
-    <content><![CDATA[<center>
-結識 vim 一年多了，一切的一切算得上機緣巧遇。<br>
-一路走來的點點滴滴，想來不禁百感交集。<br>
-這篇文章會不定期更新，隨著我的 vim skill。<br>
-這段旅途的終點，大概就是我不用 vim 的那天吧！<br>
-（可能是入 emacs 教，或是真香 IDE 了吧）<br>
-Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim 教吧。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="基本操作篇"><a href="#基本操作篇" class="headerlink" title="基本操作篇"></a>基本操作篇</h2><p>要編輯一個存在的文檔<code>tst.txt</code>時只要在 terminal 下 <code>vim tst.txt</code>。<br>如果要建立一個新檔，叫做<code>new.txt</code>，也只要下 <code>vim new.txt</code>，只是離開記得存。<br>如果還沒想到要存什麼名字，只要下<code>vim</code>就好了，離開再命名就好了。</p>
-<p>vim 有三種模式 normal , insert , visual。一開始進到 vim 時即是 normal 模式。</p>
-<p><code>&lt;ESC&gt;</code>進 normal mode ，<br>normal mode 下，<code>i</code>（注意是小寫），可以讓游標在<strong>原位</strong>進入 insert mode，<br>normal mode 下，<code>v</code>，可以進入 visual mode。</p>
-<p>看起來，normal mode 是一切 mode 的橋樑。</p>
-<p>敏銳的人可以發現， normal mode 左下並沒有特別的東西。<br>insert mode 會出現 <code>-- INSERT --</code>， visual mode 則是 <code>-- VISUAL --</code>。</p>
-<h3 id="normal-mode"><a href="#normal-mode" class="headerlink" title="- normal mode"></a>- normal mode</h3><p>normal 模式主要有兩種功能，快速移動游標、簡易文檔操作和下指令。<br>其中離開指令就是在 normal mode 下的。<br>要切換 normal mode 只要按<code>esc</code>鍵就好了，vim script 會表示成<code>&lt;ESC&gt;</code>。<br>要下指令，只要在 normal mode 按<code>:</code>，再下指令。</p>
-<ol>
-<li><p>移動</p>
-<p>要移動最簡單的就是按方向鍵，但是 vim 習慣上會使用 <code>jkhl</code> ， 分別對應上下左右。<br>（方向鍵在所有模式是通用的）</p>
-<p>不想一格格移動的話可以先鍵入一個數字再移動，比如 <code>15j</code> 是向下移動十五行。<br>在很多操作下都有搭配數字的用法，有興趣不妨試一下。</p>
-<p>要把游標移動到行首，可以直接按數字 <code>0</code>。<br>要把游標移動到行尾，可以直接按符號 <code>$</code>(shift + 4)。<br>要把游標移動到首行，可以直接按字母 <code>gg</code>。<br>要把游標移動到尾行，可以直接按字母 <code>G</code>(shift + g)。</p>
-<p>vim 上某些建議是不要鎖住 caps lock 鍵，要大寫盡量用 shift 鍵。</p>
-</li>
-<li><p>文檔操作</p>
-<ul>
-<li>copy   : 整行 copy 按 <code>yy</code>，或是按<code>v</code>進入 visual mode 選取再按 <code>y</code>。</li>
-<li>paste  : 按<code>p</code>。</li>
-<li>delete : 用法跟 copy 很像，字母<code>d</code>和<code>x</code>，try 一下吧，帶有剪下的功能。</li>
-<li>search : 按下 <code>/</code> ， 鍵入搜尋字串然後<code>enter</code>，<code>n</code>下一筆，<code>N</code>上一筆。</li>
-<li>replace: <code>:%s/ 目標字串 / 取代成字串 /g</code>，<code>g</code>是對每行的目標字串替換，<br>沒加只會取代每行第一個。 （亦可進入 visual 進行取代，就不用使用<code>%</code>)<br> （關於 vim regex 請走<a href="http://vimregex.com/" target="_blank" rel="noopener">這</a>）</li>
-</ul>
-</li>
-<li><p>指令</p>
-<p>進到 vim 之後先講一下離開吧。<br>有句有名的話是這樣說的。</p>
-<blockquote>
-<p>要產生一個隨機字串，就是讓一個新手離開 vim</p>
-</blockquote>
-<p>離開的指令是<code>q</code>，所以假設我們不知道現在是什麼模式，</p>
-<p>只要按下<code>&lt;ESC&gt;:q</code>，就能離開。<br>不過你可能會遇到這種情況</p>
-<blockquote>
-<p><code>E37: No write since last change (add ! to override)</code></p>
-</blockquote>
-<p>意思就是你對檔案有了改動， vim 不確定你是否要儲存再離開，所以詢問。<br>道理和用 Word 離開會跳出 msgbox 一樣。<br>如果沒有要儲存，照著提示，只要下<code>:q!</code>，即可。<br>若要儲存，只要下<code>:wq</code>。<br>到了這裡，有沒有發現一件事，所謂指令，好像有著某種組合關係。</p>
-<blockquote>
-<p>沒錯， vim 的精隨就在於<strong>組合</strong>！</p>
-</blockquote>
-<p>像是要把該行往下 shift 一行，就可以使用 <code>ddp</code>。</p>
-<p><code>w</code>是儲存的指令，<code>:wq</code>，就是儲存後離開。<br>直接下<code>:w</code>當然就是儲存啊，養成隨時儲存的習慣， vim 因為斷線掛掉可是很折騰的。</p>
-<blockquote>
-<p>不要只會<code>:wq</code>啊，<code>:w</code>要舉一反三直接理解</p>
-</blockquote>
-<p>前面提到，若沒取檔名，只要在離開使用<code>:wq filename</code>即可存成該檔並離開。<br><code>filename</code> 這個參數主要是餵給 <code>w</code> 使用，所以單獨用<code>:w filename</code>也可以。</p>
-<p>若 vim 在一開始就開檔了呢？這時此種用法就會變成另存新檔囉，很好理解吧。</p>
-<p><code>!</code>是強制的意思，<code>:q!</code>，解釋為強制離開。<br>有時是文檔的擁有者，但是沒有給自己加上 w 權限，<br>這時 vim 左下角就會出現<code>[readonly]</code>。<br>normal mode 下 <code>:wq</code>時就會出現</p>
-<blockquote>
-<p><code>W10: Warning: Changing a readonly file</code></p>
-</blockquote>
-<p>這時也只要加個驚嘆號就可以了。（當然，不是文檔擁有者不管用）<br>那<code>:qw</code>可以執行嗎？很遺憾，所謂指令是有順序的，想想看，這合理嗎？<br>也是可以試試看，程序員鼓勵試錯精神。</p>
-<blockquote>
-<p><code>:wq</code> 有快捷，他等價於<code>:x</code>，但我覺得要按<code>&lt;ESC&gt;</code>的話，<br>計入移動手的成本，其實也沒快到哪裡。<br>還有個快捷是<code>ZZ</code>。</p>
-</blockquote>
-</li>
-</ol>
-<p>normal mode 已經說了個大概，更進階的之後會在 vimrc section 中討論。</p>
-<h3 id="insert-mode"><a href="#insert-mode" class="headerlink" title="- insert mode"></a>- insert mode</h3><p>主要就是打字，沒什麼好說的，有幾種指令可以由 normal mode 進入 insert mode。</p>
-<ul>
-<li><code>i</code> : 由游標位置進入。</li>
-<li><code>I</code> : 插入該行第一個字元位置。</li>
-<li><code>a</code> : 游標位置往後一位插入。</li>
-<li><code>A</code> : 插入行尾。</li>
-<li><code>o</code> : 插入下一行。</li>
-<li><code>O</code> : 插入上一行。</li>
-<li><code>s</code> : 消除一字元並進入。</li>
-<li><code>S</code> : 清除該行。</li>
-</ul>
-<h3 id="visual-mode"><a href="#visual-mode" class="headerlink" title="- visual mode"></a>- visual mode</h3><p>  一鍵縮排很實用，選起來再按 <code>=</code> 即可。<br>  所以要全文縮排就可以使用 <code>ggvG=</code> 或是 <code>gg=G</code>。</p>
-<p>  還有值得一提的是 column 模式。<br>  按<code>v</code>進入 visual mode，往下選取需要的行。<br>  <code>ctrl-v</code>進入 column 模式。</p>
-<p>  然後可以做啥咧？按<code>I</code>進入 insert mode，鍵入幾個字。<br>  <code>esc</code> 跳出。<br>  在每行插入剛剛打的字母。</p>
-<p>參考資料：<a href="https://www.fprintf.net/vimCheatSheet.html" target="_blank" rel="noopener">vim cheat sheet</a></p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>vim</tag>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1991,243 +1991,6 @@ A world without loop , but recursion。<br>
       </tags>
   </entry>
   <entry>
-    <title>Cygwin Beginner Guide</title>
-    <url>/2017/05/30/basic-linux/</url>
-    <content><![CDATA[<center>
-本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。
-</center>
-
-
-<a id="more"></a>
-<p><br><br><br>事先聲明 Cygwin != Linux，它是 Windows 下一個模擬 Linux terminal 的介面。</p>
-<p>關於 Cygwin 的<a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=47282" target="_blank" rel="noopener">安裝</a>。</p>
-<p>不過可以注意的是套件的部分只要多載一個 wget 就夠了，其他部分（如 vim 等）用 <a href="https://github.com/transcode-open/apt-cyg" target="_blank" rel="noopener">apt-cyg</a> 下載就好。<br>(apt-cyg 的使用置於文末）</p>
-<p>當你開啟 Cygwin 時，先不要嫌它醜，這之後可以慢慢調。<br>（或是直接抓現成的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/cygwin.bashrc.sh" target="_blank" rel="noopener">設定檔</a> 存到<code>~/.bashrc</code>）</p>
-<h2 id="WHERE-AM-I"><a href="#WHERE-AM-I" class="headerlink" title="WHERE AM I ?"></a>WHERE AM I ?</h2><p>首先，你可以看到有個命令列。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">userName@computerName ~</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
-<p>記住，你現在位置為家目錄，如果沒有特別改命令列的話，你可以發現命令列是以<code>~</code>表示家目錄。</p>
-<p>你現在有的只有簡單命令列，你可以先下個<code>pwd</code>指令來確認自己現在在檔案系統中的位置。</p>
-<p>不過你會發現這個位置有點奇怪，怎麼在 windows 的檔案總管中沒有見過，</p>
-<p>這是因為 Cygwin 要模擬 linux 的檔案環境，</p>
-<p>將你當初安裝的路徑選為根目錄 (root)，長出一套類似 linux 的檔案環境（樹狀）。<br>（而且 windows 的檔案分層是使用<code>\</code>，linux 則是使用<code>/</code>）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/                &lt;- 根目錄 (root)，為 windows 下的某個資料夾</span><br><span class="line">|</span><br><span class="line">├── bin          &lt;- 很多指令（程式）存放的位置</span><br><span class="line">├── cygdrive</span><br><span class="line">│   ├── c        &lt;- 注意！這裡可以切到 C 槽</span><br><span class="line">│   └── d        &lt;- 注意！這裡可以切到 D 槽</span><br><span class="line">├── dev          &lt;- 對 linux 來說，這裡有很多硬體裝置有關的檔案</span><br><span class="line">├── etc          &lt;- Linux 開機（這裡就是開 Cygwin) 的一些設定檔</span><br><span class="line">├── home</span><br><span class="line">│   └── ~        &lt;- 家目錄，你現在的位置</span><br><span class="line">├── lib          &lt;- 程式語言的一堆 library</span><br><span class="line">├── sbin         &lt;- 放著系統管理者常用的指令</span><br><span class="line">├── tmp          &lt;- 一般使用者暫存檔案的地方，重要的東西不要放這</span><br><span class="line">├── usr          &lt;- 跟系統息息相關的目錄</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── etc</span><br><span class="line">│   ├── include</span><br><span class="line">│   ├── lib</span><br><span class="line">│   └── tmp</span><br><span class="line">└── var          &lt;- 系統工作預設的工作目錄。</span><br></pre></td></tr></table></figure></p>
-<p>你現在的位置其實和 windows 還是有應對關係的，</p>
-<p>你可以下個<br><code>cygpath -w $HOME</code>來確認自己家目錄在 windows 的位置。<br><code>cygpath -w $PWD</code>來確認自己當前  在 windows 的位置。</p>
-<h2 id="動身"><a href="#動身" class="headerlink" title="動身"></a>動身</h2><p>知道了自己的位置後，接下來就是改變位置了，</p>
-<p>想像一下，你現在是一個人，每個資料夾是個房間，你現在知道自己的位置，再來就是走來走去了。</p>
-<p>你可以先下個<code>ls</code>指令，看一下現在的房間和哪幾間相連著。(ls 是 list 的縮寫）</p>
-<p>沒意外的話是空空如也啊。</p>
-<p>可以再下個<code>ls -a</code>，(a 是 all 的意思），把所有隱藏的房間（和物品 -&gt;文件） show 出來。<br>(<code>ls -la</code> 可以詳列更多訊息，l 是 long list format 的意思）</p>
-<p>你可以發現多了 <code>.</code> 和 <code>..</code> 這兩個房間。</p>
-<p><code>.</code>表示當前這間房間。至於為啥要有這種設計，你之後就會知道了。<br><code>..</code>則是上一層房間。方才我們說過，linux 的檔案系統是以樹狀的結構存在。</p>
-<p>接下了可以開始切換了，可以使用<code>cd dirname</code>切換路徑。<br>使用<code>cd ..</code>切到上一層。(cd 是 change directory 的縮寫）<br>沒有任何 output，只是命令列 (prompt) 稍稍改變了一下，這代表你成功切到上一層了。</p>
-<blockquote>
-<p>沒有消息就是好消息。—— linux 的哲學</p>
-</blockquote>
-<p>沒有 output 大多就是程序正常運行。</p>
-<p>接著下<code>ls</code>，看到的目錄應該就是你的家目錄，注意一點的是，名字為什麼不是<code>~</code>呢？</p>
-<p>因為<code>~</code>只是個縮寫啦。</p>
-<p>關於回到家目錄，你可以用<code>cd ~</code> 或 <code>cd</code>。</p>
-<blockquote>
-<p>對於路徑，<a href="http://linux.vbird.org/linux_basic/0220filemanager.php#dir_pathway" target="_blank" rel="noopener">這裡</a> 有更詳細的說明。</p>
-</blockquote>
-<h2 id="建立捷徑"><a href="#建立捷徑" class="headerlink" title="建立捷徑"></a>建立捷徑</h2><p>linux 和 windows 的捷徑其實是不太一樣的，在 cygwin 中不可用 .lnk 的捷徑。</p>
-<p>在家目錄如果想要建一個到桌面的捷徑，<br>你可以下 <code>ln -s /cygdrive/c/Users/$USER/Desktop/ ~/desktop</code>。</p>
-<p>然後你在家目錄可以使用 <code>cd desktop</code> 移動到桌面了。</p>
-<h2 id="創建、刪除與移動"><a href="#創建、刪除與移動" class="headerlink" title="創建、刪除與移動"></a>創建、刪除與移動</h2><ul>
-<li><p>創建<br>當你要創建一個資料夾的時候使用 <code>mkdir dirname</code>。<br>當你要創建一個空文檔的時候使用 <code>touch filename</code>。</p>
-<blockquote>
-<p>補充一點，檔案大致分為兩種類型 text 和 binary，<br><a href="https://en.wikipedia.org/wiki/Text_file" target="_blank" rel="noopener">text</a> 是存 ASCII 和 UTF-8 一類，一般用 vim 或記事本等編輯。<br><a href="https://en.wikipedia.org/wiki/Binary_file" target="_blank" rel="noopener">binary</a> 是 non-text file，例如可執行的二進制檔案。<br>不過 .py 檔是純文本也可執行，因為它是直譯的。<br>但是說到底，在電腦裡都是以二進制的方式儲存啦 :P</p>
-</blockquote>
-</li>
-<li><p>刪除<br>當你要移除一個檔案時 <code>rm filename</code>。<br>當你要移除一個<em>空</em>資料夾的時候 <code>rmdir dirname</code>。<br>當你要移除一個資料夾（空或非空都適用）和裡面的東西 <code>rm -r dirname</code>。<br>(-r flag 是 recursively 的意思）</p>
-<blockquote>
-<p>注意！使用 rm 刪除資料就真的回不來了，它沒有資源回收垃圾桶。</p>
-</blockquote>
-</li>
-<li><p>移動（或更名）<br>當你要移動檔案（或資料夾）A 到資料夾 B 時 <code>mv a b</code>。<br>當你要重新命名檔案（或資料夾） A 為 B 時 <code>mv a b</code>。</p>
-<blockquote>
-<p>看出來了嗎，若 B <strong>資料夾</strong>不存在，則會視為更名，存在則是移動。<br>要非常小心的一點是 B 如果是已存在的<strong>檔案</strong>時，B 會被 A 覆蓋，而 A 命名為 B。<br>還有一點要注意的是，Windows 下大小寫其實是不分的。<br>（但你在 Cygwin 中打字還是要分大小寫）。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="關於強大的-TAB-和-Arrow-Keys-快捷鍵等"><a href="#關於強大的-TAB-和-Arrow-Keys-快捷鍵等" class="headerlink" title="關於強大的 TAB 和 Arrow Keys , 快捷鍵等"></a>關於強大的 TAB 和 Arrow Keys , 快捷鍵等</h2><ul>
-<li><p>tab<br>假設你要切換到一個名字很長的資料夾時，<br><code>cd aDirWithALongLongLongName</code>，你可能會打到瘋掉，<br>這時可以適時的使用 tab 鍵。<br><code>cd aDirW</code> 打幾個字後敲一下 tab 鍵，他會盡可能挑出當前可能的選項幫你補上去。</p>
-</li>
-<li><p>arrow keys<br>你方才輸過的指令可以用方向鍵上下來叫出來。</p>
-</li>
-<li><p>快捷鍵（有興趣請走<a href="https://wiki.archlinux.org/index.php/Keyboard_shortcuts" target="_blank" rel="noopener">這</a>)<br>輸過的指令也可以按<code>ctrl-r</code>然後敲幾個字來叫出，<br>如果不是想要的那個，繼續按<code>ctrl-r</code>，選到後按<code>enter</code>。</p>
-</li>
-</ul>
-<h2 id="指令幫助"><a href="#指令幫助" class="headerlink" title="指令幫助"></a>指令幫助</h2><p>每一道指令都是一支程式，在 linux 下你可以用以下方法得到使用說明。</p>
-<ul>
-<li><p><code>man 指令名稱</code><br>其實 man 就是一支程式，它會幫你去找其他指令的相關使用說明。</p>
-</li>
-<li><p><code>指令名稱 -h</code></p>
-</li>
-<li><code>指令名稱 --help</code><br>一般來說程式會內建一些使用說明，加個 flag 試試看吧。</li>
-</ul>
-<h2 id="資料流重導向"><a href="#資料流重導向" class="headerlink" title="資料流重導向"></a>資料流重導向</h2><p>使用資料流也是一項很重要的技能。<br>簡單來說資料流可以分做 stdin , stdout , stderr。</p>
-<ul>
-<li><p>stdin 是檔案內容輸入至程式（指令）的一條流向。<br>（鍵盤輸入 — linux 下裝置也有檔案，在 /dev 中，也是 stdin）</p>
-<p>當你寫好一支簡單的程式 (output.py)，他會要求輸入，然後輸出至螢幕。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(input())</span><br></pre></td></tr></table></figure>
-<p>但你每次要輸一長串相同的東西很麻煩，<br>這時候你可以寫在檔案 (input.txt) 裡面。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hello world! It&apos;s my first python script ......</span><br></pre></td></tr></table></figure>
-<p>每次就不用執行<code>python output.py</code>再從鍵盤輸入同樣的東西了。<br>寫好 input.txt 後只要下<code>python output.py &lt; input.txt</code>，<br>它就會幫你把 input.txt 的內容輸進 output.py。</p>
-</li>
-<li><p>stdout 程式輸出至檔案的那條流向（螢幕在 linux 下也是檔案喔）。</p>
-<p>你現在下個 <code>ls</code> 的指令，它會輸出至螢幕，如果你要將它重導至檔案 (justLsOut.txt)，<br>可以下個<code>ls &gt; justLsOut.txt</code>。<br>如果本來沒有 justLsOut.txt 檔案，它會創一個 justLsOut.txt，然後把內容塞進去。<br>如果已經有 justLsOut.txt 的話，它會覆蓋掉 justLsOut.txt 的內容，然後塞 ls 的結果進去。</p>
-<p>但如果你不想要覆蓋掉原本內容呢？你也可以將 ls 的結果加在 justLsOut.txt 後面。<br>使用 <code>ls &gt;&gt; justLsOut.txt</code> 就好了。<code>&gt;&gt;</code>是 append 的用法。</p>
-</li>
-<li><p>stderr 是當有錯誤發生時，程式輸出至檔案的那條流向。<br>不過一般是跟 stdout 一起輸到螢幕。<br>如果你將 stdout 導到其他地方，螢幕剩下的就是 stderr 了。</p>
-</li>
-</ul>
-<blockquote>
-<p>更多如 <code>cat &gt; file.txt &lt;&lt; end</code> , <code>ls nonexsitfile.txt &gt; out.txt 2&amp;&gt;1</code> 用法請走<a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node14.html" target="_blank" rel="noopener">這</a><br>除此之外，你還可以學學 <a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node15.html" target="_blank" rel="noopener">pipe</a></p>
-</blockquote>
-<h2 id="使用-apt-cyg-管理套件"><a href="#使用-apt-cyg-管理套件" class="headerlink" title="使用 apt-cyg 管理套件"></a>使用 apt-cyg 管理套件</h2><p>cygwin 安裝的 setup.exe 基本上就是一個套件管理器，但是它是 GUI 的，而且還要點一堆選項，感覺很慢。</p>
-<p>如果你追求速度又 prefer Text Mode 的話，你可以試試別人寫的 shell script － apt-cyg。</p>
-<p>用起來感覺就像 apt-get 一樣。</p>
-<p>apt-cyg 如何使用呢？首先先把 <a href="https://github.com/transcode-open/apt-cyg/blob/master/apt-cyg" target="_blank" rel="noopener">apt-cyg 的 script</a> 複製下來，</p>
-<p>接著你有以下幾種方式（任選其一即可）把內容貼到檔案，放到家目錄。</p>
-<ol>
-<li>貼在記事本裡面，<strong>不要用 word</strong>，然後存到家目錄 (<code>cpath -w $HOME</code>) 中，假設存為 <code>script.txt</code>。</li>
-<li>下指令<code>cat &gt; script.txt</code> 然後滑鼠右鍵貼上，按 enter，接著<code>ctrl-d</code>跳出。<blockquote>
-<p>你可以下<code>cat script.txt</code>看貼上有沒有成功，<br><code>cat</code>指令是將檔案內容輸出至螢幕（沒有參數時是將鍵盤輸入輸出）。<br>接著可以用 <code>mv script.txt apt-cyg</code>。（別懷疑，我會將檔案叫做 script.txt 只是要你練習 mv）<br></p>
-</blockquote>
-</li>
-<li>有裝 wget 的話，在家目錄使用<blockquote>
-<p><code>wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg</code><br>  （你可以 cat 一下 apt-cyg 看看有沒有下載成功）</p>
-</blockquote>
-</li>
-</ol>
-<p>再來 <code>chmod a+x apt-cyg</code>。<br>（讓這個腳本擁有執行權限，有興趣看看關於 linux <a href="http://linux.vbird.org/linux_basic/0210filepermission.php" target="_blank" rel="noopener">檔案權限</a> 的內容）</p>
-<p>接著 <code>./apt-cyg install vim</code>。你就有 vim 可以用了。（我的 vim 入門可以走<a href="/2017/01/22/vim-0/#more">這</a>)<br>（和 Windows 不一樣的是，當前目錄可執行的檔案要執行一定要加 <code>./</code>)</p>
-<p>你可以將 <code>apt-cyg</code> 移到 <code>/bin</code> （根目錄底下的 bin 目錄），<br>這樣就能在任何地方呼叫它而不用使用<code>./</code>了。</p>
-<p><code>mv apt-cyg /bin</code>。（對這方面有興趣可以看看<code>$PATH</code>的<a href="https://www.phpini.com/linux/set-path-var" target="_blank" rel="noopener">介紹</a>）</p>
-<p>然後如果對有帶<code>$</code>號的變數有興趣的話，可以看看<a href="http://linux.vbird.org/linux_basic/0320bash.php#variable_environ" target="_blank" rel="noopener">環境變數</a>。</p>
-<blockquote>
-<p>其實如果檔案沒有執行權限，可以使用<code>bash file.sh</code> 來執行一個 shell 腳本。<br>道理和 python 一樣。</p>
-</blockquote>
-<h2 id="其他有用套件"><a href="#其他有用套件" class="headerlink" title="其他有用套件"></a>其他有用套件</h2><p><code>tmux</code> — 一項強大的終端切割螢幕工具。使用 <code>apt-cyg install tmux</code> 取得。<br>在沒有設定檔的情形下<code>ctrl-b</code>是 prefix 鍵。 使用<code>ctrl-b ?</code>開始玩玩看吧。<br>也可以使用我調校過的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/tmux.conf" target="_blank" rel="noopener">設定檔</a> (prefix 是 <code>ctrl-a</code>)，將設定檔存為 <code>~/.tmux.conf</code>。</p>
-<h2 id="結束"><a href="#結束" class="headerlink" title="結束"></a>結束</h2><p>你玩完 Cygwin 後，可以不用按右上角的<code>X</code>，你可以打個 <code>exit</code> 或按<code>ctrl-d</code>來結束它。</p>
-]]></content>
-      <categories>
-        <category>Fun</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>cygwin</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>簡明 Arch 安裝指南</title>
-    <url>/2019/06/06/arch-install/</url>
-    <content><![CDATA[<center>
-裝 Arch 第二次就上手～
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
-<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
-
-<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
-<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
-<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
-<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
-<p>所以我們的指令為：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
-<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
-<ul>
-<li>開啟電源後按 F12 （我的桌機）</li>
-<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
-</ul>
-<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
-<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
-<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
-<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
-<p>以 root 進入 zsh。</p>
-<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
-<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
-<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
-<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
-<p><code>fdisk /dev/sda</code></p>
-<p>進入 fdisk prompt。</p>
-<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
-<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
-<ol>
-<li><code>/efi =&gt; EFI System(type 1)</code></li>
-<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
-<li><code>swap =&gt; Linux swap(type 19)</code></li>
-<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
-<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
-<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
-<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
-<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
-<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
-<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
-<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
-<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
-<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
-<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
-<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
-<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
-<p>設定電腦名稱。</p>
-<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
-<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
-<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
-<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
-</blockquote>
-<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
-<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
-<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
-<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
-<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
-<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
-<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
-<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
-<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
-<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
-<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
-<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
-<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
-<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>FLOLAC&#39;18</title>
     <url>/2018/07/27/flolac18/</url>
     <content><![CDATA[<center>
@@ -2460,6 +2223,243 @@ A world without loop , but recursion。<br>
       <categories>
         <category>Memoir</category>
       </categories>
+  </entry>
+  <entry>
+    <title>簡明 Arch 安裝指南</title>
+    <url>/2019/06/06/arch-install/</url>
+    <content><![CDATA[<center>
+裝 Arch 第二次就上手～
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
+<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
+
+<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
+<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
+<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
+<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
+<p>所以我們的指令為：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
+<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
+<ul>
+<li>開啟電源後按 F12 （我的桌機）</li>
+<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
+</ul>
+<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
+<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
+<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
+<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
+<p>以 root 進入 zsh。</p>
+<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
+<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
+<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
+<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
+<p><code>fdisk /dev/sda</code></p>
+<p>進入 fdisk prompt。</p>
+<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
+<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
+<ol>
+<li><code>/efi =&gt; EFI System(type 1)</code></li>
+<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
+<li><code>swap =&gt; Linux swap(type 19)</code></li>
+<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
+<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
+<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
+<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
+<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
+<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
+<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
+<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
+<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
+<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
+<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
+<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
+<p>設定電腦名稱。</p>
+<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
+<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
+<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
+<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
+</blockquote>
+<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
+<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
+<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
+<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
+<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
+<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
+<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
+<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
+<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
+<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
+<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
+<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
+<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cygwin Beginner Guide</title>
+    <url>/2017/05/30/basic-linux/</url>
+    <content><![CDATA[<center>
+本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。
+</center>
+
+
+<a id="more"></a>
+<p><br><br><br>事先聲明 Cygwin != Linux，它是 Windows 下一個模擬 Linux terminal 的介面。</p>
+<p>關於 Cygwin 的<a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=47282" target="_blank" rel="noopener">安裝</a>。</p>
+<p>不過可以注意的是套件的部分只要多載一個 wget 就夠了，其他部分（如 vim 等）用 <a href="https://github.com/transcode-open/apt-cyg" target="_blank" rel="noopener">apt-cyg</a> 下載就好。<br>(apt-cyg 的使用置於文末）</p>
+<p>當你開啟 Cygwin 時，先不要嫌它醜，這之後可以慢慢調。<br>（或是直接抓現成的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/cygwin.bashrc.sh" target="_blank" rel="noopener">設定檔</a> 存到<code>~/.bashrc</code>）</p>
+<h2 id="WHERE-AM-I"><a href="#WHERE-AM-I" class="headerlink" title="WHERE AM I ?"></a>WHERE AM I ?</h2><p>首先，你可以看到有個命令列。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">userName@computerName ~</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<p>記住，你現在位置為家目錄，如果沒有特別改命令列的話，你可以發現命令列是以<code>~</code>表示家目錄。</p>
+<p>你現在有的只有簡單命令列，你可以先下個<code>pwd</code>指令來確認自己現在在檔案系統中的位置。</p>
+<p>不過你會發現這個位置有點奇怪，怎麼在 windows 的檔案總管中沒有見過，</p>
+<p>這是因為 Cygwin 要模擬 linux 的檔案環境，</p>
+<p>將你當初安裝的路徑選為根目錄 (root)，長出一套類似 linux 的檔案環境（樹狀）。<br>（而且 windows 的檔案分層是使用<code>\</code>，linux 則是使用<code>/</code>）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/                &lt;- 根目錄 (root)，為 windows 下的某個資料夾</span><br><span class="line">|</span><br><span class="line">├── bin          &lt;- 很多指令（程式）存放的位置</span><br><span class="line">├── cygdrive</span><br><span class="line">│   ├── c        &lt;- 注意！這裡可以切到 C 槽</span><br><span class="line">│   └── d        &lt;- 注意！這裡可以切到 D 槽</span><br><span class="line">├── dev          &lt;- 對 linux 來說，這裡有很多硬體裝置有關的檔案</span><br><span class="line">├── etc          &lt;- Linux 開機（這裡就是開 Cygwin) 的一些設定檔</span><br><span class="line">├── home</span><br><span class="line">│   └── ~        &lt;- 家目錄，你現在的位置</span><br><span class="line">├── lib          &lt;- 程式語言的一堆 library</span><br><span class="line">├── sbin         &lt;- 放著系統管理者常用的指令</span><br><span class="line">├── tmp          &lt;- 一般使用者暫存檔案的地方，重要的東西不要放這</span><br><span class="line">├── usr          &lt;- 跟系統息息相關的目錄</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── etc</span><br><span class="line">│   ├── include</span><br><span class="line">│   ├── lib</span><br><span class="line">│   └── tmp</span><br><span class="line">└── var          &lt;- 系統工作預設的工作目錄。</span><br></pre></td></tr></table></figure></p>
+<p>你現在的位置其實和 windows 還是有應對關係的，</p>
+<p>你可以下個<br><code>cygpath -w $HOME</code>來確認自己家目錄在 windows 的位置。<br><code>cygpath -w $PWD</code>來確認自己當前  在 windows 的位置。</p>
+<h2 id="動身"><a href="#動身" class="headerlink" title="動身"></a>動身</h2><p>知道了自己的位置後，接下來就是改變位置了，</p>
+<p>想像一下，你現在是一個人，每個資料夾是個房間，你現在知道自己的位置，再來就是走來走去了。</p>
+<p>你可以先下個<code>ls</code>指令，看一下現在的房間和哪幾間相連著。(ls 是 list 的縮寫）</p>
+<p>沒意外的話是空空如也啊。</p>
+<p>可以再下個<code>ls -a</code>，(a 是 all 的意思），把所有隱藏的房間（和物品 -&gt;文件） show 出來。<br>(<code>ls -la</code> 可以詳列更多訊息，l 是 long list format 的意思）</p>
+<p>你可以發現多了 <code>.</code> 和 <code>..</code> 這兩個房間。</p>
+<p><code>.</code>表示當前這間房間。至於為啥要有這種設計，你之後就會知道了。<br><code>..</code>則是上一層房間。方才我們說過，linux 的檔案系統是以樹狀的結構存在。</p>
+<p>接下了可以開始切換了，可以使用<code>cd dirname</code>切換路徑。<br>使用<code>cd ..</code>切到上一層。(cd 是 change directory 的縮寫）<br>沒有任何 output，只是命令列 (prompt) 稍稍改變了一下，這代表你成功切到上一層了。</p>
+<blockquote>
+<p>沒有消息就是好消息。—— linux 的哲學</p>
+</blockquote>
+<p>沒有 output 大多就是程序正常運行。</p>
+<p>接著下<code>ls</code>，看到的目錄應該就是你的家目錄，注意一點的是，名字為什麼不是<code>~</code>呢？</p>
+<p>因為<code>~</code>只是個縮寫啦。</p>
+<p>關於回到家目錄，你可以用<code>cd ~</code> 或 <code>cd</code>。</p>
+<blockquote>
+<p>對於路徑，<a href="http://linux.vbird.org/linux_basic/0220filemanager.php#dir_pathway" target="_blank" rel="noopener">這裡</a> 有更詳細的說明。</p>
+</blockquote>
+<h2 id="建立捷徑"><a href="#建立捷徑" class="headerlink" title="建立捷徑"></a>建立捷徑</h2><p>linux 和 windows 的捷徑其實是不太一樣的，在 cygwin 中不可用 .lnk 的捷徑。</p>
+<p>在家目錄如果想要建一個到桌面的捷徑，<br>你可以下 <code>ln -s /cygdrive/c/Users/$USER/Desktop/ ~/desktop</code>。</p>
+<p>然後你在家目錄可以使用 <code>cd desktop</code> 移動到桌面了。</p>
+<h2 id="創建、刪除與移動"><a href="#創建、刪除與移動" class="headerlink" title="創建、刪除與移動"></a>創建、刪除與移動</h2><ul>
+<li><p>創建<br>當你要創建一個資料夾的時候使用 <code>mkdir dirname</code>。<br>當你要創建一個空文檔的時候使用 <code>touch filename</code>。</p>
+<blockquote>
+<p>補充一點，檔案大致分為兩種類型 text 和 binary，<br><a href="https://en.wikipedia.org/wiki/Text_file" target="_blank" rel="noopener">text</a> 是存 ASCII 和 UTF-8 一類，一般用 vim 或記事本等編輯。<br><a href="https://en.wikipedia.org/wiki/Binary_file" target="_blank" rel="noopener">binary</a> 是 non-text file，例如可執行的二進制檔案。<br>不過 .py 檔是純文本也可執行，因為它是直譯的。<br>但是說到底，在電腦裡都是以二進制的方式儲存啦 :P</p>
+</blockquote>
+</li>
+<li><p>刪除<br>當你要移除一個檔案時 <code>rm filename</code>。<br>當你要移除一個<em>空</em>資料夾的時候 <code>rmdir dirname</code>。<br>當你要移除一個資料夾（空或非空都適用）和裡面的東西 <code>rm -r dirname</code>。<br>(-r flag 是 recursively 的意思）</p>
+<blockquote>
+<p>注意！使用 rm 刪除資料就真的回不來了，它沒有資源回收垃圾桶。</p>
+</blockquote>
+</li>
+<li><p>移動（或更名）<br>當你要移動檔案（或資料夾）A 到資料夾 B 時 <code>mv a b</code>。<br>當你要重新命名檔案（或資料夾） A 為 B 時 <code>mv a b</code>。</p>
+<blockquote>
+<p>看出來了嗎，若 B <strong>資料夾</strong>不存在，則會視為更名，存在則是移動。<br>要非常小心的一點是 B 如果是已存在的<strong>檔案</strong>時，B 會被 A 覆蓋，而 A 命名為 B。<br>還有一點要注意的是，Windows 下大小寫其實是不分的。<br>（但你在 Cygwin 中打字還是要分大小寫）。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="關於強大的-TAB-和-Arrow-Keys-快捷鍵等"><a href="#關於強大的-TAB-和-Arrow-Keys-快捷鍵等" class="headerlink" title="關於強大的 TAB 和 Arrow Keys , 快捷鍵等"></a>關於強大的 TAB 和 Arrow Keys , 快捷鍵等</h2><ul>
+<li><p>tab<br>假設你要切換到一個名字很長的資料夾時，<br><code>cd aDirWithALongLongLongName</code>，你可能會打到瘋掉，<br>這時可以適時的使用 tab 鍵。<br><code>cd aDirW</code> 打幾個字後敲一下 tab 鍵，他會盡可能挑出當前可能的選項幫你補上去。</p>
+</li>
+<li><p>arrow keys<br>你方才輸過的指令可以用方向鍵上下來叫出來。</p>
+</li>
+<li><p>快捷鍵（有興趣請走<a href="https://wiki.archlinux.org/index.php/Keyboard_shortcuts" target="_blank" rel="noopener">這</a>)<br>輸過的指令也可以按<code>ctrl-r</code>然後敲幾個字來叫出，<br>如果不是想要的那個，繼續按<code>ctrl-r</code>，選到後按<code>enter</code>。</p>
+</li>
+</ul>
+<h2 id="指令幫助"><a href="#指令幫助" class="headerlink" title="指令幫助"></a>指令幫助</h2><p>每一道指令都是一支程式，在 linux 下你可以用以下方法得到使用說明。</p>
+<ul>
+<li><p><code>man 指令名稱</code><br>其實 man 就是一支程式，它會幫你去找其他指令的相關使用說明。</p>
+</li>
+<li><p><code>指令名稱 -h</code></p>
+</li>
+<li><code>指令名稱 --help</code><br>一般來說程式會內建一些使用說明，加個 flag 試試看吧。</li>
+</ul>
+<h2 id="資料流重導向"><a href="#資料流重導向" class="headerlink" title="資料流重導向"></a>資料流重導向</h2><p>使用資料流也是一項很重要的技能。<br>簡單來說資料流可以分做 stdin , stdout , stderr。</p>
+<ul>
+<li><p>stdin 是檔案內容輸入至程式（指令）的一條流向。<br>（鍵盤輸入 — linux 下裝置也有檔案，在 /dev 中，也是 stdin）</p>
+<p>當你寫好一支簡單的程式 (output.py)，他會要求輸入，然後輸出至螢幕。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(input())</span><br></pre></td></tr></table></figure>
+<p>但你每次要輸一長串相同的東西很麻煩，<br>這時候你可以寫在檔案 (input.txt) 裡面。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hello world! It&apos;s my first python script ......</span><br></pre></td></tr></table></figure>
+<p>每次就不用執行<code>python output.py</code>再從鍵盤輸入同樣的東西了。<br>寫好 input.txt 後只要下<code>python output.py &lt; input.txt</code>，<br>它就會幫你把 input.txt 的內容輸進 output.py。</p>
+</li>
+<li><p>stdout 程式輸出至檔案的那條流向（螢幕在 linux 下也是檔案喔）。</p>
+<p>你現在下個 <code>ls</code> 的指令，它會輸出至螢幕，如果你要將它重導至檔案 (justLsOut.txt)，<br>可以下個<code>ls &gt; justLsOut.txt</code>。<br>如果本來沒有 justLsOut.txt 檔案，它會創一個 justLsOut.txt，然後把內容塞進去。<br>如果已經有 justLsOut.txt 的話，它會覆蓋掉 justLsOut.txt 的內容，然後塞 ls 的結果進去。</p>
+<p>但如果你不想要覆蓋掉原本內容呢？你也可以將 ls 的結果加在 justLsOut.txt 後面。<br>使用 <code>ls &gt;&gt; justLsOut.txt</code> 就好了。<code>&gt;&gt;</code>是 append 的用法。</p>
+</li>
+<li><p>stderr 是當有錯誤發生時，程式輸出至檔案的那條流向。<br>不過一般是跟 stdout 一起輸到螢幕。<br>如果你將 stdout 導到其他地方，螢幕剩下的就是 stderr 了。</p>
+</li>
+</ul>
+<blockquote>
+<p>更多如 <code>cat &gt; file.txt &lt;&lt; end</code> , <code>ls nonexsitfile.txt &gt; out.txt 2&amp;&gt;1</code> 用法請走<a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node14.html" target="_blank" rel="noopener">這</a><br>除此之外，你還可以學學 <a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node15.html" target="_blank" rel="noopener">pipe</a></p>
+</blockquote>
+<h2 id="使用-apt-cyg-管理套件"><a href="#使用-apt-cyg-管理套件" class="headerlink" title="使用 apt-cyg 管理套件"></a>使用 apt-cyg 管理套件</h2><p>cygwin 安裝的 setup.exe 基本上就是一個套件管理器，但是它是 GUI 的，而且還要點一堆選項，感覺很慢。</p>
+<p>如果你追求速度又 prefer Text Mode 的話，你可以試試別人寫的 shell script － apt-cyg。</p>
+<p>用起來感覺就像 apt-get 一樣。</p>
+<p>apt-cyg 如何使用呢？首先先把 <a href="https://github.com/transcode-open/apt-cyg/blob/master/apt-cyg" target="_blank" rel="noopener">apt-cyg 的 script</a> 複製下來，</p>
+<p>接著你有以下幾種方式（任選其一即可）把內容貼到檔案，放到家目錄。</p>
+<ol>
+<li>貼在記事本裡面，<strong>不要用 word</strong>，然後存到家目錄 (<code>cpath -w $HOME</code>) 中，假設存為 <code>script.txt</code>。</li>
+<li>下指令<code>cat &gt; script.txt</code> 然後滑鼠右鍵貼上，按 enter，接著<code>ctrl-d</code>跳出。<blockquote>
+<p>你可以下<code>cat script.txt</code>看貼上有沒有成功，<br><code>cat</code>指令是將檔案內容輸出至螢幕（沒有參數時是將鍵盤輸入輸出）。<br>接著可以用 <code>mv script.txt apt-cyg</code>。（別懷疑，我會將檔案叫做 script.txt 只是要你練習 mv）<br></p>
+</blockquote>
+</li>
+<li>有裝 wget 的話，在家目錄使用<blockquote>
+<p><code>wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg</code><br>  （你可以 cat 一下 apt-cyg 看看有沒有下載成功）</p>
+</blockquote>
+</li>
+</ol>
+<p>再來 <code>chmod a+x apt-cyg</code>。<br>（讓這個腳本擁有執行權限，有興趣看看關於 linux <a href="http://linux.vbird.org/linux_basic/0210filepermission.php" target="_blank" rel="noopener">檔案權限</a> 的內容）</p>
+<p>接著 <code>./apt-cyg install vim</code>。你就有 vim 可以用了。（我的 vim 入門可以走<a href="/2017/01/22/vim-0/#more">這</a>)<br>（和 Windows 不一樣的是，當前目錄可執行的檔案要執行一定要加 <code>./</code>)</p>
+<p>你可以將 <code>apt-cyg</code> 移到 <code>/bin</code> （根目錄底下的 bin 目錄），<br>這樣就能在任何地方呼叫它而不用使用<code>./</code>了。</p>
+<p><code>mv apt-cyg /bin</code>。（對這方面有興趣可以看看<code>$PATH</code>的<a href="https://www.phpini.com/linux/set-path-var" target="_blank" rel="noopener">介紹</a>）</p>
+<p>然後如果對有帶<code>$</code>號的變數有興趣的話，可以看看<a href="http://linux.vbird.org/linux_basic/0320bash.php#variable_environ" target="_blank" rel="noopener">環境變數</a>。</p>
+<blockquote>
+<p>其實如果檔案沒有執行權限，可以使用<code>bash file.sh</code> 來執行一個 shell 腳本。<br>道理和 python 一樣。</p>
+</blockquote>
+<h2 id="其他有用套件"><a href="#其他有用套件" class="headerlink" title="其他有用套件"></a>其他有用套件</h2><p><code>tmux</code> — 一項強大的終端切割螢幕工具。使用 <code>apt-cyg install tmux</code> 取得。<br>在沒有設定檔的情形下<code>ctrl-b</code>是 prefix 鍵。 使用<code>ctrl-b ?</code>開始玩玩看吧。<br>也可以使用我調校過的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/tmux.conf" target="_blank" rel="noopener">設定檔</a> (prefix 是 <code>ctrl-a</code>)，將設定檔存為 <code>~/.tmux.conf</code>。</p>
+<h2 id="結束"><a href="#結束" class="headerlink" title="結束"></a>結束</h2><p>你玩完 Cygwin 後，可以不用按右上角的<code>X</code>，你可以打個 <code>exit</code> 或按<code>ctrl-d</code>來結束它。</p>
+]]></content>
+      <categories>
+        <category>Fun</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>cygwin</tag>
+      </tags>
   </entry>
   <entry>
     <title>Ruby Note</title>
