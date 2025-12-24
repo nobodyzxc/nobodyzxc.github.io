@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://nobodyzxc.github.io/"/>
-  <updated>2022-12-24T10:56:40.053Z</updated>
+  <updated>2022-06-28T23:26:46.639Z</updated>
   <id>http://nobodyzxc.github.io/</id>
   
   <author>
@@ -15,25 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>guitar-handout</title>
-    <link href="http://nobodyzxc.github.io/2022/12/24/guitar-handout/"/>
-    <id>http://nobodyzxc.github.io/2022/12/24/guitar-handout/</id>
-    <published>2022-12-24T10:55:02.000Z</published>
-    <updated>2022-12-24T10:56:40.053Z</updated>
-    
-    <content type="html"><![CDATA[<center></center><a id="more"></a><p><br><br></p><h2 id="week-1"><a href="#week-1" class="headerlink" title="week 1"></a>week 1</h2><h3 id="上課"><a href="#上課" class="headerlink" title="上課"></a>上課</h3><p>從音階開始講</p><p><a href="https://www.facebook.com/watch/?v=583682679068802" target="_blank" rel="noopener">https://www.facebook.com/watch/?v=583682679068802</a></p><p><a href="https://www.facebook.com/percussiosoftware/videos/2101251000104148" target="_blank" rel="noopener">https://www.facebook.com/percussiosoftware/videos/2101251000104148</a></p><p><a href="https://www.youtube.com/watch?v=Caxwob1iKX4" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Caxwob1iKX4</a></p><p><a href="https://www.facebook.com/watch/?v=645041709684764" target="_blank" rel="noopener">https://www.facebook.com/watch/?v=645041709684764</a></p><p>回家功課 C/D/G 單音位置練習<br>CAGED system pattern 1</p><h3 id="練習"><a href="#練習" class="headerlink" title="練習"></a>練習</h3><p>有事沒事就練<br>但感覺就是沒辦法很熟<br>腳很跛</p><ul><li>write a program to help practice CAGED system</li></ul><h2 id="week-2"><a href="#week-2" class="headerlink" title="week 2"></a>week 2</h2><h3 id="上課-1"><a href="#上課-1" class="headerlink" title="上課"></a>上課</h3><p>從音程講到和弦<br><a href="https://nicechord.com/post/chord-symbols/" target="_blank" rel="noopener">https://nicechord.com/post/chord-symbols/</a><br><a href="https://www.youtube.com/watch?v=IruOI1YcsfA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=IruOI1YcsfA</a></p><ul><li>單音位置練習<br>驗收的結果挺差的<br>基本上位置都還是不熟<br>可能跟平時練習都跳著弦練<br>不然就是每一弦都一個八度兩個音在練</li><li>CAGED system pattern 1<br>還是不熟</li></ul><p>C/D/G 繼續練 加上 D<br>繼續 pattern 1 但加上模進</p><h3 id="練習-1"><a href="#練習-1" class="headerlink" title="練習"></a>練習</h3><p>我覺得閉上眼睛 念著第幾弦<br>一邊跟著節拍器彈好像有用<br>可以把每條弦獨立開來記位置</p><ul><li>TODO write a program help practice couting intervals</li></ul><h2 id="week-3"><a href="#week-3" class="headerlink" title="week 3"></a>week 3</h2><h3 id="上課-2"><a href="#上課-2" class="headerlink" title="上課"></a>上課</h3><p>老師上課教了三和弦，然後用 backtrack 示範了一下。</p><p>這周作業很多：</p><ul><li>把白鍵的單音練完</li><li>三和弦 四上四下</li><li>Pattern 2</li><li>琶音</li><li>跳進</li></ul><h3 id="練習-2"><a href="#練習-2" class="headerlink" title="練習"></a>練習</h3><h2 id="week-4"><a href="#week-4" class="headerlink" title="week 4"></a>week 4</h2><h2 id="上課-3"><a href="#上課-3" class="headerlink" title="上課"></a>上課</h2><p>自然順階和弦 (Diatonic Chords)</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">X:1</span><br><span class="line">% T:Diatonic Chords</span><br><span class="line">M:4/4</span><br><span class="line">L:1/4</span><br><span class="line">K:C</span><br><span class="line">|[CEG] [DFA][EGB] [FAc] [GBd] [Ace] [Bdf] |</span><br><span class="line">w:C Dm Em F G Am Bdim</span><br></pre></td></tr></table></figure><div id="target"></div><p><a href="https://www.youtube.com/watch?v=dFpryVMgni0" target="_blank" rel="noopener">https://www.youtube.com/watch?v=dFpryVMgni0</a></p><p><a href="https://www.youtube.com/watch?v=t_tzbSxMktc" target="_blank" rel="noopener">https://www.youtube.com/watch?v=t_tzbSxMktc</a></p><p><a href="https://www.youtube.com/watch?v=gEkYwxRcyIk" target="_blank" rel="noopener">https://www.youtube.com/watch?v=gEkYwxRcyIk</a></p><p><a href="https://www.youtube.com/watch?v=CtZ74JdxCt0" target="_blank" rel="noopener">https://www.youtube.com/watch?v=CtZ74JdxCt0</a></p><p><a href="https://www.youtube.com/watch?v=2bEiFEYZl-o&amp;list=PLHX_dBxnc8z8A5TyQUNy7_rqkOSY_F6wF&amp;index=6" target="_blank" rel="noopener">https://www.youtube.com/watch?v=2bEiFEYZl-o&amp;list=PLHX_dBxnc8z8A5TyQUNy7_rqkOSY_F6wF&amp;index=6</a></p><p><a href="https://www.youtube.com/watch?v=SM2nhLSeJXg" target="_blank" rel="noopener">https://www.youtube.com/watch?v=SM2nhLSeJXg</a></p><h2 id="練習-3"><a href="#練習-3" class="headerlink" title="練習"></a>練習</h2><p>pattern 3</p><script src="abcjs-basic-min.js"></script><script>// var abcString = "X:1\nT:Example\nK:Bb\nBcde|\n";// var el = document.getElementById("target");// renderAbc(el, abcString);</script>]]></content>
-    
-    <summary type="html">
-    
-      &lt;center&gt;
-&lt;/center&gt;
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>Vim Note (Basic Configuration)</title>
@@ -556,6 +537,37 @@ A world without loop , but recursion。&lt;br&gt;
       <category term="haskell" scheme="http://nobodyzxc.github.io/tags/haskell/"/>
     
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Vim Note (Basic Manipulation)</title>
+    <link href="http://nobodyzxc.github.io/2017/01/22/vim-0/"/>
+    <id>http://nobodyzxc.github.io/2017/01/22/vim-0/</id>
+    <published>2017-01-22T15:32:56.000Z</published>
+    <updated>2021-04-23T20:37:09.484Z</updated>
+    
+    <content type="html"><![CDATA[<center>結識 vim 一年多了，一切的一切算得上機緣巧遇。<br>一路走來的點點滴滴，想來不禁百感交集。<br>這篇文章會不定期更新，隨著我的 vim skill。<br>這段旅途的終點，大概就是我不用 vim 的那天吧！<br>（可能是入 emacs 教，或是真香 IDE 了吧）<br>Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim 教吧。</center><a id="more"></a><p><br><br></p><h2 id="基本操作篇"><a href="#基本操作篇" class="headerlink" title="基本操作篇"></a>基本操作篇</h2><p>要編輯一個存在的文檔<code>tst.txt</code>時只要在 terminal 下 <code>vim tst.txt</code>。<br>如果要建立一個新檔，叫做<code>new.txt</code>，也只要下 <code>vim new.txt</code>，只是離開記得存。<br>如果還沒想到要存什麼名字，只要下<code>vim</code>就好了，離開再命名就好了。</p><p>vim 有三種模式 normal , insert , visual。一開始進到 vim 時即是 normal 模式。</p><p><code>&lt;ESC&gt;</code>進 normal mode ，<br>normal mode 下，<code>i</code>（注意是小寫），可以讓游標在<strong>原位</strong>進入 insert mode，<br>normal mode 下，<code>v</code>，可以進入 visual mode。</p><p>看起來，normal mode 是一切 mode 的橋樑。</p><p>敏銳的人可以發現， normal mode 左下並沒有特別的東西。<br>insert mode 會出現 <code>-- INSERT --</code>， visual mode 則是 <code>-- VISUAL --</code>。</p><h3 id="normal-mode"><a href="#normal-mode" class="headerlink" title="- normal mode"></a>- normal mode</h3><p>normal 模式主要有兩種功能，快速移動游標、簡易文檔操作和下指令。<br>其中離開指令就是在 normal mode 下的。<br>要切換 normal mode 只要按<code>esc</code>鍵就好了，vim script 會表示成<code>&lt;ESC&gt;</code>。<br>要下指令，只要在 normal mode 按<code>:</code>，再下指令。</p><ol><li><p>移動</p><p>要移動最簡單的就是按方向鍵，但是 vim 習慣上會使用 <code>jkhl</code> ， 分別對應上下左右。<br>（方向鍵在所有模式是通用的）</p><p>不想一格格移動的話可以先鍵入一個數字再移動，比如 <code>15j</code> 是向下移動十五行。<br>在很多操作下都有搭配數字的用法，有興趣不妨試一下。</p><p>要把游標移動到行首，可以直接按數字 <code>0</code>。<br>要把游標移動到行尾，可以直接按符號 <code>$</code>(shift + 4)。<br>要把游標移動到首行，可以直接按字母 <code>gg</code>。<br>要把游標移動到尾行，可以直接按字母 <code>G</code>(shift + g)。</p><p>vim 上某些建議是不要鎖住 caps lock 鍵，要大寫盡量用 shift 鍵。</p></li><li><p>文檔操作</p><ul><li>copy   : 整行 copy 按 <code>yy</code>，或是按<code>v</code>進入 visual mode 選取再按 <code>y</code>。</li><li>paste  : 按<code>p</code>。</li><li>delete : 用法跟 copy 很像，字母<code>d</code>和<code>x</code>，try 一下吧，帶有剪下的功能。</li><li>search : 按下 <code>/</code> ， 鍵入搜尋字串然後<code>enter</code>，<code>n</code>下一筆，<code>N</code>上一筆。</li><li>replace: <code>:%s/ 目標字串 / 取代成字串 /g</code>，<code>g</code>是對每行的目標字串替換，<br>沒加只會取代每行第一個。 （亦可進入 visual 進行取代，就不用使用<code>%</code>)<br> （關於 vim regex 請走<a href="http://vimregex.com/" target="_blank" rel="noopener">這</a>）</li></ul></li><li><p>指令</p><p>進到 vim 之後先講一下離開吧。<br>有句有名的話是這樣說的。</p><blockquote><p>要產生一個隨機字串，就是讓一個新手離開 vim</p></blockquote><p>離開的指令是<code>q</code>，所以假設我們不知道現在是什麼模式，</p><p>只要按下<code>&lt;ESC&gt;:q</code>，就能離開。<br>不過你可能會遇到這種情況</p><blockquote><p><code>E37: No write since last change (add ! to override)</code></p></blockquote><p>意思就是你對檔案有了改動， vim 不確定你是否要儲存再離開，所以詢問。<br>道理和用 Word 離開會跳出 msgbox 一樣。<br>如果沒有要儲存，照著提示，只要下<code>:q!</code>，即可。<br>若要儲存，只要下<code>:wq</code>。<br>到了這裡，有沒有發現一件事，所謂指令，好像有著某種組合關係。</p><blockquote><p>沒錯， vim 的精隨就在於<strong>組合</strong>！</p></blockquote><p>像是要把該行往下 shift 一行，就可以使用 <code>ddp</code>。</p><p><code>w</code>是儲存的指令，<code>:wq</code>，就是儲存後離開。<br>直接下<code>:w</code>當然就是儲存啊，養成隨時儲存的習慣， vim 因為斷線掛掉可是很折騰的。</p><blockquote><p>不要只會<code>:wq</code>啊，<code>:w</code>要舉一反三直接理解</p></blockquote><p>前面提到，若沒取檔名，只要在離開使用<code>:wq filename</code>即可存成該檔並離開。<br><code>filename</code> 這個參數主要是餵給 <code>w</code> 使用，所以單獨用<code>:w filename</code>也可以。</p><p>若 vim 在一開始就開檔了呢？這時此種用法就會變成另存新檔囉，很好理解吧。</p><p><code>!</code>是強制的意思，<code>:q!</code>，解釋為強制離開。<br>有時是文檔的擁有者，但是沒有給自己加上 w 權限，<br>這時 vim 左下角就會出現<code>[readonly]</code>。<br>normal mode 下 <code>:wq</code>時就會出現</p><blockquote><p><code>W10: Warning: Changing a readonly file</code></p></blockquote><p>這時也只要加個驚嘆號就可以了。（當然，不是文檔擁有者不管用）<br>那<code>:qw</code>可以執行嗎？很遺憾，所謂指令是有順序的，想想看，這合理嗎？<br>也是可以試試看，程序員鼓勵試錯精神。</p><blockquote><p><code>:wq</code> 有快捷，他等價於<code>:x</code>，但我覺得要按<code>&lt;ESC&gt;</code>的話，<br>計入移動手的成本，其實也沒快到哪裡。<br>還有個快捷是<code>ZZ</code>。</p></blockquote></li></ol><p>normal mode 已經說了個大概，更進階的之後會在 vimrc section 中討論。</p><h3 id="insert-mode"><a href="#insert-mode" class="headerlink" title="- insert mode"></a>- insert mode</h3><p>主要就是打字，沒什麼好說的，有幾種指令可以由 normal mode 進入 insert mode。</p><ul><li><code>i</code> : 由游標位置進入。</li><li><code>I</code> : 插入該行第一個字元位置。</li><li><code>a</code> : 游標位置往後一位插入。</li><li><code>A</code> : 插入行尾。</li><li><code>o</code> : 插入下一行。</li><li><code>O</code> : 插入上一行。</li><li><code>s</code> : 消除一字元並進入。</li><li><code>S</code> : 清除該行。</li></ul><h3 id="visual-mode"><a href="#visual-mode" class="headerlink" title="- visual mode"></a>- visual mode</h3><p>  一鍵縮排很實用，選起來再按 <code>=</code> 即可。<br>  所以要全文縮排就可以使用 <code>ggvG=</code> 或是 <code>gg=G</code>。</p><p>  還有值得一提的是 column 模式。<br>  按<code>v</code>進入 visual mode，往下選取需要的行。<br>  <code>ctrl-v</code>進入 column 模式。</p><p>  然後可以做啥咧？按<code>I</code>進入 insert mode，鍵入幾個字。<br>  <code>esc</code> 跳出。<br>  在每行插入剛剛打的字母。</p><p>參考資料：<a href="https://www.fprintf.net/vimCheatSheet.html" target="_blank" rel="noopener">vim cheat sheet</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;center&gt;
+結識 vim 一年多了，一切的一切算得上機緣巧遇。&lt;br&gt;
+一路走來的點點滴滴，想來不禁百感交集。&lt;br&gt;
+這篇文章會不定期更新，隨著我的 vim skill。&lt;br&gt;
+這段旅途的終點，大概就是我不用 vim 的那天吧！&lt;br&gt;
+（可能是入 emacs 教，或是真香 IDE 了吧）&lt;br&gt;
+Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim 教吧。
+&lt;/center&gt;
+    
+    </summary>
+    
+      <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
+    
+    
+      <category term="vim" scheme="http://nobodyzxc.github.io/tags/vim/"/>
+    
+      <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
     
   </entry>
   
