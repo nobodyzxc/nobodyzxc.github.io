@@ -141,34 +141,6 @@
       </tags>
   </entry>
   <entry>
-    <title>PHP Note</title>
-    <url>/2017/03/26/PHP-Note/</url>
-    <content><![CDATA[<center>
-這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了，<br>
-在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始，<br>
-許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><p>跟 Python 一樣是動態語言，所謂變數只是 name binding，<br>用法跟 Python 也一樣，要用之前先 assign 一個值。<br>變數前跟著一個 <script type="math/tex">`，跟 Shell Script 不一樣的是 assign 的時候也要跟著 `</script>。<br>但是學到 OO 的部分，事情有了些變化，const 的東西不用加 <code>$</code>，或許是不把它當變數看的緣故。<br>物件內的變數宣告，方法和 Python 蠻像的，但好像蠻強調 <code>public</code> 封裝。<br>子函數習慣上也是用 <code>$this</code> 來設定 member variable。<br>尚未探究子函數內是否有像 Cpp 用 scope 直接使用 member variable，但學到的是用 <code>$this</code>，<br>所以可以用的可能性不大。但子函式又不像 Python 會把 self 傳進去。<br>一般使用<code>.</code>作為字串 connect 的 operator，所以 object 呼叫底下的東西會用<code>-&gt;</code>。<br>object 底下的變數不用再加錢號。 ex: <code>$nobodyzxc-&gt;name</code> 而不是 <code>$nobodyzxc-&gt;$name</code>。<br>static 或 const 的東西可以用 <code>ClassName::Attr</code>呼叫，和 Cpp 一樣。</p>
-<h2 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h2><p>簡單的 operator 略過。<br>PHP 想當然爾，對文本的操作應是相當強的，<br>但我也只學到 <code>strlen()</code> , <code>strpos()</code> , <code>str_replace()</code>，其他要用再查。<br>html 轉碼、正則等之前用過幾次用用也忘了。<br>自定義 function 寫法。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func_name</span><span class="params">($var)</span></span>&#123;</span><br><span class="line">    $rtn = blalala($var);</span><br><span class="line">    <span class="keyword">return</span> $rtn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在函數裡宣告的變數基本上都是區域變數，如要用全域，加上<code>global</code>關鍵字。</p>
-<h2 id="Control-Flow"><a href="#Control-Flow" class="headerlink" title="Control Flow"></a>Control Flow</h2><p>基本的東西，稍微記一下。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(exp)&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">elseif</span>(exp)&#123; <span class="comment">// well , take care the key word</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span>(what)&#123;</span><br><span class="line">    <span class="keyword">case</span> cs0:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs1:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs2:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (what): <span class="comment">// syntax sugar , pythonic ?</span></span><br><span class="line">    <span class="keyword">case</span> cs0:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs1:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs2:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">endswitch</span>;</span><br></pre></td></tr></table></figure></p>
-<h2 id="Loop"><a href="#Loop" class="headerlink" title="Loop"></a>Loop</h2><p>基本上和 C 系差不多，但有迭代器的用法 (Array 時再說），注意一下。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span> ; $i &lt; <span class="number">10</span> ; $i++)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(exp)&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(exp): <span class="comment">// syntax sugar</span></span><br><span class="line"><span class="keyword">endwhile</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span>&#123;&#125;<span class="keyword">while</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><p>物件化，沒有用符號下去載，直接拿一個物件名，注意 new。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$myArray = <span class="keyword">new</span> <span class="keyword">Array</span>(<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>);</span><br><span class="line">array_push($myArray , <span class="number">4</span>);</span><br><span class="line"><span class="keyword">unset</span>($myArray , <span class="number">3</span>);       <span class="comment">// remove element 4</span></span><br><span class="line"><span class="keyword">unset</span>($myArray);           <span class="comment">// remove whole aray</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>($myArray <span class="keyword">as</span> $e)&#123;   <span class="comment">// iterator</span></span><br><span class="line">    <span class="keyword">echo</span> $e.<span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$twoDimAry = <span class="keyword">new</span> <span class="keyword">Array</span>(<span class="keyword">Array</span>() , <span class="keyword">Array</span>());</span><br><span class="line"></span><br><span class="line">$myAryMap = <span class="keyword">new</span> <span class="keyword">Array</span>(<span class="string">'keyOne'</span> =&gt; <span class="number">1</span> ,</span><br><span class="line">                    <span class="string">'keyTwo'</span>   =&gt; <span class="number">2</span> ,</span><br><span class="line">                    <span class="string">'keyThree'</span> =&gt; <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>($myAryMap <span class="keyword">as</span> $key =&gt; $val)&#123; <span class="comment">// array map iterator</span></span><br><span class="line">    <span class="keyword">echo</span> $key.<span class="string">' =&gt; '</span>.$val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="OOP"><a href="#OOP" class="headerlink" title="OOP"></a>OOP</h2><p>寫個物件來記最快。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">($word)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> $word.<span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> die_age = <span class="number">30</span>; <span class="comment">// we don't need $</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($age)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOlder</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$nobodyzxc = <span class="keyword">new</span> Person(<span class="number">20</span>);</span><br><span class="line"><span class="keyword">echo</span> $nobodyzxc-&gt;age;</span><br><span class="line">$nobodyzxc-&gt;getOlder();</span><br><span class="line">Person::say(<span class="string">"there , there"</span>);</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>php</tag>
-        <tag>oop</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Memoir - Road</title>
     <url>/2016/12/31/MyRoad/</url>
     <content><![CDATA[<center>
@@ -287,46 +259,32 @@
       </categories>
   </entry>
   <entry>
-    <title>feedback</title>
-    <url>/2018/05/22/feedback/</url>
+    <title>PHP Note</title>
+    <url>/2017/03/26/PHP-Note/</url>
     <content><![CDATA[<center>
-上程式語言課，給老師的回饋。
+這個世界上最好的語言，我學了很多次，但每次都是有需要才研究一下，感覺用完就生疏了，<br>
+在學完 OOP ，以及學了一些語言後，對這方面有些概觀，回來重新開始，<br>
+許多東西好像就合理了起來，但這次也只是複習基本語法罷了，期許能記得更牢。
 </center>
 
 
 <a id="more"></a>
 <p><br><br></p>
-<blockquote>
-<p>葉丙成老師兩篇關於主修 CS 的文章</p>
-<p>102657 ( CK ) 2018-03-06 10:59 0<br>想聽聽聽同學對這篇文章的看法。</p>
-<p> 現在學 CS 會不會太晚？在程式設計之外，更該想「如何創造價值」</p>
-<p><a href="https://opinion.cw.com.tw/blog/profile/215/article/6232" target="_blank" rel="noopener">https://opinion.cw.com.tw/blog/profile/215/article/6232</a></p>
-</blockquote>
-<p>CS 學生的優勢就是浸淫 CS 的時間比別人長。</p>
-<p>隨著各種技術的發展，整個工具鏈的架構也越來越複雜。<br>雖說抽象化降低了工具使用的難度，<br>但是有些工具的使用也是需要經驗累積的。</p>
-<p>那些工具、技術可能就是資訊科系學生可以投資的吧。<br>比如 server 管理等等。</p>
-<p>而以上終究只是混口飯吃的等級罷了。<br>只要別人肯下苦工，終究還是會被替代掉的。</p>
-<p>相對於工具的使用，CS 的學生應培養解決問題的能力。<br>更準確的說，是用程式化思維或是用電腦來解決問題的能力。<br>（用程式化、抽象化思維看待所有事物的能力？）</p>
-<p>CS 學生對整個 CS 領域見識應具有廣度和深度。<br>別人也會程式，但我會的比你深比你多。<br>別人會的是工具的使用，我們會的是工具的挑選甚至是工具的創造。</p>
-<p>好的工具可以事半功倍。<br>或許是在培養對好工具的獨到眼光。</p>
-<p>就像 GUI 工具只會限制用戶，<br>Text Mode 才能釋放所有能量 (X</p>
-<p>學過 CS 的人，層次要是更高的。<br>我覺得甚至是要具備一些哲學層面的東西。</p>
-<p>設計哲學、解決問題的哲學、甚至是生活的哲學 (Link) 等等。</p>
-<p>如此開發效率才能更高，產物才能更優雅。<br>其他科系的可能就只是堪用而已。</p>
-<p>遇到問題，應該要能快速擬出相關的解決辦法。<br>而遇到的問題類型可以是很廣的。</p>
-<p>學習洞悉問題的本質，才能對全局掌握更加透徹。</p>
-<p>也算是在培養觸類旁通（抽象）的能力吧。</p>
-<p>還有一點是快速上手工具的能力。<br>玩 Linux 的東西也是為了培養這種能力吧。</p>
-<p>折騰過得東西多了，該如何解決甚至是找替代方案，<br>都會比較有 sense。</p>
-<p>培養減少繞路的情況發生。<br>能對問題有獨到的見解，以更抽象通用迅捷的方式解決問題。</p>
-<p>身邊的例子。同學會，同學都確立方向，很多人都要往 AI 走。<br>電資學院、電機系、資工系。<br>看到電機系 CS 組使用 python。<br>因為性質相似，所以想和資工的同學討論語言的東西。</p>
-<p>發現他摸過得語言比較少。python 摸過，但是覺得把 python 當工具用。</p>
-<p>不把 python 只是當工具，<br>對語言本身的思想哲學有更深入的理解，<br>應該就會有相對其他系有相對的優勢了。</p>
-<p>有更好的答案，<br>就是<a href="https://www.zhihu.com/question/31034164/answer/553533545" target="_blank" rel="noopener">編程的能力</a> Orz</p>
+<h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><p>跟 Python 一樣是動態語言，所謂變數只是 name binding，<br>用法跟 Python 也一樣，要用之前先 assign 一個值。<br>變數前跟著一個 <script type="math/tex">`，跟 Shell Script 不一樣的是 assign 的時候也要跟著 `</script>。<br>但是學到 OO 的部分，事情有了些變化，const 的東西不用加 <code>$</code>，或許是不把它當變數看的緣故。<br>物件內的變數宣告，方法和 Python 蠻像的，但好像蠻強調 <code>public</code> 封裝。<br>子函數習慣上也是用 <code>$this</code> 來設定 member variable。<br>尚未探究子函數內是否有像 Cpp 用 scope 直接使用 member variable，但學到的是用 <code>$this</code>，<br>所以可以用的可能性不大。但子函式又不像 Python 會把 self 傳進去。<br>一般使用<code>.</code>作為字串 connect 的 operator，所以 object 呼叫底下的東西會用<code>-&gt;</code>。<br>object 底下的變數不用再加錢號。 ex: <code>$nobodyzxc-&gt;name</code> 而不是 <code>$nobodyzxc-&gt;$name</code>。<br>static 或 const 的東西可以用 <code>ClassName::Attr</code>呼叫，和 Cpp 一樣。</p>
+<h2 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h2><p>簡單的 operator 略過。<br>PHP 想當然爾，對文本的操作應是相當強的，<br>但我也只學到 <code>strlen()</code> , <code>strpos()</code> , <code>str_replace()</code>，其他要用再查。<br>html 轉碼、正則等之前用過幾次用用也忘了。<br>自定義 function 寫法。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func_name</span><span class="params">($var)</span></span>&#123;</span><br><span class="line">    $rtn = blalala($var);</span><br><span class="line">    <span class="keyword">return</span> $rtn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在函數裡宣告的變數基本上都是區域變數，如要用全域，加上<code>global</code>關鍵字。</p>
+<h2 id="Control-Flow"><a href="#Control-Flow" class="headerlink" title="Control Flow"></a>Control Flow</h2><p>基本的東西，稍微記一下。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(exp)&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">elseif</span>(exp)&#123; <span class="comment">// well , take care the key word</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span>(what)&#123;</span><br><span class="line">    <span class="keyword">case</span> cs0:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs1:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs2:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> (what): <span class="comment">// syntax sugar , pythonic ?</span></span><br><span class="line">    <span class="keyword">case</span> cs0:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs1:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> cs2:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">endswitch</span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Loop"><a href="#Loop" class="headerlink" title="Loop"></a>Loop</h2><p>基本上和 C 系差不多，但有迭代器的用法 (Array 時再說），注意一下。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>($i = <span class="number">0</span> ; $i &lt; <span class="number">10</span> ; $i++)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(exp)&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(exp): <span class="comment">// syntax sugar</span></span><br><span class="line"><span class="keyword">endwhile</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span>&#123;&#125;<span class="keyword">while</span>(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><p>物件化，沒有用符號下去載，直接拿一個物件名，注意 new。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$myArray = <span class="keyword">new</span> <span class="keyword">Array</span>(<span class="number">1</span> , <span class="number">2</span> , <span class="number">3</span>);</span><br><span class="line">array_push($myArray , <span class="number">4</span>);</span><br><span class="line"><span class="keyword">unset</span>($myArray , <span class="number">3</span>);       <span class="comment">// remove element 4</span></span><br><span class="line"><span class="keyword">unset</span>($myArray);           <span class="comment">// remove whole aray</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>($myArray <span class="keyword">as</span> $e)&#123;   <span class="comment">// iterator</span></span><br><span class="line">    <span class="keyword">echo</span> $e.<span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$twoDimAry = <span class="keyword">new</span> <span class="keyword">Array</span>(<span class="keyword">Array</span>() , <span class="keyword">Array</span>());</span><br><span class="line"></span><br><span class="line">$myAryMap = <span class="keyword">new</span> <span class="keyword">Array</span>(<span class="string">'keyOne'</span> =&gt; <span class="number">1</span> ,</span><br><span class="line">                    <span class="string">'keyTwo'</span>   =&gt; <span class="number">2</span> ,</span><br><span class="line">                    <span class="string">'keyThree'</span> =&gt; <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>($myAryMap <span class="keyword">as</span> $key =&gt; $val)&#123; <span class="comment">// array map iterator</span></span><br><span class="line">    <span class="keyword">echo</span> $key.<span class="string">' =&gt; '</span>.$val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="OOP"><a href="#OOP" class="headerlink" title="OOP"></a>OOP</h2><p>寫個物件來記最快。<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> $name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">say</span><span class="params">($word)</span></span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> $word.<span class="string">'&lt;br&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> die_age = <span class="number">30</span>; <span class="comment">// we don't need $</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($age)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age = $age;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getOlder</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;age += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$nobodyzxc = <span class="keyword">new</span> Person(<span class="number">20</span>);</span><br><span class="line"><span class="keyword">echo</span> $nobodyzxc-&gt;age;</span><br><span class="line">$nobodyzxc-&gt;getOlder();</span><br><span class="line">Person::say(<span class="string">"there , there"</span>);</span><br></pre></td></tr></table></figure></p>
 ]]></content>
       <categories>
-        <category>Thinking</category>
+        <category>Note</category>
       </categories>
+      <tags>
+        <tag>php</tag>
+        <tag>oop</tag>
+      </tags>
   </entry>
   <entry>
     <title>Cpp STL Hack</title>
@@ -602,64 +560,6 @@
       </tags>
   </entry>
   <entry>
-    <title>guitar-handout</title>
-    <url>/2022/12/24/guitar-handout/</url>
-    <content><![CDATA[<center>
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="week-1"><a href="#week-1" class="headerlink" title="week 1"></a>week 1</h2><h3 id="上課"><a href="#上課" class="headerlink" title="上課"></a>上課</h3><p>從音階開始講</p>
-<p><a href="https://www.facebook.com/watch/?v=583682679068802" target="_blank" rel="noopener">https://www.facebook.com/watch/?v=583682679068802</a></p>
-<p><a href="https://www.facebook.com/percussiosoftware/videos/2101251000104148" target="_blank" rel="noopener">https://www.facebook.com/percussiosoftware/videos/2101251000104148</a></p>
-<p><a href="https://www.youtube.com/watch?v=Caxwob1iKX4" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Caxwob1iKX4</a></p>
-<p><a href="https://www.facebook.com/watch/?v=645041709684764" target="_blank" rel="noopener">https://www.facebook.com/watch/?v=645041709684764</a></p>
-<p>回家功課 C/D/G 單音位置練習<br>CAGED system pattern 1</p>
-<h3 id="練習"><a href="#練習" class="headerlink" title="練習"></a>練習</h3><p>有事沒事就練<br>但感覺就是沒辦法很熟<br>腳很跛</p>
-<ul>
-<li>write a program to help practice CAGED system</li>
-</ul>
-<h2 id="week-2"><a href="#week-2" class="headerlink" title="week 2"></a>week 2</h2><h3 id="上課-1"><a href="#上課-1" class="headerlink" title="上課"></a>上課</h3><p>從音程講到和弦<br><a href="https://nicechord.com/post/chord-symbols/" target="_blank" rel="noopener">https://nicechord.com/post/chord-symbols/</a><br><a href="https://www.youtube.com/watch?v=IruOI1YcsfA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=IruOI1YcsfA</a></p>
-<ul>
-<li>單音位置練習<br>驗收的結果挺差的<br>基本上位置都還是不熟<br>可能跟平時練習都跳著弦練<br>不然就是每一弦都一個八度兩個音在練</li>
-<li>CAGED system pattern 1<br>還是不熟</li>
-</ul>
-<p>C/D/G 繼續練 加上 D<br>繼續 pattern 1 但加上模進</p>
-<h3 id="練習-1"><a href="#練習-1" class="headerlink" title="練習"></a>練習</h3><p>我覺得閉上眼睛 念著第幾弦<br>一邊跟著節拍器彈好像有用<br>可以把每條弦獨立開來記位置</p>
-<ul>
-<li>TODO write a program help practice couting intervals</li>
-</ul>
-<h2 id="week-3"><a href="#week-3" class="headerlink" title="week 3"></a>week 3</h2><h3 id="上課-2"><a href="#上課-2" class="headerlink" title="上課"></a>上課</h3><p>老師上課教了三和弦，然後用 backtrack 示範了一下。</p>
-<p>這周作業很多：</p>
-<ul>
-<li>把白鍵的單音練完</li>
-<li>三和弦 四上四下</li>
-<li>Pattern 2</li>
-<li>琶音</li>
-<li>跳進</li>
-</ul>
-<h3 id="練習-2"><a href="#練習-2" class="headerlink" title="練習"></a>練習</h3><h2 id="week-4"><a href="#week-4" class="headerlink" title="week 4"></a>week 4</h2><h2 id="上課-3"><a href="#上課-3" class="headerlink" title="上課"></a>上課</h2><p>自然順階和弦 (Diatonic Chords)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">X:1</span><br><span class="line">% T:Diatonic Chords</span><br><span class="line">M:4/4</span><br><span class="line">L:1/4</span><br><span class="line">K:C</span><br><span class="line">|[CEG] [DFA][EGB] [FAc] [GBd] [Ace] [Bdf] |</span><br><span class="line">w:C Dm Em F G Am Bdim</span><br></pre></td></tr></table></figure>
-<div id="target"></div>
-
-<p><a href="https://www.youtube.com/watch?v=dFpryVMgni0" target="_blank" rel="noopener">https://www.youtube.com/watch?v=dFpryVMgni0</a></p>
-<p><a href="https://www.youtube.com/watch?v=t_tzbSxMktc" target="_blank" rel="noopener">https://www.youtube.com/watch?v=t_tzbSxMktc</a></p>
-<p><a href="https://www.youtube.com/watch?v=gEkYwxRcyIk" target="_blank" rel="noopener">https://www.youtube.com/watch?v=gEkYwxRcyIk</a></p>
-<p><a href="https://www.youtube.com/watch?v=CtZ74JdxCt0" target="_blank" rel="noopener">https://www.youtube.com/watch?v=CtZ74JdxCt0</a></p>
-<p><a href="https://www.youtube.com/watch?v=2bEiFEYZl-o&amp;list=PLHX_dBxnc8z8A5TyQUNy7_rqkOSY_F6wF&amp;index=6" target="_blank" rel="noopener">https://www.youtube.com/watch?v=2bEiFEYZl-o&amp;list=PLHX_dBxnc8z8A5TyQUNy7_rqkOSY_F6wF&amp;index=6</a></p>
-<p><a href="https://www.youtube.com/watch?v=SM2nhLSeJXg" target="_blank" rel="noopener">https://www.youtube.com/watch?v=SM2nhLSeJXg</a></p>
-<h2 id="練習-3"><a href="#練習-3" class="headerlink" title="練習"></a>練習</h2><p>pattern 3</p>
-<script src="abcjs-basic-min.js"></script>
-<script>
-
-// var abcString = "X:1\nT:Example\nK:Bb\nBcde|\n";
-// var el = document.getElementById("target");
-// renderAbc(el, abcString);
-</script>
-]]></content>
-  </entry>
-  <entry>
     <title>C Type Defination to English</title>
     <url>/2017/07/15/ctype2en/</url>
     <content><![CDATA[<center>
@@ -739,6 +639,106 @@ wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_bl
       <categories>
         <category>Note</category>
       </categories>
+  </entry>
+  <entry>
+    <title>feedback</title>
+    <url>/2018/05/22/feedback/</url>
+    <content><![CDATA[<center>
+上程式語言課，給老師的回饋。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<blockquote>
+<p>葉丙成老師兩篇關於主修 CS 的文章</p>
+<p>102657 ( CK ) 2018-03-06 10:59 0<br>想聽聽聽同學對這篇文章的看法。</p>
+<p> 現在學 CS 會不會太晚？在程式設計之外，更該想「如何創造價值」</p>
+<p><a href="https://opinion.cw.com.tw/blog/profile/215/article/6232" target="_blank" rel="noopener">https://opinion.cw.com.tw/blog/profile/215/article/6232</a></p>
+</blockquote>
+<p>CS 學生的優勢就是浸淫 CS 的時間比別人長。</p>
+<p>隨著各種技術的發展，整個工具鏈的架構也越來越複雜。<br>雖說抽象化降低了工具使用的難度，<br>但是有些工具的使用也是需要經驗累積的。</p>
+<p>那些工具、技術可能就是資訊科系學生可以投資的吧。<br>比如 server 管理等等。</p>
+<p>而以上終究只是混口飯吃的等級罷了。<br>只要別人肯下苦工，終究還是會被替代掉的。</p>
+<p>相對於工具的使用，CS 的學生應培養解決問題的能力。<br>更準確的說，是用程式化思維或是用電腦來解決問題的能力。<br>（用程式化、抽象化思維看待所有事物的能力？）</p>
+<p>CS 學生對整個 CS 領域見識應具有廣度和深度。<br>別人也會程式，但我會的比你深比你多。<br>別人會的是工具的使用，我們會的是工具的挑選甚至是工具的創造。</p>
+<p>好的工具可以事半功倍。<br>或許是在培養對好工具的獨到眼光。</p>
+<p>就像 GUI 工具只會限制用戶，<br>Text Mode 才能釋放所有能量 (X</p>
+<p>學過 CS 的人，層次要是更高的。<br>我覺得甚至是要具備一些哲學層面的東西。</p>
+<p>設計哲學、解決問題的哲學、甚至是生活的哲學 (Link) 等等。</p>
+<p>如此開發效率才能更高，產物才能更優雅。<br>其他科系的可能就只是堪用而已。</p>
+<p>遇到問題，應該要能快速擬出相關的解決辦法。<br>而遇到的問題類型可以是很廣的。</p>
+<p>學習洞悉問題的本質，才能對全局掌握更加透徹。</p>
+<p>也算是在培養觸類旁通（抽象）的能力吧。</p>
+<p>還有一點是快速上手工具的能力。<br>玩 Linux 的東西也是為了培養這種能力吧。</p>
+<p>折騰過得東西多了，該如何解決甚至是找替代方案，<br>都會比較有 sense。</p>
+<p>培養減少繞路的情況發生。<br>能對問題有獨到的見解，以更抽象通用迅捷的方式解決問題。</p>
+<p>身邊的例子。同學會，同學都確立方向，很多人都要往 AI 走。<br>電資學院、電機系、資工系。<br>看到電機系 CS 組使用 python。<br>因為性質相似，所以想和資工的同學討論語言的東西。</p>
+<p>發現他摸過得語言比較少。python 摸過，但是覺得把 python 當工具用。</p>
+<p>不把 python 只是當工具，<br>對語言本身的思想哲學有更深入的理解，<br>應該就會有相對其他系有相對的優勢了。</p>
+<p>有更好的答案，<br>就是<a href="https://www.zhihu.com/question/31034164/answer/553533545" target="_blank" rel="noopener">編程的能力</a> Orz</p>
+]]></content>
+      <categories>
+        <category>Thinking</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>guitar-handout</title>
+    <url>/2022/12/24/guitar-handout/</url>
+    <content><![CDATA[<center>
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="week-1"><a href="#week-1" class="headerlink" title="week 1"></a>week 1</h2><h3 id="上課"><a href="#上課" class="headerlink" title="上課"></a>上課</h3><p>從音階開始講</p>
+<p><a href="https://www.facebook.com/watch/?v=583682679068802" target="_blank" rel="noopener">https://www.facebook.com/watch/?v=583682679068802</a></p>
+<p><a href="https://www.facebook.com/percussiosoftware/videos/2101251000104148" target="_blank" rel="noopener">https://www.facebook.com/percussiosoftware/videos/2101251000104148</a></p>
+<p><a href="https://www.youtube.com/watch?v=Caxwob1iKX4" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Caxwob1iKX4</a></p>
+<p><a href="https://www.facebook.com/watch/?v=645041709684764" target="_blank" rel="noopener">https://www.facebook.com/watch/?v=645041709684764</a></p>
+<p>回家功課 C/D/G 單音位置練習<br>CAGED system pattern 1</p>
+<h3 id="練習"><a href="#練習" class="headerlink" title="練習"></a>練習</h3><p>有事沒事就練<br>但感覺就是沒辦法很熟<br>腳很跛</p>
+<ul>
+<li>write a program to help practice CAGED system</li>
+</ul>
+<h2 id="week-2"><a href="#week-2" class="headerlink" title="week 2"></a>week 2</h2><h3 id="上課-1"><a href="#上課-1" class="headerlink" title="上課"></a>上課</h3><p>從音程講到和弦<br><a href="https://nicechord.com/post/chord-symbols/" target="_blank" rel="noopener">https://nicechord.com/post/chord-symbols/</a><br><a href="https://www.youtube.com/watch?v=IruOI1YcsfA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=IruOI1YcsfA</a></p>
+<ul>
+<li>單音位置練習<br>驗收的結果挺差的<br>基本上位置都還是不熟<br>可能跟平時練習都跳著弦練<br>不然就是每一弦都一個八度兩個音在練</li>
+<li>CAGED system pattern 1<br>還是不熟</li>
+</ul>
+<p>C/D/G 繼續練 加上 D<br>繼續 pattern 1 但加上模進</p>
+<h3 id="練習-1"><a href="#練習-1" class="headerlink" title="練習"></a>練習</h3><p>我覺得閉上眼睛 念著第幾弦<br>一邊跟著節拍器彈好像有用<br>可以把每條弦獨立開來記位置</p>
+<ul>
+<li>TODO write a program help practice couting intervals</li>
+</ul>
+<h2 id="week-3"><a href="#week-3" class="headerlink" title="week 3"></a>week 3</h2><h3 id="上課-2"><a href="#上課-2" class="headerlink" title="上課"></a>上課</h3><p>老師上課教了三和弦，然後用 backtrack 示範了一下。</p>
+<p>這周作業很多：</p>
+<ul>
+<li>把白鍵的單音練完</li>
+<li>三和弦 四上四下</li>
+<li>Pattern 2</li>
+<li>琶音</li>
+<li>跳進</li>
+</ul>
+<h3 id="練習-2"><a href="#練習-2" class="headerlink" title="練習"></a>練習</h3><h2 id="week-4"><a href="#week-4" class="headerlink" title="week 4"></a>week 4</h2><h2 id="上課-3"><a href="#上課-3" class="headerlink" title="上課"></a>上課</h2><p>自然順階和弦 (Diatonic Chords)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">X:1</span><br><span class="line">% T:Diatonic Chords</span><br><span class="line">M:4/4</span><br><span class="line">L:1/4</span><br><span class="line">K:C</span><br><span class="line">|[CEG] [DFA][EGB] [FAc] [GBd] [Ace] [Bdf] |</span><br><span class="line">w:C Dm Em F G Am Bdim</span><br></pre></td></tr></table></figure>
+<div id="target"></div>
+
+<p><a href="https://www.youtube.com/watch?v=dFpryVMgni0" target="_blank" rel="noopener">https://www.youtube.com/watch?v=dFpryVMgni0</a></p>
+<p><a href="https://www.youtube.com/watch?v=t_tzbSxMktc" target="_blank" rel="noopener">https://www.youtube.com/watch?v=t_tzbSxMktc</a></p>
+<p><a href="https://www.youtube.com/watch?v=gEkYwxRcyIk" target="_blank" rel="noopener">https://www.youtube.com/watch?v=gEkYwxRcyIk</a></p>
+<p><a href="https://www.youtube.com/watch?v=CtZ74JdxCt0" target="_blank" rel="noopener">https://www.youtube.com/watch?v=CtZ74JdxCt0</a></p>
+<p><a href="https://www.youtube.com/watch?v=2bEiFEYZl-o&amp;list=PLHX_dBxnc8z8A5TyQUNy7_rqkOSY_F6wF&amp;index=6" target="_blank" rel="noopener">https://www.youtube.com/watch?v=2bEiFEYZl-o&amp;list=PLHX_dBxnc8z8A5TyQUNy7_rqkOSY_F6wF&amp;index=6</a></p>
+<p><a href="https://www.youtube.com/watch?v=SM2nhLSeJXg" target="_blank" rel="noopener">https://www.youtube.com/watch?v=SM2nhLSeJXg</a></p>
+<h2 id="練習-3"><a href="#練習-3" class="headerlink" title="練習"></a>練習</h2><p>pattern 3</p>
+<script src="abcjs-basic-min.js"></script>
+<script>
+
+// var abcString = "X:1\nT:Example\nK:Bb\nBcde|\n";
+// var el = document.getElementById("target");
+// renderAbc(el, abcString);
+</script>
+]]></content>
   </entry>
   <entry>
     <title>My new Site</title>
@@ -1188,120 +1188,6 @@ Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim �
       </tags>
   </entry>
   <entry>
-    <title>Markdown Note</title>
-    <url>/2016/12/22/Markdown/</url>
-    <content><![CDATA[<center>
-工欲善其事，必先利其器啊，<br>
-既然 hexo 使用了 Markdown 來渲染文章，那就趕快來學個。<br>
-</center>
-
-
-<a id="more"></a>
-<p>所謂 Markdown 是種輕量級標記語言，透過簡單的語法便可將.md 轉成.html。</p>
-<p>等等！看來我對 Markdown 有誤解，<br>它的目的在於作為一個網路<strong>寫作</strong>用語言，重點在讓文檔<strong>易讀易寫</strong>，<br>至於轉成 html 是為了易於發布（當然嘛，瀏覽器讀的是 html)，<br>Markdown 宗旨是讓寫作變得容易，所以沒有 html 這麼多花招。</p>
-<p>當然，要用 html 的東西，直接用就是了，<br>其實渲染器說穿了就是文本替換罷了… 吧？<br>剛好之前對 html 有些涉獵，所以 Markdown 在做些甚麼大抵上也是摸的到的。<br>所以學完 Markdown 後，我應該也可試試寫個渲染器（咦？)</p>
-<p><br><br></p>
-<h2 id="0-轉義"><a href="#0-轉義" class="headerlink" title="0. 轉義"></a>0. 轉義</h2><p>進入各類用法前，先來個提要吧，遇到 Markdown 有歸為特殊用法的符號時，<br>如果要讓它顯示原本的意思，就需要轉義，這時只要加一個反斜線<code>\</code>，在前就好了。</p>
-<h2 id="1-標題"><a href="#1-標題" class="headerlink" title="1. 標題"></a>1. 標題</h2><p>先來個所謂的”起手式”，也是 html 都會教的第一課，就是標題啦~<br>html 的標題是用<code>&lt;h[1-6]&gt;&lt;/h[1-6]&gt;</code>（就是 h1 到 h6)，轉成 Markdown 用<code>#</code>號表示</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># \# is equal to h1</span><br><span class="line">h1 還可以用這樣</span><br><span class="line">===============</span><br><span class="line">## \#\# is equal to h2</span><br><span class="line">h2 也可以用這樣</span><br><span class="line">---------------</span><br><span class="line">### \#\#\# is equal to h3</span><br></pre></td></tr></table></figure>
-<p>記得井號後要空格</p>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><blockquote>
-<h1 id="is-equal-to-h1"><a href="#is-equal-to-h1" class="headerlink" title="# is equal to h1"></a># is equal to h1</h1><h1 id="h1-還可以用這樣"><a href="#h1-還可以用這樣" class="headerlink" title="h1 還可以用這樣"></a>h1 還可以用這樣</h1><h2 id="is-equal-to-h2"><a href="#is-equal-to-h2" class="headerlink" title="## is equal to h2"></a>## is equal to h2</h2><h2 id="h2-也可以用這樣"><a href="#h2-也可以用這樣" class="headerlink" title="h2 也可以用這樣"></a>h2 也可以用這樣</h2><h3 id="is-equal-to-h3"><a href="#is-equal-to-h3" class="headerlink" title="### is equal to h3"></a>### is equal to h3</h3></blockquote>
-<h2 id="2-內文"><a href="#2-內文" class="headerlink" title="2. 內文"></a>2. 內文</h2><p>html 的內文 tag<code>&lt;p&gt;&lt;/p&gt;</code>，在 Markdown 即是一個簡單文章的區段，不用特別加符號，<br><code>&lt;p&gt;&lt;/p&gt;</code>的開合用空行即能達成</p>
-<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">就是一個簡單的內文，用 f12 確認一下吧</span><br></pre></td></tr></table></figure>
-<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p>就是一個簡單的內文，用 f12 確認一下吧</p>
-<h2 id="3-強調"><a href="#3-強調" class="headerlink" title="3. 強調"></a>3. 強調</h2><p>html 的強調用法有斜體<code>&lt;i&gt;&lt;/i&gt;</code>、粗體<code>&lt;b&gt;&lt;/b&gt;</code>、刪除線<code>&lt;s&gt;&lt;/s&gt;</code>，<br>Markdown 分別是使用<code>*</code>或<code>_</code>、<code>**</code>或<code>__</code>、<code>~~</code></p>
-<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*我是斜體呦* _我也是斜體_</span><br><span class="line">**我是粗體呦** __我也是粗體__</span><br><span class="line">*__兩個混著用__* _**注意遞迴式包裝**_</span><br><span class="line">_**剩下的兩種**_ *__我也幫你試過了__*</span><br><span class="line">***這種呢我也試*** ___我猜是不行___</span><br><span class="line">~~刪除線是這樣，混著用我就不試了~~</span><br></pre></td></tr></table></figure>
-<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p><em>我是斜體呦</em> <em>我也是斜體</em><br><strong>我是粗體呦</strong> <strong>我也是粗體</strong><br><em><strong>兩個混著用</strong></em> <em><strong>注意遞迴式包裝</strong></em><br><em><strong>剩下的兩種</strong></em> <em><strong>我也幫你試過了</strong></em><br><strong><em>這種呢我也試</em></strong> <strong><em>我猜是不行</em></strong><br><del>刪除線是這樣，混著用我就不試了</del></p>
-<p>誒誒，竟然可以？! 我錯了（逃<br>不行，這時不能逃，才學到一半（正經臉<br>有點好奇底線是怎樣，結果發現好像是 style/CSS 的坑，<a href="http://softwareengineering.stackexchange.com/questions/207727/why-there-is-no-markdown-for-underline" target="_blank" rel="noopener">標記語言不用理</a></p>
-<h2 id="4-清單"><a href="#4-清單" class="headerlink" title="4. 清單"></a>4. 清單</h2><p>html 的清單… 沒記錯的話，最外層都是要先包一層<code>&lt;li&gt;&lt;/li&gt;</code>，<br>再來看是要列順序 (ordered) 的<code>&lt;ol&gt;&lt;/ol&gt;</code>，還是要<code>&lt;ul&gt;&lt;/ul&gt;</code>就看尼囉。<br>Markdown 對於<code>&lt;ol&gt;</code>就編個號，例如<code>1.</code>就好，<code>&lt;ul&gt;</code>可以用<code>*</code>、<code>+</code>或<code>-</code>。</p>
-<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">基本上不用理會 li 的存在，Markdown 會判斷，恩，我猜的（逃</span><br><span class="line">巢狀清單的話用縮排達成。跟標題一樣，注意編號和*+- 號後要空格</span><br><span class="line">1. 第一大條</span><br><span class="line">  * 一大的無序一中</span><br><span class="line">  * 一大的無序二中</span><br><span class="line">2. 第二大條</span><br><span class="line">  1. 二大的有序一中</span><br><span class="line">  2. 二大的有序二中</span><br><span class="line">    * 二大二中的無序一小</span><br></pre></td></tr></table></figure>
-<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><ol>
-<li>第一大條<ul>
-<li>一大的無序一中</li>
-<li>一大的無序二中</li>
-</ul>
-</li>
-<li>第二大條<ol>
-<li>二大的有序一中</li>
-<li>二大的有序二中<ul>
-<li>二大二中的無序一小</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="5-超鏈結"><a href="#5-超鏈結" class="headerlink" title="5. 超鏈結"></a>5. 超鏈結</h2><p>再來就是 html 最重要（我覺得）的超鏈結啦~，複習一下 html 全名 <a href="https://zh.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">HyperText Markup Language</a><br>html 的超鏈結就是<code>&lt;a&gt;&lt;/a&gt;</code>tag，在 Markdown 可以用<code>[]()</code>及<code>[][] + []:</code>使用</p>
-<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href=&quot;超鏈結&quot; title=&quot;標題（可略）&quot;&gt;超鏈結名稱&lt;/a&gt;</span><br><span class="line">[超鏈結名稱](超鏈結 &quot;標題（可略）&quot;)</span><br><span class="line"></span><br><span class="line">標題就是滑鼠一到鏈結上面會顯示的東東啦</span><br><span class="line">當然，超鏈結也可以用相對路徑啦，寫過網頁的就知道了</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[It&apos;s a google link](https://www.google.com)</span><br><span class="line">[nobodyzxc github](http://github.com/nobodyzxc &quot;你瞅啥&quot;)</span><br><span class="line"></span><br><span class="line">這邊有種特殊用法，就是參考鏈結，有點像註腳，個人覺得像是變數</span><br><span class="line"></span><br><span class="line">[超鏈結名稱][參考名稱]</span><br><span class="line">『參考名稱』: 超鏈結</span><br><span class="line"></span><br><span class="line">如此一來，他的參考名稱就會去參考到超鏈結。</span><br><span class="line">兩行可以放得很開，第二習慣放最後面，當註腳（的樣子）。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[知乎][zhihu 注意大小寫，這是一個變數參考 0]</span><br><span class="line">many lines</span><br><span class="line">[zhihu 注意大小寫，這是一個變數參考 0]: http://zhihu.com</span><br></pre></td></tr></table></figure>
-<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><p><a href="https://www.google.com" target="_blank" rel="noopener">It’s a google link</a><br><a href="http://github.com/nobodyzxc" title="你瞅啥" target="_blank" rel="noopener">nobodyzxc github</a></p>
-<p><a href="http://zhihu.com" target="_blank" rel="noopener">知乎</a><br>many lines</p>
-<h2 id="6-註腳"><a href="#6-註腳" class="headerlink" title="6. 註腳"></a>6. 註腳</h2><p>“聽說！”生成 html 時會變成清單，放在檔案最下面，或是變成視窗跳出來，不太一定<br>用中括號加<code>^</code>數字，<code>[^0]</code></p>
-<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">註解零  [^0]</span><br><span class="line">[^0] 就是這樣嗎？</span><br><span class="line">一樣要注意空格啊</span><br></pre></td></tr></table></figure>
-<h3 id="效果-5"><a href="#效果-5" class="headerlink" title="效果"></a>效果</h3><p>註解零  <sup><a href="#fn_0" id="reffn_0">0</a></sup><br><sup><a href="#fn_0" id="reffn_0">0</a></sup> 就是這樣嗎？</p>
-<p>Text prior to footnote reference.<sup><a href="#fn_2" id="reffn_2">2</a></sup><br><sup><a href="#fn_2" id="reffn_2">2</a></sup> Comment to include in footnote.</p>
-<p>WTF? 好像弄不太起來… 有需要再找吧…</p>
-<h2 id="7-圖片"><a href="#7-圖片" class="headerlink" title="7. 圖片"></a>7. 圖片</h2><p>敘述最少的一個，超鏈結前加驚嘆號</p>
-<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![my logo](https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460)</span><br><span class="line">![看山醬萌萌噠][ref]</span><br><span class="line">[ref]: /images/zhi.jpg &quot;zhi~~侵刪呦&quot;</span><br></pre></td></tr></table></figure>
-<h3 id="效果-6"><a href="#效果-6" class="headerlink" title="效果"></a>效果</h3><p><img src="https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460" alt="my logo"><br><img src="/images/zhi.jpg" alt="看山醬萌萌噠" title="zhi~~侵刪呦"></p>
-<p>Image from <a href="https://www.zhihu.com/question/35778876/answer/65568580" target="_blank" rel="noopener">zhihu</a>、<a href="http://tw.weibo.com/liukanshan" target="_blank" rel="noopener">看山微博</a></p>
-<h2 id="8-程式碼區塊"><a href="#8-程式碼區塊" class="headerlink" title="8. 程式碼區塊"></a>8. 程式碼區塊</h2><p>如果鑲嵌行間請用<code>` </code>前後包裝，一大塊則用<code>```</code>包（可以加語言名稱）</p>
-<h3 id="用法-7"><a href="#用法-7" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><div class="line">行間鑲嵌一個 &bprime;/&bprime; </div><div class="line"></div><div class="line">\`\`\`C</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">int main(void){// 對 我是不換行派的，打我啊</div><div class="line">    return 0;</div><div class="line">}</div><div class="line">\`\`\`</div></pre></td></tr></tbody></table></figure>
-
-<h3 id="效果-7"><a href="#效果-7" class="headerlink" title="效果"></a>效果</h3><p>行間鑲嵌一個<code>/</code></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;<span class="comment">// 對 我是不換行派的，打我啊</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不要問我<code>```</code>是怎麼打出來的，<br>我絕對不會說<code><code>```</code>&lt;/code&gt;是借助 html 和反斜線之力完成的。</code></p>
-<h2 id="9-表格"><a href="#9-表格" class="headerlink" title="9. 表格"></a>9. 表格</h2><p>恩，就是 html 的<code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code>等</p>
-<h3 id="用法-8"><a href="#用法-8" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">冒號用來對齊（擺左齊左、擺右齊右，都擺置中）</span><br><span class="line"></span><br><span class="line">| editor        | intro     | comment            |</span><br><span class="line">|---------------|:---------:|-------------------:|</span><br><span class="line">| emacs         | 神的編輯器| 聽說這表格他很會畫 |</span><br><span class="line">| vim           | 編輯器之神| 本人目前用此編輯器 |</span><br><span class="line"></span><br><span class="line">最左最右的 | 不一定需要</span><br><span class="line">表格內部亦支援 Markdown 格式</span><br></pre></td></tr></table></figure>
-<h3 id="效果-8"><a href="#效果-8" class="headerlink" title="效果"></a>效果</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>editor</th>
-<th style="text-align:center">intro</th>
-<th style="text-align:right">comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>emacs</td>
-<td style="text-align:center">神的編輯器</td>
-<td style="text-align:right">聽說這表格他很會畫</td>
-</tr>
-<tr>
-<td>vim</td>
-<td style="text-align:center">編輯器之神</td>
-<td style="text-align:right">本人目前用此編輯器</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="10-引言"><a href="#10-引言" class="headerlink" title="10. 引言"></a>10. 引言</h2><p>電子郵件或論壇常見到的咚咚<code>&gt;</code></p>
-<h3 id="用法-9"><a href="#用法-9" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; 引言</span><br></pre></td></tr></table></figure>
-<h3 id="效果-9"><a href="#效果-9" class="headerlink" title="效果"></a>效果</h3><blockquote>
-<p>引言</p>
-</blockquote>
-<h2 id="11-內嵌-html"><a href="#11-內嵌-html" class="headerlink" title="11. 內嵌 html"></a>11. 內嵌 html</h2><p>不用多說，用下去就對了。</p>
-<h2 id="12-水平分割線"><a href="#12-水平分割線" class="headerlink" title="12. 水平分割線"></a>12. 水平分割線</h2><h3 id="用法-10"><a href="#用法-10" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">獨立一行，大於等於三個符號接起來即可</span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line"></span><br><span class="line">***********</span><br><span class="line">___________</span><br></pre></td></tr></table></figure>
-<h3 id="效果-10"><a href="#效果-10" class="headerlink" title="效果"></a>效果</h3><hr>
-<hr>
-<hr>
-<p>凌晨四點… 我睡了… 本文的 Markdown 版本在<a href="https://github.com/nobodyzxc/BlogBackUp/blob/master/source/_posts/Markdown.md" target="_blank" rel="noopener">這裡</a>，晚安</p>
-<ul>
-<li>reference<ul>
-<li><a href="https://wastemobile.gitbooks.io/gitbook-chinese/content/format/markdown.html" target="_blank" rel="noopener">一本 gitbook</a></li>
-<li><a href="http://markdown.tw/" target="_blank" rel="noopener">domain name 像官網</a></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Haskell Note （Basic Syntax to Type）</title>
     <url>/2017/01/31/Haskell-Note/</url>
     <content><![CDATA[<center>
@@ -1723,6 +1609,120 @@ A world without loop , but recursion。<br>
       </tags>
   </entry>
   <entry>
+    <title>Markdown Note</title>
+    <url>/2016/12/22/Markdown/</url>
+    <content><![CDATA[<center>
+工欲善其事，必先利其器啊，<br>
+既然 hexo 使用了 Markdown 來渲染文章，那就趕快來學個。<br>
+</center>
+
+
+<a id="more"></a>
+<p>所謂 Markdown 是種輕量級標記語言，透過簡單的語法便可將.md 轉成.html。</p>
+<p>等等！看來我對 Markdown 有誤解，<br>它的目的在於作為一個網路<strong>寫作</strong>用語言，重點在讓文檔<strong>易讀易寫</strong>，<br>至於轉成 html 是為了易於發布（當然嘛，瀏覽器讀的是 html)，<br>Markdown 宗旨是讓寫作變得容易，所以沒有 html 這麼多花招。</p>
+<p>當然，要用 html 的東西，直接用就是了，<br>其實渲染器說穿了就是文本替換罷了… 吧？<br>剛好之前對 html 有些涉獵，所以 Markdown 在做些甚麼大抵上也是摸的到的。<br>所以學完 Markdown 後，我應該也可試試寫個渲染器（咦？)</p>
+<p><br><br></p>
+<h2 id="0-轉義"><a href="#0-轉義" class="headerlink" title="0. 轉義"></a>0. 轉義</h2><p>進入各類用法前，先來個提要吧，遇到 Markdown 有歸為特殊用法的符號時，<br>如果要讓它顯示原本的意思，就需要轉義，這時只要加一個反斜線<code>\</code>，在前就好了。</p>
+<h2 id="1-標題"><a href="#1-標題" class="headerlink" title="1. 標題"></a>1. 標題</h2><p>先來個所謂的”起手式”，也是 html 都會教的第一課，就是標題啦~<br>html 的標題是用<code>&lt;h[1-6]&gt;&lt;/h[1-6]&gt;</code>（就是 h1 到 h6)，轉成 Markdown 用<code>#</code>號表示</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># \# is equal to h1</span><br><span class="line">h1 還可以用這樣</span><br><span class="line">===============</span><br><span class="line">## \#\# is equal to h2</span><br><span class="line">h2 也可以用這樣</span><br><span class="line">---------------</span><br><span class="line">### \#\#\# is equal to h3</span><br></pre></td></tr></table></figure>
+<p>記得井號後要空格</p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><blockquote>
+<h1 id="is-equal-to-h1"><a href="#is-equal-to-h1" class="headerlink" title="# is equal to h1"></a># is equal to h1</h1><h1 id="h1-還可以用這樣"><a href="#h1-還可以用這樣" class="headerlink" title="h1 還可以用這樣"></a>h1 還可以用這樣</h1><h2 id="is-equal-to-h2"><a href="#is-equal-to-h2" class="headerlink" title="## is equal to h2"></a>## is equal to h2</h2><h2 id="h2-也可以用這樣"><a href="#h2-也可以用這樣" class="headerlink" title="h2 也可以用這樣"></a>h2 也可以用這樣</h2><h3 id="is-equal-to-h3"><a href="#is-equal-to-h3" class="headerlink" title="### is equal to h3"></a>### is equal to h3</h3></blockquote>
+<h2 id="2-內文"><a href="#2-內文" class="headerlink" title="2. 內文"></a>2. 內文</h2><p>html 的內文 tag<code>&lt;p&gt;&lt;/p&gt;</code>，在 Markdown 即是一個簡單文章的區段，不用特別加符號，<br><code>&lt;p&gt;&lt;/p&gt;</code>的開合用空行即能達成</p>
+<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">就是一個簡單的內文，用 f12 確認一下吧</span><br></pre></td></tr></table></figure>
+<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p>就是一個簡單的內文，用 f12 確認一下吧</p>
+<h2 id="3-強調"><a href="#3-強調" class="headerlink" title="3. 強調"></a>3. 強調</h2><p>html 的強調用法有斜體<code>&lt;i&gt;&lt;/i&gt;</code>、粗體<code>&lt;b&gt;&lt;/b&gt;</code>、刪除線<code>&lt;s&gt;&lt;/s&gt;</code>，<br>Markdown 分別是使用<code>*</code>或<code>_</code>、<code>**</code>或<code>__</code>、<code>~~</code></p>
+<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*我是斜體呦* _我也是斜體_</span><br><span class="line">**我是粗體呦** __我也是粗體__</span><br><span class="line">*__兩個混著用__* _**注意遞迴式包裝**_</span><br><span class="line">_**剩下的兩種**_ *__我也幫你試過了__*</span><br><span class="line">***這種呢我也試*** ___我猜是不行___</span><br><span class="line">~~刪除線是這樣，混著用我就不試了~~</span><br></pre></td></tr></table></figure>
+<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p><em>我是斜體呦</em> <em>我也是斜體</em><br><strong>我是粗體呦</strong> <strong>我也是粗體</strong><br><em><strong>兩個混著用</strong></em> <em><strong>注意遞迴式包裝</strong></em><br><em><strong>剩下的兩種</strong></em> <em><strong>我也幫你試過了</strong></em><br><strong><em>這種呢我也試</em></strong> <strong><em>我猜是不行</em></strong><br><del>刪除線是這樣，混著用我就不試了</del></p>
+<p>誒誒，竟然可以？! 我錯了（逃<br>不行，這時不能逃，才學到一半（正經臉<br>有點好奇底線是怎樣，結果發現好像是 style/CSS 的坑，<a href="http://softwareengineering.stackexchange.com/questions/207727/why-there-is-no-markdown-for-underline" target="_blank" rel="noopener">標記語言不用理</a></p>
+<h2 id="4-清單"><a href="#4-清單" class="headerlink" title="4. 清單"></a>4. 清單</h2><p>html 的清單… 沒記錯的話，最外層都是要先包一層<code>&lt;li&gt;&lt;/li&gt;</code>，<br>再來看是要列順序 (ordered) 的<code>&lt;ol&gt;&lt;/ol&gt;</code>，還是要<code>&lt;ul&gt;&lt;/ul&gt;</code>就看尼囉。<br>Markdown 對於<code>&lt;ol&gt;</code>就編個號，例如<code>1.</code>就好，<code>&lt;ul&gt;</code>可以用<code>*</code>、<code>+</code>或<code>-</code>。</p>
+<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">基本上不用理會 li 的存在，Markdown 會判斷，恩，我猜的（逃</span><br><span class="line">巢狀清單的話用縮排達成。跟標題一樣，注意編號和*+- 號後要空格</span><br><span class="line">1. 第一大條</span><br><span class="line">  * 一大的無序一中</span><br><span class="line">  * 一大的無序二中</span><br><span class="line">2. 第二大條</span><br><span class="line">  1. 二大的有序一中</span><br><span class="line">  2. 二大的有序二中</span><br><span class="line">    * 二大二中的無序一小</span><br></pre></td></tr></table></figure>
+<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><ol>
+<li>第一大條<ul>
+<li>一大的無序一中</li>
+<li>一大的無序二中</li>
+</ul>
+</li>
+<li>第二大條<ol>
+<li>二大的有序一中</li>
+<li>二大的有序二中<ul>
+<li>二大二中的無序一小</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-超鏈結"><a href="#5-超鏈結" class="headerlink" title="5. 超鏈結"></a>5. 超鏈結</h2><p>再來就是 html 最重要（我覺得）的超鏈結啦~，複習一下 html 全名 <a href="https://zh.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">HyperText Markup Language</a><br>html 的超鏈結就是<code>&lt;a&gt;&lt;/a&gt;</code>tag，在 Markdown 可以用<code>[]()</code>及<code>[][] + []:</code>使用</p>
+<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href=&quot;超鏈結&quot; title=&quot;標題（可略）&quot;&gt;超鏈結名稱&lt;/a&gt;</span><br><span class="line">[超鏈結名稱](超鏈結 &quot;標題（可略）&quot;)</span><br><span class="line"></span><br><span class="line">標題就是滑鼠一到鏈結上面會顯示的東東啦</span><br><span class="line">當然，超鏈結也可以用相對路徑啦，寫過網頁的就知道了</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[It&apos;s a google link](https://www.google.com)</span><br><span class="line">[nobodyzxc github](http://github.com/nobodyzxc &quot;你瞅啥&quot;)</span><br><span class="line"></span><br><span class="line">這邊有種特殊用法，就是參考鏈結，有點像註腳，個人覺得像是變數</span><br><span class="line"></span><br><span class="line">[超鏈結名稱][參考名稱]</span><br><span class="line">『參考名稱』: 超鏈結</span><br><span class="line"></span><br><span class="line">如此一來，他的參考名稱就會去參考到超鏈結。</span><br><span class="line">兩行可以放得很開，第二習慣放最後面，當註腳（的樣子）。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[知乎][zhihu 注意大小寫，這是一個變數參考 0]</span><br><span class="line">many lines</span><br><span class="line">[zhihu 注意大小寫，這是一個變數參考 0]: http://zhihu.com</span><br></pre></td></tr></table></figure>
+<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><p><a href="https://www.google.com" target="_blank" rel="noopener">It’s a google link</a><br><a href="http://github.com/nobodyzxc" title="你瞅啥" target="_blank" rel="noopener">nobodyzxc github</a></p>
+<p><a href="http://zhihu.com" target="_blank" rel="noopener">知乎</a><br>many lines</p>
+<h2 id="6-註腳"><a href="#6-註腳" class="headerlink" title="6. 註腳"></a>6. 註腳</h2><p>“聽說！”生成 html 時會變成清單，放在檔案最下面，或是變成視窗跳出來，不太一定<br>用中括號加<code>^</code>數字，<code>[^0]</code></p>
+<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">註解零  [^0]</span><br><span class="line">[^0] 就是這樣嗎？</span><br><span class="line">一樣要注意空格啊</span><br></pre></td></tr></table></figure>
+<h3 id="效果-5"><a href="#效果-5" class="headerlink" title="效果"></a>效果</h3><p>註解零  <sup><a href="#fn_0" id="reffn_0">0</a></sup><br><sup><a href="#fn_0" id="reffn_0">0</a></sup> 就是這樣嗎？</p>
+<p>Text prior to footnote reference.<sup><a href="#fn_2" id="reffn_2">2</a></sup><br><sup><a href="#fn_2" id="reffn_2">2</a></sup> Comment to include in footnote.</p>
+<p>WTF? 好像弄不太起來… 有需要再找吧…</p>
+<h2 id="7-圖片"><a href="#7-圖片" class="headerlink" title="7. 圖片"></a>7. 圖片</h2><p>敘述最少的一個，超鏈結前加驚嘆號</p>
+<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![my logo](https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460)</span><br><span class="line">![看山醬萌萌噠][ref]</span><br><span class="line">[ref]: /images/zhi.jpg &quot;zhi~~侵刪呦&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="效果-6"><a href="#效果-6" class="headerlink" title="效果"></a>效果</h3><p><img src="https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460" alt="my logo"><br><img src="/images/zhi.jpg" alt="看山醬萌萌噠" title="zhi~~侵刪呦"></p>
+<p>Image from <a href="https://www.zhihu.com/question/35778876/answer/65568580" target="_blank" rel="noopener">zhihu</a>、<a href="http://tw.weibo.com/liukanshan" target="_blank" rel="noopener">看山微博</a></p>
+<h2 id="8-程式碼區塊"><a href="#8-程式碼區塊" class="headerlink" title="8. 程式碼區塊"></a>8. 程式碼區塊</h2><p>如果鑲嵌行間請用<code>` </code>前後包裝，一大塊則用<code>```</code>包（可以加語言名稱）</p>
+<h3 id="用法-7"><a href="#用法-7" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><div class="line">行間鑲嵌一個 &bprime;/&bprime; </div><div class="line"></div><div class="line">\`\`\`C</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">int main(void){// 對 我是不換行派的，打我啊</div><div class="line">    return 0;</div><div class="line">}</div><div class="line">\`\`\`</div></pre></td></tr></tbody></table></figure>
+
+<h3 id="效果-7"><a href="#效果-7" class="headerlink" title="效果"></a>效果</h3><p>行間鑲嵌一個<code>/</code></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;<span class="comment">// 對 我是不換行派的，打我啊</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不要問我<code>```</code>是怎麼打出來的，<br>我絕對不會說<code><code>```</code>&lt;/code&gt;是借助 html 和反斜線之力完成的。</code></p>
+<h2 id="9-表格"><a href="#9-表格" class="headerlink" title="9. 表格"></a>9. 表格</h2><p>恩，就是 html 的<code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code>等</p>
+<h3 id="用法-8"><a href="#用法-8" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">冒號用來對齊（擺左齊左、擺右齊右，都擺置中）</span><br><span class="line"></span><br><span class="line">| editor        | intro     | comment            |</span><br><span class="line">|---------------|:---------:|-------------------:|</span><br><span class="line">| emacs         | 神的編輯器| 聽說這表格他很會畫 |</span><br><span class="line">| vim           | 編輯器之神| 本人目前用此編輯器 |</span><br><span class="line"></span><br><span class="line">最左最右的 | 不一定需要</span><br><span class="line">表格內部亦支援 Markdown 格式</span><br></pre></td></tr></table></figure>
+<h3 id="效果-8"><a href="#效果-8" class="headerlink" title="效果"></a>效果</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>editor</th>
+<th style="text-align:center">intro</th>
+<th style="text-align:right">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emacs</td>
+<td style="text-align:center">神的編輯器</td>
+<td style="text-align:right">聽說這表格他很會畫</td>
+</tr>
+<tr>
+<td>vim</td>
+<td style="text-align:center">編輯器之神</td>
+<td style="text-align:right">本人目前用此編輯器</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="10-引言"><a href="#10-引言" class="headerlink" title="10. 引言"></a>10. 引言</h2><p>電子郵件或論壇常見到的咚咚<code>&gt;</code></p>
+<h3 id="用法-9"><a href="#用法-9" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; 引言</span><br></pre></td></tr></table></figure>
+<h3 id="效果-9"><a href="#效果-9" class="headerlink" title="效果"></a>效果</h3><blockquote>
+<p>引言</p>
+</blockquote>
+<h2 id="11-內嵌-html"><a href="#11-內嵌-html" class="headerlink" title="11. 內嵌 html"></a>11. 內嵌 html</h2><p>不用多說，用下去就對了。</p>
+<h2 id="12-水平分割線"><a href="#12-水平分割線" class="headerlink" title="12. 水平分割線"></a>12. 水平分割線</h2><h3 id="用法-10"><a href="#用法-10" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">獨立一行，大於等於三個符號接起來即可</span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line"></span><br><span class="line">***********</span><br><span class="line">___________</span><br></pre></td></tr></table></figure>
+<h3 id="效果-10"><a href="#效果-10" class="headerlink" title="效果"></a>效果</h3><hr>
+<hr>
+<hr>
+<p>凌晨四點… 我睡了… 本文的 Markdown 版本在<a href="https://github.com/nobodyzxc/BlogBackUp/blob/master/source/_posts/Markdown.md" target="_blank" rel="noopener">這裡</a>，晚安</p>
+<ul>
+<li>reference<ul>
+<li><a href="https://wastemobile.gitbooks.io/gitbook-chinese/content/format/markdown.html" target="_blank" rel="noopener">一本 gitbook</a></li>
+<li><a href="http://markdown.tw/" target="_blank" rel="noopener">domain name 像官網</a></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL Note</title>
     <url>/2017/02/10/MySQL-Note/</url>
     <content><![CDATA[<center>
@@ -1991,113 +1991,6 @@ A world without loop , but recursion。<br>
       </tags>
   </entry>
   <entry>
-    <title>簡明 Arch 安裝指南</title>
-    <url>/2019/06/06/arch-install/</url>
-    <content><![CDATA[<center>
-裝 Arch 第二次就上手～
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
-<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
-
-<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
-<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
-<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
-<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
-<p>所以我們的指令為：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
-<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
-<ul>
-<li>開啟電源後按 F12 （我的桌機）</li>
-<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
-</ul>
-<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
-<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
-<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
-<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
-<p>以 root 進入 zsh。</p>
-<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
-<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
-<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
-<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
-<p><code>fdisk /dev/sda</code></p>
-<p>進入 fdisk prompt。</p>
-<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
-<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
-<ol>
-<li><code>/efi =&gt; EFI System(type 1)</code></li>
-<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
-<li><code>swap =&gt; Linux swap(type 19)</code></li>
-<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
-<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
-<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
-<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
-<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
-<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
-<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
-<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
-<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
-<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
-<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
-<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
-<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
-<p>設定電腦名稱。</p>
-<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
-<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
-<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
-<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
-</blockquote>
-<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
-<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
-<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
-<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
-<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
-<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
-<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
-<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
-<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
-<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
-<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
-<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
-<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
-<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Cygwin Beginner Guide</title>
     <url>/2017/05/30/basic-linux/</url>
     <content><![CDATA[<center>
@@ -2225,6 +2118,113 @@ A world without loop , but recursion。<br>
       <tags>
         <tag>linux</tag>
         <tag>cygwin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>簡明 Arch 安裝指南</title>
+    <url>/2019/06/06/arch-install/</url>
+    <content><![CDATA[<center>
+裝 Arch 第二次就上手～
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
+<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
+
+<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
+<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
+<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
+<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
+<p>所以我們的指令為：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
+<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
+<ul>
+<li>開啟電源後按 F12 （我的桌機）</li>
+<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
+</ul>
+<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
+<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
+<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
+<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
+<p>以 root 進入 zsh。</p>
+<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
+<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
+<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
+<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
+<p><code>fdisk /dev/sda</code></p>
+<p>進入 fdisk prompt。</p>
+<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
+<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
+<ol>
+<li><code>/efi =&gt; EFI System(type 1)</code></li>
+<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
+<li><code>swap =&gt; Linux swap(type 19)</code></li>
+<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
+<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
+<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
+<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
+<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
+<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
+<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
+<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
+<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
+<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
+<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
+<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
+<p>設定電腦名稱。</p>
+<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
+<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
+<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
+<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
+</blockquote>
+<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
+<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
+<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
+<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
+<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
+<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
+<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
+<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
+<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
+<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
+<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
+<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
+<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
