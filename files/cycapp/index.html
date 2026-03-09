@@ -136,12 +136,38 @@
       touch-action: none;
       padding: 2px 4px;
       border-radius: 6px;
+      max-width: 82%;
+      text-align: center;
+      word-break: break-word;
     }
+    .share-text-content { pointer-events: none; }
     .share-text-object.selected {
       outline: 1px dashed rgba(255,255,255,0.9);
       background: rgba(0,0,0,0.18);
     }
     .share-text-object.dragging { cursor: grabbing; }
+    .share-text-handle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(17,24,39,0.8);
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+      pointer-events: auto;
+    }
+    .share-text-handle.size {
+      right: -10px;
+      bottom: -10px;
+      cursor: nwse-resize;
+    }
+    .share-text-handle.rotate {
+      left: 50%;
+      top: -18px;
+      transform: translateX(-50%);
+      cursor: crosshair;
+      background: #fde68a;
+    }
     .share-frame.add-mode { cursor: crosshair; pointer-events: auto; }
     .share-handle {
       position: absolute;
@@ -209,6 +235,42 @@
       margin-top: 8px;
     }
     .small { font-size: 12px; color: #4b5563; }
+    .text-editor-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2300;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .text-editor-modal.open { display: flex; }
+    .text-editor-card {
+      width: min(560px, calc(100vw - 32px));
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      box-shadow: 0 14px 36px rgba(0,0,0,0.25);
+      padding: 12px;
+    }
+    .text-editor-card textarea {
+      width: 100%;
+      min-height: 130px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 8px;
+      resize: vertical;
+      font: inherit;
+      line-height: 1.35;
+      box-sizing: border-box;
+    }
+    .text-editor-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
@@ -269,6 +331,15 @@
           <option value="all" selected>All</option>
           <option value="cycling">Cycling</option>
           <option value="run">Run</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>滾輪縮放</label>
+        <select id="wheel-zoom-level">
+          <option value="native" selected>原生預設</option>
+          <option value="fine">細緻 (3%)</option>
+          <option value="normal">標準 (6%)</option>
+          <option value="fast">快速 (10%)</option>
         </select>
       </div>
     </div>
@@ -371,11 +442,62 @@
         <label>旋轉</label>
         <input id="share-text-rotate" type="range" min="-180" max="180" step="1" value="0" />
       </div>
+      <div class="row">
+        <label>對齊</label>
+        <select id="share-text-align">
+          <option value="left">Left</option>
+          <option value="center" selected>Center</option>
+          <option value="right">Right</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>底色</label>
+        <select id="share-text-bg-mode">
+          <option value="dark" selected>Dark</option>
+          <option value="transparent">Transparent</option>
+          <option value="light">Light</option>
+          <option value="yellow">Yellow</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>自訂底色</label>
+        <input id="share-text-bg-color" type="color" value="#222222" />
+      </div>
+      <div class="row">
+        <label>斜體</label>
+        <select id="share-text-italic">
+          <option value="no" selected>Normal</option>
+          <option value="yes">Italic</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>陰影</label>
+        <select id="share-text-shadow">
+          <option value="yes" selected>On</option>
+          <option value="no">Off</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>陰影強度</label>
+        <input id="share-text-shadow-blur" type="range" min="0" max="24" step="1" value="8" />
+      </div>
       <div class="small">按「下載截圖」會輸出透明框範圍內的地圖並疊上這段文字。</div>
       <div class="share-actions">
         <button id="share-download-btn" class="btn" type="button">下載截圖</button>
         <button id="share-close-btn" class="btn" type="button">關閉</button>
       </div>
+    </div>
+  </div>
+  <div id="text-editor-modal" class="text-editor-modal" aria-hidden="true">
+    <div class="text-editor-card">
+      <div class="title">編輯文字</div>
+      <textarea id="text-editor-input" placeholder="輸入文字，Enter 可換行"></textarea>
+      <div class="text-editor-actions">
+        <button id="text-editor-cancel" class="btn" type="button">取消</button>
+        <button id="text-editor-save" class="btn" type="button">套用</button>
+      </div>
+      <div class="small">快捷鍵：Ctrl/Cmd + Enter 套用，Esc 取消。</div>
     </div>
   </div>
 
@@ -385,7 +507,7 @@
   <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
-    const map = L.map('map', { preferCanvas: true }).setView([23.8, 121], 7);
+    const map = L.map('map', { preferCanvas: true, zoomSnap: 0, zoomDelta: 0.01, wheelPxPerZoomLevel: 80 }).setView([23.8, 121], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; OpenStreetMap contributors',
@@ -404,6 +526,9 @@
     let startHideKm = 1.0;
     let endHideKm = 1.0;
     let activityTypeFilter = 'all';
+    let wheelZoomLevel = 'native';
+    let wheelZoomStep = 0.03;
+    let customWheelZoomEnabled = false;
 
     const routeLayer = L.geoJSON([], {
       pane: 'routePane',
@@ -456,6 +581,10 @@
     const shareMidLeftEl = el('share-mid-left');
     const shareFrameEl = el('share-frame');
     const shareTextLayerEl = el('share-text-layer');
+    const textEditorModalEl = el('text-editor-modal');
+    const textEditorInputEl = el('text-editor-input');
+    const textEditorSaveEl = el('text-editor-save');
+    const textEditorCancelEl = el('text-editor-cancel');
     let lastZipBuffer = null;
     let lastZipLabel = '';
     const sharePresetRatios = {
@@ -470,8 +599,11 @@
     let shareTexts = [];
     let shareSelectedTextId = null;
     let shareTextDrag = null;
+    let shareTextHandleDrag = null;
+    let shareTextLastTap = { id: null, ts: 0 };
     let shareAddMode = false;
     let shareTextIdSeq = 1;
+    let textEditorState = null;
     shareZonesEl.style.display = 'none';
 
     const updateLabels = () => {
@@ -578,6 +710,19 @@
       heatLayer.redraw();
     };
 
+    const applyWheelZoomSensitivity = () => {
+      if (wheelZoomLevel === 'fast') wheelZoomStep = 0.10;
+      else if (wheelZoomLevel === 'normal') wheelZoomStep = 0.06;
+      else wheelZoomStep = 0.03;
+      if (wheelZoomLevel === 'native') {
+        customWheelZoomEnabled = false;
+        map.scrollWheelZoom.enable();
+      } else {
+        customWheelZoomEnabled = true;
+        map.scrollWheelZoom.disable();
+      }
+    };
+
     el('route-opacity').addEventListener('input', () => { routeOpacity = Number(el('route-opacity').value); updateLabels(); applyStyle(); });
     el('route-weight').addEventListener('input', () => { routeWeight = Number(el('route-weight').value); updateLabels(); applyStyle(); });
     el('heat-min').addEventListener('input', () => { heatMin = Number(el('heat-min').value); updateLabels(); applyStyle(); });
@@ -595,6 +740,10 @@
     el('activity-type-filter').addEventListener('change', async () => {
       activityTypeFilter = String(el('activity-type-filter').value || 'all');
       if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    });
+    el('wheel-zoom-level').addEventListener('change', () => {
+      wheelZoomLevel = String(el('wheel-zoom-level').value || 'native');
+      applyWheelZoomSensitivity();
     });
     document.querySelectorAll('.preset-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -661,6 +810,51 @@
 
     const findShareTextById = (id) => shareTexts.find((t) => t.id === id) || null;
 
+    const resolveTextBg = (t) => {
+      const mode = String(t.bgMode || 'dark');
+      if (mode === 'transparent') return 'transparent';
+      if (mode === 'light') return 'rgba(255,255,255,0.78)';
+      if (mode === 'yellow') return 'rgba(254,240,138,0.82)';
+      if (mode === 'custom') return t.bgColor || '#222222';
+      return 'rgba(0,0,0,0.45)';
+    };
+
+    const drawRoundRect = (ctx, x, y, w, h, r) => {
+      const rr = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+      ctx.beginPath();
+      ctx.moveTo(x + rr, y);
+      ctx.arcTo(x + w, y, x + w, y + h, rr);
+      ctx.arcTo(x + w, y + h, x, y + h, rr);
+      ctx.arcTo(x, y + h, x, y, rr);
+      ctx.arcTo(x, y, x + w, y, rr);
+      ctx.closePath();
+      ctx.fill();
+    };
+
+    const openTextEditor = (initialValue, onSave) => {
+      textEditorState = { onSave };
+      textEditorInputEl.value = String(initialValue || '');
+      textEditorModalEl.classList.add('open');
+      textEditorModalEl.setAttribute('aria-hidden', 'false');
+      setTimeout(() => {
+        textEditorInputEl.focus();
+        textEditorInputEl.select();
+      }, 0);
+    };
+
+    const closeTextEditor = () => {
+      textEditorModalEl.classList.remove('open');
+      textEditorModalEl.setAttribute('aria-hidden', 'true');
+      textEditorState = null;
+    };
+
+    const saveTextEditor = () => {
+      if (textEditorState && typeof textEditorState.onSave === 'function') {
+        textEditorState.onSave(textEditorInputEl.value);
+      }
+      closeTextEditor();
+    };
+
     const setSelectedText = (id) => {
       shareSelectedTextId = id;
       const t = findShareTextById(id);
@@ -670,6 +864,12 @@
         el('share-text-weight').value = String(t.weight || 700);
         el('share-text-family').value = t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
         el('share-text-rotate').value = String(Math.round(t.rotate || 0));
+        el('share-text-align').value = t.align || 'center';
+        el('share-text-bg-mode').value = t.bgMode || 'dark';
+        el('share-text-bg-color').value = t.bgColor || '#222222';
+        el('share-text-italic').value = t.italic ? 'yes' : 'no';
+        el('share-text-shadow').value = t.shadow === false ? 'no' : 'yes';
+        el('share-text-shadow-blur').value = String(Math.round(t.shadowBlur ?? 8));
       }
       renderShareTexts();
     };
@@ -686,21 +886,31 @@
         node.style.fontSize = `${t.size}px`;
         node.style.fontWeight = String(t.weight);
         node.style.fontFamily = t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+        node.style.textAlign = t.align || 'center';
+        node.style.fontStyle = t.italic ? 'italic' : 'normal';
+        node.style.textShadow = t.shadow === false ? 'none' : `0 2px ${(t.shadowBlur ?? 8)}px rgba(0,0,0,0.7)`;
+        node.style.background = resolveTextBg(t);
+        node.style.borderRadius = '10px';
         node.style.transform = `translate(-50%, -50%) rotate(${t.rotate || 0}deg)`;
-        node.textContent = t.text;
-        node.addEventListener('dblclick', (ev) => {
-          ev.preventDefault();
-          ev.stopPropagation();
-          const nt = prompt('編輯文字', t.text);
-          if (nt === null) return;
-          t.text = nt.trim() || '新文字';
-          setSelectedText(t.id);
-        });
+        const content = document.createElement('div');
+        content.className = 'share-text-content';
+        content.textContent = t.text;
+        node.appendChild(content);
+        if (t.id === shareSelectedTextId) {
+          const hSize = document.createElement('div');
+          hSize.className = 'share-text-handle size';
+          hSize.dataset.kind = 'size';
+          const hRotate = document.createElement('div');
+          hRotate.className = 'share-text-handle rotate';
+          hRotate.dataset.kind = 'rotate';
+          node.appendChild(hSize);
+          node.appendChild(hRotate);
+        }
         shareTextLayerEl.appendChild(node);
       });
     };
 
-    const addTextAt = (rx, ry, markCustom = true) => {
+    const addTextAt = (rx, ry, markCustom = true, promptEdit = false) => {
       const textObj = {
         id: shareTextIdSeq++,
         text: '新文字',
@@ -711,10 +921,22 @@
         weight: 700,
         family: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
         rotate: 0,
+        align: 'center',
+        bgMode: 'dark',
+        bgColor: '#222222',
+        italic: false,
+        shadow: true,
+        shadowBlur: 8,
       };
       shareTexts.push(textObj);
       if (markCustom) setPresetActive('custom');
       setSelectedText(textObj.id);
+      if (promptEdit) {
+        openTextEditor(textObj.text, (value) => {
+          textObj.text = String(value || '').trim() || '新文字';
+          setSelectedText(textObj.id);
+        });
+      }
     };
 
     el('share-add-text-btn').addEventListener('click', () => {
@@ -726,10 +948,10 @@
     el('share-edit-text-btn').addEventListener('click', () => {
       const t = findShareTextById(shareSelectedTextId);
       if (!t) return;
-      const nt = prompt('編輯文字', t.text);
-      if (nt === null) return;
-      t.text = nt.trim() || '新文字';
-      renderShareTexts();
+      openTextEditor(t.text, (value) => {
+        t.text = String(value || '').trim() || '新文字';
+        renderShareTexts();
+      });
     });
 
     el('share-text-color').addEventListener('input', () => {
@@ -773,6 +995,50 @@
       renderShareTexts();
     });
 
+    el('share-text-align').addEventListener('change', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.align = String(el('share-text-align').value || 'center');
+      renderShareTexts();
+    });
+
+    el('share-text-bg-mode').addEventListener('change', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.bgMode = String(el('share-text-bg-mode').value || 'dark');
+      renderShareTexts();
+    });
+
+    el('share-text-bg-color').addEventListener('input', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.bgColor = String(el('share-text-bg-color').value || '#222222');
+      if (t.bgMode !== 'custom') t.bgMode = 'custom';
+      el('share-text-bg-mode').value = 'custom';
+      renderShareTexts();
+    });
+
+    el('share-text-italic').addEventListener('change', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.italic = el('share-text-italic').value === 'yes';
+      renderShareTexts();
+    });
+
+    el('share-text-shadow').addEventListener('change', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.shadow = el('share-text-shadow').value !== 'no';
+      renderShareTexts();
+    });
+
+    el('share-text-shadow-blur').addEventListener('input', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.shadowBlur = Number(el('share-text-shadow-blur').value);
+      renderShareTexts();
+    });
+
     el('share-delete-text-btn').addEventListener('click', () => {
       if (shareSelectedTextId == null) return;
       shareTexts = shareTexts.filter((t) => t.id !== shareSelectedTextId);
@@ -785,6 +1051,40 @@
     });
 
     shareTextLayerEl.addEventListener('pointerdown', (ev) => {
+      const handle = ev.target.closest('.share-text-handle');
+      if (handle) {
+        const node = handle.closest('.share-text-object');
+        if (!node) return;
+        const id = Number(node.dataset.id);
+        const t = findShareTextById(id);
+        if (!t) return;
+        setSelectedText(id);
+        const rect = node.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const sx = ev.clientX - cx;
+        const sy = ev.clientY - cy;
+        shareTextHandleDrag = {
+          pointerId: ev.pointerId,
+          id,
+          kind: String(handle.dataset.kind || ''),
+          baseSize: Number(t.size || 24),
+          baseRotate: Number(t.rotate || 0),
+          centerX: cx,
+          centerY: cy,
+          startDist: Math.max(1, Math.hypot(sx, sy)),
+          startAngle: Math.atan2(sy, sx),
+          node,
+        };
+        handle.setPointerCapture(ev.pointerId);
+        map.dragging.disable();
+        map.doubleClickZoom.disable();
+        map.scrollWheelZoom.disable();
+        customWheelZoomEnabled = false;
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
       const hit = ev.target.closest('.share-text-object');
       if (!hit) return;
       const id = Number(hit.dataset.id);
@@ -801,22 +1101,46 @@
         baseX: t.x,
         baseY: t.y,
         node,
+        moved: false,
       };
       node.classList.add('dragging');
       node.setPointerCapture(ev.pointerId);
       map.dragging.disable();
       map.doubleClickZoom.disable();
       map.scrollWheelZoom.disable();
+      customWheelZoomEnabled = false;
       ev.preventDefault();
       ev.stopPropagation();
     });
 
     window.addEventListener('pointermove', (ev) => {
+      if (shareTextHandleDrag && ev.pointerId === shareTextHandleDrag.pointerId) {
+        const t = findShareTextById(shareTextHandleDrag.id);
+        if (!t) return;
+        const dx = ev.clientX - shareTextHandleDrag.centerX;
+        const dy = ev.clientY - shareTextHandleDrag.centerY;
+        if (shareTextHandleDrag.kind === 'size') {
+          const dist = Math.max(1, Math.hypot(dx, dy));
+          const scale = dist / shareTextHandleDrag.startDist;
+          t.size = clamp(Math.round(shareTextHandleDrag.baseSize * scale), 10, 140);
+          el('share-text-size').value = String(Math.round(t.size));
+        } else if (shareTextHandleDrag.kind === 'rotate') {
+          const angle = Math.atan2(dy, dx);
+          const delta = (shareTextHandleDrag.startAngle - angle) * 180 / Math.PI;
+          t.rotate = Math.round(shareTextHandleDrag.baseRotate + delta);
+          el('share-text-rotate').value = String(t.rotate);
+        }
+        renderShareTexts();
+        ev.preventDefault();
+        return;
+      }
       if (!shareTextDrag || ev.pointerId !== shareTextDrag.pointerId) return;
       const t = findShareTextById(shareTextDrag.id);
       if (!t) return;
       const dx = (ev.clientX - shareTextDrag.startX) / Math.max(1, shareRect.w);
       const dy = (ev.clientY - shareTextDrag.startY) / Math.max(1, shareRect.h);
+      const movePx = Math.hypot(ev.clientX - shareTextDrag.startX, ev.clientY - shareTextDrag.startY);
+      if (movePx > 4) shareTextDrag.moved = true;
       t.x = clamp(shareTextDrag.baseX + dx, 0.03, 0.97);
       t.y = clamp(shareTextDrag.baseY + dy, 0.03, 0.97);
       if (shareTextDrag.node) {
@@ -827,13 +1151,36 @@
     });
 
     const endTextDrag = (ev) => {
+      if (shareTextHandleDrag && ev.pointerId === shareTextHandleDrag.pointerId) {
+        shareTextHandleDrag = null;
+        renderShareTexts();
+        map.dragging.enable();
+        map.doubleClickZoom.enable();
+        applyWheelZoomSensitivity();
+        ev.preventDefault();
+        return;
+      }
       if (!shareTextDrag || ev.pointerId !== shareTextDrag.pointerId) return;
+      const drag = shareTextDrag;
+      const tappedText = findShareTextById(drag.id);
       if (shareTextDrag.node) shareTextDrag.node.classList.remove('dragging');
       shareTextDrag = null;
       renderShareTexts();
       map.dragging.enable();
       map.doubleClickZoom.enable();
-      map.scrollWheelZoom.enable();
+      applyWheelZoomSensitivity();
+      if (!drag.moved && tappedText) {
+        const now = Date.now();
+        if (shareTextLastTap.id === drag.id && now - shareTextLastTap.ts < 350) {
+          shareTextLastTap = { id: null, ts: 0 };
+          openTextEditor(tappedText.text, (value) => {
+            tappedText.text = String(value || '').trim() || '新文字';
+            renderShareTexts();
+          });
+        } else {
+          shareTextLastTap = { id: drag.id, ts: now };
+        }
+      }
       ev.preventDefault();
     };
     window.addEventListener('pointerup', endTextDrag);
@@ -845,7 +1192,7 @@
       const rect = shareFrameEl.getBoundingClientRect();
       const rx = clamp((ev.clientX - rect.left) / Math.max(1, rect.width), 0.03, 0.97);
       const ry = clamp((ev.clientY - rect.top) / Math.max(1, rect.height), 0.03, 0.97);
-      addTextAt(rx, ry, true);
+      addTextAt(rx, ry, true, true);
       shareAddMode = false;
       shareFrameEl.classList.remove('add-mode');
       el('share-add-text-btn').textContent = '+ 新增文字';
@@ -912,6 +1259,29 @@
       }
       const out = points.slice(0, idx + 1);
       return out.length >= 2 ? out : [];
+    };
+
+    const wrapTextByWidth = (ctx, text, maxWidth) => {
+      const lines = [];
+      const paragraphs = String(text || '').split('\n');
+      paragraphs.forEach((p) => {
+        if (!p) {
+          lines.push('');
+          return;
+        }
+        let line = '';
+        for (const ch of p) {
+          const test = line + ch;
+          if (line && ctx.measureText(test).width > maxWidth) {
+            lines.push(line);
+            line = ch;
+          } else {
+            line = test;
+          }
+        }
+        if (line) lines.push(line);
+      });
+      return lines.length ? lines : [''];
     };
 
     const isCyclingType = (typeText) => {
@@ -1279,6 +1649,18 @@
       if (ev.target === helpModalEl) closeHelpModal();
     });
     document.addEventListener('keydown', (ev) => {
+      if (textEditorModalEl.classList.contains('open')) {
+        if (ev.key === 'Escape') {
+          ev.preventDefault();
+          closeTextEditor();
+          return;
+        }
+        if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) {
+          ev.preventDefault();
+          saveTextEditor();
+          return;
+        }
+      }
       if (ev.key === 'Escape' && helpModalEl.classList.contains('open')) closeHelpModal();
       if (ev.key === 'Escape' && shareOverlayEl.classList.contains('open')) closeShareOverlay();
     });
@@ -1295,13 +1677,18 @@
         ev.stopPropagation();
       });
     });
+    textEditorSaveEl.addEventListener('click', saveTextEditor);
+    textEditorCancelEl.addEventListener('click', closeTextEditor);
+    textEditorModalEl.addEventListener('click', (ev) => {
+      if (ev.target === textEditorModalEl) closeTextEditor();
+    });
 
     const openShareOverlay = () => {
       shareRect = fitRectByRatio(sharePresetRatios[sharePreset] || (4 / 5));
       shareOverlayEl.classList.add('open');
       shareOverlayEl.setAttribute('aria-hidden', 'false');
       shareZonesEl.style.display = 'block';
-      if (!shareTexts.length) addTextAt(0.5, 0.88, false);
+      applyWheelZoomSensitivity();
       updateShareFrame();
     };
 
@@ -1310,20 +1697,36 @@
       shareOverlayEl.setAttribute('aria-hidden', 'true');
       shareZonesEl.style.display = 'none';
       shareResize = null;
+      shareTextHandleDrag = null;
       shareAddMode = false;
       shareFrameEl.classList.remove('add-mode');
       el('share-add-text-btn').textContent = '+ 新增文字';
+      applyWheelZoomSensitivity();
     };
+
+    map.scrollWheelZoom.enable();
+    map.getContainer().addEventListener('wheel', (ev) => {
+      if (!customWheelZoomEnabled) return;
+      ev.preventDefault();
+      const rect = map.getContainer().getBoundingClientRect();
+      const point = L.point(ev.clientX - rect.left, ev.clientY - rect.top);
+      const direction = ev.deltaY < 0 ? 1 : -1;
+      const dz = Math.log(1 + wheelZoomStep) / Math.LN2;
+      const minZoom = map.getMinZoom();
+      const maxZoom = map.getMaxZoom();
+      const target = Math.max(minZoom, Math.min(maxZoom, map.getZoom() + direction * dz));
+      map.setZoomAround(point, target, { animate: false });
+    }, { passive: false });
 
     const downloadShareImage = async () => {
       try {
         metaEl.textContent = '產生分享截圖中...';
         const mapRect = el('map').getBoundingClientRect();
         const frameRect = shareFrameEl.getBoundingClientRect();
-        const cropX = Math.max(0, frameRect.left - mapRect.left);
-        const cropY = Math.max(0, frameRect.top - mapRect.top);
-        const cropW = Math.min(mapRect.width - cropX, frameRect.width);
-        const cropH = Math.min(mapRect.height - cropY, frameRect.height);
+        const cropXCss = Math.max(0, frameRect.left - mapRect.left);
+        const cropYCss = Math.max(0, frameRect.top - mapRect.top);
+        const cropWCss = Math.min(mapRect.width - cropXCss, frameRect.width);
+        const cropHCss = Math.min(mapRect.height - cropYCss, frameRect.height);
 
         const baseCanvas = await html2canvas(el('map'), {
           useCORS: true,
@@ -1331,10 +1734,16 @@
           backgroundColor: null,
           logging: false,
         });
+        const sx = baseCanvas.width / Math.max(1, mapRect.width);
+        const sy = baseCanvas.height / Math.max(1, mapRect.height);
+        const cropX = cropXCss * sx;
+        const cropY = cropYCss * sy;
+        const cropW = cropWCss * sx;
+        const cropH = cropHCss * sy;
 
         const out = document.createElement('canvas');
-        out.width = Math.max(1, Math.round(cropW));
-        out.height = Math.max(1, Math.round(cropH));
+        out.width = Math.max(1, Math.round(cropWCss));
+        out.height = Math.max(1, Math.round(cropHCss));
         const ctx = out.getContext('2d');
         ctx.drawImage(
           baseCanvas,
@@ -1347,19 +1756,42 @@
           const x = clamp((t.x || 0.5), 0, 1) * out.width;
           const y = clamp((t.y || 0.5), 0, 1) * out.height;
           const size = Math.max(10, Math.round((t.size || 24) * (out.width / Math.max(1, shareRect.w))));
-          ctx.font = `${t.weight || 700} ${size}px ${t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}`;
+          const align = String(t.align || 'center');
+          const stylePrefix = t.italic ? 'italic ' : '';
+          ctx.font = `${stylePrefix}${t.weight || 700} ${size}px ${t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}`;
           ctx.fillStyle = t.color || '#ffffff';
           ctx.textBaseline = 'middle';
-          ctx.textAlign = 'center';
-          ctx.shadowColor = 'rgba(0,0,0,0.7)';
-          ctx.shadowBlur = 8;
-          const lines = String(t.text).split('\n');
+          ctx.textAlign = align === 'left' ? 'left' : (align === 'right' ? 'right' : 'center');
+          ctx.shadowColor = (t.shadow === false) ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.7)';
+          ctx.shadowBlur = (t.shadow === false) ? 0 : Math.max(0, Number(t.shadowBlur ?? 8));
+          const maxLineWidth = out.width * 0.82;
+          const lines = wrapTextByWidth(ctx, t.text, maxLineWidth);
           const lh = Math.round(size * 1.25);
           const yStart = y - ((lines.length - 1) * lh) / 2;
+          const lineWidths = lines.map((line) => ctx.measureText(line).width);
+          const maxW = lineWidths.length ? Math.max(...lineWidths) : 0;
+          const padX = Math.max(8, Math.round(size * 0.35));
+          const padY = Math.max(4, Math.round(size * 0.22));
+          const boxW = maxW + padX * 2;
+          const boxH = lines.length * lh + padY * 2;
+          const boxX = x - boxW / 2;
+          const boxY = y - boxH / 2;
+          const xDraw = align === 'left'
+            ? (x - boxW / 2 + padX)
+            : (align === 'right' ? (x + boxW / 2 - padX) : x);
+          const bg = resolveTextBg(t);
           ctx.save();
           ctx.translate(x, y);
           ctx.rotate(((t.rotate || 0) * Math.PI) / 180);
-          lines.forEach((line, i) => ctx.fillText(line, 0, (yStart + i * lh) - y));
+          if (bg !== 'transparent') {
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = bg;
+            drawRoundRect(ctx, boxX - x, boxY - y, boxW, boxH, Math.max(6, Math.round(size * 0.35)));
+            ctx.fillStyle = t.color || '#ffffff';
+            ctx.shadowColor = (t.shadow === false) ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.7)';
+            ctx.shadowBlur = (t.shadow === false) ? 0 : Math.max(0, Number(t.shadowBlur ?? 8));
+          }
+          lines.forEach((line, i) => ctx.fillText(line, xDraw - x, (yStart + i * lh) - y));
           ctx.restore();
           ctx.shadowBlur = 0;
         });
@@ -1384,6 +1816,7 @@
       updateShareFrame();
     });
 
+    applyWheelZoomSensitivity();
     updateLabels();
     updateShareFrame();
   </script>
