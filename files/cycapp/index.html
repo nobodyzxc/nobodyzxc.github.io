@@ -13,6 +13,23 @@
       background: rgba(255,255,255,0.96); border: 1px solid #d1d5db; border-radius: 10px; padding: 10px 12px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.12);
     }
+    .panel.hidden-in-share { display: none; }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .panel-body.collapsed { display: none; }
+    .panel-toggle {
+      border: 1px solid #9ca3af;
+      background: #fff;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
     .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
     .row label { min-width: 90px; font-size: 13px; color: #111827; }
     .row input[type="range"] { flex: 1; }
@@ -199,6 +216,27 @@
       padding: 10px 12px;
       pointer-events: auto;
     }
+    .share-controls-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .share-controls-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .share-controls-body.collapsed { display: none; }
+    .share-controls-toggle {
+      border: 1px solid #9ca3af;
+      background: #fff;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
     .share-controls .row { margin: 6px 0; }
     .preset-row {
       display: flex;
@@ -271,12 +309,38 @@
       justify-content: flex-end;
       margin-top: 8px;
     }
+    @media (max-width: 768px) {
+      .share-controls {
+        left: 8px;
+        right: 8px;
+        top: auto;
+        bottom: 8px;
+        width: auto;
+        max-height: 34vh;
+        overflow: auto;
+        padding: 8px 10px;
+      }
+      .share-controls .row {
+        margin: 4px 0;
+      }
+      .share-actions {
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .share-actions .btn {
+        padding: 5px 8px;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
-  <div class="panel">
-    <div class="title">Strava Zip Upload Map (GPX)</div>
+  <div id="main-panel" class="panel">
+    <div class="panel-header">
+      <div class="title" style="margin-bottom:0">Strava Zip Upload Map (GPX)</div>
+      <button id="main-panel-toggle" class="panel-toggle" type="button">收合</button>
+    </div>
+    <div id="main-panel-body" class="panel-body">
     <div class="row">
       <label for="zip-input">Strava Zip</label>
       <input id="zip-input" type="file" accept=".zip" />
@@ -343,6 +407,7 @@
         </select>
       </div>
     </div>
+    </div>
   </div>
 
   <div id="help-modal" class="modal" aria-hidden="true">
@@ -394,7 +459,11 @@
       </div>
     </div>
     <div class="share-controls">
-      <div class="title">分享截圖</div>
+      <div class="share-controls-header">
+        <div class="share-controls-title">分享截圖</div>
+        <button id="share-controls-toggle" class="share-controls-toggle" type="button">收合設定</button>
+      </div>
+      <div id="share-controls-body" class="share-controls-body">
       <div class="row">
         <label>版型</label>
       </div>
@@ -483,6 +552,7 @@
         <input id="share-text-shadow-blur" type="range" min="0" max="24" step="1" value="8" />
       </div>
       <div class="small">按「下載截圖」會輸出透明框範圍內的地圖並疊上這段文字。</div>
+      </div>
       <div class="share-actions">
         <button id="share-download-btn" class="btn" type="button">下載截圖</button>
         <button id="share-close-btn" class="btn" type="button">關閉</button>
@@ -569,6 +639,9 @@
     const advancedToggleEl = el('advanced-toggle');
     const advancedPanelEl = el('advanced-panel');
     const helpModalEl = el('help-modal');
+    const mainPanelEl = el('main-panel');
+    const mainPanelBodyEl = el('main-panel-body');
+    const mainPanelToggleEl = el('main-panel-toggle');
     const shareOverlayEl = el('share-overlay');
     const shareZonesEl = el('share-zones');
     const shareDeepTopEl = el('share-deep-top');
@@ -581,6 +654,8 @@
     const shareMidLeftEl = el('share-mid-left');
     const shareFrameEl = el('share-frame');
     const shareTextLayerEl = el('share-text-layer');
+    const shareControlsBodyEl = el('share-controls-body');
+    const shareControlsToggleEl = el('share-controls-toggle');
     const textEditorModalEl = el('text-editor-modal');
     const textEditorInputEl = el('text-editor-input');
     const textEditorSaveEl = el('text-editor-save');
@@ -603,6 +678,8 @@
     let shareTextLastTap = { id: null, ts: 0 };
     let shareAddMode = false;
     let shareTextIdSeq = 1;
+    let shareControlsCollapsed = false;
+    let mainPanelCollapsed = false;
     let textEditorState = null;
     shareZonesEl.style.display = 'none';
 
@@ -665,6 +742,16 @@
       shareFrameEl.style.height = `${shareRect.h}px`;
       updateShareZones();
       renderShareTexts();
+    };
+
+    const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
+    const applyMainPanelCollapsed = () => {
+      mainPanelBodyEl.classList.toggle('collapsed', mainPanelCollapsed);
+      mainPanelToggleEl.textContent = mainPanelCollapsed ? '展開' : '收合';
+    };
+    const applyShareControlsCollapsed = () => {
+      shareControlsBodyEl.classList.toggle('collapsed', shareControlsCollapsed);
+      shareControlsToggleEl.textContent = shareControlsCollapsed ? '展開設定' : '收合設定';
     };
 
     const placeZone = (elNode, left, top, width, height) => {
@@ -1685,6 +1772,9 @@
 
     const openShareOverlay = () => {
       shareRect = fitRectByRatio(sharePresetRatios[sharePreset] || (4 / 5));
+      mainPanelEl.classList.add('hidden-in-share');
+      shareControlsCollapsed = isMobileViewport();
+      applyShareControlsCollapsed();
       shareOverlayEl.classList.add('open');
       shareOverlayEl.setAttribute('aria-hidden', 'false');
       shareZonesEl.style.display = 'block';
@@ -1693,6 +1783,7 @@
     };
 
     const closeShareOverlay = () => {
+      mainPanelEl.classList.remove('hidden-in-share');
       shareOverlayEl.classList.remove('open');
       shareOverlayEl.setAttribute('aria-hidden', 'true');
       shareZonesEl.style.display = 'none';
@@ -1808,6 +1899,14 @@
     };
 
     el('share-btn').addEventListener('click', openShareOverlay);
+    mainPanelToggleEl.addEventListener('click', () => {
+      mainPanelCollapsed = !mainPanelCollapsed;
+      applyMainPanelCollapsed();
+    });
+    shareControlsToggleEl.addEventListener('click', () => {
+      shareControlsCollapsed = !shareControlsCollapsed;
+      applyShareControlsCollapsed();
+    });
     el('share-close-btn').addEventListener('click', closeShareOverlay);
     el('share-download-btn').addEventListener('click', downloadShareImage);
     window.addEventListener('resize', () => {
@@ -1818,6 +1917,7 @@
 
     applyWheelZoomSensitivity();
     updateLabels();
+    applyMainPanelCollapsed();
     updateShareFrame();
   </script>
 </body>
