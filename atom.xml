@@ -37,9 +37,9 @@
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
-      <category term="vim" scheme="http://nobodyzxc.github.io/tags/vim/"/>
-    
       <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
+    
+      <category term="vim" scheme="http://nobodyzxc.github.io/tags/vim/"/>
     
   </entry>
   
@@ -141,9 +141,9 @@
     
       <category term="fp" scheme="http://nobodyzxc.github.io/tags/fp/"/>
     
-      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
-    
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
+    
+      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
     
       <category term="lisp" scheme="http://nobodyzxc.github.io/tags/lisp/"/>
     
@@ -312,9 +312,9 @@
     
       <category term="haskell" scheme="http://nobodyzxc.github.io/tags/haskell/"/>
     
-      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
-    
       <category term="lambda" scheme="http://nobodyzxc.github.io/tags/lambda/"/>
+    
+      <category term="scheme" scheme="http://nobodyzxc.github.io/tags/scheme/"/>
     
   </entry>
   
@@ -565,9 +565,9 @@ Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim �
       <category term="Note" scheme="http://nobodyzxc.github.io/categories/Note/"/>
     
     
-      <category term="vim" scheme="http://nobodyzxc.github.io/tags/vim/"/>
-    
       <category term="linux" scheme="http://nobodyzxc.github.io/tags/linux/"/>
+    
+      <category term="vim" scheme="http://nobodyzxc.github.io/tags/vim/"/>
     
   </entry>
   

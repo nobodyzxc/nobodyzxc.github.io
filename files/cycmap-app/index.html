@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>cycle-lab | Strava Zip Upload Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body, #map { height: 100%; margin: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .panel {
+      position: absolute; z-index: 1000; top: 12px; left: 12px; width: min(460px, calc(100vw - 24px));
+      background: rgba(255,255,255,0.96); border: 1px solid #d1d5db; border-radius: 10px; padding: 10px 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+    .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+    .row label { min-width: 90px; font-size: 13px; color: #111827; }
+    .row input[type="range"] { flex: 1; }
+    .meta { font-size: 12px; color: #374151; margin-top: 6px; line-height: 1.4; }
+    .title { font-weight: 700; margin-bottom: 8px; }
+    .btn { border: 1px solid #9ca3af; background: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+    .muted { color: #6b7280; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="panel">
+    <div class="title">Strava Zip Upload Map (GPX)</div>
+    <div class="row">
+      <label for="zip-input">Strava Zip</label>
+      <input id="zip-input" type="file" accept=".zip" />
+      <button id="demo-btn" class="btn" type="button">載入 Demo</button>
+    </div>
+    <div class="row">
+      <label>路線透明度</label>
+      <input id="route-opacity" type="range" min="0.05" max="0.8" step="0.01" value="0.4" />
+      <span id="route-opacity-val">0.40</span>
+    </div>
+    <div class="row">
+      <label>路線線寬</label>
+      <input id="route-weight" type="range" min="1" max="4" step="0.1" value="2.2" />
+      <span id="route-weight-val">2.2</span>
+    </div>
+    <div class="row">
+      <label>熱區底亮度</label>
+      <input id="heat-min" type="range" min="0.08" max="0.85" step="0.01" value="0.65" />
+      <span id="heat-min-val">0.65</span>
+    </div>
+    <div class="row">
+      <label>熱區增益</label>
+      <input id="heat-gain" type="range" min="0.6" max="3" step="0.05" value="1.85" />
+      <span id="heat-gain-val">1.85</span>
+    </div>
+    <div class="meta" id="meta">尚未載入。選擇 Strava export zip 後按「繪圖」。</div>
+    <div class="muted">目前支援 zip 內 `activities/*.gpx|*.fit` 與 `*.gz`。</div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+  <script>
+    const map = L.map('map', { preferCanvas: true }).setView([23.8, 121], 7);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    map.createPane('heatPane');
+    map.createPane('routePane');
+    map.getPane('heatPane').style.zIndex = '420';
+    map.getPane('routePane').style.zIndex = '430';
+
+    let routeOpacity = 0.4;
+    let routeWeight = 2.2;
+    let heatMin = 0.65;
+    let heatGain = 1.85;
+
+    const routeLayer = L.geoJSON([], {
+      pane: 'routePane',
+      style: { color: '#f97316', weight: routeWeight, opacity: routeOpacity },
+      onEachFeature: (feature, layer) => {
+        const p = feature.properties || {};
+        const dateText = p.date || 'N/A';
+        const distText = Number.isFinite(p.distanceKm) ? `${p.distanceKm.toFixed(2)} km` : 'N/A';
+        const elevGainText = Number.isFinite(p.elevGainM) ? `${p.elevGainM.toFixed(0)} m` : 'N/A';
+        const elevHighText = Number.isFinite(p.elevHighM) ? `${p.elevHighM.toFixed(0)} m` : 'N/A';
+        const movingText = formatSeconds(p.movingSec);
+        const elapsedText = formatSeconds(p.elapsedSec);
+        const nameText = p.name || 'Unnamed';
+        layer.bindTooltip(
+          `<strong>${nameText}</strong><br/>日期: ${dateText}<br/>距離: ${distText}<br/>總爬升: ${elevGainText}<br/>最高海拔: ${elevHighText}<br/>移動時間: ${movingText}<br/>總耗時: ${elapsedText}`,
+          { sticky: true, direction: 'top', opacity: 0.95 }
+        );
+      }
+    }).addTo(map);
+
+    const heatLayer = L.heatLayer([], {
+      pane: 'heatPane',
+      radius: 12,
+      blur: 18,
+      minOpacity: heatMin,
+      maxZoom: 14,
+      gradient: {
+        0.15: '#5eead4',
+        0.35: '#2dd4bf',
+        0.6: '#14b8a6',
+        0.8: '#0f766e',
+        1.0: '#164e63'
+      }
+    }).addTo(map);
+
+    const el = (id) => document.getElementById(id);
+    const metaEl = el('meta');
+
+    const updateLabels = () => {
+      el('route-opacity-val').textContent = routeOpacity.toFixed(2);
+      el('route-weight-val').textContent = routeWeight.toFixed(1);
+      el('heat-min-val').textContent = heatMin.toFixed(2);
+      el('heat-gain-val').textContent = heatGain.toFixed(2);
+    };
+
+    const applyStyle = () => {
+      routeLayer.setStyle({ color: '#f97316', weight: routeWeight, opacity: routeOpacity });
+      heatLayer.setOptions({ minOpacity: heatMin });
+      if (window.__heatBasePoints) {
+        heatLayer.setLatLngs(window.__heatBasePoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
+      }
+      heatLayer.redraw();
+    };
+
+    el('route-opacity').addEventListener('input', () => { routeOpacity = Number(el('route-opacity').value); updateLabels(); applyStyle(); });
+    el('route-weight').addEventListener('input', () => { routeWeight = Number(el('route-weight').value); updateLabels(); applyStyle(); });
+    el('heat-min').addEventListener('input', () => { heatMin = Number(el('heat-min').value); updateLabels(); applyStyle(); });
+    el('heat-gain').addEventListener('input', () => { heatGain = Number(el('heat-gain').value); updateLabels(); applyStyle(); });
+
+    const samplePoints = (points, step) => {
+      if (step <= 1) return points;
+      const out = [];
+      for (let i = 0; i < points.length; i += step) out.push(points[i]);
+      if (points.length && out[out.length - 1] !== points[points.length - 1]) out.push(points[points.length - 1]);
+      return out;
+    };
+
+    const parseGpxText = (text) => {
+      const doc = new DOMParser().parseFromString(text, 'application/xml');
+      const pts = [];
+      const trkpts = doc.getElementsByTagName('trkpt');
+      for (let i = 0; i < trkpts.length; i += 1) {
+        const n = trkpts[i];
+        const lat = Number(n.getAttribute('lat'));
+        const lon = Number(n.getAttribute('lon'));
+        if (Number.isFinite(lat) && Number.isFinite(lon)) pts.push([lat, lon]);
+      }
+      return pts;
+    };
+
+    const parseCsvLine = (line) => {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i += 1) {
+        const ch = line[i];
+        if (ch === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            current += '"';
+            i += 1;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (ch === ',' && !inQuotes) {
+          result.push(current);
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+      result.push(current);
+      return result;
+    };
+
+    const parseCsv = (text) => {
+      const lines = text.split(/\r?\n/).filter(Boolean);
+      if (!lines.length) return [];
+      const headers = parseCsvLine(lines[0]);
+      return lines.slice(1).map((line) => {
+        const cols = parseCsvLine(line);
+        const row = {};
+        headers.forEach((h, idx) => { row[h] = cols[idx] ?? ''; });
+        return row;
+      });
+    };
+
+    const stemFromPath = (name) => {
+      const base = name.split('/').pop() || name;
+      return base.replace(/\.(gpx|fit)(\.gz)?$/i, '');
+    };
+
+    const buildMetaMaps = (rows) => {
+      const byId = new Map();
+      const byFilenameStem = new Map();
+      rows.forEach((row) => {
+        const id = String(row['Activity ID'] || '').trim();
+        if (id) byId.set(id, row);
+        const filename = String(row.Filename || '').trim();
+        if (filename) byFilenameStem.set(stemFromPath(filename), row);
+      });
+      return { byId, byFilenameStem };
+    };
+
+    const fitSemicircleToDegrees = (value) => (value * 180) / 2147483648;
+    const parseFitPoints = (u8) => {
+      const points = [];
+      if (!u8 || u8.length < 14) return points;
+      const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+      const headerSize = dv.getUint8(0);
+      if (headerSize < 12 || u8.length < headerSize + 2) return points;
+
+      const dataSize = dv.getUint32(4, true);
+      const dataStart = headerSize;
+      const dataEnd = Math.min(u8.length, dataStart + dataSize);
+      const definitions = new Map();
+      let offset = dataStart;
+
+      const readSint32 = (pos, littleEndian) => {
+        if (pos + 4 > dataEnd) return null;
+        return dv.getInt32(pos, littleEndian);
+      };
+
+      while (offset < dataEnd) {
+        const header = dv.getUint8(offset);
+        offset += 1;
+
+        if (header & 0x80) {
+          const localMsgType = (header >> 5) & 0x03;
+          const def = definitions.get(localMsgType);
+          if (!def) continue;
+
+          let lat = null;
+          let lon = null;
+          for (const field of def.fields) {
+            if (offset + field.size > dataEnd) { offset = dataEnd; break; }
+            if (def.globalMsgNum === 20 && field.size === 4 && (field.num === 0 || field.num === 1)) {
+              const value = readSint32(offset, def.littleEndian);
+              if (value !== null && value !== 0x7fffffff) {
+                if (field.num === 0) lat = fitSemicircleToDegrees(value);
+                if (field.num === 1) lon = fitSemicircleToDegrees(value);
+              }
+            }
+            offset += field.size;
+          }
+          if (Number.isFinite(lat) && Number.isFinite(lon)) points.push([lat, lon]);
+          continue;
+        }
+
+        const isDefinition = (header & 0x40) !== 0;
+        const hasDeveloperData = (header & 0x20) !== 0;
+        const localMsgType = header & 0x0f;
+
+        if (isDefinition) {
+          if (offset + 5 > dataEnd) break;
+          offset += 1;
+          const architecture = dv.getUint8(offset); offset += 1;
+          const littleEndian = architecture === 0;
+          const globalMsgNum = dv.getUint16(offset, littleEndian); offset += 2;
+          const numFields = dv.getUint8(offset); offset += 1;
+          const fields = [];
+          for (let i = 0; i < numFields; i += 1) {
+            if (offset + 3 > dataEnd) break;
+            const num = dv.getUint8(offset);
+            const size = dv.getUint8(offset + 1);
+            fields.push({ num, size });
+            offset += 3;
+          }
+          if (hasDeveloperData) {
+            if (offset + 1 > dataEnd) break;
+            const numDevFields = dv.getUint8(offset);
+            offset += 1 + numDevFields * 3;
+          }
+          definitions.set(localMsgType, { globalMsgNum, littleEndian, fields });
+          continue;
+        }
+
+        const def = definitions.get(localMsgType);
+        if (!def) continue;
+        let lat = null;
+        let lon = null;
+        for (const field of def.fields) {
+          if (offset + field.size > dataEnd) { offset = dataEnd; break; }
+          if (def.globalMsgNum === 20 && field.size === 4 && (field.num === 0 || field.num === 1)) {
+            const value = readSint32(offset, def.littleEndian);
+            if (value !== null && value !== 0x7fffffff) {
+              if (field.num === 0) lat = fitSemicircleToDegrees(value);
+              if (field.num === 1) lon = fitSemicircleToDegrees(value);
+            }
+          }
+          offset += field.size;
+        }
+        if (Number.isFinite(lat) && Number.isFinite(lon)) points.push([lat, lon]);
+      }
+      return points;
+    };
+
+    const bumpCell = (mapObj, lat, lon, scale) => {
+      const ilat = Math.round(lat * scale);
+      const ilon = Math.round(lon * scale);
+      const key = ilat + ':' + ilon;
+      mapObj.set(key, (mapObj.get(key) || 0) + 1);
+    };
+
+    const cellToHeatPoint = (key, scale, count) => {
+      const parts = key.split(':');
+      const lat = Number(parts[0]) / scale;
+      const lon = Number(parts[1]) / scale;
+      return [lat, lon, Math.min(1, 0.25 + count * 0.04)];
+    };
+
+    const toFeature = (points, name) => ({
+      type: 'Feature',
+      geometry: { type: 'LineString', coordinates: points.map((p) => [p[1], p[0]]) },
+      properties: { name }
+    });
+
+    const formatSeconds = (sec) => {
+      if (!Number.isFinite(sec) || sec < 0) return 'N/A';
+      const total = Math.round(sec);
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      return `${h}h ${m}m ${s}s`;
+    };
+
+    const setLoading = (_) => {};
+    const drawFromZipBuffer = async (buffer, sourceLabel = 'zip') => {
+      setLoading(true);
+      metaEl.textContent = `解析 ${sourceLabel} 中...`;
+
+      try {
+        const zip = await JSZip.loadAsync(buffer);
+        let metaMaps = { byId: new Map(), byFilenameStem: new Map() };
+        const csvEntry = zip.file('activities.csv');
+        if (csvEntry) {
+          const csvText = await csvEntry.async('text');
+          metaMaps = buildMetaMaps(parseCsv(csvText));
+        }
+        const entries = Object.values(zip.files).filter((f) => !f.dir && /(^|\/)activities\/.+\.(gpx|fit)(\.gz)?$/i.test(f.name));
+        if (!entries.length) {
+          metaEl.textContent = '沒找到 activities/*.gpx|*.fit（可含 .gz）。';
+          setLoading(false);
+          return false;
+        }
+
+        const routeFeatures = [];
+        const cellCounts = new Map();
+        const bounds = L.latLngBounds([]);
+        let skippedShort = 0;
+        let parsedGpx = 0;
+        let parsedFit = 0;
+        let parseError = 0;
+
+        for (let i = 0; i < entries.length; i += 1) {
+          const e = entries[i];
+          metaEl.textContent = `解析中 ${i + 1}/${entries.length}: ${e.name}`;
+          let u8 = await e.async('uint8array');
+          if (/\.gz$/i.test(e.name)) u8 = pako.ungzip(u8);
+          let points = [];
+          if (/\.fit(\.gz)?$/i.test(e.name)) {
+            points = parseFitPoints(u8);
+            if (points.length >= 2) parsedFit += 1;
+          } else {
+            try {
+              const text = new TextDecoder('utf-8').decode(u8);
+              points = parseGpxText(text);
+              if (points.length >= 2) parsedGpx += 1;
+            } catch (_) {
+              points = [];
+            }
+          }
+          if (points.length < 2) {
+            skippedShort += 1;
+            parseError += 1;
+            continue;
+          }
+
+          const routePts = samplePoints(points, 40);
+          const heatPts = samplePoints(points, 40);
+          const stem = stemFromPath(e.name);
+          const meta = metaMaps.byId.get(stem) || metaMaps.byFilenameStem.get(stem) || {};
+          const distanceRaw = Number.parseFloat(String(meta.Distance || ''));
+          const elevGainRaw = Number.parseFloat(String(meta['Total Elevation Gain'] || ''));
+          const elevHighRaw = Number.parseFloat(String(meta['Elevation High'] || ''));
+          const movingRaw = Number.parseFloat(String(meta['Moving Time'] || ''));
+          const elapsedRaw = Number.parseFloat(String(meta['Elapsed Time'] || ''));
+          routeFeatures.push({
+            ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
+            properties: {
+              name: String(meta['Activity Name'] || e.name),
+              date: String(meta['Activity Date'] || ''),
+              distanceKm: Number.isFinite(distanceRaw) ? distanceRaw / 1000 : Number.NaN,
+              elevGainM: Number.isFinite(elevGainRaw) ? elevGainRaw : Number.NaN,
+              elevHighM: Number.isFinite(elevHighRaw) ? elevHighRaw : Number.NaN,
+              movingSec: Number.isFinite(movingRaw) ? movingRaw : Number.NaN,
+              elapsedSec: Number.isFinite(elapsedRaw) ? elapsedRaw : Number.NaN,
+            },
+          });
+          routePts.forEach((p) => bounds.extend([p[0], p[1]]));
+          heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
+        }
+
+        const heatPoints = Array.from(cellCounts.entries()).map(([k, c]) => cellToHeatPoint(k, 900, c));
+        window.__heatBasePoints = heatPoints;
+
+        routeLayer.clearLayers();
+        routeLayer.addData({ type: 'FeatureCollection', features: routeFeatures });
+        heatLayer.setLatLngs(heatPoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
+
+        if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}。`;
+        return true;
+      } catch (err) {
+        metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
+        return false;
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const drawFromZipFile = async (file) => {
+      if (!file) {
+        metaEl.textContent = '請先選擇 zip 檔。';
+        return false;
+      }
+      return drawFromZipBuffer(await file.arrayBuffer(), file.name);
+    };
+
+    el('zip-input').addEventListener('change', async () => {
+      const file = el('zip-input').files && el('zip-input').files[0];
+      if (!file) return;
+      await drawFromZipFile(file);
+    });
+
+    el('demo-btn').addEventListener('click', async () => {
+      try {
+        metaEl.textContent = '下載 demo 檔案中...';
+        const resp = await fetch('./demo/ride-demo.zip', { cache: 'no-store' });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const buf = await resp.arrayBuffer();
+        await drawFromZipBuffer(buf, 'demo/ride-demo.zip');
+      } catch (err) {
+        metaEl.textContent = `載入 demo 失敗：${err && err.message ? err.message : String(err)}`;
+      }
+    });
+
+    updateLabels();
+  </script>
+</body>
+</html>
