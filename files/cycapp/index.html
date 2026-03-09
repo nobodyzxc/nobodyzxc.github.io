@@ -9,7 +9,7 @@
     html, body, #map { height: 100%; margin: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     .panel {
-      position: absolute; z-index: 1000; top: 12px; left: 12px; width: min(460px, calc(100vw - 24px));
+      position: absolute; z-index: 1000; top: 12px; left: 12px; width: min(335px, calc(100vw - 24px));
       background: rgba(255,255,255,0.96); border: 1px solid #d1d5db; border-radius: 10px; padding: 10px 12px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.12);
     }
@@ -22,6 +22,23 @@
     .btn:disabled { opacity: 0.5; cursor: default; }
     .muted { color: #6b7280; font-size: 12px; }
     .help-link { margin-top: 8px; }
+    .spoiler-toggle {
+      margin-top: 8px;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      color: #374151;
+      font-size: 13px;
+    }
+    .spoiler-caret {
+      display: inline-block;
+      margin-left: 6px;
+      transition: transform 0.15s ease;
+    }
+    .spoiler-toggle.open .spoiler-caret { transform: rotate(180deg); }
+    .advanced-panel { display: none; margin-top: 6px; }
+    .advanced-panel.open { display: block; }
     .modal {
       position: fixed;
       inset: 0;
@@ -69,6 +86,129 @@
       padding: 8px 10px;
       font-size: 13px;
     }
+    .share-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2100;
+      display: none;
+      pointer-events: none;
+    }
+    .share-overlay.open { display: block; }
+    .share-zones {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .share-zone {
+      position: absolute;
+      pointer-events: auto;
+    }
+    .share-zone.mid { background: rgba(0,0,0,0.48); }
+    .share-zone.deep { background: rgba(0,0,0,0.72); }
+    .share-mask {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .share-frame {
+      position: absolute;
+      border: 2px solid rgba(255,255,255,0.95);
+      border-radius: 10px;
+      pointer-events: none;
+      cursor: default;
+      overflow: hidden;
+    }
+    .share-text-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .share-text-object {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      white-space: pre-wrap;
+      line-height: 1.25;
+      cursor: grab;
+      pointer-events: auto;
+      user-select: none;
+      touch-action: none;
+      padding: 2px 4px;
+      border-radius: 6px;
+    }
+    .share-text-object.selected {
+      outline: 1px dashed rgba(255,255,255,0.9);
+      background: rgba(0,0,0,0.18);
+    }
+    .share-text-object.dragging { cursor: grabbing; }
+    .share-frame.add-mode { cursor: crosshair; pointer-events: auto; }
+    .share-handle {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid rgba(17,24,39,0.7);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+      pointer-events: auto;
+    }
+    .share-handle.nw { left: -7px; top: -7px; cursor: nwse-resize; }
+    .share-handle.ne { right: -7px; top: -7px; cursor: nesw-resize; }
+    .share-handle.sw { left: -7px; bottom: -7px; cursor: nesw-resize; }
+    .share-handle.se { right: -7px; bottom: -7px; cursor: nwse-resize; }
+    .share-handle.n { left: 50%; top: -7px; transform: translateX(-50%); cursor: ns-resize; }
+    .share-handle.s { left: 50%; bottom: -7px; transform: translateX(-50%); cursor: ns-resize; }
+    .share-handle.w { left: -7px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+    .share-handle.e { right: -7px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+    .share-controls {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: min(184px, calc(100vw - 24px));
+      background: rgba(255,255,255,0.97);
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 10px 12px;
+      pointer-events: auto;
+    }
+    .share-controls .row { margin: 6px 0; }
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 6px 0 8px;
+    }
+    .preset-btn {
+      border: 1px solid #9ca3af;
+      background: #fff;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .preset-btn.active {
+      border-color: #0f766e;
+      background: #ccfbf1;
+      color: #134e4a;
+      font-weight: 600;
+    }
+    .share-controls input[type="text"], .share-controls select, .share-controls input[type="color"], .share-controls input[type="range"] {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font: inherit;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .share-controls input[type="color"] { padding: 2px; height: 34px; }
+    .share-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .small { font-size: 12px; color: #4b5563; }
   </style>
 </head>
 <body>
@@ -78,32 +218,59 @@
     <div class="row">
       <label for="zip-input">Strava Zip</label>
       <input id="zip-input" type="file" accept=".zip" />
+    </div>
+    <div class="row">
+      <label></label>
       <button id="demo-btn" class="btn" type="button">載入 Demo</button>
-    </div>
-    <div class="row">
-      <label>路線透明度</label>
-      <input id="route-opacity" type="range" min="0.05" max="0.8" step="0.01" value="0.4" />
-      <span id="route-opacity-val">0.40</span>
-    </div>
-    <div class="row">
-      <label>路線線寬</label>
-      <input id="route-weight" type="range" min="1" max="4" step="0.1" value="2.2" />
-      <span id="route-weight-val">2.2</span>
-    </div>
-    <div class="row">
-      <label>熱區底亮度</label>
-      <input id="heat-min" type="range" min="0.08" max="0.85" step="0.01" value="0.65" />
-      <span id="heat-min-val">0.65</span>
-    </div>
-    <div class="row">
-      <label>熱區增益</label>
-      <input id="heat-gain" type="range" min="0.6" max="3" step="0.05" value="1.85" />
-      <span id="heat-gain-val">1.85</span>
     </div>
     <div class="meta" id="meta">尚未載入。選擇 Strava export zip 後按「繪圖」。</div>
     <div class="muted">目前支援 zip 內 `activities/*.gpx|*.fit` 與 `*.gz`。</div>
     <div class="help-link">
       <button id="help-btn" class="btn" type="button">Strava Zip 下載教學</button>
+      <button id="share-btn" class="btn" type="button">分享截圖</button>
+    </div>
+    <button id="advanced-toggle" class="spoiler-toggle" type="button">
+      進階地圖設定<span class="spoiler-caret">▼</span>
+    </button>
+    <div id="advanced-panel" class="advanced-panel">
+      <div class="row">
+        <label>路線透明度</label>
+        <input id="route-opacity" type="range" min="0.05" max="0.8" step="0.01" value="0.4" />
+        <span id="route-opacity-val">0.40</span>
+      </div>
+      <div class="row">
+        <label>路線線寬</label>
+        <input id="route-weight" type="range" min="1" max="4" step="0.1" value="2.2" />
+        <span id="route-weight-val">2.2</span>
+      </div>
+      <div class="row">
+        <label>熱區底亮度</label>
+        <input id="heat-min" type="range" min="0.08" max="0.85" step="0.01" value="0.65" />
+        <span id="heat-min-val">0.65</span>
+      </div>
+      <div class="row">
+        <label>熱區增益</label>
+        <input id="heat-gain" type="range" min="0.6" max="3" step="0.05" value="1.85" />
+        <span id="heat-gain-val">1.85</span>
+      </div>
+      <div class="row">
+        <label>起點隱藏距離</label>
+        <input id="start-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
+        <span id="start-hide-km-val">1.0 km</span>
+      </div>
+      <div class="row">
+        <label>終點隱藏距離</label>
+        <input id="end-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
+        <span id="end-hide-km-val">1.0 km</span>
+      </div>
+      <div class="row">
+        <label>活動類型</label>
+        <select id="activity-type-filter">
+          <option value="all" selected>All</option>
+          <option value="cycling">Cycling</option>
+          <option value="run">Run</option>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -131,15 +298,98 @@
     </div>
   </div>
 
+  <div id="share-overlay" class="share-overlay" aria-hidden="true">
+    <div id="share-zones" class="share-zones">
+      <div id="share-deep-top" class="share-zone deep"></div>
+      <div id="share-deep-right" class="share-zone deep"></div>
+      <div id="share-deep-bottom" class="share-zone deep"></div>
+      <div id="share-deep-left" class="share-zone deep"></div>
+      <div id="share-mid-top" class="share-zone mid"></div>
+      <div id="share-mid-right" class="share-zone mid"></div>
+      <div id="share-mid-bottom" class="share-zone mid"></div>
+      <div id="share-mid-left" class="share-zone mid"></div>
+    </div>
+    <div class="share-mask">
+      <div id="share-frame" class="share-frame">
+        <div id="share-text-layer" class="share-text-layer"></div>
+        <div class="share-handle nw" data-dir="nw"></div>
+        <div class="share-handle ne" data-dir="ne"></div>
+        <div class="share-handle sw" data-dir="sw"></div>
+        <div class="share-handle se" data-dir="se"></div>
+        <div class="share-handle n" data-dir="n"></div>
+        <div class="share-handle s" data-dir="s"></div>
+        <div class="share-handle w" data-dir="w"></div>
+        <div class="share-handle e" data-dir="e"></div>
+      </div>
+    </div>
+    <div class="share-controls">
+      <div class="title">分享截圖</div>
+      <div class="row">
+        <label>版型</label>
+      </div>
+      <div class="preset-row">
+        <button class="preset-btn active" type="button" data-preset="insta-post">Post</button>
+        <button class="preset-btn" type="button" data-preset="insta-story">Story</button>
+        <button class="preset-btn" type="button" data-preset="square">Square</button>
+        <button class="preset-btn" type="button" data-preset="landscape">Landscape</button>
+        <button class="preset-btn" type="button" data-preset="custom">Custom</button>
+      </div>
+      <div class="row">
+        <label>文字物件</label>
+      </div>
+      <div class="share-actions">
+        <button id="share-add-text-btn" class="btn" type="button">+ 新增文字</button>
+        <button id="share-edit-text-btn" class="btn" type="button">編輯文字</button>
+        <button id="share-delete-text-btn" class="btn" type="button">刪除文字</button>
+      </div>
+      <div class="row">
+        <label>字色</label>
+        <input id="share-text-color" type="color" value="#ffffff" />
+      </div>
+      <div class="row">
+        <label>字級</label>
+        <input id="share-text-size" type="range" min="12" max="72" step="1" value="24" />
+      </div>
+      <div class="row">
+        <label>粗細</label>
+        <select id="share-text-weight">
+          <option value="400">Regular</option>
+          <option value="600">SemiBold</option>
+          <option value="700" selected>Bold</option>
+          <option value="800">ExtraBold</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>字體</label>
+        <select id="share-text-family">
+          <option value="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" selected>Sans</option>
+          <option value="Georgia,'Times New Roman',serif">Serif</option>
+          <option value="'Courier New',Courier,monospace">Monospace</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>旋轉</label>
+        <input id="share-text-rotate" type="range" min="-180" max="180" step="1" value="0" />
+      </div>
+      <div class="small">按「下載截圖」會輸出透明框範圍內的地圖並疊上這段文字。</div>
+      <div class="share-actions">
+        <button id="share-download-btn" class="btn" type="button">下載截圖</button>
+        <button id="share-close-btn" class="btn" type="button">關閉</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
     const map = L.map('map', { preferCanvas: true }).setView([23.8, 121], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '&copy; OpenStreetMap contributors',
+      crossOrigin: true,
     }).addTo(map);
 
     map.createPane('heatPane');
@@ -151,6 +401,9 @@
     let routeWeight = 2.2;
     let heatMin = 0.65;
     let heatGain = 1.85;
+    let startHideKm = 1.0;
+    let endHideKm = 1.0;
+    let activityTypeFilter = 'all';
 
     const routeLayer = L.geoJSON([], {
       pane: 'routePane',
@@ -188,13 +441,132 @@
 
     const el = (id) => document.getElementById(id);
     const metaEl = el('meta');
+    const advancedToggleEl = el('advanced-toggle');
+    const advancedPanelEl = el('advanced-panel');
     const helpModalEl = el('help-modal');
+    const shareOverlayEl = el('share-overlay');
+    const shareZonesEl = el('share-zones');
+    const shareDeepTopEl = el('share-deep-top');
+    const shareDeepRightEl = el('share-deep-right');
+    const shareDeepBottomEl = el('share-deep-bottom');
+    const shareDeepLeftEl = el('share-deep-left');
+    const shareMidTopEl = el('share-mid-top');
+    const shareMidRightEl = el('share-mid-right');
+    const shareMidBottomEl = el('share-mid-bottom');
+    const shareMidLeftEl = el('share-mid-left');
+    const shareFrameEl = el('share-frame');
+    const shareTextLayerEl = el('share-text-layer');
+    let lastZipBuffer = null;
+    let lastZipLabel = '';
+    const sharePresetRatios = {
+      'insta-post': 4 / 5,
+      'insta-story': 9 / 16,
+      'square': 1,
+      'landscape': 16 / 9,
+    };
+    let sharePreset = 'insta-post';
+    let shareRect = { x: 0, y: 0, w: 0, h: 0 };
+    let shareResize = null;
+    let shareTexts = [];
+    let shareSelectedTextId = null;
+    let shareTextDrag = null;
+    let shareAddMode = false;
+    let shareTextIdSeq = 1;
+    shareZonesEl.style.display = 'none';
 
     const updateLabels = () => {
       el('route-opacity-val').textContent = routeOpacity.toFixed(2);
       el('route-weight-val').textContent = routeWeight.toFixed(1);
       el('heat-min-val').textContent = heatMin.toFixed(2);
       el('heat-gain-val').textContent = heatGain.toFixed(2);
+      el('start-hide-km-val').textContent = `${startHideKm.toFixed(1)} km`;
+      el('end-hide-km-val').textContent = `${endHideKm.toFixed(1)} km`;
+    };
+
+    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+
+    const clampShareRect = (r) => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const minW = 180;
+      const minH = 120;
+      const w = clamp(r.w, minW, vw);
+      const h = clamp(r.h, minH, vh);
+      const x = clamp(r.x, 0, vw - w);
+      const y = clamp(r.y, 0, vh - h);
+      return { x, y, w, h };
+    };
+
+    const setPresetActive = (preset) => {
+      sharePreset = preset;
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.preset === preset);
+      });
+    };
+
+    const fitRectByRatio = (ratio) => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const maxW = vw * 0.88;
+      const maxH = vh * 0.82;
+      let w = maxW;
+      let h = w / ratio;
+      if (h > maxH) {
+        h = maxH;
+        w = h * ratio;
+      }
+      return {
+        x: (vw - w) / 2,
+        y: (vh - h) / 2,
+        w,
+        h,
+      };
+    };
+
+    const updateShareFrame = () => {
+      shareRect = clampShareRect(shareRect);
+      shareRect.x = (window.innerWidth - shareRect.w) / 2;
+      shareRect.y = (window.innerHeight - shareRect.h) / 2;
+      shareFrameEl.style.left = `${shareRect.x}px`;
+      shareFrameEl.style.top = `${shareRect.y}px`;
+      shareFrameEl.style.width = `${shareRect.w}px`;
+      shareFrameEl.style.height = `${shareRect.h}px`;
+      updateShareZones();
+      renderShareTexts();
+    };
+
+    const placeZone = (elNode, left, top, width, height) => {
+      const w = Math.max(0, width);
+      const h = Math.max(0, height);
+      elNode.style.left = `${Math.max(0, left)}px`;
+      elNode.style.top = `${Math.max(0, top)}px`;
+      elNode.style.width = `${w}px`;
+      elNode.style.height = `${h}px`;
+      elNode.style.display = (w > 0 && h > 0) ? 'block' : 'none';
+    };
+
+    const updateShareZones = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const x1 = shareRect.x;
+      const y1 = shareRect.y;
+      const x2 = shareRect.x + shareRect.w;
+      const y2 = shareRect.y + shareRect.h;
+      const ring = 130;
+      const mx1 = Math.max(0, x1 - ring);
+      const my1 = Math.max(0, y1 - ring);
+      const mx2 = Math.min(vw, x2 + ring);
+      const my2 = Math.min(vh, y2 + ring);
+
+      placeZone(shareDeepTopEl, 0, 0, vw, my1);
+      placeZone(shareDeepBottomEl, 0, my2, vw, vh - my2);
+      placeZone(shareDeepLeftEl, 0, my1, mx1, my2 - my1);
+      placeZone(shareDeepRightEl, mx2, my1, vw - mx2, my2 - my1);
+
+      placeZone(shareMidTopEl, mx1, my1, mx2 - mx1, y1 - my1);
+      placeZone(shareMidBottomEl, mx1, y2, mx2 - mx1, my2 - y2);
+      placeZone(shareMidLeftEl, mx1, y1, x1 - mx1, y2 - y1);
+      placeZone(shareMidRightEl, x2, y1, mx2 - x2, y2 - y1);
     };
 
     const applyStyle = () => {
@@ -210,6 +582,276 @@
     el('route-weight').addEventListener('input', () => { routeWeight = Number(el('route-weight').value); updateLabels(); applyStyle(); });
     el('heat-min').addEventListener('input', () => { heatMin = Number(el('heat-min').value); updateLabels(); applyStyle(); });
     el('heat-gain').addEventListener('input', () => { heatGain = Number(el('heat-gain').value); updateLabels(); applyStyle(); });
+    el('start-hide-km').addEventListener('input', async () => {
+      startHideKm = Number(el('start-hide-km').value);
+      updateLabels();
+      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    });
+    el('end-hide-km').addEventListener('input', async () => {
+      endHideKm = Number(el('end-hide-km').value);
+      updateLabels();
+      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    });
+    el('activity-type-filter').addEventListener('change', async () => {
+      activityTypeFilter = String(el('activity-type-filter').value || 'all');
+      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    });
+    document.querySelectorAll('.preset-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const preset = String(btn.dataset.preset || 'insta-post');
+        if (preset === 'custom') {
+          setPresetActive('custom');
+          updateShareFrame();
+          return;
+        }
+        const ratio = sharePresetRatios[preset];
+        shareRect = fitRectByRatio(ratio);
+        setPresetActive(preset);
+        updateShareFrame();
+      });
+    });
+    const resizeCentered = (dir, base, dx, dy) => {
+      let w = base.w;
+      let h = base.h;
+      const minW = 180;
+      const minH = 120;
+      if (dir.includes('e')) w = base.w + dx * 2;
+      if (dir.includes('w')) w = base.w - dx * 2;
+      if (dir.includes('s')) h = base.h + dy * 2;
+      if (dir.includes('n')) h = base.h - dy * 2;
+      w = clamp(w, minW, window.innerWidth);
+      h = clamp(h, minH, window.innerHeight);
+      return { x: 0, y: 0, w, h };
+    };
+
+    shareOverlayEl.addEventListener('pointerdown', (ev) => {
+      const handle = ev.target.closest('.share-handle');
+      if (!handle) return;
+      shareResize = {
+        pointerId: ev.pointerId,
+        dir: String(handle.dataset.dir || ''),
+        startX: ev.clientX,
+        startY: ev.clientY,
+        base: { ...shareRect },
+      };
+      handle.setPointerCapture(ev.pointerId);
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+
+    shareOverlayEl.addEventListener('pointermove', (ev) => {
+      if (!shareResize || ev.pointerId !== shareResize.pointerId) return;
+      const dx = ev.clientX - shareResize.startX;
+      const dy = ev.clientY - shareResize.startY;
+      shareRect = resizeCentered(shareResize.dir, shareResize.base, dx, dy);
+      setPresetActive('custom');
+      updateShareFrame();
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+
+    const endResize = (ev) => {
+      if (!shareResize || ev.pointerId !== shareResize.pointerId) return;
+      shareResize = null;
+      ev.preventDefault();
+      ev.stopPropagation();
+    };
+    shareOverlayEl.addEventListener('pointerup', endResize);
+    shareOverlayEl.addEventListener('pointercancel', endResize);
+
+    const findShareTextById = (id) => shareTexts.find((t) => t.id === id) || null;
+
+    const setSelectedText = (id) => {
+      shareSelectedTextId = id;
+      const t = findShareTextById(id);
+      if (t) {
+        el('share-text-color').value = t.color || '#ffffff';
+        el('share-text-size').value = String(Math.round(t.size || 24));
+        el('share-text-weight').value = String(t.weight || 700);
+        el('share-text-family').value = t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+        el('share-text-rotate').value = String(Math.round(t.rotate || 0));
+      }
+      renderShareTexts();
+    };
+
+    const renderShareTexts = () => {
+      shareTextLayerEl.innerHTML = '';
+      shareTexts.forEach((t) => {
+        const node = document.createElement('div');
+        node.className = `share-text-object${t.id === shareSelectedTextId ? ' selected' : ''}`;
+        node.dataset.id = String(t.id);
+        node.style.left = `${(t.x || 0.5) * 100}%`;
+        node.style.top = `${(t.y || 0.5) * 100}%`;
+        node.style.color = t.color;
+        node.style.fontSize = `${t.size}px`;
+        node.style.fontWeight = String(t.weight);
+        node.style.fontFamily = t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+        node.style.transform = `translate(-50%, -50%) rotate(${t.rotate || 0}deg)`;
+        node.textContent = t.text;
+        node.addEventListener('dblclick', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const nt = prompt('編輯文字', t.text);
+          if (nt === null) return;
+          t.text = nt.trim() || '新文字';
+          setSelectedText(t.id);
+        });
+        shareTextLayerEl.appendChild(node);
+      });
+    };
+
+    const addTextAt = (rx, ry, markCustom = true) => {
+      const textObj = {
+        id: shareTextIdSeq++,
+        text: '新文字',
+        x: clamp(rx, 0.03, 0.97),
+        y: clamp(ry, 0.03, 0.97),
+        color: '#ffffff',
+        size: 24,
+        weight: 700,
+        family: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
+        rotate: 0,
+      };
+      shareTexts.push(textObj);
+      if (markCustom) setPresetActive('custom');
+      setSelectedText(textObj.id);
+    };
+
+    el('share-add-text-btn').addEventListener('click', () => {
+      shareAddMode = !shareAddMode;
+      shareFrameEl.classList.toggle('add-mode', shareAddMode);
+      el('share-add-text-btn').textContent = shareAddMode ? '點框內放置' : '+ 新增文字';
+    });
+
+    el('share-edit-text-btn').addEventListener('click', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      const nt = prompt('編輯文字', t.text);
+      if (nt === null) return;
+      t.text = nt.trim() || '新文字';
+      renderShareTexts();
+    });
+
+    el('share-text-color').addEventListener('input', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.color = el('share-text-color').value;
+      renderShareTexts();
+    });
+
+    el('share-text-size').addEventListener('input', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.size = Number(el('share-text-size').value);
+      renderShareTexts();
+    });
+
+    el('share-text-weight').addEventListener('change', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.weight = Number(el('share-text-weight').value);
+      renderShareTexts();
+    });
+
+    advancedToggleEl.addEventListener('click', () => {
+      const open = !advancedPanelEl.classList.contains('open');
+      advancedPanelEl.classList.toggle('open', open);
+      advancedToggleEl.classList.toggle('open', open);
+    });
+
+    el('share-text-family').addEventListener('change', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.family = el('share-text-family').value;
+      renderShareTexts();
+    });
+
+    el('share-text-rotate').addEventListener('input', () => {
+      const t = findShareTextById(shareSelectedTextId);
+      if (!t) return;
+      t.rotate = Number(el('share-text-rotate').value);
+      renderShareTexts();
+    });
+
+    el('share-delete-text-btn').addEventListener('click', () => {
+      if (shareSelectedTextId == null) return;
+      shareTexts = shareTexts.filter((t) => t.id !== shareSelectedTextId);
+      shareSelectedTextId = shareTexts.length ? shareTexts[shareTexts.length - 1].id : null;
+      if (shareSelectedTextId != null) {
+        setSelectedText(shareSelectedTextId);
+      } else {
+        renderShareTexts();
+      }
+    });
+
+    shareTextLayerEl.addEventListener('pointerdown', (ev) => {
+      const hit = ev.target.closest('.share-text-object');
+      if (!hit) return;
+      const id = Number(hit.dataset.id);
+      const t = findShareTextById(id);
+      if (!t) return;
+      setSelectedText(id);
+      const node = shareTextLayerEl.querySelector(`.share-text-object[data-id="${id}"]`);
+      if (!node) return;
+      shareTextDrag = {
+        pointerId: ev.pointerId,
+        id,
+        startX: ev.clientX,
+        startY: ev.clientY,
+        baseX: t.x,
+        baseY: t.y,
+        node,
+      };
+      node.classList.add('dragging');
+      node.setPointerCapture(ev.pointerId);
+      map.dragging.disable();
+      map.doubleClickZoom.disable();
+      map.scrollWheelZoom.disable();
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
+
+    window.addEventListener('pointermove', (ev) => {
+      if (!shareTextDrag || ev.pointerId !== shareTextDrag.pointerId) return;
+      const t = findShareTextById(shareTextDrag.id);
+      if (!t) return;
+      const dx = (ev.clientX - shareTextDrag.startX) / Math.max(1, shareRect.w);
+      const dy = (ev.clientY - shareTextDrag.startY) / Math.max(1, shareRect.h);
+      t.x = clamp(shareTextDrag.baseX + dx, 0.03, 0.97);
+      t.y = clamp(shareTextDrag.baseY + dy, 0.03, 0.97);
+      if (shareTextDrag.node) {
+        shareTextDrag.node.style.left = `${t.x * 100}%`;
+        shareTextDrag.node.style.top = `${t.y * 100}%`;
+      }
+      ev.preventDefault();
+    });
+
+    const endTextDrag = (ev) => {
+      if (!shareTextDrag || ev.pointerId !== shareTextDrag.pointerId) return;
+      if (shareTextDrag.node) shareTextDrag.node.classList.remove('dragging');
+      shareTextDrag = null;
+      renderShareTexts();
+      map.dragging.enable();
+      map.doubleClickZoom.enable();
+      map.scrollWheelZoom.enable();
+      ev.preventDefault();
+    };
+    window.addEventListener('pointerup', endTextDrag);
+    window.addEventListener('pointercancel', endTextDrag);
+
+    shareFrameEl.addEventListener('click', (ev) => {
+      if (!shareAddMode) return;
+      if (ev.target.closest('.share-handle') || ev.target.closest('.share-text-object')) return;
+      const rect = shareFrameEl.getBoundingClientRect();
+      const rx = clamp((ev.clientX - rect.left) / Math.max(1, rect.width), 0.03, 0.97);
+      const ry = clamp((ev.clientY - rect.top) / Math.max(1, rect.height), 0.03, 0.97);
+      addTextAt(rx, ry, true);
+      shareAddMode = false;
+      shareFrameEl.classList.remove('add-mode');
+      el('share-add-text-btn').textContent = '+ 新增文字';
+      ev.preventDefault();
+      ev.stopPropagation();
+    });
 
     const samplePoints = (points, step) => {
       if (step <= 1) return points;
@@ -222,7 +864,10 @@
     const parseGpxText = (text) => {
       const doc = new DOMParser().parseFromString(text, 'application/xml');
       const pts = [];
-      const trkpts = doc.getElementsByTagName('trkpt');
+      const a = Array.from(doc.getElementsByTagName('trkpt'));
+      const b = Array.from(doc.getElementsByTagNameNS('*', 'trkpt'));
+      const trkpts = [...a];
+      b.forEach((n) => { if (!trkpts.includes(n)) trkpts.push(n); });
       for (let i = 0; i < trkpts.length; i += 1) {
         const n = trkpts[i];
         const lat = Number(n.getAttribute('lat'));
@@ -230,6 +875,53 @@
         if (Number.isFinite(lat) && Number.isFinite(lon)) pts.push([lat, lon]);
       }
       return pts;
+    };
+
+    const toRad = (v) => (v * Math.PI) / 180;
+    const haversineMeters = (a, b) => {
+      const R = 6371000;
+      const dLat = toRad(b[0] - a[0]);
+      const dLon = toRad(b[1] - a[1]);
+      const lat1 = toRad(a[0]);
+      const lat2 = toRad(b[0]);
+      const x = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(x));
+    };
+
+    const trimStartByDistance = (points, km) => {
+      const threshold = Math.max(0, km) * 1000;
+      if (!threshold || points.length < 2) return points;
+      let acc = 0;
+      let idx = 0;
+      while (idx + 1 < points.length && acc < threshold) {
+        acc += haversineMeters(points[idx], points[idx + 1]);
+        idx += 1;
+      }
+      const out = points.slice(idx);
+      return out.length >= 2 ? out : [];
+    };
+
+    const trimEndByDistance = (points, km) => {
+      const threshold = Math.max(0, km) * 1000;
+      if (!threshold || points.length < 2) return points;
+      let acc = 0;
+      let idx = points.length - 1;
+      while (idx - 1 >= 0 && acc < threshold) {
+        acc += haversineMeters(points[idx], points[idx - 1]);
+        idx -= 1;
+      }
+      const out = points.slice(0, idx + 1);
+      return out.length >= 2 ? out : [];
+    };
+
+    const isCyclingType = (typeText) => {
+      const t = String(typeText || '').toLowerCase();
+      return t.includes('ride') || t.includes('cycle');
+    };
+
+    const isRunType = (typeText) => {
+      const t = String(typeText || '').toLowerCase();
+      return t.includes('run');
     };
 
     const parseCsvLine = (line) => {
@@ -409,6 +1101,8 @@
 
     const setLoading = (_) => {};
     const drawFromZipBuffer = async (buffer, sourceLabel = 'zip') => {
+      lastZipBuffer = buffer;
+      lastZipLabel = sourceLabel;
       setLoading(true);
       metaEl.textContent = `解析 ${sourceLabel} 中...`;
 
@@ -434,6 +1128,7 @@
         let parsedGpx = 0;
         let parsedFit = 0;
         let parseError = 0;
+        let filteredOut = 0;
 
         for (let i = 0; i < entries.length; i += 1) {
           const e = entries[i];
@@ -459,10 +1154,26 @@
             continue;
           }
 
-          const routePts = samplePoints(points, 40);
-          const heatPts = samplePoints(points, 40);
+          const redacted = trimEndByDistance(trimStartByDistance(points, startHideKm), endHideKm);
+          if (redacted.length < 2) {
+            skippedShort += 1;
+            parseError += 1;
+            continue;
+          }
+
+          const routePts = samplePoints(redacted, 40);
+          const heatPts = samplePoints(redacted, 40);
           const stem = stemFromPath(e.name);
           const meta = metaMaps.byId.get(stem) || metaMaps.byFilenameStem.get(stem) || {};
+          const actType = String(meta['Activity Type'] || '').trim();
+          if (activityTypeFilter === 'cycling' && !isCyclingType(actType)) {
+            filteredOut += 1;
+            continue;
+          }
+          if (activityTypeFilter === 'run' && !isRunType(actType)) {
+            filteredOut += 1;
+            continue;
+          }
           const distanceRaw = Number.parseFloat(String(meta.Distance || ''));
           const elevGainRaw = Number.parseFloat(String(meta['Total Elevation Gain'] || ''));
           const elevHighRaw = Number.parseFloat(String(meta['Elevation High'] || ''));
@@ -492,7 +1203,7 @@
         heatLayer.setLatLngs(heatPoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
 
         if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
-        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}。`;
+        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}。`;
         return true;
       } catch (err) {
         metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
@@ -510,6 +1221,32 @@
       return drawFromZipBuffer(await file.arrayBuffer(), file.name);
     };
 
+    const loadDemoZipBuffer = async () => {
+      const candidates = [
+        './demo/ride-demo.zip',
+        './web/demo/ride-demo.zip',
+        './output/demo/ride-demo.zip',
+        '/demo/ride-demo.zip',
+        '/web/demo/ride-demo.zip',
+        '/output/demo/ride-demo.zip',
+      ];
+      let lastErr = 'not found';
+      for (const p of candidates) {
+        try {
+          const resp = await fetch(p, { cache: 'no-store' });
+          if (!resp.ok) {
+            lastErr = `HTTP ${resp.status} @ ${p}`;
+            continue;
+          }
+          const buf = await resp.arrayBuffer();
+          return { buffer: buf, path: p };
+        } catch (err) {
+          lastErr = `${err && err.message ? err.message : String(err)} @ ${p}`;
+        }
+      }
+      throw new Error(lastErr);
+    };
+
     el('zip-input').addEventListener('change', async () => {
       const file = el('zip-input').files && el('zip-input').files[0];
       if (!file) return;
@@ -519,10 +1256,8 @@
     el('demo-btn').addEventListener('click', async () => {
       try {
         metaEl.textContent = '下載 demo 檔案中...';
-        const resp = await fetch('./demo/ride-demo.zip', { cache: 'no-store' });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const buf = await resp.arrayBuffer();
-        await drawFromZipBuffer(buf, 'demo/ride-demo.zip');
+        const demo = await loadDemoZipBuffer();
+        await drawFromZipBuffer(demo.buffer, demo.path);
       } catch (err) {
         metaEl.textContent = `載入 demo 失敗：${err && err.message ? err.message : String(err)}`;
       }
@@ -545,9 +1280,112 @@
     });
     document.addEventListener('keydown', (ev) => {
       if (ev.key === 'Escape' && helpModalEl.classList.contains('open')) closeHelpModal();
+      if (ev.key === 'Escape' && shareOverlayEl.classList.contains('open')) closeShareOverlay();
+    });
+    [shareDeepTopEl, shareDeepRightEl, shareDeepBottomEl, shareDeepLeftEl].forEach((z) => {
+      z.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        closeShareOverlay();
+      });
+    });
+    [shareMidTopEl, shareMidRightEl, shareMidBottomEl, shareMidLeftEl].forEach((z) => {
+      z.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+      });
+    });
+
+    const openShareOverlay = () => {
+      shareRect = fitRectByRatio(sharePresetRatios[sharePreset] || (4 / 5));
+      shareOverlayEl.classList.add('open');
+      shareOverlayEl.setAttribute('aria-hidden', 'false');
+      shareZonesEl.style.display = 'block';
+      if (!shareTexts.length) addTextAt(0.5, 0.88, false);
+      updateShareFrame();
+    };
+
+    const closeShareOverlay = () => {
+      shareOverlayEl.classList.remove('open');
+      shareOverlayEl.setAttribute('aria-hidden', 'true');
+      shareZonesEl.style.display = 'none';
+      shareResize = null;
+      shareAddMode = false;
+      shareFrameEl.classList.remove('add-mode');
+      el('share-add-text-btn').textContent = '+ 新增文字';
+    };
+
+    const downloadShareImage = async () => {
+      try {
+        metaEl.textContent = '產生分享截圖中...';
+        const mapRect = el('map').getBoundingClientRect();
+        const frameRect = shareFrameEl.getBoundingClientRect();
+        const cropX = Math.max(0, frameRect.left - mapRect.left);
+        const cropY = Math.max(0, frameRect.top - mapRect.top);
+        const cropW = Math.min(mapRect.width - cropX, frameRect.width);
+        const cropH = Math.min(mapRect.height - cropY, frameRect.height);
+
+        const baseCanvas = await html2canvas(el('map'), {
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: null,
+          logging: false,
+        });
+
+        const out = document.createElement('canvas');
+        out.width = Math.max(1, Math.round(cropW));
+        out.height = Math.max(1, Math.round(cropH));
+        const ctx = out.getContext('2d');
+        ctx.drawImage(
+          baseCanvas,
+          cropX, cropY, cropW, cropH,
+          0, 0, out.width, out.height
+        );
+
+        shareTexts.forEach((t) => {
+          if (!t.text) return;
+          const x = clamp((t.x || 0.5), 0, 1) * out.width;
+          const y = clamp((t.y || 0.5), 0, 1) * out.height;
+          const size = Math.max(10, Math.round((t.size || 24) * (out.width / Math.max(1, shareRect.w))));
+          ctx.font = `${t.weight || 700} ${size}px ${t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}`;
+          ctx.fillStyle = t.color || '#ffffff';
+          ctx.textBaseline = 'middle';
+          ctx.textAlign = 'center';
+          ctx.shadowColor = 'rgba(0,0,0,0.7)';
+          ctx.shadowBlur = 8;
+          const lines = String(t.text).split('\n');
+          const lh = Math.round(size * 1.25);
+          const yStart = y - ((lines.length - 1) * lh) / 2;
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(((t.rotate || 0) * Math.PI) / 180);
+          lines.forEach((line, i) => ctx.fillText(line, 0, (yStart + i * lh) - y));
+          ctx.restore();
+          ctx.shadowBlur = 0;
+        });
+
+        const a = document.createElement('a');
+        a.href = out.toDataURL('image/png');
+        const ts = new Date().toISOString().replace(/[:.]/g, '-');
+        a.download = `ride-share-${ts}.png`;
+        a.click();
+        metaEl.textContent = '分享截圖已下載。';
+      } catch (err) {
+        metaEl.textContent = `分享截圖失敗：${err && err.message ? err.message : String(err)}`;
+      }
+    };
+
+    el('share-btn').addEventListener('click', openShareOverlay);
+    el('share-close-btn').addEventListener('click', closeShareOverlay);
+    el('share-download-btn').addEventListener('click', downloadShareImage);
+    window.addEventListener('resize', () => {
+      if (!shareOverlayEl.classList.contains('open')) return;
+      shareRect = clampShareRect(shareRect);
+      updateShareFrame();
     });
 
     updateLabels();
+    updateShareFrame();
   </script>
 </body>
 </html>
