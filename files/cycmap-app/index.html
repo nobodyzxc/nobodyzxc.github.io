@@ -21,6 +21,54 @@
     .btn { border: 1px solid #9ca3af; background: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
     .btn:disabled { opacity: 0.5; cursor: default; }
     .muted { color: #6b7280; font-size: 12px; }
+    .help-link { margin-top: 8px; }
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      width: min(900px, calc(100vw - 32px));
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+      padding: 14px;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .modal-title { font-weight: 700; }
+    .help-step { margin-top: 10px; }
+    .help-step strong { color: #111827; }
+    .help-step img {
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      margin-top: 6px;
+    }
+    .warn {
+      margin-top: 10px;
+      color: #7f1d1d;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
@@ -54,6 +102,33 @@
     </div>
     <div class="meta" id="meta">尚未載入。選擇 Strava export zip 後按「繪圖」。</div>
     <div class="muted">目前支援 zip 內 `activities/*.gpx|*.fit` 與 `*.gz`。</div>
+    <div class="help-link">
+      <button id="help-btn" class="btn" type="button">Strava Zip 下載教學</button>
+    </div>
+  </div>
+
+  <div id="help-modal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="help-title">
+      <div class="modal-header">
+        <div id="help-title" class="modal-title">如何下載 Strava 匯出 Zip</div>
+        <button id="help-close-btn" class="btn" type="button">關閉</button>
+      </div>
+      <div class="help-step">
+        <strong>Step 1.</strong>
+        進入
+        <a href="https://www.strava.com/account" target="_blank" rel="noopener noreferrer">Strava 我的帳戶</a>，
+        拉到最下面的「下載或刪除帳戶」，點「開始使用」。
+        <img src="./help1.png" alt="Strava account page: download or delete account" />
+      </div>
+      <div class="help-step">
+        <strong>Step 2.</strong>
+        在第二步按「下載要求」進行 Strava 資料下載。
+        <img src="./help2.webp" alt="Strava data export request step" />
+      </div>
+      <div class="warn">
+        只需要下載資料，<strong>不要刪除帳號</strong>。
+      </div>
+    </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -113,6 +188,7 @@
 
     const el = (id) => document.getElementById(id);
     const metaEl = el('meta');
+    const helpModalEl = el('help-modal');
 
     const updateLabels = () => {
       el('route-opacity-val').textContent = routeOpacity.toFixed(2);
@@ -450,6 +526,25 @@
       } catch (err) {
         metaEl.textContent = `載入 demo 失敗：${err && err.message ? err.message : String(err)}`;
       }
+    });
+
+    const openHelpModal = () => {
+      helpModalEl.classList.add('open');
+      helpModalEl.setAttribute('aria-hidden', 'false');
+    };
+
+    const closeHelpModal = () => {
+      helpModalEl.classList.remove('open');
+      helpModalEl.setAttribute('aria-hidden', 'true');
+    };
+
+    el('help-btn').addEventListener('click', openHelpModal);
+    el('help-close-btn').addEventListener('click', closeHelpModal);
+    helpModalEl.addEventListener('click', (ev) => {
+      if (ev.target === helpModalEl) closeHelpModal();
+    });
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape' && helpModalEl.classList.contains('open')) closeHelpModal();
     });
 
     updateLabels();
