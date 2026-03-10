@@ -6,8 +6,9 @@
   <title>cycle-lab | Strava Zip Upload Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
+    *, *::before, *::after { box-sizing: border-box; }
     html, body, #map { height: 100%; margin: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow-x: hidden; }
     .panel {
       position: absolute; z-index: 1000; top: 12px; left: 12px; width: min(335px, calc(100vw - 24px));
       background: rgba(255,255,255,0.96); border: 1px solid #d1d5db; border-radius: 10px; padding: 10px 12px;
@@ -33,7 +34,49 @@
     .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
     .row label { min-width: 90px; font-size: 13px; color: #111827; }
     .row input[type="range"] { flex: 1; }
+    .panel input[type="color"] { width: 100%; height: 32px; border: 1px solid #d1d5db; border-radius: 8px; padding: 2px; }
+    .row.theme-actions { align-items: stretch; }
+    .row.theme-actions .btn { flex: 1; padding: 6px 6px; font-size: 12px; }
+    .year-quick-wrap {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .year-quick-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: #fff;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .year-quick-chip input { margin: 0; }
     .meta { font-size: 12px; color: #374151; margin-top: 6px; line-height: 1.4; }
+    .progress-wrap { display: none; margin-top: 8px; }
+    .progress-wrap.show { display: block; }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+      transition: width 0.15s ease;
+    }
+    .progress-text {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #374151;
+    }
     .title { font-weight: 700; margin-bottom: 8px; }
     .btn { border: 1px solid #9ca3af; background: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
     .btn:disabled { opacity: 0.5; cursor: default; }
@@ -56,6 +99,28 @@
     .spoiler-toggle.open .spoiler-caret { transform: rotate(180deg); }
     .advanced-panel { display: none; margin-top: 6px; }
     .advanced-panel.open { display: block; }
+    .adv-tab-nav {
+      display: flex;
+      gap: 6px;
+      margin: 6px 0 8px;
+      flex-wrap: wrap;
+    }
+    .adv-tab-btn {
+      border: 1px solid #9ca3af;
+      background: #fff;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .adv-tab-btn.active {
+      border-color: #0f766e;
+      background: #ccfbf1;
+      color: #134e4a;
+      font-weight: 600;
+    }
+    .adv-tab-panel { display: none; }
+    .adv-tab-panel.active { display: block; }
     .modal {
       position: fixed;
       inset: 0;
@@ -238,6 +303,25 @@
       cursor: pointer;
     }
     .share-controls .row { margin: 6px 0; }
+    .share-spoiler-toggle {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px 8px;
+      text-align: left;
+      cursor: pointer;
+      font-size: 13px;
+      color: #374151;
+    }
+    .share-spoiler-caret {
+      display: inline-block;
+      margin-left: 6px;
+      transition: transform 0.15s ease;
+    }
+    .share-spoiler-toggle.open .share-spoiler-caret { transform: rotate(180deg); }
+    .share-spoiler-panel { display: none; }
+    .share-spoiler-panel.open { display: block; }
     .preset-row {
       display: flex;
       flex-wrap: wrap;
@@ -331,6 +415,28 @@
         padding: 5px 8px;
       }
     }
+    @media (max-width: 480px) {
+      .panel {
+        left: 8px;
+        top: 8px;
+        width: calc(100vw - 16px);
+        padding: 8px 10px;
+      }
+      .row {
+        gap: 6px;
+      }
+      .row label {
+        min-width: 72px;
+        font-size: 12px;
+      }
+      .year-quick-wrap {
+        gap: 4px;
+      }
+      .year-quick-chip {
+        font-size: 11px;
+        padding: 2px 6px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -350,6 +456,10 @@
       <button id="demo-btn" class="btn" type="button">載入 Demo</button>
     </div>
     <div class="meta" id="meta">尚未載入。選擇 Strava export zip 後按「繪圖」。</div>
+    <div id="progress-wrap" class="progress-wrap">
+      <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
+      <div id="progress-text" class="progress-text">0%</div>
+    </div>
     <div class="muted">目前支援 zip 內 `activities/*.gpx|*.fit` 與 `*.gz`。</div>
     <div class="help-link">
       <button id="help-btn" class="btn" type="button">Strava Zip 下載教學</button>
@@ -359,52 +469,140 @@
       進階地圖設定<span class="spoiler-caret">▼</span>
     </button>
     <div id="advanced-panel" class="advanced-panel">
-      <div class="row">
-        <label>路線透明度</label>
-        <input id="route-opacity" type="range" min="0.05" max="0.8" step="0.01" value="0.4" />
-        <span id="route-opacity-val">0.40</span>
+      <div class="adv-tab-nav">
+        <button class="adv-tab-btn active" type="button" data-tab="style">樣式</button>
+        <button class="adv-tab-btn" type="button" data-tab="filter">篩選</button>
       </div>
-      <div class="row">
-        <label>路線線寬</label>
-        <input id="route-weight" type="range" min="1" max="4" step="0.1" value="2.2" />
-        <span id="route-weight-val">2.2</span>
+      <div id="adv-tab-style" class="adv-tab-panel active">
+        <div class="row">
+          <label>路線透明度</label>
+          <input id="route-opacity" type="range" min="0.05" max="0.8" step="0.01" value="0.4" />
+          <span id="route-opacity-val">0.40</span>
+        </div>
+        <div class="row">
+          <label>顯示路徑</label>
+          <input id="show-route" type="checkbox" checked />
+        </div>
+        <div class="row">
+          <label>路徑顏色</label>
+          <input id="route-color" type="color" value="#f97316" />
+        </div>
+        <div class="row">
+          <label>路線線寬</label>
+          <input id="route-weight" type="range" min="1" max="4" step="0.1" value="2.2" />
+          <span id="route-weight-val">2.2</span>
+        </div>
+        <div class="row">
+          <label>粗細模式</label>
+          <select id="route-weight-mode">
+            <option value="stack" selected>原本重疊</option>
+            <option value="linear">加權 Linear</option>
+            <option value="log">加權 Log</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>熱區底亮度</label>
+          <input id="heat-min" type="range" min="0.08" max="0.85" step="0.01" value="0.65" />
+          <span id="heat-min-val">0.65</span>
+        </div>
+        <div class="row">
+          <label>熱區增益</label>
+          <input id="heat-gain" type="range" min="0.6" max="3" step="0.05" value="1.85" />
+          <span id="heat-gain-val">1.85</span>
+        </div>
+        <div class="row">
+          <label>顯示熱點</label>
+          <input id="show-heat" type="checkbox" checked />
+        </div>
+        <div class="row">
+          <label>熱區低色</label>
+          <input id="heat-color-low" type="color" value="#5eead4" />
+        </div>
+        <div class="row">
+          <label>熱區高色</label>
+          <input id="heat-color-high" type="color" value="#164e63" />
+        </div>
+        <div class="row">
+          <label>地圖風格</label>
+          <select id="theme-select">
+            <option value="classic" selected>Classic</option>
+            <option value="dark">Dark Mode</option>
+            <option value="heat">Heatmap Style</option>
+            <option value="minimal">Minimal</option>
+            <option value="poster">Poster Style</option>
+            <option value="terrain">Terrain</option>
+            <option value="cycle-hot">Cycle Hot</option>
+            <option value="mono-night">Mono Night</option>
+            <option value="paper">Paper</option>
+            <option value="neon-night">Neon Night</option>
+            <option value="mint-topo">Mint Topo</option>
+            <option value="sunset-poster">Sunset Poster</option>
+            <option value="ink-minimal">Ink Minimal</option>
+            <option value="royal-blue">Royal Blue</option>
+            <option value="terrain-warm">Terrain Warm</option>
+            <option value="candy-pop">Candy Pop</option>
+          </select>
+        </div>
+        <div class="row theme-actions">
+          <label>Theme JSON</label>
+          <button id="theme-export-btn" class="btn" type="button">匯出</button>
+          <button id="theme-import-btn" class="btn" type="button">匯入</button>
+          <button id="theme-reset-btn" class="btn" type="button">重設</button>
+          <input id="theme-import-input" type="file" accept=".json,application/json" style="display:none" />
+        </div>
       </div>
-      <div class="row">
-        <label>熱區底亮度</label>
-        <input id="heat-min" type="range" min="0.08" max="0.85" step="0.01" value="0.65" />
-        <span id="heat-min-val">0.65</span>
-      </div>
-      <div class="row">
-        <label>熱區增益</label>
-        <input id="heat-gain" type="range" min="0.6" max="3" step="0.05" value="1.85" />
-        <span id="heat-gain-val">1.85</span>
-      </div>
-      <div class="row">
-        <label>起點隱藏距離</label>
-        <input id="start-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
-        <span id="start-hide-km-val">1.0 km</span>
-      </div>
-      <div class="row">
-        <label>終點隱藏距離</label>
-        <input id="end-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
-        <span id="end-hide-km-val">1.0 km</span>
-      </div>
-      <div class="row">
-        <label>活動類型</label>
-        <select id="activity-type-filter">
-          <option value="all">All</option>
-          <option value="cycling" selected>Cycling</option>
-          <option value="run">Run</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>滾輪縮放</label>
-        <select id="wheel-zoom-level">
-          <option value="native" selected>原生預設</option>
-          <option value="fine">細緻 (3%)</option>
-          <option value="normal">標準 (6%)</option>
-          <option value="fast">快速 (10%)</option>
-        </select>
+      <div id="adv-tab-filter" class="adv-tab-panel">
+        <div class="row">
+          <label>起點隱藏距離</label>
+          <input id="start-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
+          <span id="start-hide-km-val">1.0 km</span>
+        </div>
+        <div class="row">
+          <label>終點隱藏距離</label>
+          <input id="end-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
+          <span id="end-hide-km-val">1.0 km</span>
+        </div>
+        <div class="row">
+          <label>活動類型</label>
+          <select id="activity-type-filter">
+            <option value="all">All</option>
+            <option value="cycling" selected>Cycling</option>
+            <option value="run">Run</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>開始日期</label>
+          <input id="date-from" type="date" />
+        </div>
+        <div class="row">
+          <label>結束日期</label>
+          <input id="date-to" type="date" />
+        </div>
+        <div class="row">
+          <label></label>
+          <button id="date-filter-apply-btn" class="btn" type="button">套用日期/年份</button>
+          <span id="date-filter-dirty" class="muted" style="display:none">有未套用變更</span>
+        </div>
+        <div class="row">
+          <label>年份快捷</label>
+          <div class="year-quick-wrap">
+            <label class="year-quick-chip"><input id="year-q-all" type="checkbox" checked />全部</label>
+            <label class="year-quick-chip"><input id="year-q-y0" type="checkbox" /><span id="year-q-y0-label">今年</span></label>
+            <label class="year-quick-chip"><input id="year-q-y1" type="checkbox" /><span id="year-q-y1-label">去年</span></label>
+            <label class="year-quick-chip"><input id="year-q-y2" type="checkbox" /><span id="year-q-y2-label">前2年</span></label>
+            <label class="year-quick-chip"><input id="year-q-y3" type="checkbox" /><span id="year-q-y3-label">前3年</span></label>
+            <label class="year-quick-chip"><input id="year-q-older" type="checkbox" /><span id="year-q-older-label">更久</span></label>
+          </div>
+        </div>
+        <div class="row">
+          <label>滾輪縮放</label>
+          <select id="wheel-zoom-level">
+            <option value="native" selected>原生預設</option>
+            <option value="fine">細緻 (3%)</option>
+            <option value="normal">標準 (6%)</option>
+            <option value="fast">快速 (10%)</option>
+          </select>
+        </div>
       </div>
     </div>
     </div>
@@ -474,9 +672,10 @@
         <button class="preset-btn" type="button" data-preset="landscape">Landscape</button>
         <button class="preset-btn" type="button" data-preset="custom">Custom</button>
       </div>
-      <div class="row">
-        <label>文字物件</label>
-      </div>
+      <button id="share-text-spoiler-toggle" class="share-spoiler-toggle" type="button">
+        文字物件設定<span class="share-spoiler-caret">▼</span>
+      </button>
+      <div id="share-text-spoiler-panel" class="share-spoiler-panel">
       <div class="share-actions">
         <button id="share-add-text-btn" class="btn" type="button">+ 新增文字</button>
         <button id="share-edit-text-btn" class="btn" type="button">編輯文字</button>
@@ -551,7 +750,12 @@
         <label>陰影強度</label>
         <input id="share-text-shadow-blur" type="range" min="0" max="24" step="1" value="8" />
       </div>
+      </div>
       <div class="small">按「下載截圖」會輸出透明框範圍內的地圖並疊上這段文字。</div>
+      </div>
+      <div id="share-progress-wrap" class="progress-wrap">
+        <div class="progress-track"><div id="share-progress-fill" class="progress-fill"></div></div>
+        <div id="share-progress-text" class="progress-text">0%</div>
       </div>
       <div class="share-actions">
         <button id="share-download-btn" class="btn" type="button">下載截圖</button>
@@ -570,7 +774,6 @@
       <div class="small">快捷鍵：Ctrl/Cmd + Enter 套用，Esc 取消。</div>
     </div>
   </div>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -578,31 +781,439 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
     const map = L.map('map', { preferCanvas: true, zoomSnap: 0, zoomDelta: 0.01, wheelPxPerZoomLevel: 80 }).setView([23.8, 121], 7);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors',
-      crossOrigin: true,
-    }).addTo(map);
+    const THEMES = {
+      classic: {
+        label: 'Classic',
+        routeColor: '#f97316',
+        routeOpacity: 0.4,
+        routeWeightScale: 1.0,
+        heatMin: 0.65,
+        heatGain: 1.85,
+        heatGradient: {
+          0.15: '#5eead4',
+          0.35: '#2dd4bf',
+          0.6: '#14b8a6',
+          0.8: '#0f766e',
+          1.0: '#164e63',
+        },
+        tile: {
+          url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          options: {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      dark: {
+        label: 'Dark Mode',
+        routeColor: '#fb7185',
+        routeOpacity: 0.72,
+        routeWeightScale: 1.2,
+        heatMin: 0.52,
+        heatGain: 2.1,
+        heatGradient: {
+          0.2: '#22d3ee',
+          0.45: '#38bdf8',
+          0.7: '#e879f9',
+          0.88: '#f97316',
+          1.0: '#fde047',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      heat: {
+        label: 'Heatmap Style',
+        routeColor: '#0ea5e9',
+        routeOpacity: 0.35,
+        routeWeightScale: 1.0,
+        heatMin: 0.62,
+        heatGain: 2.35,
+        heatGradient: {
+          0.08: '#2563eb',
+          0.3: '#06b6d4',
+          0.52: '#22c55e',
+          0.72: '#f59e0b',
+          0.9: '#ef4444',
+          1.0: '#7f1d1d',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      minimal: {
+        label: 'Minimal',
+        routeColor: '#111111',
+        routeOpacity: 0.52,
+        routeWeightScale: 0.72,
+        heatMin: 0.4,
+        heatGain: 1.2,
+        heatGradient: {
+          0.2: '#94a3b8',
+          0.55: '#64748b',
+          0.82: '#334155',
+          1.0: '#0f172a',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'grayscale(22%) brightness(1.02)',
+      },
+      poster: {
+        label: 'Poster Style',
+        routeColor: '#fb923c',
+        routeOpacity: 0.85,
+        routeWeightScale: 1.5,
+        heatMin: 0.45,
+        heatGain: 1.7,
+        heatGradient: {
+          0.2: '#a5b4fc',
+          0.45: '#60a5fa',
+          0.68: '#22d3ee',
+          0.84: '#f59e0b',
+          1.0: '#b91c1c',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'grayscale(70%) saturate(0.4) contrast(1.06)',
+      },
+      terrain: {
+        label: 'Terrain',
+        routeColor: '#d97706',
+        routeOpacity: 0.72,
+        routeWeightScale: 1.18,
+        heatMin: 0.52,
+        heatGain: 1.9,
+        heatGradient: {
+          0.18: '#fde68a',
+          0.42: '#fbbf24',
+          0.68: '#d97706',
+          0.86: '#92400e',
+          1.0: '#451a03',
+        },
+        tile: {
+          url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+          options: {
+            maxZoom: 17,
+            attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      'cycle-hot': {
+        label: 'Cycle Hot',
+        routeColor: '#ea580c',
+        routeOpacity: 0.68,
+        routeWeightScale: 1.1,
+        heatMin: 0.55,
+        heatGain: 1.95,
+        heatGradient: {
+          0.16: '#67e8f9',
+          0.4: '#22d3ee',
+          0.62: '#06b6d4',
+          0.82: '#f59e0b',
+          1.0: '#ef4444',
+        },
+        tile: {
+          url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+          options: {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors, tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      'mono-night': {
+        label: 'Mono Night',
+        routeColor: '#fbbf24',
+        routeOpacity: 0.82,
+        routeWeightScale: 1.25,
+        heatMin: 0.45,
+        heatGain: 2.1,
+        heatGradient: {
+          0.2: '#9ca3af',
+          0.46: '#d1d5db',
+          0.72: '#f3f4f6',
+          0.9: '#fbbf24',
+          1.0: '#f59e0b',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'grayscale(100%) contrast(1.08)',
+      },
+      paper: {
+        label: 'Paper',
+        routeColor: '#b45309',
+        routeOpacity: 0.7,
+        routeWeightScale: 1.08,
+        heatMin: 0.46,
+        heatGain: 1.7,
+        heatGradient: {
+          0.22: '#e7e5e4',
+          0.45: '#d6d3d1',
+          0.7: '#a8a29e',
+          0.88: '#78716c',
+          1.0: '#44403c',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'sepia(32%) saturate(0.75) contrast(0.98)',
+      },
+      'neon-night': {
+        label: 'Neon Night',
+        routeColor: '#22d3ee',
+        routeOpacity: 0.82,
+        routeWeightScale: 1.35,
+        heatMin: 0.5,
+        heatGain: 2.2,
+        heatGradient: {
+          0.12: '#0ea5e9',
+          0.35: '#22d3ee',
+          0.58: '#a78bfa',
+          0.8: '#fb7185',
+          1.0: '#fde047',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      'mint-topo': {
+        label: 'Mint Topo',
+        routeColor: '#10b981',
+        routeOpacity: 0.58,
+        routeWeightScale: 1.05,
+        heatMin: 0.62,
+        heatGain: 1.9,
+        heatGradient: {
+          0.15: '#bbf7d0',
+          0.35: '#6ee7b7',
+          0.55: '#34d399',
+          0.75: '#10b981',
+          1.0: '#065f46',
+        },
+        tile: {
+          url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          options: {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'saturate(0.88)',
+      },
+      'sunset-poster': {
+        label: 'Sunset Poster',
+        routeColor: '#f97316',
+        routeOpacity: 0.88,
+        routeWeightScale: 1.6,
+        heatMin: 0.48,
+        heatGain: 1.8,
+        heatGradient: {
+          0.18: '#fdba74',
+          0.4: '#fb923c',
+          0.62: '#f97316',
+          0.82: '#ea580c',
+          1.0: '#7c2d12',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'grayscale(62%) saturate(0.55) contrast(1.08)',
+      },
+      'ink-minimal': {
+        label: 'Ink Minimal',
+        routeColor: '#111827',
+        routeOpacity: 0.6,
+        routeWeightScale: 0.72,
+        heatMin: 0.38,
+        heatGain: 1.3,
+        heatGradient: {
+          0.2: '#cbd5e1',
+          0.5: '#94a3b8',
+          0.75: '#64748b',
+          1.0: '#0f172a',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'grayscale(25%) brightness(1.03)',
+      },
+      'royal-blue': {
+        label: 'Royal Blue',
+        routeColor: '#2563eb',
+        routeOpacity: 0.72,
+        routeWeightScale: 1.25,
+        heatMin: 0.56,
+        heatGain: 2.05,
+        heatGradient: {
+          0.14: '#93c5fd',
+          0.34: '#60a5fa',
+          0.56: '#3b82f6',
+          0.78: '#2563eb',
+          1.0: '#1e3a8a',
+        },
+        tile: {
+          url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          options: {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      'terrain-warm': {
+        label: 'Terrain Warm',
+        routeColor: '#b45309',
+        routeOpacity: 0.7,
+        routeWeightScale: 1.22,
+        heatMin: 0.58,
+        heatGain: 1.95,
+        heatGradient: {
+          0.18: '#fde68a',
+          0.4: '#fbbf24',
+          0.62: '#d97706',
+          0.82: '#b45309',
+          1.0: '#78350f',
+        },
+        tile: {
+          url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+          options: {
+            maxZoom: 17,
+            attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'none',
+      },
+      'candy-pop': {
+        label: 'Candy Pop',
+        routeColor: '#ec4899',
+        routeOpacity: 0.78,
+        routeWeightScale: 1.42,
+        heatMin: 0.52,
+        heatGain: 2.3,
+        heatGradient: {
+          0.1: '#22d3ee',
+          0.3: '#818cf8',
+          0.5: '#e879f9',
+          0.72: '#fb7185',
+          0.9: '#f59e0b',
+          1.0: '#dc2626',
+        },
+        tile: {
+          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+          options: {
+            maxZoom: 20,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            crossOrigin: true,
+          },
+        },
+        tileFilter: 'saturate(1.08)',
+      },
+    };
+    const DEFAULT_THEMES = JSON.parse(JSON.stringify(THEMES));
+    const BUILTIN_THEME_KEYS = new Set(Object.keys(DEFAULT_THEMES));
+    let currentThemeKey = 'classic';
+    let baseTileLayer = L.tileLayer(THEMES.classic.tile.url, THEMES.classic.tile.options).addTo(map);
 
     map.createPane('heatPane');
     map.createPane('routePane');
     map.getPane('heatPane').style.zIndex = '420';
     map.getPane('routePane').style.zIndex = '430';
+    map.getPane('tilePane').style.filter = THEMES.classic.tileFilter || 'none';
 
-    let routeOpacity = 0.4;
+    let routeColor = THEMES.classic.routeColor;
+    let routeOpacity = THEMES.classic.routeOpacity;
     let routeWeight = 2.2;
-    let heatMin = 0.65;
-    let heatGain = 1.85;
+    let routeWeightScale = THEMES.classic.routeWeightScale;
+    let heatMin = THEMES.classic.heatMin;
+    let heatGain = THEMES.classic.heatGain;
+    let heatGradient = THEMES.classic.heatGradient;
     let startHideKm = 1.0;
     let endHideKm = 1.0;
     let activityTypeFilter = 'cycling';
+    let dateFromTs = Number.NaN;
+    let dateToTs = Number.NaN;
+    const yearQuick = { all: true, y0: false, y1: false, y2: false, y3: false, older: false };
     let wheelZoomLevel = 'native';
     let wheelZoomStep = 0.03;
     let customWheelZoomEnabled = false;
+    let heatColorLow = '#5eead4';
+    let heatColorHigh = '#164e63';
+    let showRoute = true;
+    let showHeat = true;
+    let routeWeightMode = 'stack';
+    let weightedRouteCountMax = 1;
 
     const routeLayer = L.geoJSON([], {
       pane: 'routePane',
-      style: { color: '#f97316', weight: routeWeight, opacity: routeOpacity },
+      style: { color: routeColor, weight: routeWeight * routeWeightScale, opacity: routeOpacity },
       onEachFeature: (feature, layer) => {
         const p = feature.properties || {};
         const dateText = p.date || 'N/A';
@@ -619,25 +1230,42 @@
       }
     }).addTo(map);
 
+    const weightedRouteLayer = L.geoJSON([], {
+      pane: 'routePane',
+      style: () => ({ color: routeColor, weight: routeWeight * routeWeightScale, opacity: routeOpacity }),
+      onEachFeature: (feature, layer) => {
+        const p = feature.properties || {};
+        const c = Number(p.count || 1);
+        layer.bindTooltip(`重疊次數: ${c}`, { sticky: true, direction: 'top', opacity: 0.9 });
+      },
+    });
+
     const heatLayer = L.heatLayer([], {
       pane: 'heatPane',
       radius: 12,
       blur: 18,
       minOpacity: heatMin,
       maxZoom: 14,
-      gradient: {
-        0.15: '#5eead4',
-        0.35: '#2dd4bf',
-        0.6: '#14b8a6',
-        0.8: '#0f766e',
-        1.0: '#164e63'
-      }
+      gradient: heatGradient
     }).addTo(map);
 
     const el = (id) => document.getElementById(id);
     const metaEl = el('meta');
+    const progressWrapEl = el('progress-wrap');
+    const progressFillEl = el('progress-fill');
+    const progressTextEl = el('progress-text');
+    const shareProgressWrapEl = el('share-progress-wrap');
+    const shareProgressFillEl = el('share-progress-fill');
+    const shareProgressTextEl = el('share-progress-text');
+    const demoBtnEl = el('demo-btn');
+    const zipInputEl = el('zip-input');
     const advancedToggleEl = el('advanced-toggle');
     const advancedPanelEl = el('advanced-panel');
+    const advTabButtons = Array.from(document.querySelectorAll('.adv-tab-btn'));
+    const advTabPanels = {
+      style: el('adv-tab-style'),
+      filter: el('adv-tab-filter'),
+    };
     const helpModalEl = el('help-modal');
     const mainPanelEl = el('main-panel');
     const mainPanelBodyEl = el('main-panel-body');
@@ -656,6 +1284,8 @@
     const shareTextLayerEl = el('share-text-layer');
     const shareControlsBodyEl = el('share-controls-body');
     const shareControlsToggleEl = el('share-controls-toggle');
+    const shareTextSpoilerToggleEl = el('share-text-spoiler-toggle');
+    const shareTextSpoilerPanelEl = el('share-text-spoiler-panel');
     const textEditorModalEl = el('text-editor-modal');
     const textEditorInputEl = el('text-editor-input');
     const textEditorSaveEl = el('text-editor-save');
@@ -679,8 +1309,10 @@
     let shareAddMode = false;
     let shareTextIdSeq = 1;
     let shareControlsCollapsed = false;
+    let shareTextSpoilerOpen = false;
     let mainPanelCollapsed = false;
     let textEditorState = null;
+    let isShareDownloading = false;
     shareZonesEl.style.display = 'none';
 
     const updateLabels = () => {
@@ -690,6 +1322,47 @@
       el('heat-gain-val').textContent = heatGain.toFixed(2);
       el('start-hide-km-val').textContent = `${startHideKm.toFixed(1)} km`;
       el('end-hide-km-val').textContent = `${endHideKm.toFixed(1)} km`;
+    };
+
+    const hexToRgb = (hex) => {
+      const h = String(hex || '').trim().replace('#', '');
+      if (!/^[0-9a-f]{3}$|^[0-9a-f]{6}$/i.test(h)) return null;
+      const full = h.length === 3 ? h.split('').map((ch) => ch + ch).join('') : h;
+      const n = Number.parseInt(full, 16);
+      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+    };
+
+    const rgbToHex = (r, g, b) => {
+      const to = (v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+      return `#${to(r)}${to(g)}${to(b)}`;
+    };
+
+    const lerpColor = (a, b, t) => {
+      const aa = hexToRgb(a);
+      const bb = hexToRgb(b);
+      if (!aa || !bb) return a || '#000000';
+      return rgbToHex(
+        aa.r + (bb.r - aa.r) * t,
+        aa.g + (bb.g - aa.g) * t,
+        aa.b + (bb.b - aa.b) * t
+      );
+    };
+
+    const buildHeatGradientFromEnds = (low, high) => ({
+      0.12: low,
+      0.34: lerpColor(low, high, 0.25),
+      0.56: lerpColor(low, high, 0.5),
+      0.78: lerpColor(low, high, 0.75),
+      1.0: high,
+    });
+
+    const resolveGradientEnds = (gradient) => {
+      const entries = Object.entries(gradient || {})
+        .map(([k, v]) => [Number(k), String(v)])
+        .filter(([k, v]) => Number.isFinite(k) && !!v)
+        .sort((a, b) => a[0] - b[0]);
+      if (!entries.length) return { low: '#5eead4', high: '#164e63' };
+      return { low: entries[0][1], high: entries[entries.length - 1][1] };
     };
 
     const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
@@ -753,6 +1426,11 @@
       shareControlsBodyEl.classList.toggle('collapsed', shareControlsCollapsed);
       shareControlsToggleEl.textContent = shareControlsCollapsed ? '展開設定' : '收合設定';
     };
+    const applyShareTextSpoiler = () => {
+      shareTextSpoilerOpen = !!shareTextSpoilerOpen;
+      shareTextSpoilerToggleEl.classList.toggle('open', shareTextSpoilerOpen);
+      shareTextSpoilerPanelEl.classList.toggle('open', shareTextSpoilerOpen);
+    };
 
     const placeZone = (elNode, left, top, width, height) => {
       const w = Math.max(0, width);
@@ -788,13 +1466,217 @@
       placeZone(shareMidRightEl, x2, y1, mx2 - x2, y2 - y1);
     };
 
+    const weightedWidthForCount = (count) => {
+      const base = routeWeight * routeWeightScale;
+      const c = Math.max(1, Number(count || 1));
+      const maxC = Math.max(1, Number(weightedRouteCountMax || 1));
+      if (routeWeightMode === 'linear') {
+        const ratio = maxC <= 1 ? 0 : (c - 1) / (maxC - 1);
+        return base * (1 + 2.4 * ratio);
+      }
+      if (routeWeightMode === 'log') {
+        const ratio = Math.log(1 + c) / Math.log(1 + maxC);
+        return base * (0.85 + 2.15 * ratio);
+      }
+      return base;
+    };
+
     const applyStyle = () => {
-      routeLayer.setStyle({ color: '#f97316', weight: routeWeight, opacity: routeOpacity });
-      heatLayer.setOptions({ minOpacity: heatMin });
+      routeLayer.setStyle({ color: routeColor, weight: routeWeight * routeWeightScale, opacity: routeOpacity });
+      weightedRouteLayer.setStyle((feature) => ({
+        color: routeColor,
+        weight: weightedWidthForCount(feature && feature.properties ? feature.properties.count : 1),
+        opacity: routeOpacity,
+      }));
+      heatLayer.setOptions({ minOpacity: heatMin, gradient: heatGradient });
       if (window.__heatBasePoints) {
         heatLayer.setLatLngs(window.__heatBasePoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
       }
+      if (showRoute) {
+        if (routeWeightMode === 'stack') {
+          if (!map.hasLayer(routeLayer)) routeLayer.addTo(map);
+          if (map.hasLayer(weightedRouteLayer)) map.removeLayer(weightedRouteLayer);
+        } else {
+          if (!map.hasLayer(weightedRouteLayer)) weightedRouteLayer.addTo(map);
+          if (map.hasLayer(routeLayer)) map.removeLayer(routeLayer);
+        }
+      } else {
+        if (map.hasLayer(routeLayer)) map.removeLayer(routeLayer);
+        if (map.hasLayer(weightedRouteLayer)) map.removeLayer(weightedRouteLayer);
+      }
+      if (showHeat) {
+        if (!map.hasLayer(heatLayer)) heatLayer.addTo(map);
+      } else if (map.hasLayer(heatLayer)) {
+        map.removeLayer(heatLayer);
+      }
       heatLayer.redraw();
+    };
+
+    const applyTheme = (themeKey) => {
+      const theme = THEMES[themeKey] || THEMES.classic;
+      currentThemeKey = THEMES[themeKey] ? themeKey : 'classic';
+      routeColor = theme.routeColor;
+      routeOpacity = theme.routeOpacity;
+      routeWeightScale = theme.routeWeightScale;
+      heatMin = theme.heatMin;
+      heatGain = theme.heatGain;
+      heatGradient = theme.heatGradient;
+      const ends = resolveGradientEnds(heatGradient);
+      heatColorLow = ends.low;
+      heatColorHigh = ends.high;
+      map.getPane('tilePane').style.filter = theme.tileFilter || 'none';
+      if (baseTileLayer) map.removeLayer(baseTileLayer);
+      baseTileLayer = L.tileLayer(theme.tile.url, theme.tile.options).addTo(map);
+      const themeSelectEl = el('theme-select');
+      if (themeSelectEl && themeSelectEl.querySelector(`option[value="${currentThemeKey}"]`)) {
+        themeSelectEl.value = currentThemeKey;
+      }
+      el('route-opacity').value = String(routeOpacity);
+      el('route-color').value = routeColor;
+      el('heat-min').value = String(heatMin);
+      el('heat-gain').value = String(heatGain);
+      el('heat-color-low').value = heatColorLow;
+      el('heat-color-high').value = heatColorHigh;
+      el('show-route').checked = showRoute;
+      el('show-heat').checked = showHeat;
+      el('route-weight-mode').value = routeWeightMode;
+      updateLabels();
+      applyStyle();
+    };
+
+    const themeKeyFromLabel = (label) => String(label || 'custom')
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 40) || 'custom';
+
+    const ensureThemeOption = (key, label) => {
+      const sel = el('theme-select');
+      if (!sel) return;
+      let opt = sel.querySelector(`option[value="${key}"]`);
+      if (!opt) {
+        opt = document.createElement('option');
+        opt.value = key;
+        sel.appendChild(opt);
+      }
+      opt.textContent = label || key;
+    };
+
+    const removeCustomThemeOptions = () => {
+      const sel = el('theme-select');
+      if (!sel) return;
+      Array.from(sel.options).forEach((opt) => {
+        if (!BUILTIN_THEME_KEYS.has(opt.value)) opt.remove();
+      });
+    };
+
+    const clampNum = (v, min, max, fallback) => {
+      const n = Number(v);
+      if (!Number.isFinite(n)) return fallback;
+      return Math.min(max, Math.max(min, n));
+    };
+
+    const sanitizeTheme = (raw, fallback = THEMES.classic) => {
+      const src = (raw && typeof raw === 'object') ? raw : {};
+      const base = fallback || THEMES.classic;
+      const out = JSON.parse(JSON.stringify(base));
+      if (typeof src.label === 'string' && src.label.trim()) out.label = src.label.trim().slice(0, 64);
+      if (typeof src.routeColor === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(src.routeColor.trim())) out.routeColor = src.routeColor.trim();
+      out.routeOpacity = clampNum(src.routeOpacity, 0.05, 1, out.routeOpacity);
+      out.routeWeightScale = clampNum(src.routeWeightScale, 0.4, 3, out.routeWeightScale);
+      out.heatMin = clampNum(src.heatMin, 0.05, 0.95, out.heatMin);
+      out.heatGain = clampNum(src.heatGain, 0.1, 4, out.heatGain);
+      if (typeof src.tileFilter === 'string') out.tileFilter = src.tileFilter.slice(0, 160);
+      if (src.tile && typeof src.tile === 'object') {
+        if (typeof src.tile.url === 'string' && /^https?:\/\//i.test(src.tile.url)) out.tile.url = src.tile.url;
+        if (src.tile.options && typeof src.tile.options === 'object') out.tile.options = { ...out.tile.options, ...src.tile.options };
+      }
+      if (src.heatGradient && typeof src.heatGradient === 'object') {
+        const g = {};
+        Object.entries(src.heatGradient).forEach(([k, v]) => {
+          const kk = Number(k);
+          if (!Number.isFinite(kk) || kk < 0 || kk > 1) return;
+          if (typeof v !== 'string' || !v.trim()) return;
+          g[kk] = v.trim();
+        });
+        if (Object.keys(g).length >= 2) out.heatGradient = g;
+      }
+      return out;
+    };
+
+    const buildCurrentThemeSnapshot = () => {
+      const base = THEMES[currentThemeKey] || THEMES.classic;
+      return sanitizeTheme({
+        label: `${(base.label || 'Custom')} Export`,
+        routeColor,
+        routeOpacity,
+        routeWeightScale,
+        heatMin,
+        heatGain,
+        heatGradient: JSON.parse(JSON.stringify(heatGradient)),
+        tile: JSON.parse(JSON.stringify(base.tile || THEMES.classic.tile)),
+        tileFilter: base.tileFilter || 'none',
+      }, base);
+    };
+
+    const exportCurrentTheme = () => {
+      try {
+        const payload = {
+          version: 1,
+          key: currentThemeKey,
+          exportedAt: new Date().toISOString(),
+          theme: buildCurrentThemeSnapshot(),
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `ride-theme-${payload.key || 'custom'}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        metaEl.textContent = 'Theme JSON 已匯出。';
+      } catch (err) {
+        metaEl.textContent = `Theme 匯出失敗：${err && err.message ? err.message : String(err)}`;
+      }
+    };
+
+    const importThemeFromText = (text) => {
+      const data = JSON.parse(text);
+      const list = [];
+      if (data && typeof data === 'object' && data.themes && typeof data.themes === 'object') {
+        Object.entries(data.themes).forEach(([k, v]) => list.push({ key: k, theme: v }));
+      } else if (data && typeof data === 'object' && data.theme && typeof data.theme === 'object') {
+        list.push({ key: data.key || data.name || 'custom', theme: data.theme });
+      } else {
+        throw new Error('JSON 格式不支援');
+      }
+      if (!list.length) throw new Error('沒有可匯入的 theme');
+      let appliedKey = 'classic';
+      list.forEach((item) => {
+        const sanitized = sanitizeTheme(item.theme, THEMES.classic);
+        const key0 = themeKeyFromLabel(item.key || sanitized.label || 'custom');
+        let key = key0;
+        let seq = 2;
+        while (THEMES[key] && key !== item.key) {
+          key = `${key0}-${seq}`;
+          seq += 1;
+        }
+        THEMES[key] = sanitized;
+        ensureThemeOption(key, sanitized.label || key);
+        appliedKey = key;
+      });
+      applyTheme(appliedKey);
+      metaEl.textContent = `Theme 匯入完成：${list.length} 個。`;
+    };
+
+    const resetThemes = () => {
+      Object.keys(THEMES).forEach((k) => {
+        if (!BUILTIN_THEME_KEYS.has(k)) delete THEMES[k];
+      });
+      Object.keys(DEFAULT_THEMES).forEach((k) => { THEMES[k] = JSON.parse(JSON.stringify(DEFAULT_THEMES[k])); });
+      removeCustomThemeOptions();
+      applyTheme('classic');
+      metaEl.textContent = 'Theme 已重設為預設。';
     };
 
     const applyWheelZoomSensitivity = () => {
@@ -810,10 +1692,56 @@
       }
     };
 
+    const isTypingTarget = (target) => {
+      if (!target || !(target instanceof HTMLElement)) return false;
+      const tag = (target.tagName || '').toUpperCase();
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
+      if (target.isContentEditable) return true;
+      return false;
+    };
+
+    const setAdvancedTab = (tab) => {
+      const next = (tab && advTabPanels[tab]) ? tab : 'style';
+      advTabButtons.forEach((btn) => btn.classList.toggle('active', btn.dataset.tab === next));
+      Object.entries(advTabPanels).forEach(([k, panel]) => {
+        if (!panel) return;
+        panel.classList.toggle('active', k === next);
+      });
+    };
+    advTabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => setAdvancedTab(String(btn.dataset.tab || 'style')));
+    });
+
     el('route-opacity').addEventListener('input', () => { routeOpacity = Number(el('route-opacity').value); updateLabels(); applyStyle(); });
+    el('show-route').addEventListener('change', () => {
+      showRoute = !!el('show-route').checked;
+      applyStyle();
+    });
+    el('route-color').addEventListener('input', () => {
+      routeColor = String(el('route-color').value || routeColor);
+      applyStyle();
+    });
     el('route-weight').addEventListener('input', () => { routeWeight = Number(el('route-weight').value); updateLabels(); applyStyle(); });
+    el('route-weight-mode').addEventListener('change', () => {
+      routeWeightMode = String(el('route-weight-mode').value || 'stack');
+      applyStyle();
+    });
     el('heat-min').addEventListener('input', () => { heatMin = Number(el('heat-min').value); updateLabels(); applyStyle(); });
     el('heat-gain').addEventListener('input', () => { heatGain = Number(el('heat-gain').value); updateLabels(); applyStyle(); });
+    el('show-heat').addEventListener('change', () => {
+      showHeat = !!el('show-heat').checked;
+      applyStyle();
+    });
+    el('heat-color-low').addEventListener('input', () => {
+      heatColorLow = String(el('heat-color-low').value || heatColorLow);
+      heatGradient = buildHeatGradientFromEnds(heatColorLow, heatColorHigh);
+      applyStyle();
+    });
+    el('heat-color-high').addEventListener('input', () => {
+      heatColorHigh = String(el('heat-color-high').value || heatColorHigh);
+      heatGradient = buildHeatGradientFromEnds(heatColorLow, heatColorHigh);
+      applyStyle();
+    });
     el('start-hide-km').addEventListener('input', async () => {
       startHideKm = Number(el('start-hide-km').value);
       updateLabels();
@@ -827,6 +1755,83 @@
     el('activity-type-filter').addEventListener('change', async () => {
       activityTypeFilter = String(el('activity-type-filter').value || 'all');
       if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    });
+    el('date-from').addEventListener('change', async () => {
+      dateFromTs = parseDateInputStartTs(el('date-from').value);
+      setDateFilterDirty(true);
+    });
+    el('date-to').addEventListener('change', async () => {
+      dateToTs = parseDateInputEndTs(el('date-to').value);
+      setDateFilterDirty(true);
+    });
+    el('date-filter-apply-btn').addEventListener('click', applyDateYearFilters);
+    [el('date-from'), el('date-to')].forEach((node) => {
+      node.addEventListener('keydown', async (ev) => {
+        if (ev.key !== 'Enter') return;
+        ev.preventDefault();
+        await applyDateYearFilters();
+      });
+    });
+    const onYearQuickChanged = async () => {
+      normalizeYearQuick();
+      setDateFilterDirty(true);
+    };
+    el('year-q-all').addEventListener('change', async () => {
+      yearQuick.all = !!el('year-q-all').checked;
+      if (yearQuick.all) {
+        yearQuick.y0 = false;
+        yearQuick.y1 = false;
+        yearQuick.y2 = false;
+        yearQuick.y3 = false;
+        yearQuick.older = false;
+      }
+      await onYearQuickChanged();
+    });
+    el('year-q-y0').addEventListener('change', async () => {
+      yearQuick.y0 = !!el('year-q-y0').checked;
+      if (yearQuick.y0) yearQuick.all = false;
+      await onYearQuickChanged();
+    });
+    el('year-q-y1').addEventListener('change', async () => {
+      yearQuick.y1 = !!el('year-q-y1').checked;
+      if (yearQuick.y1) yearQuick.all = false;
+      await onYearQuickChanged();
+    });
+    el('year-q-y2').addEventListener('change', async () => {
+      yearQuick.y2 = !!el('year-q-y2').checked;
+      if (yearQuick.y2) yearQuick.all = false;
+      await onYearQuickChanged();
+    });
+    el('year-q-y3').addEventListener('change', async () => {
+      yearQuick.y3 = !!el('year-q-y3').checked;
+      if (yearQuick.y3) yearQuick.all = false;
+      await onYearQuickChanged();
+    });
+    el('year-q-older').addEventListener('change', async () => {
+      yearQuick.older = !!el('year-q-older').checked;
+      if (yearQuick.older) yearQuick.all = false;
+      await onYearQuickChanged();
+    });
+    el('theme-select').addEventListener('change', () => {
+      applyTheme(String(el('theme-select').value || 'classic'));
+    });
+    el('theme-export-btn').addEventListener('click', exportCurrentTheme);
+    el('theme-import-btn').addEventListener('click', () => {
+      const input = el('theme-import-input');
+      if (!input) return;
+      input.value = '';
+      input.click();
+    });
+    el('theme-reset-btn').addEventListener('click', resetThemes);
+    el('theme-import-input').addEventListener('change', async () => {
+      const f = el('theme-import-input').files && el('theme-import-input').files[0];
+      if (!f) return;
+      try {
+        const text = await f.text();
+        importThemeFromText(text);
+      } catch (err) {
+        metaEl.textContent = `Theme 匯入失敗：${err && err.message ? err.message : String(err)}`;
+      }
     });
     el('wheel-zoom-level').addEventListener('change', () => {
       wheelZoomLevel = String(el('wheel-zoom-level').value || 'native');
@@ -1487,6 +2492,129 @@
       });
     };
 
+    const parseDateInputStartTs = (v) => {
+      const s = String(v || '').trim();
+      if (!s) return Number.NaN;
+      const d = new Date(`${s}T00:00:00`);
+      const ts = d.getTime();
+      return Number.isFinite(ts) ? ts : Number.NaN;
+    };
+
+    const parseDateInputEndTs = (v) => {
+      const s = String(v || '').trim();
+      if (!s) return Number.NaN;
+      const d = new Date(`${s}T23:59:59.999`);
+      const ts = d.getTime();
+      return Number.isFinite(ts) ? ts : Number.NaN;
+    };
+
+    const parseActivityDateTs = (raw) => {
+      const s = String(raw || '').trim();
+      if (!s) return Number.NaN;
+      let ts = Date.parse(s);
+      if (Number.isFinite(ts)) return ts;
+      const m = s.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+      if (!m) return Number.NaN;
+      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 12, 0, 0, 0);
+      ts = d.getTime();
+      return Number.isFinite(ts) ? ts : Number.NaN;
+    };
+
+    const currentYear = () => new Date().getFullYear();
+
+    const syncYearQuickLabels = () => {
+      const y = currentYear();
+      el('year-q-y0-label').textContent = `${y}`;
+      el('year-q-y1-label').textContent = `${y - 1}`;
+      el('year-q-y2-label').textContent = `${y - 2}`;
+      el('year-q-y3-label').textContent = `${y - 3}`;
+      el('year-q-older-label').textContent = `${y - 4}以前`;
+    };
+
+    const syncYearQuickChecks = () => {
+      el('year-q-all').checked = !!yearQuick.all;
+      el('year-q-y0').checked = !!yearQuick.y0;
+      el('year-q-y1').checked = !!yearQuick.y1;
+      el('year-q-y2').checked = !!yearQuick.y2;
+      el('year-q-y3').checked = !!yearQuick.y3;
+      el('year-q-older').checked = !!yearQuick.older;
+    };
+
+    const hasAnyYearQuickSpecific = () => !!(yearQuick.y0 || yearQuick.y1 || yearQuick.y2 || yearQuick.y3 || yearQuick.older);
+    const isAllYearQuickSpecific = () => !!(yearQuick.y0 && yearQuick.y1 && yearQuick.y2 && yearQuick.y3 && yearQuick.older);
+
+    const normalizeYearQuick = () => {
+      if (yearQuick.all) {
+        yearQuick.y0 = false;
+        yearQuick.y1 = false;
+        yearQuick.y2 = false;
+        yearQuick.y3 = false;
+        yearQuick.older = false;
+      } else if (!hasAnyYearQuickSpecific()) {
+        yearQuick.all = true;
+      }
+      syncYearQuickChecks();
+    };
+
+    const matchesYearQuick = (yearNum) => {
+      if (yearQuick.all) return true;
+      const y = currentYear();
+      if (yearQuick.y0 && yearNum === y) return true;
+      if (yearQuick.y1 && yearNum === y - 1) return true;
+      if (yearQuick.y2 && yearNum === y - 2) return true;
+      if (yearQuick.y3 && yearNum === y - 3) return true;
+      if (yearQuick.older && yearNum <= y - 4) return true;
+      return false;
+    };
+
+    let dateFilterDirty = false;
+    const setDateFilterDirty = (dirty) => {
+      dateFilterDirty = !!dirty;
+      const hint = el('date-filter-dirty');
+      if (hint) hint.style.display = dateFilterDirty ? 'inline' : 'none';
+    };
+
+    async function applyDateYearFilters() {
+      setDateFilterDirty(false);
+      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    }
+
+    const setProgress = (percent, text = '') => {
+      const p = Math.max(0, Math.min(100, Number(percent) || 0));
+      const label = text ? `${text} (${Math.round(p)}%)` : `${Math.round(p)}%`;
+      if (progressWrapEl && progressFillEl && progressTextEl) {
+        progressWrapEl.classList.add('show');
+        progressFillEl.style.width = `${p.toFixed(1)}%`;
+        progressTextEl.textContent = label;
+      }
+      if (shareProgressWrapEl && shareProgressFillEl && shareProgressTextEl) {
+        shareProgressWrapEl.classList.add('show');
+        shareProgressFillEl.style.width = `${p.toFixed(1)}%`;
+        shareProgressTextEl.textContent = label;
+      }
+    };
+
+    const clearProgress = () => {
+      if (progressWrapEl && progressFillEl && progressTextEl) {
+        progressWrapEl.classList.remove('show');
+        progressFillEl.style.width = '0%';
+        progressTextEl.textContent = '0%';
+      }
+      if (shareProgressWrapEl && shareProgressFillEl && shareProgressTextEl) {
+        shareProgressWrapEl.classList.remove('show');
+        shareProgressFillEl.style.width = '0%';
+        shareProgressTextEl.textContent = '0%';
+      }
+    };
+
+    const setShareDownloadBusy = (busy) => {
+      isShareDownloading = !!busy;
+      const btn = el('share-download-btn');
+      if (!btn) return;
+      btn.disabled = isShareDownloading;
+      btn.textContent = isShareDownloading ? '下載中...' : '下載截圖';
+    };
+
     const stemFromPath = (name) => {
       const base = name.split('/').pop() || name;
       return base.replace(/\.(gpx|fit)(\.gz)?$/i, '');
@@ -1604,6 +2732,39 @@
       mapObj.set(key, (mapObj.get(key) || 0) + 1);
     };
 
+    const edgePointKey = (p, scale) => {
+      const ilat = Math.round(Number(p[0]) * scale);
+      const ilon = Math.round(Number(p[1]) * scale);
+      return `${ilat}:${ilon}`;
+    };
+
+    const makeEdgeKey = (a, b) => {
+      return a <= b ? `${a}|${b}` : `${b}|${a}`;
+    };
+
+    const bumpEdgeCount = (mapObj, a, b, scale) => {
+      if (!a || !b) return;
+      const k1 = edgePointKey(a, scale);
+      const k2 = edgePointKey(b, scale);
+      if (k1 === k2) return;
+      const k = makeEdgeKey(k1, k2);
+      const prev = mapObj.get(k);
+      if (prev) {
+        prev.count += 1;
+      } else {
+        mapObj.set(k, { k1, k2, count: 1 });
+      }
+    };
+
+    const parsePointKey = (k, scale) => {
+      const parts = String(k || '').split(':');
+      if (parts.length !== 2) return null;
+      const lat = Number(parts[0]) / scale;
+      const lon = Number(parts[1]) / scale;
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
+      return [lat, lon];
+    };
+
     const cellToHeatPoint = (key, scale, count) => {
       const parts = key.split(':');
       const lat = Number(parts[0]) / scale;
@@ -1626,11 +2787,21 @@
       return `${h}h ${m}m ${s}s`;
     };
 
-    const setLoading = (_) => {};
+    let isLoading = false;
+    const setLoading = (loading) => {
+      isLoading = !!loading;
+      demoBtnEl.disabled = isLoading;
+      zipInputEl.disabled = isLoading;
+      const applyBtn = el('date-filter-apply-btn');
+      if (applyBtn) applyBtn.disabled = isLoading;
+      demoBtnEl.textContent = isLoading ? '載入中...' : '載入 Demo';
+      if (!isLoading) clearProgress();
+    };
     const drawFromZipBuffer = async (buffer, sourceLabel = 'zip') => {
       lastZipBuffer = buffer;
       lastZipLabel = sourceLabel;
       setLoading(true);
+      setProgress(0, `準備解析 ${sourceLabel}`);
       metaEl.textContent = `解析 ${sourceLabel} 中...`;
 
       try {
@@ -1649,6 +2820,7 @@
         }
 
         const routeFeatures = [];
+        const edgeCounts = new Map();
         const cellCounts = new Map();
         const bounds = L.latLngBounds([]);
         let skippedShort = 0;
@@ -1656,6 +2828,10 @@
         let parsedFit = 0;
         let parseError = 0;
         let filteredOut = 0;
+        let filteredByDate = 0;
+        let filteredByDateUnknown = 0;
+        let filteredByYear = 0;
+        let filteredByYearUnknown = 0;
         let removedInvalidPoints = 0;
         let jumpSplits = 0;
         let droppedShortSegments = 0;
@@ -1663,6 +2839,7 @@
 
         for (let i = 0; i < entries.length; i += 1) {
           const e = entries[i];
+          setProgress((i / Math.max(1, entries.length)) * 85, `解析檔案 ${i + 1}/${entries.length}`);
           metaEl.textContent = `解析中 ${i + 1}/${entries.length}: ${e.name}`;
           let u8 = await e.async('uint8array');
           if (/\.gz$/i.test(e.name)) u8 = pako.ungzip(u8);
@@ -1703,6 +2880,34 @@
             filteredOut += 1;
             continue;
           }
+          const actDate = String(meta['Activity Date'] || '').trim();
+          const actTs = parseActivityDateTs(actDate);
+          if (Number.isFinite(dateFromTs) || Number.isFinite(dateToTs)) {
+            if (!Number.isFinite(actTs)) {
+              filteredByDateUnknown += 1;
+              continue;
+            }
+            if (Number.isFinite(dateFromTs) && actTs < dateFromTs) {
+              filteredByDate += 1;
+              continue;
+            }
+            if (Number.isFinite(dateToTs) && actTs > dateToTs) {
+              filteredByDate += 1;
+              continue;
+            }
+          }
+          const yearFilteringActive = !yearQuick.all && !isAllYearQuickSpecific();
+          if (yearFilteringActive) {
+            if (!Number.isFinite(actTs)) {
+              filteredByYearUnknown += 1;
+              continue;
+            }
+            const actYear = new Date(actTs).getFullYear();
+            if (!matchesYearQuick(actYear)) {
+              filteredByYear += 1;
+              continue;
+            }
+          }
           const distanceRaw = Number.parseFloat(String(meta.Distance || ''));
           const elevGainRaw = Number.parseFloat(String(meta['Total Elevation Gain'] || ''));
           const elevHighRaw = Number.parseFloat(String(meta['Elevation High'] || ''));
@@ -1725,6 +2930,7 @@
             const seg = clean.segments[s];
             const routePts = samplePoints(seg, 40);
             const heatPts = samplePoints(seg, 40);
+            const weightPts = samplePoints(seg, 12);
             if (routePts.length < 2) continue;
             routeFeatures.push({
               ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
@@ -1740,22 +2946,41 @@
             });
             routePts.forEach((p) => bounds.extend([p[0], p[1]]));
             heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
+            for (let j = 1; j < weightPts.length; j += 1) {
+              bumpEdgeCount(edgeCounts, weightPts[j - 1], weightPts[j], 1800);
+            }
           }
         }
 
         const heatPoints = Array.from(cellCounts.entries()).map(([k, c]) => cellToHeatPoint(k, 900, c));
+        setProgress(90, '整理圖層');
         window.__heatBasePoints = heatPoints;
+        const weightedFeatures = Array.from(edgeCounts.values()).map((e) => {
+          const p1 = parsePointKey(e.k1, 1800);
+          const p2 = parsePointKey(e.k2, 1800);
+          if (!p1 || !p2) return null;
+          return {
+            type: 'Feature',
+            geometry: { type: 'LineString', coordinates: [[p1[1], p1[0]], [p2[1], p2[0]]] },
+            properties: { count: e.count },
+          };
+        }).filter(Boolean);
+        weightedRouteCountMax = weightedFeatures.reduce((m, f) => Math.max(m, Number(f.properties && f.properties.count || 1)), 1);
 
         routeLayer.clearLayers();
         routeLayer.addData({ type: 'FeatureCollection', features: routeFeatures });
+        weightedRouteLayer.clearLayers();
+        weightedRouteLayer.addData({ type: 'FeatureCollection', features: weightedFeatures });
         heatLayer.setLatLngs(heatPoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
+        applyStyle();
+        setProgress(100, '完成');
 
         if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
         if (!routeFeatures.length) {
-          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
+          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
           return true;
         }
-        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
+        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
         return true;
       } catch (err) {
         metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
@@ -1831,6 +3056,7 @@
       if (ev.target === helpModalEl) closeHelpModal();
     });
     document.addEventListener('keydown', (ev) => {
+      if (isTypingTarget(ev.target)) return;
       if (textEditorModalEl.classList.contains('open')) {
         if (ev.key === 'Escape') {
           ev.preventDefault();
@@ -1845,6 +3071,22 @@
       }
       if (ev.key === 'Escape' && helpModalEl.classList.contains('open')) closeHelpModal();
       if (ev.key === 'Escape' && shareOverlayEl.classList.contains('open')) closeShareOverlay();
+      if (!ev.metaKey && !ev.ctrlKey && !ev.altKey) {
+        const key = String(ev.key || '').toLowerCase();
+        if (key === 'r') {
+          showRoute = !showRoute;
+          el('show-route').checked = showRoute;
+          applyStyle();
+          ev.preventDefault();
+          return;
+        }
+        if (key === 'h') {
+          showHeat = !showHeat;
+          el('show-heat').checked = showHeat;
+          applyStyle();
+          ev.preventDefault();
+        }
+      }
     });
     [shareDeepTopEl, shareDeepRightEl, shareDeepBottomEl, shareDeepLeftEl].forEach((z) => {
       z.addEventListener('click', (ev) => {
@@ -1905,7 +3147,10 @@
     }, { passive: false });
 
     const downloadShareImage = async () => {
+      if (isShareDownloading) return;
       try {
+        setShareDownloadBusy(true);
+        setProgress(5, '準備截圖');
         metaEl.textContent = '產生分享截圖中...';
         const mapRect = el('map').getBoundingClientRect();
         const frameRect = shareFrameEl.getBoundingClientRect();
@@ -1914,6 +3159,7 @@
         const cropWCss = Math.min(mapRect.width - cropXCss, frameRect.width);
         const cropHCss = Math.min(mapRect.height - cropYCss, frameRect.height);
 
+        setProgress(25, '擷取地圖');
         const baseCanvas = await html2canvas(el('map'), {
           useCORS: true,
           allowTaint: false,
@@ -1931,14 +3177,18 @@
         out.width = Math.max(1, Math.round(cropWCss));
         out.height = Math.max(1, Math.round(cropHCss));
         const ctx = out.getContext('2d');
+        setProgress(45, '裁切畫面');
         ctx.drawImage(
           baseCanvas,
           cropX, cropY, cropW, cropH,
           0, 0, out.width, out.height
         );
 
-        shareTexts.forEach((t) => {
+        const totalText = Math.max(1, shareTexts.length);
+        shareTexts.forEach((t, idx) => {
           if (!t.text) return;
+          const prog = 55 + (idx / totalText) * 30;
+          setProgress(prog, '繪製文字');
           const x = clamp((t.x || 0.5), 0, 1) * out.width;
           const y = clamp((t.y || 0.5), 0, 1) * out.height;
           const size = Math.max(10, Math.round((t.size || 24) * (out.width / Math.max(1, shareRect.w))));
@@ -1985,10 +3235,18 @@
         const a = document.createElement('a');
         a.href = out.toDataURL('image/png');
         const ts = new Date().toISOString().replace(/[:.]/g, '-');
+        setProgress(95, '輸出檔案');
         a.download = `ride-share-${ts}.png`;
         a.click();
+        setProgress(100, '完成');
         metaEl.textContent = '分享截圖已下載。';
+        setTimeout(() => {
+          clearProgress();
+          setShareDownloadBusy(false);
+        }, 700);
       } catch (err) {
+        clearProgress();
+        setShareDownloadBusy(false);
         metaEl.textContent = `分享截圖失敗：${err && err.message ? err.message : String(err)}`;
       }
     };
@@ -2002,6 +3260,10 @@
       shareControlsCollapsed = !shareControlsCollapsed;
       applyShareControlsCollapsed();
     });
+    shareTextSpoilerToggleEl.addEventListener('click', () => {
+      shareTextSpoilerOpen = !shareTextSpoilerOpen;
+      applyShareTextSpoiler();
+    });
     el('share-close-btn').addEventListener('click', closeShareOverlay);
     el('share-download-btn').addEventListener('click', downloadShareImage);
     window.addEventListener('resize', () => {
@@ -2012,6 +3274,11 @@
 
     applyWheelZoomSensitivity();
     updateLabels();
+    applyShareTextSpoiler();
+    setAdvancedTab('style');
+    syncYearQuickLabels();
+    normalizeYearQuick();
+    setDateFilterDirty(false);
     applyMainPanelCollapsed();
     updateShareFrame();
   </script>
