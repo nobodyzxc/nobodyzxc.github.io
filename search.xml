@@ -1,6 +1,427 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Haskell Note （Basic Syntax to Type）</title>
+    <url>/2017/01/31/Haskell-Note/</url>
+    <content><![CDATA[<center>
+A world without loop , but recursion。<br>
+學校 PL 課程，及 <a href="https://learnyoua.haskell.sg/content/zh-tw/" target="_blank" rel="noopener">Haskell 趣學指南</a> 的一些心得筆記。<br>
+<s>更新：戰場轉換到 scheme，scheme 新坑開完再回來。</s><br>
+更更新：我回乃了。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Some-hints"><a href="#Some-hints" class="headerlink" title="Some hints"></a>Some hints</h2><ul>
+<li>不像 PP , OOP 告訴電腦要做什麼，FP 的思考方式是描述問題。</li>
+<li>function call 有最高優先順序。</li>
+<li>if 在 haskell 裡是 exp 不是 statment</li>
+<li>function name 字首必須小寫 (Type 為大寫）。</li>
+<li>認清 <code>++</code> 和 <code>:</code> ，適時使用<code>:</code>，在<strong>前端</strong>插入元素。</li>
+<li>List 的比較依照字典序。</li>
+</ul>
+<h2 id="Function-list"><a href="#Function-list" class="headerlink" title="Function list"></a>Function list</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">function</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>+</code> , <code>-</code> , <code>*</code> , <code>/</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>mod</code> a b</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;&amp;</code> , &lt;/code&gt;&#124;&#124;&lt;/code&gt; , <code>not</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>==</code> , <code>/=</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&gt;</code>, <code>&gt;=</code> , <code>&lt;</code> ,<code>&lt;=</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>max</code> a b</td>
+<td style="text-align:center">(a &gt; b ? a : b)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>min</code> a b</td>
+<td style="text-align:center">(a &lt; b ? a : b)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>succ</code> a</td>
+<td style="text-align:center">return ++a;</td>
+</tr>
+<tr>
+<td style="text-align:center">a <code>`</code>func<code>`</code> b</td>
+<td style="text-align:center">func  a b</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>(</code>infixFunc<code>)</code> a b</td>
+<td style="text-align:center">a infixFunc b</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>if</code> boolean <code>then</code> val <br><code>else</code> val</td>
+<td style="text-align:center">boolean ? val : val</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>++</code></td>
+<td style="text-align:center">connect list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>:</code></td>
+<td style="text-align:center">ins elm to list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>!!</code></td>
+<td style="text-align:center">elm in list at idx</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>head</code> [t]</td>
+<td style="text-align:center">first elm in list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>tail</code> [t]</td>
+<td style="text-align:center">a list contains all elm in origin list except head</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>last</code> [t]</td>
+<td style="text-align:center">last elm in list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>init</code> [t]</td>
+<td style="text-align:center">a list contains all elm in origin list except last</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>length</code> [t]</td>
+<td style="text-align:center">the len of list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>null</code> [t]</td>
+<td style="text-align:center">check the list is null , better then [t] == null</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>reverse</code> [t]</td>
+<td style="text-align:center">reverse a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>take</code> num [t]</td>
+<td style="text-align:center">a list contains the first <code>num</code> elm in origin list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>drop</code> num [t]</td>
+<td style="text-align:center">a list which is <br>the origin list removes first <code>num</code> elms</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>maximum</code> [t]</td>
+<td style="text-align:center">the max elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>minimum</code> [t]</td>
+<td style="text-align:center">the min elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>sum</code>  [t]</td>
+<td style="text-align:center">the sum of all elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>product</code> [t]</td>
+<td style="text-align:center">the product of all elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>elem</code> [t]</td>
+<td style="text-align:center">check if the elm is in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>..</code></td>
+<td style="text-align:center">range , [elm .. elm] , [elm , elm .. elm]<br>elm avoid using float</td>
+</tr>
+<tr>
+<td style="text-align:center">(<code>cycle</code> [t])</td>
+<td style="text-align:center">a list of cycling orign list</td>
+</tr>
+<tr>
+<td style="text-align:center">(<code>repeat</code>  elm)</td>
+<td style="text-align:center">a inf list made by a elm</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>replicate</code> num elm</td>
+<td style="text-align:center">same as <code>take num (repeat elm)</code></td>
+</tr>
+<tr>
+<td style="text-align:center">[ valOfFunc &lt;/code&gt;&#124;&lt;/code&gt; var* &lt;- [t] <code>, boolean(Guard)*</code> ]<br> <code>_</code> = anonymous var</td>
+<td style="text-align:center">list comprehension</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>fst</code> (t , t)</td>
+<td style="text-align:center">the first elm in tuple(pair)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>snd</code> (t , t)</td>
+<td style="text-align:center">the second elm in tuple(pair)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>zip</code> [t] [t]</td>
+<td style="text-align:center">make a list of tuple(pair)</td>
+</tr>
+<tr>
+<td style="text-align:center">(\var -&gt; valOfFunc)</td>
+<td style="text-align:center">lambda exp</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>zipWith</code> (t->t’->t’’) [t] [t’]</td>
+<td style="text-align:center">zip two list by a func</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>flip</code> (t->t’’->t’’’)</td>
+<td style="text-align:center">flip the param order of a func call</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>map</code> (t->t’) [t]</td>
+<td style="text-align:center">like for_each , list comprehension</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>filter</code> (t->Bool) [t]</td>
+<td style="text-align:center">like Guard in list comprehension</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>takeWhile</code> t->Bool [t]</td>
+<td style="text-align:center">take elm to return a new list while …</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldl</code> (t->t’->t) t [t’]</td>
+<td style="text-align:center">do … to acc while elm \= []</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldr</code> (t->t’->t) t’ [t]</td>
+<td style="text-align:center">almost simialr to foldl</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldl1</code> (t->t->t) [t’]</td>
+<td style="text-align:center">take head of list as init</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldr1</code> (t->t->t) [t’]</td>
+<td style="text-align:center">almost simialr to foldl1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanl</code> (t->t’->t) t [t’]</td>
+<td style="text-align:center">acc operated val to list from left</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanr</code> (t->t’->t) t’ [t]</td>
+<td style="text-align:center">acc operated val to list from right</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanl1</code> (t->t->t) [t]</td>
+<td style="text-align:center">omit</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanr1</code> (t->t->t) [t]</td>
+<td style="text-align:center">omit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><h4 id="type"><a href="#type" class="headerlink" title="type"></a>type</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Bool</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Int</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Integer</td>
+<td style="text-align:center">Big Num , operations are not efficient as Int</td>
+</tr>
+<tr>
+<td style="text-align:center">Float</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Double</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Char</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Maybe</td>
+<td style="text-align:center">Nothing or single elm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="structure"><a href="#structure" class="headerlink" title="structure"></a>structure</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Structure</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">List</td>
+<td style="text-align:center">[]</td>
+</tr>
+<tr>
+<td style="text-align:center">Tuple</td>
+<td style="text-align:center">()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Typeclass"><a href="#Typeclass" class="headerlink" title="Typeclass"></a>Typeclass</h2><p>不禁讓我想到統計的三個 data Type , interval , odinal , categorical。</p>
+<p><code>=&gt;</code>符號左邊是型態約束（表示此 Type Var 屬於哪個 Typeclass)，<br>右邊是引數和回傳值。用於描述函式原型 (?)。</p>
+<p>例如將一般數字型態轉為更通用的 Integral 的函式 <code>fromIntegral</code><br>其定義為 <code>fromIntegral :: (Num b, Integral a) =&gt; a -&gt; b</code></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Typeclass</th>
+<th style="text-align:center">Feature</th>
+<th style="text-align:center">Example type</th>
+<th style="text-align:center">support func</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Eq</td>
+<td style="text-align:center">可判斷相等</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">==</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Ord</td>
+<td style="text-align:center">可排序</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">&gt; , &lt; , &gt;= , &lt;= , compare</td>
+<td style="text-align:center">有 Eq 特性</td>
+</tr>
+<tr>
+<td style="text-align:center">Show</td>
+<td style="text-align:center">可轉字串</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">show</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Read</td>
+<td style="text-align:center">可由字串轉</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">read</td>
+<td style="text-align:center">注意聲明，否則型態推導可能沒辦法 work</td>
+</tr>
+<tr>
+<td style="text-align:center">Enum</td>
+<td style="text-align:center">順序可枚舉</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">.. , succ , pred</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Bounded</td>
+<td style="text-align:center">有上下界</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">minBound , maxBound</td>
+<td style="text-align:center">若 Tuple 內皆為 Bounded ， <br>則此 Tuple 亦有 Bounded 特性。</td>
+</tr>
+<tr>
+<td style="text-align:center">Num</td>
+<td style="text-align:center">數字類型</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">fromIntegral</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Integral</td>
+<td style="text-align:center">整數類型</td>
+<td style="text-align:center">Integer</td>
+<td style="text-align:center">fromIntegral</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Floating</td>
+<td style="text-align:center">浮點數類型</td>
+<td style="text-align:center">Float</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h2><ul>
+<li>順序很重要</li>
+</ul>
+<ol>
+<li>函式定義內對參數的 pattern matching<br>一開始提到的是可以在 .hs 中像 select case 全部啪出來，不用 if else，在 ghci <a href="http://stackoverflow.com/questions/15733266/pattern-matching-in-ghci" target="_blank" rel="noopener">需要用 guard</a>。<br>其實是 case of 的語法糖。</li>
+<li>函式引數和參數的 pattern matching<br>其實就是參數可以將引數拆開（我用詞好<a href="http://no8dyzxc.pixnet.net/blog/post/290731567" target="_blank" rel="noopener">精準</a> >///&lt;)，好用。</li>
+<li>List Comprehension 的 pattern matching<br>指南的例子 : <code>[a + b | (a , b) &lt;- xs]</code></li>
+</ol>
+<ul>
+<li><p>以上前兩點是我亂叫的，意思知道就好。（奪門而出</p>
+<p>還有一種 at pattern , xs@(a:as)，表示把 xs 拆成 (a:as)。</p>
+</li>
+</ul>
+<h2 id="Guard-amp-Key-words"><a href="#Guard-amp-Key-words" class="headerlink" title="Guard &amp; Key words"></a>Guard &amp; Key words</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">func</span> param</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    <span class="comment">--let keyword(can be anywhere)</span></span><br><span class="line">    | [bool exp] = <span class="keyword">let</span> [name binding;...;...] <span class="keyword">in</span> [exp]</span><br><span class="line">    ...</span><br><span class="line">    | otherwise = val</span><br><span class="line">    <span class="comment">--where keyword(must be the structure end)</span></span><br><span class="line">    <span class="keyword">where</span> [name binding]</span><br><span class="line">          [function def balala]</span><br><span class="line"></span><br><span class="line"><span class="comment">--let keyword in list comprehension</span></span><br><span class="line">[nameCanSee | nameCannotSee , <span class="keyword">let</span> [name binding]]</span><br><span class="line">[nameCannotSee | nameCannotSee , <span class="keyword">let</span> [name binding] <span class="keyword">in</span> [bool exp]]</span><br><span class="line"></span><br><span class="line"><span class="title">func</span> param = <span class="keyword">case</span> [exp] <span class="keyword">of</span> [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br></pre></td></tr></table></figure>
+<h2 id="High-Order-Function"><a href="#High-Order-Function" class="headerlink" title="High Order Function"></a>High Order Function</h2><ul>
+<li><p>Curried functions = 不完全的 function<br>ex:</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen = max <span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen <span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; addThree = (+<span class="number">3</span>)</span><br><span class="line"><span class="title">ghci</span> &gt; addThree <span class="number">10</span></span><br><span class="line"><span class="number">13</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>High Order function = take function as parameter (<strong>Or return a function</strong>)</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt;  applyTwice func x = func (func x)</span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice addThree <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice (+<span class="number">3</span>) <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>$</code> and <code>.</code></p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">$ comb to right</span><br><span class="line"></span><br><span class="line"><span class="title">f</span>(g(x)) = f . g $ x</span><br><span class="line"></span><br><span class="line"><span class="title">sum</span> . map (*<span class="number">3</span>) $ [<span class="number">1.</span><span class="number">.9</span>]</span><br><span class="line">(int)sum(list) . (list)map (*<span class="number">3</span>)(list) $ (list)[<span class="number">1.</span><span class="number">.9</span>]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><p>引入函式庫。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">--in .hs</span></span><br><span class="line"><span class="keyword">import</span> Data.List</span><br><span class="line"><span class="keyword">import</span> Data.List <span class="keyword">hiding</span> (<span class="title">nub</span>)  <span class="comment">--ignore nub in module</span></span><br><span class="line"><span class="keyword">import</span> Data.List (<span class="title">nub</span>，<span class="title">sort</span>)   <span class="comment">--only import num 'n sort</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map      <span class="comment">--need use 'Data.Map.func' to call func</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map <span class="keyword">as</span> M <span class="comment">--can alias 'Data.Map' to 'M'</span></span><br><span class="line"><span class="comment">--in ghci can also use</span></span><br><span class="line">:m <span class="type">Data</span>.<span class="type">List</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Our-own-data-type"><a href="#Our-own-data-type" class="headerlink" title="Our own data type"></a>Our own data type</h2><blockquote>
+<p>永遠不要在 data 聲明中加型別約束</p>
+</blockquote>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- Object method</span></span><br><span class="line"><span class="comment">-- data Typename = valueConstructor param ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Circle</span> = <span class="type">Circle</span> <span class="type">Float</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Enum method</span></span><br><span class="line"><span class="comment">-- data Typename = v0 | v1 | v2 ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tue</span> | <span class="type">Wed</span> | <span class="type">Thu</span> | <span class="type">Fri</span> | <span class="type">Sat</span> | <span class="type">Sun</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Point</span> = <span class="type">Point</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Shape</span> = <span class="type">Circle</span> <span class="type">Point</span> <span class="type">Float</span> | <span class="type">Rectangle</span> <span class="type">Point</span> <span class="type">Point</span></span></span><br><span class="line"></span><br><span class="line"><span class="title">modlue</span> <span class="type">Shape</span></span><br><span class="line">( <span class="type">Point</span> (..) <span class="comment">-- export all value constructor</span></span><br><span class="line">, <span class="type">Shape</span> (<span class="type">Circle</span> , <span class="type">Rectangle</span>) <span class="comment">-- export Circle and Rectangle</span></span><br><span class="line">, surface <span class="comment">-- function name</span></span><br><span class="line">, baseCircle <span class="comment">-- auxilliary function , baseCircle :: Float -&gt; Float -&gt; Shape</span></span><br><span class="line">) <span class="keyword">where</span></span><br><span class="line"><span class="comment">-- 可以選擇不導出 value constructor，這樣強迫使用者使用 auxilliary function，</span></span><br><span class="line"><span class="comment">-- 避免使用者直接對 value constructor 做 pattern matching，一個封裝的概念。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- record syntax avoid writting boring "get functions"</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Person</span> = <span class="type">Person</span> &#123; <span class="title">firstName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">lastName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">age</span> :: <span class="type">Int</span></span></span><br><span class="line"><span class="class">                     , <span class="title">height</span> :: <span class="type">Float</span></span></span><br><span class="line"><span class="class">                     , <span class="title">phoneNumber</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">secCrush</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     &#125; <span class="keyword">deriving</span> (<span class="type">Show</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">ghci</span> &gt; secCrush me</span><br><span class="line"><span class="string">"\x4a\x79\x75\x6e\x2d\x59\x69\x20\x4a\x68\x61\x6e\x67"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- deriving</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tues</span> | <span class="type">Wed</span> | <span class="type">Thur</span> | <span class="type">Fri</span> <span class="keyword">deriving</span> (<span class="type">Eq</span> , <span class="type">Ord</span> , <span class="type">Bounded</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type key word to alias type</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [char]</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> v = <span class="type">Map</span> <span class="type">Int</span> v</span></span><br><span class="line"><span class="comment">-- same as</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> = <span class="type">Map</span> <span class="type">Int</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- operator</span></span><br><span class="line"><span class="comment">-- infix[lr] seq symbol</span></span><br><span class="line"><span class="keyword">infixr</span> <span class="number">5</span> ++</span><br><span class="line"></span><br><span class="line"><span class="comment">-- an example of binary search tree</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Tree</span> a = <span class="type">EmptyTree</span> | <span class="type">Node</span> a (<span class="type">Tree</span> <span class="title">a</span>) (<span class="type">Tree</span> <span class="title">a</span>) <span class="keyword">deriving</span> (<span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Eq</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">singleton</span> x = <span class="type">Node</span> x <span class="type">EmptyTree</span> <span class="type">EmptyTree</span></span><br><span class="line"></span><br><span class="line"><span class="title">treeInsert</span> x <span class="type">EmptyTree</span> = singleton x</span><br><span class="line"><span class="title">treeInsert</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">      | x == a = <span class="type">Node</span> x left right</span><br><span class="line">      | x &lt; a  = <span class="type">Node</span> a (treeInsert x left) right</span><br><span class="line">      | x &gt; a  = <span class="type">Node</span> a left (treeInsert x right)</span><br><span class="line"></span><br><span class="line"><span class="title">treeElem</span> x <span class="type">EmptyTree</span> = <span class="type">False</span></span><br><span class="line"><span class="title">treeElem</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">    | x == a = <span class="type">True</span></span><br><span class="line">    | x &lt; a  = treeElem x left</span><br><span class="line">    | x &gt; a  = treeElem x right</span><br><span class="line"></span><br><span class="line"><span class="title">mkTree</span> ls = foldr treeInsert <span class="type">EmptyTree</span> ls</span><br></pre></td></tr></table></figure>
+<p>typeclass<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 先前有介紹過 TypeClass，在這裡我們為自己的資料型態加上 TypeClass</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Monday</span> | <span class="type">Tuesday</span> | <span class="type">Wednesday</span> | <span class="type">Thursday</span> | <span class="type">Friday</span> | <span class="type">Saturday</span> | <span class="type">Sunday</span></span></span><br><span class="line">           <span class="keyword">deriving</span> (<span class="type">Eq</span>, <span class="type">Ord</span>, <span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Bounded</span>, <span class="type">Enum</span>)</span><br><span class="line"><span class="comment">-- Eq 可比 , Ord 排序由左至右分別是小到大 , Show &amp; Read 提供 IO , Bounded 提供上下界 , Enum 順序枚舉</span></span><br><span class="line"><span class="comment">-- 因為 Enum 的特性，可以使用</span></span><br><span class="line">[minBound .. maxBound] :: [<span class="type">Day</span>]</span><br></pre></td></tr></table></figure></p>
+<p>type key word and the type constructor<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- type 提供了一個對類別不錯的 alias 方法</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [<span class="type">Char</span>] <span class="comment">-- 最常見的</span></span></span><br><span class="line"><span class="comment">-- 我們寫 Function 在宣告可能會用到</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type constructor</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">AssocList</span> k v = [(<span class="title">k</span>,<span class="title">v</span>)]</span></span><br><span class="line"><span class="comment">-- 用法嘛，宣告用（應該不只這樣，再想想）</span></span><br><span class="line">[(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">4</span>,<span class="number">5</span>),(<span class="number">7</span>,<span class="number">9</span>)] :: <span class="type">AssocList</span> <span class="type">Int</span> <span class="type">Int</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Questions"><a href="#Questions" class="headerlink" title="Questions?"></a>Questions?</h2><ul>
+<li>tuple likes struct , while list likes array ?</li>
+<li>那就是右摺疊可以處理無限長度的資料結構，而左摺疊不可以。<br>（因為 Lazy Eval 所以 foldr 可以跑出結果，foldl 會無窮）<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">head'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">head'</span> = foldr1 (\x _ -&gt; x)</span><br><span class="line"><span class="title">last'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">last'</span> = foldl1 (\_ x -&gt; x)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>haskell</tag>
+        <tag>lambda</tag>
+        <tag>fp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>A Little Game</title>
     <url>/2018/02/21/A-Little-Game/</url>
     <content><![CDATA[<center>
@@ -60,9 +481,9 @@
         <category>Fun</category>
       </categories>
       <tags>
+        <tag>fp</tag>
         <tag>game</tag>
         <tag>logic</tag>
-        <tag>fp</tag>
       </tags>
   </entry>
   <entry>
@@ -134,10 +555,10 @@
         <category>Note</category>
       </categories>
       <tags>
-        <tag>fp</tag>
         <tag>haskell</tag>
-        <tag>scheme</tag>
         <tag>lambda</tag>
+        <tag>fp</tag>
+        <tag>scheme</tag>
       </tags>
   </entry>
   <entry>
@@ -641,427 +1062,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Haskell Note （Basic Syntax to Type）</title>
-    <url>/2017/01/31/Haskell-Note/</url>
-    <content><![CDATA[<center>
-A world without loop , but recursion。<br>
-學校 PL 課程，及 <a href="https://learnyoua.haskell.sg/content/zh-tw/" target="_blank" rel="noopener">Haskell 趣學指南</a> 的一些心得筆記。<br>
-<s>更新：戰場轉換到 scheme，scheme 新坑開完再回來。</s><br>
-更更新：我回乃了。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Some-hints"><a href="#Some-hints" class="headerlink" title="Some hints"></a>Some hints</h2><ul>
-<li>不像 PP , OOP 告訴電腦要做什麼，FP 的思考方式是描述問題。</li>
-<li>function call 有最高優先順序。</li>
-<li>if 在 haskell 裡是 exp 不是 statment</li>
-<li>function name 字首必須小寫 (Type 為大寫）。</li>
-<li>認清 <code>++</code> 和 <code>:</code> ，適時使用<code>:</code>，在<strong>前端</strong>插入元素。</li>
-<li>List 的比較依照字典序。</li>
-</ul>
-<h2 id="Function-list"><a href="#Function-list" class="headerlink" title="Function list"></a>Function list</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">function</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>+</code> , <code>-</code> , <code>*</code> , <code>/</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>mod</code> a b</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&amp;&amp;</code> , &lt;/code&gt;&#124;&#124;&lt;/code&gt; , <code>not</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>==</code> , <code>/=</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&gt;</code>, <code>&gt;=</code> , <code>&lt;</code> ,<code>&lt;=</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>max</code> a b</td>
-<td style="text-align:center">(a &gt; b ? a : b)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>min</code> a b</td>
-<td style="text-align:center">(a &lt; b ? a : b)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>succ</code> a</td>
-<td style="text-align:center">return ++a;</td>
-</tr>
-<tr>
-<td style="text-align:center">a <code>`</code>func<code>`</code> b</td>
-<td style="text-align:center">func  a b</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>(</code>infixFunc<code>)</code> a b</td>
-<td style="text-align:center">a infixFunc b</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>if</code> boolean <code>then</code> val <br><code>else</code> val</td>
-<td style="text-align:center">boolean ? val : val</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>++</code></td>
-<td style="text-align:center">connect list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>:</code></td>
-<td style="text-align:center">ins elm to list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>!!</code></td>
-<td style="text-align:center">elm in list at idx</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>head</code> [t]</td>
-<td style="text-align:center">first elm in list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>tail</code> [t]</td>
-<td style="text-align:center">a list contains all elm in origin list except head</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>last</code> [t]</td>
-<td style="text-align:center">last elm in list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>init</code> [t]</td>
-<td style="text-align:center">a list contains all elm in origin list except last</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>length</code> [t]</td>
-<td style="text-align:center">the len of list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>null</code> [t]</td>
-<td style="text-align:center">check the list is null , better then [t] == null</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>reverse</code> [t]</td>
-<td style="text-align:center">reverse a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>take</code> num [t]</td>
-<td style="text-align:center">a list contains the first <code>num</code> elm in origin list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>drop</code> num [t]</td>
-<td style="text-align:center">a list which is <br>the origin list removes first <code>num</code> elms</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>maximum</code> [t]</td>
-<td style="text-align:center">the max elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>minimum</code> [t]</td>
-<td style="text-align:center">the min elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>sum</code>  [t]</td>
-<td style="text-align:center">the sum of all elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>product</code> [t]</td>
-<td style="text-align:center">the product of all elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>elem</code> [t]</td>
-<td style="text-align:center">check if the elm is in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>..</code></td>
-<td style="text-align:center">range , [elm .. elm] , [elm , elm .. elm]<br>elm avoid using float</td>
-</tr>
-<tr>
-<td style="text-align:center">(<code>cycle</code> [t])</td>
-<td style="text-align:center">a list of cycling orign list</td>
-</tr>
-<tr>
-<td style="text-align:center">(<code>repeat</code>  elm)</td>
-<td style="text-align:center">a inf list made by a elm</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>replicate</code> num elm</td>
-<td style="text-align:center">same as <code>take num (repeat elm)</code></td>
-</tr>
-<tr>
-<td style="text-align:center">[ valOfFunc &lt;/code&gt;&#124;&lt;/code&gt; var* &lt;- [t] <code>, boolean(Guard)*</code> ]<br> <code>_</code> = anonymous var</td>
-<td style="text-align:center">list comprehension</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>fst</code> (t , t)</td>
-<td style="text-align:center">the first elm in tuple(pair)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>snd</code> (t , t)</td>
-<td style="text-align:center">the second elm in tuple(pair)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>zip</code> [t] [t]</td>
-<td style="text-align:center">make a list of tuple(pair)</td>
-</tr>
-<tr>
-<td style="text-align:center">(\var -&gt; valOfFunc)</td>
-<td style="text-align:center">lambda exp</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>zipWith</code> (t->t’->t’’) [t] [t’]</td>
-<td style="text-align:center">zip two list by a func</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>flip</code> (t->t’’->t’’’)</td>
-<td style="text-align:center">flip the param order of a func call</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>map</code> (t->t’) [t]</td>
-<td style="text-align:center">like for_each , list comprehension</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>filter</code> (t->Bool) [t]</td>
-<td style="text-align:center">like Guard in list comprehension</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>takeWhile</code> t->Bool [t]</td>
-<td style="text-align:center">take elm to return a new list while …</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldl</code> (t->t’->t) t [t’]</td>
-<td style="text-align:center">do … to acc while elm \= []</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldr</code> (t->t’->t) t’ [t]</td>
-<td style="text-align:center">almost simialr to foldl</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldl1</code> (t->t->t) [t’]</td>
-<td style="text-align:center">take head of list as init</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldr1</code> (t->t->t) [t’]</td>
-<td style="text-align:center">almost simialr to foldl1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanl</code> (t->t’->t) t [t’]</td>
-<td style="text-align:center">acc operated val to list from left</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanr</code> (t->t’->t) t’ [t]</td>
-<td style="text-align:center">acc operated val to list from right</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanl1</code> (t->t->t) [t]</td>
-<td style="text-align:center">omit</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanr1</code> (t->t->t) [t]</td>
-<td style="text-align:center">omit</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><h4 id="type"><a href="#type" class="headerlink" title="type"></a>type</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Type</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Bool</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Int</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Integer</td>
-<td style="text-align:center">Big Num , operations are not efficient as Int</td>
-</tr>
-<tr>
-<td style="text-align:center">Float</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Double</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Char</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Maybe</td>
-<td style="text-align:center">Nothing or single elm</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h4 id="structure"><a href="#structure" class="headerlink" title="structure"></a>structure</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Structure</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">List</td>
-<td style="text-align:center">[]</td>
-</tr>
-<tr>
-<td style="text-align:center">Tuple</td>
-<td style="text-align:center">()</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Typeclass"><a href="#Typeclass" class="headerlink" title="Typeclass"></a>Typeclass</h2><p>不禁讓我想到統計的三個 data Type , interval , odinal , categorical。</p>
-<p><code>=&gt;</code>符號左邊是型態約束（表示此 Type Var 屬於哪個 Typeclass)，<br>右邊是引數和回傳值。用於描述函式原型 (?)。</p>
-<p>例如將一般數字型態轉為更通用的 Integral 的函式 <code>fromIntegral</code><br>其定義為 <code>fromIntegral :: (Num b, Integral a) =&gt; a -&gt; b</code></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Typeclass</th>
-<th style="text-align:center">Feature</th>
-<th style="text-align:center">Example type</th>
-<th style="text-align:center">support func</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Eq</td>
-<td style="text-align:center">可判斷相等</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">==</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Ord</td>
-<td style="text-align:center">可排序</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">&gt; , &lt; , &gt;= , &lt;= , compare</td>
-<td style="text-align:center">有 Eq 特性</td>
-</tr>
-<tr>
-<td style="text-align:center">Show</td>
-<td style="text-align:center">可轉字串</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">show</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Read</td>
-<td style="text-align:center">可由字串轉</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">read</td>
-<td style="text-align:center">注意聲明，否則型態推導可能沒辦法 work</td>
-</tr>
-<tr>
-<td style="text-align:center">Enum</td>
-<td style="text-align:center">順序可枚舉</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">.. , succ , pred</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Bounded</td>
-<td style="text-align:center">有上下界</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">minBound , maxBound</td>
-<td style="text-align:center">若 Tuple 內皆為 Bounded ， <br>則此 Tuple 亦有 Bounded 特性。</td>
-</tr>
-<tr>
-<td style="text-align:center">Num</td>
-<td style="text-align:center">數字類型</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">fromIntegral</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Integral</td>
-<td style="text-align:center">整數類型</td>
-<td style="text-align:center">Integer</td>
-<td style="text-align:center">fromIntegral</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Floating</td>
-<td style="text-align:center">浮點數類型</td>
-<td style="text-align:center">Float</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h2><ul>
-<li>順序很重要</li>
-</ul>
-<ol>
-<li>函式定義內對參數的 pattern matching<br>一開始提到的是可以在 .hs 中像 select case 全部啪出來，不用 if else，在 ghci <a href="http://stackoverflow.com/questions/15733266/pattern-matching-in-ghci" target="_blank" rel="noopener">需要用 guard</a>。<br>其實是 case of 的語法糖。</li>
-<li>函式引數和參數的 pattern matching<br>其實就是參數可以將引數拆開（我用詞好<a href="http://no8dyzxc.pixnet.net/blog/post/290731567" target="_blank" rel="noopener">精準</a> >///&lt;)，好用。</li>
-<li>List Comprehension 的 pattern matching<br>指南的例子 : <code>[a + b | (a , b) &lt;- xs]</code></li>
-</ol>
-<ul>
-<li><p>以上前兩點是我亂叫的，意思知道就好。（奪門而出</p>
-<p>還有一種 at pattern , xs@(a:as)，表示把 xs 拆成 (a:as)。</p>
-</li>
-</ul>
-<h2 id="Guard-amp-Key-words"><a href="#Guard-amp-Key-words" class="headerlink" title="Guard &amp; Key words"></a>Guard &amp; Key words</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">func</span> param</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    <span class="comment">--let keyword(can be anywhere)</span></span><br><span class="line">    | [bool exp] = <span class="keyword">let</span> [name binding;...;...] <span class="keyword">in</span> [exp]</span><br><span class="line">    ...</span><br><span class="line">    | otherwise = val</span><br><span class="line">    <span class="comment">--where keyword(must be the structure end)</span></span><br><span class="line">    <span class="keyword">where</span> [name binding]</span><br><span class="line">          [function def balala]</span><br><span class="line"></span><br><span class="line"><span class="comment">--let keyword in list comprehension</span></span><br><span class="line">[nameCanSee | nameCannotSee , <span class="keyword">let</span> [name binding]]</span><br><span class="line">[nameCannotSee | nameCannotSee , <span class="keyword">let</span> [name binding] <span class="keyword">in</span> [bool exp]]</span><br><span class="line"></span><br><span class="line"><span class="title">func</span> param = <span class="keyword">case</span> [exp] <span class="keyword">of</span> [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br></pre></td></tr></table></figure>
-<h2 id="High-Order-Function"><a href="#High-Order-Function" class="headerlink" title="High Order Function"></a>High Order Function</h2><ul>
-<li><p>Curried functions = 不完全的 function<br>ex:</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen = max <span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen <span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; addThree = (+<span class="number">3</span>)</span><br><span class="line"><span class="title">ghci</span> &gt; addThree <span class="number">10</span></span><br><span class="line"><span class="number">13</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>High Order function = take function as parameter (<strong>Or return a function</strong>)</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt;  applyTwice func x = func (func x)</span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice addThree <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice (+<span class="number">3</span>) <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>$</code> and <code>.</code></p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">$ comb to right</span><br><span class="line"></span><br><span class="line"><span class="title">f</span>(g(x)) = f . g $ x</span><br><span class="line"></span><br><span class="line"><span class="title">sum</span> . map (*<span class="number">3</span>) $ [<span class="number">1.</span><span class="number">.9</span>]</span><br><span class="line">(int)sum(list) . (list)map (*<span class="number">3</span>)(list) $ (list)[<span class="number">1.</span><span class="number">.9</span>]</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><p>引入函式庫。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">--in .hs</span></span><br><span class="line"><span class="keyword">import</span> Data.List</span><br><span class="line"><span class="keyword">import</span> Data.List <span class="keyword">hiding</span> (<span class="title">nub</span>)  <span class="comment">--ignore nub in module</span></span><br><span class="line"><span class="keyword">import</span> Data.List (<span class="title">nub</span>，<span class="title">sort</span>)   <span class="comment">--only import num 'n sort</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map      <span class="comment">--need use 'Data.Map.func' to call func</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map <span class="keyword">as</span> M <span class="comment">--can alias 'Data.Map' to 'M'</span></span><br><span class="line"><span class="comment">--in ghci can also use</span></span><br><span class="line">:m <span class="type">Data</span>.<span class="type">List</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="Our-own-data-type"><a href="#Our-own-data-type" class="headerlink" title="Our own data type"></a>Our own data type</h2><blockquote>
-<p>永遠不要在 data 聲明中加型別約束</p>
-</blockquote>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- Object method</span></span><br><span class="line"><span class="comment">-- data Typename = valueConstructor param ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Circle</span> = <span class="type">Circle</span> <span class="type">Float</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Enum method</span></span><br><span class="line"><span class="comment">-- data Typename = v0 | v1 | v2 ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tue</span> | <span class="type">Wed</span> | <span class="type">Thu</span> | <span class="type">Fri</span> | <span class="type">Sat</span> | <span class="type">Sun</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Point</span> = <span class="type">Point</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Shape</span> = <span class="type">Circle</span> <span class="type">Point</span> <span class="type">Float</span> | <span class="type">Rectangle</span> <span class="type">Point</span> <span class="type">Point</span></span></span><br><span class="line"></span><br><span class="line"><span class="title">modlue</span> <span class="type">Shape</span></span><br><span class="line">( <span class="type">Point</span> (..) <span class="comment">-- export all value constructor</span></span><br><span class="line">, <span class="type">Shape</span> (<span class="type">Circle</span> , <span class="type">Rectangle</span>) <span class="comment">-- export Circle and Rectangle</span></span><br><span class="line">, surface <span class="comment">-- function name</span></span><br><span class="line">, baseCircle <span class="comment">-- auxilliary function , baseCircle :: Float -&gt; Float -&gt; Shape</span></span><br><span class="line">) <span class="keyword">where</span></span><br><span class="line"><span class="comment">-- 可以選擇不導出 value constructor，這樣強迫使用者使用 auxilliary function，</span></span><br><span class="line"><span class="comment">-- 避免使用者直接對 value constructor 做 pattern matching，一個封裝的概念。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- record syntax avoid writting boring "get functions"</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Person</span> = <span class="type">Person</span> &#123; <span class="title">firstName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">lastName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">age</span> :: <span class="type">Int</span></span></span><br><span class="line"><span class="class">                     , <span class="title">height</span> :: <span class="type">Float</span></span></span><br><span class="line"><span class="class">                     , <span class="title">phoneNumber</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">secCrush</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     &#125; <span class="keyword">deriving</span> (<span class="type">Show</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">ghci</span> &gt; secCrush me</span><br><span class="line"><span class="string">"\x4a\x79\x75\x6e\x2d\x59\x69\x20\x4a\x68\x61\x6e\x67"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- deriving</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tues</span> | <span class="type">Wed</span> | <span class="type">Thur</span> | <span class="type">Fri</span> <span class="keyword">deriving</span> (<span class="type">Eq</span> , <span class="type">Ord</span> , <span class="type">Bounded</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type key word to alias type</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [char]</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> v = <span class="type">Map</span> <span class="type">Int</span> v</span></span><br><span class="line"><span class="comment">-- same as</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> = <span class="type">Map</span> <span class="type">Int</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- operator</span></span><br><span class="line"><span class="comment">-- infix[lr] seq symbol</span></span><br><span class="line"><span class="keyword">infixr</span> <span class="number">5</span> ++</span><br><span class="line"></span><br><span class="line"><span class="comment">-- an example of binary search tree</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Tree</span> a = <span class="type">EmptyTree</span> | <span class="type">Node</span> a (<span class="type">Tree</span> <span class="title">a</span>) (<span class="type">Tree</span> <span class="title">a</span>) <span class="keyword">deriving</span> (<span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Eq</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">singleton</span> x = <span class="type">Node</span> x <span class="type">EmptyTree</span> <span class="type">EmptyTree</span></span><br><span class="line"></span><br><span class="line"><span class="title">treeInsert</span> x <span class="type">EmptyTree</span> = singleton x</span><br><span class="line"><span class="title">treeInsert</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">      | x == a = <span class="type">Node</span> x left right</span><br><span class="line">      | x &lt; a  = <span class="type">Node</span> a (treeInsert x left) right</span><br><span class="line">      | x &gt; a  = <span class="type">Node</span> a left (treeInsert x right)</span><br><span class="line"></span><br><span class="line"><span class="title">treeElem</span> x <span class="type">EmptyTree</span> = <span class="type">False</span></span><br><span class="line"><span class="title">treeElem</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">    | x == a = <span class="type">True</span></span><br><span class="line">    | x &lt; a  = treeElem x left</span><br><span class="line">    | x &gt; a  = treeElem x right</span><br><span class="line"></span><br><span class="line"><span class="title">mkTree</span> ls = foldr treeInsert <span class="type">EmptyTree</span> ls</span><br></pre></td></tr></table></figure>
-<p>typeclass<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 先前有介紹過 TypeClass，在這裡我們為自己的資料型態加上 TypeClass</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Monday</span> | <span class="type">Tuesday</span> | <span class="type">Wednesday</span> | <span class="type">Thursday</span> | <span class="type">Friday</span> | <span class="type">Saturday</span> | <span class="type">Sunday</span></span></span><br><span class="line">           <span class="keyword">deriving</span> (<span class="type">Eq</span>, <span class="type">Ord</span>, <span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Bounded</span>, <span class="type">Enum</span>)</span><br><span class="line"><span class="comment">-- Eq 可比 , Ord 排序由左至右分別是小到大 , Show &amp; Read 提供 IO , Bounded 提供上下界 , Enum 順序枚舉</span></span><br><span class="line"><span class="comment">-- 因為 Enum 的特性，可以使用</span></span><br><span class="line">[minBound .. maxBound] :: [<span class="type">Day</span>]</span><br></pre></td></tr></table></figure></p>
-<p>type key word and the type constructor<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- type 提供了一個對類別不錯的 alias 方法</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [<span class="type">Char</span>] <span class="comment">-- 最常見的</span></span></span><br><span class="line"><span class="comment">-- 我們寫 Function 在宣告可能會用到</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type constructor</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">AssocList</span> k v = [(<span class="title">k</span>,<span class="title">v</span>)]</span></span><br><span class="line"><span class="comment">-- 用法嘛，宣告用（應該不只這樣，再想想）</span></span><br><span class="line">[(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">4</span>,<span class="number">5</span>),(<span class="number">7</span>,<span class="number">9</span>)] :: <span class="type">AssocList</span> <span class="type">Int</span> <span class="type">Int</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="Questions"><a href="#Questions" class="headerlink" title="Questions?"></a>Questions?</h2><ul>
-<li>tuple likes struct , while list likes array ?</li>
-<li>那就是右摺疊可以處理無限長度的資料結構，而左摺疊不可以。<br>（因為 Lazy Eval 所以 foldr 可以跑出結果，foldl 會無窮）<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">head'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">head'</span> = foldr1 (\x _ -&gt; x)</span><br><span class="line"><span class="title">last'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">last'</span> = foldl1 (\_ x -&gt; x)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>fp</tag>
-        <tag>haskell</tag>
-        <tag>lambda</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PHP Note</title>
     <url>/2017/03/26/PHP-Note/</url>
     <content><![CDATA[<center>
@@ -1448,113 +1448,6 @@ wait to refer:<br>
       </categories>
   </entry>
   <entry>
-    <title>簡明 Arch 安裝指南</title>
-    <url>/2019/06/06/arch-install/</url>
-    <content><![CDATA[<center>
-裝 Arch 第二次就上手～
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
-<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
-
-<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
-<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
-<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
-<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
-<p>所以我們的指令為：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
-<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
-<ul>
-<li>開啟電源後按 F12 （我的桌機）</li>
-<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
-</ul>
-<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
-<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
-<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
-<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
-<p>以 root 進入 zsh。</p>
-<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
-<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
-<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
-<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
-<p><code>fdisk /dev/sda</code></p>
-<p>進入 fdisk prompt。</p>
-<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
-<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
-<ol>
-<li><code>/efi =&gt; EFI System(type 1)</code></li>
-<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
-<li><code>swap =&gt; Linux swap(type 19)</code></li>
-<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
-<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
-<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
-<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
-<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
-<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
-<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
-<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
-<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
-<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
-<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
-<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
-<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
-<p>設定電腦名稱。</p>
-<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
-<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
-<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
-<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
-</blockquote>
-<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
-<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
-<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
-<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
-<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
-<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
-<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
-<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
-<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
-<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
-<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
-<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
-<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
-<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Cygwin Beginner Guide</title>
     <url>/2017/05/30/basic-linux/</url>
     <content><![CDATA[<center>
@@ -1680,8 +1573,115 @@ wait to refer:<br>
         <category>Fun</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>cygwin</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>簡明 Arch 安裝指南</title>
+    <url>/2019/06/06/arch-install/</url>
+    <content><![CDATA[<center>
+裝 Arch 第二次就上手～
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
+<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
+
+<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
+<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
+<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
+<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
+<p>所以我們的指令為：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
+<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
+<ul>
+<li>開啟電源後按 F12 （我的桌機）</li>
+<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
+</ul>
+<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
+<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
+<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
+<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
+<p>以 root 進入 zsh。</p>
+<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
+<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
+<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
+<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
+<p><code>fdisk /dev/sda</code></p>
+<p>進入 fdisk prompt。</p>
+<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
+<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
+<ol>
+<li><code>/efi =&gt; EFI System(type 1)</code></li>
+<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
+<li><code>swap =&gt; Linux swap(type 19)</code></li>
+<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
+<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
+<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
+<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
+<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
+<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
+<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
+<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
+<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
+<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
+<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
+<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
+<p>設定電腦名稱。</p>
+<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
+<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
+<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
+<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
+</blockquote>
+<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
+<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
+<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
+<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
+<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
+<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
+<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
+<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
+<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
+<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
+<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
+<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
+<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1899,9 +1899,9 @@ wait to refer:<br>
         <category>Note</category>
       </categories>
       <tags>
+        <tag>lambda</tag>
         <tag>fp</tag>
         <tag>scheme</tag>
-        <tag>lambda</tag>
         <tag>lisp</tag>
         <tag>continuation</tag>
       </tags>
@@ -2999,9 +2999,9 @@ wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_bl
         <category>Memoir</category>
       </categories>
       <tags>
-        <tag>logic</tag>
-        <tag>fp</tag>
         <tag>lambda</tag>
+        <tag>fp</tag>
+        <tag>logic</tag>
         <tag>flolac</tag>
       </tags>
   </entry>
@@ -3021,6 +3021,82 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
 一趟新旅途的展開，加油吧！少年。
 </center>
 ]]></content>
+  </entry>
+  <entry>
+    <title>functional thursday ＃73</title>
+    <url>/2019/05/03/pi-cal/</url>
+    <content><![CDATA[<center>
+π-calculas 不負責任筆記
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
+<p>make changes on program as little as possible!</p>
+<ul>
+<li>parallelism ⇒ multi-processor, multi-processes</li>
+<li>concurrency ⇒ single-processor, multi-processes</li>
+</ul>
+<p>make write wrong program harder?</p>
+<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
+<li>CSP ⇒ process - process event</li>
+<li>π-calculas ⇒ channel - channel message passing</li>
+</ul>
+<p>process algebra</p>
+<blockquote>
+<p>π-calculas is the most complex one, but useful</p>
+</blockquote>
+<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
+<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
+<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
+<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
+<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
+<p>omit</p>
+</blockquote>
+<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
+<p>reduction rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>axiom relating restriction and parallel</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
+<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
+<li>process is untyped</li>
+<li>channel is typed</li>
+</ul>
+<p>Γ ⊢ P</p>
+<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
+<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
+<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
+<blockquote>
+<p>note x:t not x:t, y:s</p>
+</blockquote>
+<hr>
+<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
+<hr>
+<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
+<blockquote>
+<p>type preservation</p>
+</blockquote>
+<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
+<p>Γ ⊢ e : τ</p>
+<ul>
+<li>e value</li>
+<li>∃ e’, e → e’</li>
+</ul>
+<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
+]]></content>
+      <categories>
+        <category>Memoir</category>
+      </categories>
+      <tags>
+        <tag>lambda</tag>
+      </tags>
   </entry>
   <entry>
     <title>散人</title>
@@ -3116,82 +3192,6 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
       <categories>
         <category>Memoir</category>
       </categories>
-  </entry>
-  <entry>
-    <title>functional thursday ＃73</title>
-    <url>/2019/05/03/pi-cal/</url>
-    <content><![CDATA[<center>
-π-calculas 不負責任筆記
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
-<p>make changes on program as little as possible!</p>
-<ul>
-<li>parallelism ⇒ multi-processor, multi-processes</li>
-<li>concurrency ⇒ single-processor, multi-processes</li>
-</ul>
-<p>make write wrong program harder?</p>
-<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
-<li>CSP ⇒ process - process event</li>
-<li>π-calculas ⇒ channel - channel message passing</li>
-</ul>
-<p>process algebra</p>
-<blockquote>
-<p>π-calculas is the most complex one, but useful</p>
-</blockquote>
-<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
-<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
-<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
-<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
-<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
-<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
-<p>omit</p>
-</blockquote>
-<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
-<p>reduction rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
-<p>axiom relating restriction and parallel</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
-<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
-<li>process is untyped</li>
-<li>channel is typed</li>
-</ul>
-<p>Γ ⊢ P</p>
-<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
-<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
-<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
-<blockquote>
-<p>note x:t not x:t, y:s</p>
-</blockquote>
-<hr>
-<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
-<hr>
-<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
-<blockquote>
-<p>type preservation</p>
-</blockquote>
-<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
-<p>Γ ⊢ e : τ</p>
-<ul>
-<li>e value</li>
-<li>∃ e’, e → e’</li>
-</ul>
-<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
-]]></content>
-      <categories>
-        <category>Memoir</category>
-      </categories>
-      <tags>
-        <tag>lambda</tag>
-      </tags>
   </entry>
   <entry>
     <title>About Python&#39;s container</title>

@@ -579,6 +579,11 @@
           </select>
         </div>
         <div class="row">
+          <label>啟用軌跡清洗</label>
+          <input id="enable-track-cleaning" type="checkbox" checked />
+          <span class="muted">關閉可能保留飛線。</span>
+        </div>
+        <div class="row">
           <label>開始日期</label>
           <input id="date-from" type="date" />
         </div>
@@ -1209,6 +1214,7 @@
     let startHideKm = 1.0;
     let endHideKm = 1.0;
     let activityTypeFilter = 'cycling';
+    let enableTrackCleaning = true;
     let dateFromTs = Number.NaN;
     let dateToTs = Number.NaN;
     const yearQuick = { all: true, y0: false, y1: false, y2: false, y3: false, older: false };
@@ -1767,6 +1773,10 @@
     });
     el('activity-type-filter').addEventListener('change', async () => {
       activityTypeFilter = String(el('activity-type-filter').value || 'all');
+      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    });
+    el('enable-track-cleaning').addEventListener('change', async () => {
+      enableTrackCleaning = !!el('enable-track-cleaning').checked;
       if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
     });
     el('date-from').addEventListener('change', async () => {
@@ -2932,11 +2942,40 @@
           const elevHighRaw = Number.parseFloat(String(meta['Elevation High'] || ''));
           const movingRaw = Number.parseFloat(String(meta['Moving Time'] || ''));
           const elapsedRaw = Number.parseFloat(String(meta['Elapsed Time'] || ''));
-          const clean = sanitizeTrack(redacted, {
-            jumpThresholdMeters: 3000,
-            minSegmentPoints: 8,
-            minSegmentMeters: 300,
-          });
+          const clean = enableTrackCleaning
+            ? sanitizeTrack(redacted, {
+              jumpThresholdMeters: 3000,
+              minSegmentPoints: 8,
+              minSegmentMeters: 300,
+            })
+            : (() => {
+              const stats = {
+                removedInvalidPoints: 0,
+                jumpSplits: 0,
+                droppedShortSegments: 0,
+                keptSegments: 0,
+              };
+              const valid = redacted.filter((p) => {
+                const lat = Number(p && p[0]);
+                const lon = Number(p && p[1]);
+                if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+                  stats.removedInvalidPoints += 1;
+                  return false;
+                }
+                if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+                  stats.removedInvalidPoints += 1;
+                  return false;
+                }
+                if (Math.abs(lat) < 1e-8 && Math.abs(lon) < 1e-8) {
+                  stats.removedInvalidPoints += 1;
+                  return false;
+                }
+                return true;
+              });
+              const segments = valid.length >= 2 ? [valid] : [];
+              stats.keptSegments = segments.length;
+              return { segments, stats };
+            })();
           removedInvalidPoints += clean.stats.removedInvalidPoints;
           jumpSplits += clean.stats.jumpSplits;
           droppedShortSegments += clean.stats.droppedShortSegments;
@@ -2999,10 +3038,10 @@
 
         if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
         if (!routeFeatures.length) {
-          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
+          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
           return true;
         }
-        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
+        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
         return true;
       } catch (err) {
         metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
