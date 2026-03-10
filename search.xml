@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>A Little Game</title>
+    <url>/2018/02/21/A-Little-Game/</url>
+    <content><![CDATA[<center>
+這是一年多前，在知乎看到的<a href="http://www.therottingcartridge.com/games/programming/" target="_blank" rel="noopener">小遊戲</a>。<br>
+那時候玩到感覺就是這遊戲真不簡單，蘊含了很多東西在裡面。<br>
+這幾天因為朋友說無聊，所以我又翻出來玩（結果他沒玩），<br>
+感覺得到的東西又不一樣了。<br>
+感覺從中得到了些東西，所以想探討一下。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="傳送門"><a href="#傳送門" class="headerlink" title="傳送門"></a><a href="http://www.therottingcartridge.com/games/programming/" target="_blank" rel="noopener">傳送門</a></h2><p>   ^ 戳他</p>
+<h2 id="玩法介紹"><a href="#玩法介紹" class="headerlink" title="玩法介紹"></a>玩法介紹</h2><p><s>自己摸索吧，這樣最有趣，因為我也是這樣玩的</s></p>
+<p>白色盤面上的工具要用光，而你的任務是利用白色盤面上所有的工具造出左上角的 Goal。<br>其中下面黑色區域則是可選區，你可以拿或不拿其中的工具來完成你的目標。<br>開始用滑鼠拖曳（或點擊）元件，組合出需求吧。</p>
+<h2 id="初見"><a href="#初見" class="headerlink" title="初見"></a>初見</h2><p>剛接觸到這遊戲，是因為看到了在推廣 FP 的貼文。<br>其實那則貼文有兩個遊戲，而此次要提的是我覺得比較好玩的那款。<br>玩完之後馬上推給了同學呢 w</p>
+<p>在這遊戲中，看到了 Currying 的概念，<br>接收了一個部件，一個半完成的工具也是一個工具。<br>而最有趣的是他有 Higher Order Function 的思想</p>
+<blockquote>
+<p>一個產生輸出的工具，亦可拿工具當輸入，甚至回傳工具。</p>
+</blockquote>
+<p>還有偷換概念的部份，<br>他會將原本比較實際的東西漸漸抽象為程式碼，<br>到最後竟然有寫 Code 的感覺。</p>
+<h2 id="再見"><a href="#再見" class="headerlink" title="再見"></a>再見</h2><p>第二次碰的時候，<br>將上次沒玩完（老實說我很好奇為啥那時沒玩完）， 通通跑過了一遍。<br>順便拿家人當實驗品 w<br>在變換的過程中，我發現了 Lambda 的存在。<br>之前旁聽 Haskell 的時候，還對他不熟悉，<br>到現在看過了一點 Lambda Calculus 相關的定義後，<br>這次驚奇的發現在抽象的過程中，竟然跑出了 Lambda Expression，<br>然後最後變成 JS 的 Arrow Function。</p>
+<p>拿給家人玩時，發現普遍會發生一個問題，<br>那就是大家會觀察不到工具的功能。<br>可能是有 FP 經驗，所以我玩起來都知道其中那些東西的象徵意義，<br>或是我玩遊戲比較有 sence，我去注意細節，所以玩起來特別有感覺。<br>可是其他人玩大多都是憑感覺，有些接口也會弄不清楚可不可以接上。<br>這邊就是我覺得他不足的地方了。<br>雖說形狀已經有稍微強調，可是不夠明顯。或許可以用顏色表示。</p>
+<p>還有一些關卡過於簡單，而且因為關卡順序不是很恰當，<br>所以感覺會讓人失去興趣，感到無聊。</p>
+<p>其實這次還發現了一個特點，<br>那就是強制要求要用光白色盤面的規則，<br>除了要讓你照規則走，發現一些 FP 的特性，<br>他也可以闡發一個概念，就是如何使用原本就有的東西，巧妙的修改，<br>而不是重新造輪子（雖然有時會比較快），<br>但是使用原有的函式構造新的函式是 FP 一個重要的思想啊。</p>
+<p>來總括一下此遊戲設計的所有元素吧。</p>
+<p>點出比較重要的幾關吧。</p>
+<ul>
+<li><p>Lv1<br> 提了 atom，如星星，一個基本的資料型態，應該可算 Symbol。<br> 還有就是 tool(function)，可以 input 然後 return 的。<br> （建議動畫可以做好點，不然普通人會把 input x return x 當成沒有事情發生）</p>
+</li>
+<li><p>Lv2<br> tool can take tool as input.</p>
+</li>
+<li><p>Lv3<br> tool can return const , not always variable.<br> and they are all tools.</p>
+</li>
+<li><p>Lv4<br> figure out the tool of black region.</p>
+</li>
+<li><p>Lv5<br> tool can return more atoms.</p>
+</li>
+<li><p>Lv6<br> tool can split the expressoin part.</p>
+</li>
+<li><p>Lv7, 8<br> HOF</p>
+</li>
+<li><p>Lv10<br> tool -&gt; lambda expr</p>
+</li>
+<li><p>Lv11<br> boolean type</p>
+</li>
+<li><p>Lv12, 13<br> boolean expr(function), true and false</p>
+</li>
+<li><p>Lv 22<br> if expression (PP 的會說是 ternary operator)</p>
+</li>
+</ul>
+<p>嘛，還有 List , Map 之類的，懶的說了。</p>
+<p>我很喜歡他偷換概念的部份，不過不要換太快，會令初學者措手不及。</p>
+]]></content>
+      <categories>
+        <category>Fun</category>
+      </categories>
+      <tags>
+        <tag>game</tag>
+        <tag>logic</tag>
+        <tag>fp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Haskell Note （Basic Syntax to Type）</title>
     <url>/2017/01/31/Haskell-Note/</url>
     <content><![CDATA[<center>
@@ -416,74 +481,9 @@ A world without loop , but recursion。<br>
         <category>Note</category>
       </categories>
       <tags>
+        <tag>fp</tag>
         <tag>haskell</tag>
         <tag>lambda</tag>
-        <tag>fp</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>A Little Game</title>
-    <url>/2018/02/21/A-Little-Game/</url>
-    <content><![CDATA[<center>
-這是一年多前，在知乎看到的<a href="http://www.therottingcartridge.com/games/programming/" target="_blank" rel="noopener">小遊戲</a>。<br>
-那時候玩到感覺就是這遊戲真不簡單，蘊含了很多東西在裡面。<br>
-這幾天因為朋友說無聊，所以我又翻出來玩（結果他沒玩），<br>
-感覺得到的東西又不一樣了。<br>
-感覺從中得到了些東西，所以想探討一下。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="傳送門"><a href="#傳送門" class="headerlink" title="傳送門"></a><a href="http://www.therottingcartridge.com/games/programming/" target="_blank" rel="noopener">傳送門</a></h2><p>   ^ 戳他</p>
-<h2 id="玩法介紹"><a href="#玩法介紹" class="headerlink" title="玩法介紹"></a>玩法介紹</h2><p><s>自己摸索吧，這樣最有趣，因為我也是這樣玩的</s></p>
-<p>白色盤面上的工具要用光，而你的任務是利用白色盤面上所有的工具造出左上角的 Goal。<br>其中下面黑色區域則是可選區，你可以拿或不拿其中的工具來完成你的目標。<br>開始用滑鼠拖曳（或點擊）元件，組合出需求吧。</p>
-<h2 id="初見"><a href="#初見" class="headerlink" title="初見"></a>初見</h2><p>剛接觸到這遊戲，是因為看到了在推廣 FP 的貼文。<br>其實那則貼文有兩個遊戲，而此次要提的是我覺得比較好玩的那款。<br>玩完之後馬上推給了同學呢 w</p>
-<p>在這遊戲中，看到了 Currying 的概念，<br>接收了一個部件，一個半完成的工具也是一個工具。<br>而最有趣的是他有 Higher Order Function 的思想</p>
-<blockquote>
-<p>一個產生輸出的工具，亦可拿工具當輸入，甚至回傳工具。</p>
-</blockquote>
-<p>還有偷換概念的部份，<br>他會將原本比較實際的東西漸漸抽象為程式碼，<br>到最後竟然有寫 Code 的感覺。</p>
-<h2 id="再見"><a href="#再見" class="headerlink" title="再見"></a>再見</h2><p>第二次碰的時候，<br>將上次沒玩完（老實說我很好奇為啥那時沒玩完）， 通通跑過了一遍。<br>順便拿家人當實驗品 w<br>在變換的過程中，我發現了 Lambda 的存在。<br>之前旁聽 Haskell 的時候，還對他不熟悉，<br>到現在看過了一點 Lambda Calculus 相關的定義後，<br>這次驚奇的發現在抽象的過程中，竟然跑出了 Lambda Expression，<br>然後最後變成 JS 的 Arrow Function。</p>
-<p>拿給家人玩時，發現普遍會發生一個問題，<br>那就是大家會觀察不到工具的功能。<br>可能是有 FP 經驗，所以我玩起來都知道其中那些東西的象徵意義，<br>或是我玩遊戲比較有 sence，我去注意細節，所以玩起來特別有感覺。<br>可是其他人玩大多都是憑感覺，有些接口也會弄不清楚可不可以接上。<br>這邊就是我覺得他不足的地方了。<br>雖說形狀已經有稍微強調，可是不夠明顯。或許可以用顏色表示。</p>
-<p>還有一些關卡過於簡單，而且因為關卡順序不是很恰當，<br>所以感覺會讓人失去興趣，感到無聊。</p>
-<p>其實這次還發現了一個特點，<br>那就是強制要求要用光白色盤面的規則，<br>除了要讓你照規則走，發現一些 FP 的特性，<br>他也可以闡發一個概念，就是如何使用原本就有的東西，巧妙的修改，<br>而不是重新造輪子（雖然有時會比較快），<br>但是使用原有的函式構造新的函式是 FP 一個重要的思想啊。</p>
-<p>來總括一下此遊戲設計的所有元素吧。</p>
-<p>點出比較重要的幾關吧。</p>
-<ul>
-<li><p>Lv1<br> 提了 atom，如星星，一個基本的資料型態，應該可算 Symbol。<br> 還有就是 tool(function)，可以 input 然後 return 的。<br> （建議動畫可以做好點，不然普通人會把 input x return x 當成沒有事情發生）</p>
-</li>
-<li><p>Lv2<br> tool can take tool as input.</p>
-</li>
-<li><p>Lv3<br> tool can return const , not always variable.<br> and they are all tools.</p>
-</li>
-<li><p>Lv4<br> figure out the tool of black region.</p>
-</li>
-<li><p>Lv5<br> tool can return more atoms.</p>
-</li>
-<li><p>Lv6<br> tool can split the expressoin part.</p>
-</li>
-<li><p>Lv7, 8<br> HOF</p>
-</li>
-<li><p>Lv10<br> tool -&gt; lambda expr</p>
-</li>
-<li><p>Lv11<br> boolean type</p>
-</li>
-<li><p>Lv12, 13<br> boolean expr(function), true and false</p>
-</li>
-<li><p>Lv 22<br> if expression (PP 的會說是 ternary operator)</p>
-</li>
-</ul>
-<p>嘛，還有 List , Map 之類的，懶的說了。</p>
-<p>我很喜歡他偷換概念的部份，不過不要換太快，會令初學者措手不及。</p>
-]]></content>
-      <categories>
-        <category>Fun</category>
-      </categories>
-      <tags>
-        <tag>fp</tag>
-        <tag>game</tag>
-        <tag>logic</tag>
       </tags>
   </entry>
   <entry>
@@ -555,9 +555,9 @@ A world without loop , but recursion。<br>
         <category>Note</category>
       </categories>
       <tags>
+        <tag>fp</tag>
         <tag>haskell</tag>
         <tag>lambda</tag>
-        <tag>fp</tag>
         <tag>scheme</tag>
       </tags>
   </entry>
@@ -1448,6 +1448,113 @@ wait to refer:<br>
       </categories>
   </entry>
   <entry>
+    <title>簡明 Arch 安裝指南</title>
+    <url>/2019/06/06/arch-install/</url>
+    <content><![CDATA[<center>
+裝 Arch 第二次就上手～
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
+<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
+
+<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
+<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
+<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
+<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
+<p>所以我們的指令為：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
+<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
+<ul>
+<li>開啟電源後按 F12 （我的桌機）</li>
+<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
+</ul>
+<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
+<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
+<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
+<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
+<p>以 root 進入 zsh。</p>
+<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
+<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
+<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
+<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
+<p><code>fdisk /dev/sda</code></p>
+<p>進入 fdisk prompt。</p>
+<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
+<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
+<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
+<ol>
+<li><code>/efi =&gt; EFI System(type 1)</code></li>
+<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
+<li><code>swap =&gt; Linux swap(type 19)</code></li>
+<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
+<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
+<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
+<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
+<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
+<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
+<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
+<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
+<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
+<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
+<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
+<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
+<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
+<p>設定電腦名稱。</p>
+<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
+<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
+<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
+<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
+</blockquote>
+<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
+<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
+<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
+<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
+<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
+<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
+<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
+<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
+<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
+<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
+<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
+<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
+<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
+<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Cygwin Beginner Guide</title>
     <url>/2017/05/30/basic-linux/</url>
     <content><![CDATA[<center>
@@ -1573,115 +1680,8 @@ wait to refer:<br>
         <category>Fun</category>
       </categories>
       <tags>
+        <tag>linux</tag>
         <tag>cygwin</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>簡明 Arch 安裝指南</title>
-    <url>/2019/06/06/arch-install/</url>
-    <content><![CDATA[<center>
-裝 Arch 第二次就上手～
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="script"><a href="#script" class="headerlink" title="script"></a>script</h2><p>這是總結，可以一次執行：</p>
-<script src="https://gist.github.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3.js"></script>
-
-<p>可用以下指令安裝：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl https://gist.githubusercontent.com/nobodyzxc/5e9bb4d6134dfa5e9a98709ae9b945b3/raw | bash</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝前準備"><a href="#安裝前準備" class="headerlink" title="安裝前準備"></a>安裝前準備</h2><h3 id="USB-flash-installation-media"><a href="#USB-flash-installation-media" class="headerlink" title="USB flash installation media"></a>USB flash installation media</h3><p>首先我們要準備一支 live USB。<br>下載好 Arch Linux <a href="https://www.archlinux.org/download/" target="_blank" rel="noopener">ISO 檔</a></p>
-<p>先用 lsblk 看要安裝的 USB。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span><br><span class="line">sda      8:0    0 465.8G  0 disk</span><br><span class="line">├─sda1   8:1    0   256M  0 part /efi</span><br><span class="line">├─sda2   8:2    0 449.5G  0 part /</span><br><span class="line">└─sda3   8:3    0    16G  0 part [SWAP]</span><br><span class="line">sdb      8:16   1    15G  0 disk</span><br><span class="line">└─sdb1   8:17   1    15G  0 part</span><br></pre></td></tr></table></figure></p>
-<p>wiki:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dd bs=4M if=path/to/archlinux.iso of=/dev/sdx status=progress oflag=sync</span><br></pre></td></tr></table></figure></p>
-<p>要把 sdx 換成 sdb 那我們下載的 iso 位置為 <code>/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso</code></p>
-<p>所以我們的指令為：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dd bs=4M if=/home/zxc/Downloads/archlinux-2019.02.01-x86_64.iso of=/dev/sdb &amp;&amp; sync</span><br></pre></td></tr></table></figure>
-<h3 id="開機"><a href="#開機" class="headerlink" title="開機"></a>開機</h3><p>接著我們將 USB 裝上欲安裝的主機，然後</p>
-<ul>
-<li>開啟電源後按 F12 （我的桌機）</li>
-<li>ESC + 電源鍵（我的筆電）選擇開機硬體。</li>
-</ul>
-<p>因為我們要用 GRUB 引導程序（可以選擇要開機的硬碟，雙系統可以用）<br>所以選擇 USB 有 UEFI 的選項。</p>
-<p><img src="/images/arch_install/bootmenu.jpg" alt></p>
-<p>選擇後應該會長這樣：<br><img src="/images/arch_install/uefi.jpg" alt></p>
-<p>選錯了會長這樣：<br><img src="/images/arch_install/bios.jpg" alt></p>
-<p>以 root 進入 zsh。</p>
-<h3 id="zsh-設定"><a href="#zsh-設定" class="headerlink" title="zsh 設定"></a>zsh 設定</h3><p>鍵盤 default US 有需要再參考 wiki。<br>啟動模式 同上。</p>
-<p>接上有線網路，然後 <code>dhcpcd</code>，<code>ping archlinux.org</code> 查看狀態是否成功。</p>
-<p>更新時間 <code>timedatectl set-ntp true</code>，<code>timedatectl status</code> 查看是否成功。</p>
-<h3 id="硬碟切割"><a href="#硬碟切割" class="headerlink" title="硬碟切割"></a>硬碟切割</h3><p>看你要把 archlinux 裝在哪顆硬碟上，此次為 <code>/dev/sda</code>。</p>
-<p><code>fdisk /dev/sda</code></p>
-<p>進入 fdisk prompt。</p>
-<p>先創造 GPT table。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: g</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/efi</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=1)</span><br><span class="line">first sector: (default=2048)</span><br><span class="line">last sector: +260M</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/</code> （後來我因為裝 cuda, 會佔用 /usr 空間，所以提升至 64G）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=2)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +32G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>swap</code>，我有 16G RAM，切 16G swap (多切一點ww）。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=3)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: +16G</span><br></pre></td></tr></table></figure></p>
-<p>切 <code>/home</code>，切完。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: n</span><br><span class="line">partition number: (default=4)</span><br><span class="line">first sector: (default)</span><br><span class="line">last sector: (default)</span><br></pre></td></tr></table></figure></p>
-<p>更換磁區類型，可以用在鍵入 t 後用 L 查看所有類型。</p>
-<ol>
-<li><code>/efi =&gt; EFI System(type 1)</code></li>
-<li><code>/ =&gt; Linux filesystem(type 20)</code></li>
-<li><code>swap =&gt; Linux swap(type 19)</code></li>
-<li><code>/home =&gt; Linux filesystem(type 20)</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 1</span><br><span class="line">partition type: 1</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 2</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 3</span><br><span class="line">partition type: 19</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: t</span><br><span class="line">partition number: 4</span><br><span class="line">partition type: 20</span><br></pre></td></tr></table></figure>
-<p>以設定進行切割並離開。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">command: w</span><br></pre></td></tr></table></figure></p>
-<h3 id="格式化硬碟"><a href="#格式化硬碟" class="headerlink" title="格式化硬碟"></a>格式化硬碟</h3><p>vfat 格式化 <code>/efi</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.vfat /dev/sda1</span><br></pre></td></tr></table></figure></p>
-<p>ext4 格式化 <code>/</code> 及 <code>/home</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br><span class="line">mkfs.ext4 /dev/sda4</span><br></pre></td></tr></table></figure></p>
-<p>格式化 <code>swap</code> 分區。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkswap /dev/sda3</span><br><span class="line">swapon /dev/sda3</span><br></pre></td></tr></table></figure></p>
-<h3 id="掛載切好的磁區"><a href="#掛載切好的磁區" class="headerlink" title="掛載切好的磁區"></a>掛載切好的磁區</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br><span class="line">mkdir /mnt/boot</span><br><span class="line">mount /dev/sda1 /mnt/boot</span><br><span class="line">mkdir /mnt/home</span><br><span class="line">mount /dev/sda4 /mnt/home</span><br></pre></td></tr></table></figure>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><h3 id="鏡像站設定（加速用，非必要）"><a href="#鏡像站設定（加速用，非必要）" class="headerlink" title="鏡像站設定（加速用，非必要）"></a>鏡像站設定（加速用，非必要）</h3><p><code>vim /etc/pacman.conf</code> 加入交大鏡像站。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[core]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[extra]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br><span class="line"></span><br><span class="line">[community]</span><br><span class="line">Server = http://archlinux.cs.nctu.edu.tw/$repo/os/$arch</span><br><span class="line">Include = /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
-<p>開始安裝系統套件。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacstrap /mnt base base-devel linux linux-firmware</span><br></pre></td></tr></table></figure></p>
-<h2 id="系統配置"><a href="#系統配置" class="headerlink" title="系統配置"></a>系統配置</h2><h3 id="fstab"><a href="#fstab" class="headerlink" title="fstab"></a>fstab</h3><p>生成 fstab 檔案，定義儲存設備的初始化和連接系統方式。</p>
-<p><code>-U</code> 用 UUID 分類定義，<code>-L</code> 則用分割標籤，<br>我們前面切磁碟沒上標籤，所以用 <code>-U</code> 吧。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span><br></pre></td></tr></table></figure>
-<h3 id="change-root"><a href="#change-root" class="headerlink" title="change root"></a>change root</h3><p>切進硬碟當 root 囉！</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
-<h3 id="時區-amp-語言-amp-網路"><a href="#時區-amp-語言-amp-網路" class="headerlink" title="時區 &amp; 語言 &amp; 網路"></a>時區 &amp; 語言 &amp; 網路</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span><br><span class="line">ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime</span><br><span class="line">hwclock --systohc</span><br></pre></td></tr></table></figure>
-<p>先裝個 vim 比較順手，vi 不太順。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S vim</span><br></pre></td></tr></table></figure></p>
-<p>編輯 <code>/etc/locale.gen</code> 反註解 <code>en_US.UTF-8 UTF-8</code> 及 <code>zh_TW.UTF-8 UTF-8</code>。<br>然後用 <code>locale-gen</code> 生成檔案。</p>
-<p>加入環境變數 <code>echo &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf</code>。</p>
-<p>設定電腦名稱。</p>
-<p>我決定叫他卡巴內里了。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;kabaneri&quot; &gt; /etc/hostname</span><br></pre></td></tr></table></figure></p>
-<p><code>vim /etc/hosts</code> 最後一行加上：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">127.0.0.1      localhost</span><br><span class="line">::1            localhost</span><br><span class="line">127.0.1.1      kabaneri.localdomain      kabaneri</span><br></pre></td></tr></table></figure></p>
-<h3 id="建立開機映像檔-amp-設定密碼"><a href="#建立開機映像檔-amp-設定密碼" class="headerlink" title="建立開機映像檔 &amp; 設定密碼"></a>建立開機映像檔 &amp; 設定密碼</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkinitcpio -p linux</span><br><span class="line">passwd</span><br></pre></td></tr></table></figure>
-<h3 id="啟動載入程式-amp-安裝網路工具"><a href="#啟動載入程式-amp-安裝網路工具" class="headerlink" title="啟動載入程式 &amp; 安裝網路工具"></a>啟動載入程式 &amp; 安裝網路工具</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -Sy grub os-prober efibootmgr</span><br><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub</span><br><span class="line">grub-mkconfig -o /boot/grub/grub.cfg # warnning here</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>WARNING: Failed to connect to lvmetad. Falling back to device scanning.</p>
-</blockquote>
-<p>不用太擔心這個 <a href="https://unix.stackexchange.com/questions/332556/arch-linux-installation-grub-problem" target="_blank" rel="noopener">warnning</a>。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S net-tools wireless_tools dhclient wpa_supplicant</span><br></pre></td></tr></table></figure>
-<p>重開前先設定好 dhcpcd。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable dhcpcd.service</span><br><span class="line">exit</span><br><span class="line">umount -R /mnt</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure></p>
-<h2 id="安裝系統後"><a href="#安裝系統後" class="headerlink" title="安裝系統後"></a>安裝系統後</h2><h3 id="手動設定-DNS（防雷）"><a href="#手動設定-DNS（防雷）" class="headerlink" title="手動設定 DNS（防雷）"></a>手動設定 DNS（防雷）</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;nameserver 8.8.8.8&quot; &gt;&gt; /etc/resolv.conf</span><br></pre></td></tr></table></figure>
-<h3 id="用戶"><a href="#用戶" class="headerlink" title="用戶"></a>用戶</h3><p>new user named zxc</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pacman -S sudo</span><br><span class="line">vim /etc/sudoers # uncomment %wheel ALL=(ALL) ALL</span><br><span class="line">useradd -m -u 1001 zxc</span><br><span class="line">passwd zxc</span><br><span class="line">usermod zxc -G wheel</span><br></pre></td></tr></table></figure>
-<h3 id="下載-yay"><a href="#下載-yay" class="headerlink" title="下載 yay"></a>下載 yay</h3><p>do follows as normal user</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https://aur.archlinux.org/yay.git</span><br><span class="line">cd yay</span><br><span class="line">makepkg -si</span><br></pre></td></tr></table></figure>
-<h3 id="桌面環境"><a href="#桌面環境" class="headerlink" title="桌面環境"></a>桌面環境</h3><p>i3 擁護派一定要 i3。<br>然後既然是桌機，配備又好，那就漂亮點，裝 deepin 吧 :)</p>
-<p><a href="https://www.ostechnix.com/install-deepin-desktop-environment-arch-linux/" target="_blank" rel="noopener">Deepin reference</a></p>
-<p>值得注意的是，我用上文 lightdm-deepin-greeter 還是 blank screen，<br>lightdm-gtk-greeter 也怪怪的。<br>所以改用 lightdm-webkit2-greeter（需要 yay）。<br><s>然後主題使用 <a href="https://github.com/NoiSek/Aether" target="_blank" rel="noopener">Aether</a>（水尬靠杯）。</s><br>我又叛逃了，現在使用的是 <a href="https://github.com/Litarvan/lightdm-webkit-theme-litarvan" target="_blank" rel="noopener">Litarvan</a>。（因為發現 Aether 不能記憶我上次使用的桌面系統）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S xorg xorg-server deepin deepin-extra</span><br><span class="line">yay -S lightdm-webkit2-greeter</span><br><span class="line">yay -S lightdm-webkit-theme-aether</span><br></pre></td></tr></table></figure>
-<p>接著設定 dm，deepin 用的是 lightdm，這部份 yay 自動幫你做，你可以確認一下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim /etc/lightdm/lightdm.conf</span><br></pre></td></tr></table></figure>
-<p>找不到原本的 <code>#greeter-session=example-gtk-gnome</code>，而是已經被換成：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">greeter-session=lightdm-webkit2-greeter</span><br></pre></td></tr></table></figure></p>
-<p>接下來把 dm 加到啟動設定。<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start lightdm.service # 在命令列啟用，先是試開不開得起來，以免悲劇</span><br><span class="line">systemctl enable lightdm.service # 成功之後再下這行，開機後永久啟用</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://wiki.archlinux.org/index.php/i3" target="_blank" rel="noopener">i3wm reference</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo pacman -S i3-gaps i3lock i3status</span><br></pre></td></tr></table></figure>
-<h3 id="中文化-amp-輸入法"><a href="#中文化-amp-輸入法" class="headerlink" title="中文化 &amp; 輸入法"></a>中文化 &amp; 輸入法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S ttf-dejavu ttf-droid ttf-freefont ttf-hack ttf-liberation</span><br><span class="line">yay -S adobe-source-code-pro-fonts cantarell-fonts gsfonts powerline-fonts ttf-freefont</span><br><span class="line">yay -S noto-fonts noto-fonts-emoji ttf-roboto ttf-roboto-mono noto-fonts-cjk</span><br><span class="line">sudo pacman -S ibus ibus-chewing</span><br><span class="line"># ibus-daemon &amp; 才能用喔，要 autostart 要看你是什麼桌面環境，再進行設定。</span><br><span class="line"># 然後進 ibus-setup 添加中文輸入法</span><br></pre></td></tr></table></figure>
-<p><a href="https://askubuntu.com/questions/135548/how-to-add-ibus-to-start-up-applications" target="_blank" rel="noopener">ibus daemon reference</a><br><a href="https://timleland.com/how-to-run-a-linux-program-on-startup/" target="_blank" rel="noopener">daemon program autostart</a></p>
-<h3 id="Google-Chrome"><a href="#Google-Chrome" class="headerlink" title="Google Chrome"></a>Google Chrome</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yay -S google-chrome</span><br><span class="line"># or chromium</span><br><span class="line">sudo pacman -S chromium</span><br></pre></td></tr></table></figure>
-<p>reference: <a href="https://wiki.archlinux.org/index.php/Installation_guide" target="_blank" rel="noopener">archlinux wiki</a> <a href="https://blog.allenchou.cc/arch-linux-tutorial/" target="_blank" rel="noopener">電腦故我在</a></p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1899,8 +1899,8 @@ wait to refer:<br>
         <category>Note</category>
       </categories>
       <tags>
-        <tag>lambda</tag>
         <tag>fp</tag>
+        <tag>lambda</tag>
         <tag>scheme</tag>
         <tag>lisp</tag>
         <tag>continuation</tag>
@@ -2999,9 +2999,9 @@ wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_bl
         <category>Memoir</category>
       </categories>
       <tags>
-        <tag>lambda</tag>
-        <tag>fp</tag>
         <tag>logic</tag>
+        <tag>fp</tag>
+        <tag>lambda</tag>
         <tag>flolac</tag>
       </tags>
   </entry>
@@ -3021,82 +3021,6 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
 一趟新旅途的展開，加油吧！少年。
 </center>
 ]]></content>
-  </entry>
-  <entry>
-    <title>functional thursday ＃73</title>
-    <url>/2019/05/03/pi-cal/</url>
-    <content><![CDATA[<center>
-π-calculas 不負責任筆記
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
-<p>make changes on program as little as possible!</p>
-<ul>
-<li>parallelism ⇒ multi-processor, multi-processes</li>
-<li>concurrency ⇒ single-processor, multi-processes</li>
-</ul>
-<p>make write wrong program harder?</p>
-<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
-<li>CSP ⇒ process - process event</li>
-<li>π-calculas ⇒ channel - channel message passing</li>
-</ul>
-<p>process algebra</p>
-<blockquote>
-<p>π-calculas is the most complex one, but useful</p>
-</blockquote>
-<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
-<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
-<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
-<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
-<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
-<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
-<p>omit</p>
-</blockquote>
-<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
-<p>reduction rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
-<p>axiom relating restriction and parallel</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
-<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
-<li>process is untyped</li>
-<li>channel is typed</li>
-</ul>
-<p>Γ ⊢ P</p>
-<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
-<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
-<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
-<blockquote>
-<p>note x:t not x:t, y:s</p>
-</blockquote>
-<hr>
-<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
-<hr>
-<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
-<blockquote>
-<p>type preservation</p>
-</blockquote>
-<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
-<p>Γ ⊢ e : τ</p>
-<ul>
-<li>e value</li>
-<li>∃ e’, e → e’</li>
-</ul>
-<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
-]]></content>
-      <categories>
-        <category>Memoir</category>
-      </categories>
-      <tags>
-        <tag>lambda</tag>
-      </tags>
   </entry>
   <entry>
     <title>散人</title>
@@ -3192,6 +3116,82 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
       <categories>
         <category>Memoir</category>
       </categories>
+  </entry>
+  <entry>
+    <title>functional thursday ＃73</title>
+    <url>/2019/05/03/pi-cal/</url>
+    <content><![CDATA[<center>
+π-calculas 不負責任筆記
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
+<p>make changes on program as little as possible!</p>
+<ul>
+<li>parallelism ⇒ multi-processor, multi-processes</li>
+<li>concurrency ⇒ single-processor, multi-processes</li>
+</ul>
+<p>make write wrong program harder?</p>
+<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
+<li>CSP ⇒ process - process event</li>
+<li>π-calculas ⇒ channel - channel message passing</li>
+</ul>
+<p>process algebra</p>
+<blockquote>
+<p>π-calculas is the most complex one, but useful</p>
+</blockquote>
+<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
+<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
+<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
+<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
+<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
+<p>omit</p>
+</blockquote>
+<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
+<p>reduction rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>axiom relating restriction and parallel</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
+<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
+<li>process is untyped</li>
+<li>channel is typed</li>
+</ul>
+<p>Γ ⊢ P</p>
+<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
+<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
+<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
+<blockquote>
+<p>note x:t not x:t, y:s</p>
+</blockquote>
+<hr>
+<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
+<hr>
+<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
+<blockquote>
+<p>type preservation</p>
+</blockquote>
+<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
+<p>Γ ⊢ e : τ</p>
+<ul>
+<li>e value</li>
+<li>∃ e’, e → e’</li>
+</ul>
+<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
+]]></content>
+      <categories>
+        <category>Memoir</category>
+      </categories>
+      <tags>
+        <tag>lambda</tag>
+      </tags>
   </entry>
   <entry>
     <title>About Python&#39;s container</title>

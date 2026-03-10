@@ -584,6 +584,16 @@
           <span class="muted">關閉可能保留飛線。</span>
         </div>
         <div class="row">
+          <label>只看台灣</label>
+          <input id="taiwan-only" type="checkbox" />
+          <span class="muted">避免海外點拉到全球。</span>
+        </div>
+        <div class="row">
+          <label>快速聚焦</label>
+          <button id="focus-taiwan-btn" class="btn" type="button">聚焦台灣</button>
+          <button id="focus-all-btn" class="btn" type="button">聚焦全部</button>
+        </div>
+        <div class="row">
           <label>開始日期</label>
           <input id="date-from" type="date" />
         </div>
@@ -1215,6 +1225,7 @@
     let endHideKm = 1.0;
     let activityTypeFilter = 'cycling';
     let enableTrackCleaning = true;
+    let taiwanOnly = false;
     let dateFromTs = Number.NaN;
     let dateToTs = Number.NaN;
     const yearQuick = { all: true, y0: false, y1: false, y2: false, y3: false, older: false };
@@ -1332,6 +1343,14 @@
     let isShareDownloading = false;
     let hasMapData = false;
     let demoLockedAfterLoad = false;
+    let lastRenderBounds = null;
+    let lastTaiwanBounds = null;
+    const TAIWAN_BBOX = {
+      minLat: 21.5,
+      maxLat: 25.5,
+      minLon: 119.0,
+      maxLon: 122.5,
+    };
     shareZonesEl.style.display = 'none';
 
     const updateLabels = () => {
@@ -1778,6 +1797,17 @@
     el('enable-track-cleaning').addEventListener('change', async () => {
       enableTrackCleaning = !!el('enable-track-cleaning').checked;
       if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+    });
+    el('taiwan-only').addEventListener('change', async () => {
+      taiwanOnly = !!el('taiwan-only').checked;
+      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
+      else focusTaiwanView();
+    });
+    el('focus-taiwan-btn').addEventListener('click', () => {
+      focusTaiwanView();
+    });
+    el('focus-all-btn').addEventListener('click', () => {
+      focusAllView();
     });
     el('date-from').addEventListener('change', async () => {
       dateFromTs = parseDateInputStartTs(el('date-from').value);
@@ -2357,6 +2387,48 @@
       return acc;
     };
 
+    const isInBbox = (lat, lon, bbox) => {
+      if (!bbox) return true;
+      return lat >= bbox.minLat && lat <= bbox.maxLat && lon >= bbox.minLon && lon <= bbox.maxLon;
+    };
+
+    const clipTrackToBbox = (points, bbox, minPoints = 2) => {
+      const out = [];
+      let cur = [];
+      for (let i = 0; i < points.length; i += 1) {
+        const p = points[i];
+        const lat = Number(p && p[0]);
+        const lon = Number(p && p[1]);
+        if (Number.isFinite(lat) && Number.isFinite(lon) && isInBbox(lat, lon, bbox)) {
+          cur.push([lat, lon]);
+          continue;
+        }
+        if (cur.length >= minPoints) out.push(cur);
+        cur = [];
+      }
+      if (cur.length >= minPoints) out.push(cur);
+      return out;
+    };
+
+    const fitToBounds = (bounds) => {
+      if (bounds && bounds.isValid && bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+    };
+
+    const focusTaiwanView = () => {
+      if (lastTaiwanBounds && lastTaiwanBounds.isValid()) {
+        fitToBounds(lastTaiwanBounds);
+        return;
+      }
+      fitToBounds(L.latLngBounds([
+        [TAIWAN_BBOX.minLat, TAIWAN_BBOX.minLon],
+        [TAIWAN_BBOX.maxLat, TAIWAN_BBOX.maxLon],
+      ]));
+    };
+
+    const focusAllView = () => {
+      if (lastRenderBounds && lastRenderBounds.isValid()) fitToBounds(lastRenderBounds);
+    };
+
     const sanitizeTrack = (points, options = {}) => {
       const jumpThresholdMeters = Number(options.jumpThresholdMeters ?? 3000);
       const minSegmentPoints = Number(options.minSegmentPoints ?? 8);
@@ -2861,10 +2933,12 @@
         let filteredByDateUnknown = 0;
         let filteredByYear = 0;
         let filteredByYearUnknown = 0;
+        let filteredByRegion = 0;
         let removedInvalidPoints = 0;
         let jumpSplits = 0;
         let droppedShortSegments = 0;
         let keptSegments = 0;
+        const taiwanBounds = L.latLngBounds([]);
 
         for (let i = 0; i < entries.length; i += 1) {
           const e = entries[i];
@@ -2986,26 +3060,37 @@
           }
           for (let s = 0; s < clean.segments.length; s += 1) {
             const seg = clean.segments[s];
-            const routePts = samplePoints(seg, 40);
-            const heatPts = samplePoints(seg, 40);
-            const weightPts = samplePoints(seg, 12);
-            if (routePts.length < 2) continue;
-            routeFeatures.push({
-              ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
-              properties: {
-                name: String(meta['Activity Name'] || e.name),
-                date: String(meta['Activity Date'] || ''),
-                distanceKm: Number.isFinite(distanceRaw) ? distanceRaw / 1000 : Number.NaN,
-                elevGainM: Number.isFinite(elevGainRaw) ? elevGainRaw : Number.NaN,
-                elevHighM: Number.isFinite(elevHighRaw) ? elevHighRaw : Number.NaN,
-                movingSec: Number.isFinite(movingRaw) ? movingRaw : Number.NaN,
-                elapsedSec: Number.isFinite(elapsedRaw) ? elapsedRaw : Number.NaN,
-              },
-            });
-            routePts.forEach((p) => bounds.extend([p[0], p[1]]));
-            heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
-            for (let j = 1; j < weightPts.length; j += 1) {
-              bumpEdgeCount(edgeCounts, weightPts[j - 1], weightPts[j], 1800);
+            const renderSegments = taiwanOnly ? clipTrackToBbox(seg, TAIWAN_BBOX, 2) : [seg];
+            if (!renderSegments.length) {
+              filteredByRegion += 1;
+              continue;
+            }
+            for (let rs = 0; rs < renderSegments.length; rs += 1) {
+              const renderSeg = renderSegments[rs];
+              const routePts = samplePoints(renderSeg, 40);
+              const heatPts = samplePoints(renderSeg, 40);
+              const weightPts = samplePoints(renderSeg, 12);
+              if (routePts.length < 2) continue;
+              routeFeatures.push({
+                ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
+                properties: {
+                  name: String(meta['Activity Name'] || e.name),
+                  date: String(meta['Activity Date'] || ''),
+                  distanceKm: Number.isFinite(distanceRaw) ? distanceRaw / 1000 : Number.NaN,
+                  elevGainM: Number.isFinite(elevGainRaw) ? elevGainRaw : Number.NaN,
+                  elevHighM: Number.isFinite(elevHighRaw) ? elevHighRaw : Number.NaN,
+                  movingSec: Number.isFinite(movingRaw) ? movingRaw : Number.NaN,
+                  elapsedSec: Number.isFinite(elapsedRaw) ? elapsedRaw : Number.NaN,
+                },
+              });
+              routePts.forEach((p) => {
+                bounds.extend([p[0], p[1]]);
+                if (isInBbox(p[0], p[1], TAIWAN_BBOX)) taiwanBounds.extend([p[0], p[1]]);
+              });
+              heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
+              for (let j = 1; j < weightPts.length; j += 1) {
+                bumpEdgeCount(edgeCounts, weightPts[j - 1], weightPts[j], 1800);
+              }
             }
           }
         }
@@ -3034,14 +3119,17 @@
         setProgress(100, '完成');
         hasMapData = routeFeatures.length > 0 || heatPoints.length > 0;
         if (hasMapData) demoLockedAfterLoad = true;
+        lastRenderBounds = bounds.isValid() ? bounds : null;
+        lastTaiwanBounds = taiwanBounds.isValid() ? taiwanBounds : null;
         refreshActionButtons();
 
-        if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
+        if (taiwanOnly) focusTaiwanView();
+        else fitToBounds(lastRenderBounds);
         if (!routeFeatures.length) {
-          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
+          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
           return true;
         }
-        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
+        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
         return true;
       } catch (err) {
         metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
@@ -3107,6 +3195,8 @@
       window.__heatBasePoints = [];
       hasMapData = false;
       demoLockedAfterLoad = false;
+      lastRenderBounds = null;
+      lastTaiwanBounds = null;
       lastZipBuffer = null;
       lastZipLabel = '';
       const zipInput = el('zip-input');
