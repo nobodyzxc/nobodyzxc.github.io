@@ -66,81 +66,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Scheme 初學者眼中的 Haskell</title>
-    <url>/2018/02/14/HaskellFromScheme/</url>
-    <content><![CDATA[<center>
-嘛，情人節，和 Haskell 約個會吧！<br>
-因為學完 Scheme 後回來看 Haskell，<br>
-發現有不少地方是已經會的。<br>
-而我覺得記些基本的東西意義不大，<br>
-所以改成以一個接觸過 Scheme 的 FP 初學者角度，<br>
-重新來看待 Haskell 這個語言。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><h3 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h3><p>我記得王垠的 40 行代碼好像有 require pmatch,<br>所以 Scheme 應該是有以 library 實現 pattern matching 的。</p>
-<p>而 Haskell 則是內建此種語言特性，大概可以有三種地方可以用到。</p>
-<ol>
-<li><p>函數定義，可以少去一些 if else</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 注意 match 的順序性</span></span><br><span class="line"><span class="title">fib</span> <span class="number">0</span> = <span class="number">0</span></span><br><span class="line"><span class="title">fib</span> <span class="number">1</span> = <span class="number">1</span></span><br><span class="line"><span class="title">fib</span> x = fib (x - <span class="number">1</span>) + fib (x - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">fib</span> x) <span class="comment">; 懶得寫 = 所以用 case</span></span><br><span class="line">   (<span class="name"><span class="builtin-name">case</span></span> x      <span class="comment">; 不過 racket 其實是用 equal?</span></span><br><span class="line">      [(<span class="name">0</span>) <span class="number">0</span>]   <span class="comment">; R6RS, R5RS 是用 eqv?</span></span><br><span class="line">      [(<span class="name">1</span>) <span class="number">1</span>]</span><br><span class="line">      [<span class="name"><span class="builtin-name">else</span></span> (<span class="name"><span class="builtin-name">+</span></span> (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">1</span>))</span><br><span class="line">               (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">2</span>)))]))</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>拆 tuple, list</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- as pattern</span></span><br><span class="line"><span class="title">all</span>@a:b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="comment">-- all == [1, 2, 3]</span></span><br><span class="line"><span class="comment">-- a == 1</span></span><br><span class="line"><span class="comment">-- b == [2, 3]</span></span><br><span class="line"></span><br><span class="line">(a, b, c) = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment">-- a == 1, b == 2, c == 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 結合 1. 定義 sum'</span></span><br><span class="line"><span class="title">sum</span> [] = <span class="number">0</span></span><br><span class="line"><span class="title">sum'</span> (x:xs) = x + (sum' xs)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>List comprehension 中</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">[x + y | (x, y) &lt;-zip [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line"><span class="comment">--       ^ match</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="Guard"><a href="#Guard" class="headerlink" title="Guard"></a>Guard</h3><p>   感覺之前一直不能接受這個 syntax, 現在看作 cond 就好了。<br>   書中的例子藉由 Guard 定義一個函數。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> bmi <span class="comment">-- *attension! no = here</span></span><br><span class="line">    | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">    | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br></pre></td></tr></table></figure></p>
-<p>   其實就是</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> bmi)</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
-<h3 id="Where"><a href="#Where" class="headerlink" title="Where"></a>Where</h3><p>   用於函數定義中，於定義下方加入 where syntax 做簡易的 binding。</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> weight height <span class="comment">-- *attension! no = here</span></span><br><span class="line">      | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">      | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br><span class="line">        <span class="keyword">where</span></span><br><span class="line">           bim = weight / height ^ <span class="number">2</span></span><br><span class="line">        <span class="comment">-- where 裡面可作 pattern matching 亦可定義函數</span></span><br></pre></td></tr></table></figure>
-<p>   嘛，就是 Scheme 裡的 nested define 嘛。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> weight height)</span><br><span class="line">   (<span class="name"><span class="builtin-name">define</span></span> bim (<span class="name"><span class="builtin-name">/</span></span> weight (<span class="name"><span class="builtin-name">*</span></span> height height)))</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
-<h3 id="Let"><a href="#Let" class="headerlink" title="Let"></a>Let</h3><p>   當然也有 let expression，bindings 和 exprs 用 in 關鍵字隔開<br>   bindings 中可以用 pattern matching，也可以用 ; 隔開每個 binding</p>
-<p>   list comprehension 中也可以用 let bind 一些值，注意有效範圍。</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">   [nv | (x, y) &lt;- lst, <span class="keyword">let</span> nv = x + y, nv &gt; <span class="number">10</span>]</span><br><span class="line"><span class="comment">--  ^^   x-----------x  ^^^^^^^^^^^^^^  ^^^^^^^</span></span><br></pre></td></tr></table></figure>
-<h3 id="Case"><a href="#Case" class="headerlink" title="Case"></a>Case</h3><p>   pattern matching 本質上是 case exprs 的語法糖。<br>   而在我看來 pattern matching 在 Scheme 中也就是 cond 的語法糖 (null? 等函數去判斷）<br>   所以在 case exprs 可以解決的基本上 Guard 也可以解決，而回歸原始，用 if else 解決。<br>   重點是記得適用場景，Guard 用在 Bool，case 用在 pattern matching。<br>   之前這邊一直沒有摸清楚。</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">case</span> expression <span class="keyword">of</span> pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br></pre></td></tr></table></figure>
-<h3 id="HOF"><a href="#HOF" class="headerlink" title="HOF"></a>HOF</h3><p>   與 Scheme 最大的不同就是 Haskell 會自己做 currying。<br>   善用 currying 特性就可以很自然的做出 partially applied function。<br>   如此就不用再寫 lambda 去餵 HOF 啦～</p>
-<p>   還有就是 map 的力量，Haskell 的 map 是 map :: (a -&gt; b) -&gt; [a] -&gt; [b]，<br>   和 Scheme 的 map 不太一樣，Scheme 因為是動態語言所以 map 吃的 function 彈性比較大。<br>   如 <code>(map + &#39;(1 2 3) &#39;(1 2 3))</code> 後面可以接幾個 list 端看前面 function （加號的話可以無限啦～）。<br>   而 Haskell 要用 + 號則是用 zipWith，<code>zipWith (+) [1, 2, 3] [1, 2, 3]</code>。<br>   Haskell map 和 zipWith 也就只是差在 unary 和 binary，依舊不能和 Scheme map 比。<br>   或許有其他方法吧，這就要研究一下 Haskell 的 var args 用法了。</p>
-<p>   一些 Haskell hof 可以玩玩</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">map, filter,</span><br><span class="line">foldl, foldr, foldl1, foldr1,</span><br><span class="line">scahnl, scanr, scanl1, scanr1</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意 foldl 系列的第一個參數的型態是 (b -&gt; a -&gt; b)<br>所以在寫 lambda 的時候是 (\ e acc -&gt; expr)<br>而 foldr 系列則是 (a -&gt; b -&gt; b)<br>寫 lambda 的時候則是 (\ acc e -&gt; expr)</p>
-</blockquote>
-<h3 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h3><p>   lambda 寫法 <code>\ bindings -&gt; exprs</code></p>
-<h3 id="的使用"><a href="#的使用" class="headerlink" title="$ 的使用"></a>$ 的使用</h3><p>   $ 號使用，一般下一個元素都會當作參數向左結合，<br>   但是前面有 $ 號的話，就可以不用被當成參數，<br>   直接當成 function apply 到右邊（後面）的參數上，<br>   直到完成，再餵回前面去。</p>
-<p>   還有可以將 data 當 func 特性，如 <code>map ($ 3) [(4+),(10*),(^2),sqrt]</code></p>
-<h3 id="Function-composition"><a href="#Function-composition" class="headerlink" title="Function composition"></a>Function composition</h3><p>   嘛，就是 f(g(x)) 可以用 Haskell 寫成 f . g。就是這樣而已！<br>   注意的是 apply to arguments 的部份搭配個 $ , 也就是 f . g $ arg</p>
-<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><blockquote>
-<p>transpose 函數可以反轉一組 List 的 List。</p>
-</blockquote>
-<p>光看中文還蠻容易誤解的，但看了他的例子及看了英文後，這不就轉置嗎？</p>
-<p>馬上想到 Python 是用 Scheme, Python 是用 zip (map) 達成，<br>但考慮到 Haskell 的靜態特性，所以把 var arg 裝到一個 list 成為一個新函數。</p>
-<h2 id="Self-suspicion"><a href="#Self-suspicion" class="headerlink" title="Self suspicion"></a>Self suspicion</h2><blockquote>
-<p>以下是一年前做 Note 提出的疑問。</p>
-</blockquote>
-<ul>
-<li>Q: tuple likes struct, while list likes array ?<br>A: 在念計概的時候有提到 record 這個概念，就是不同型態的資料的集合，所以 tuple 和 struct 都可以算是 record 的一種實作吧。不過 Haskell 也有 Record Syntax。而 list 不是 array，就是 linked list，要 array 的話 Scheme 有 vector，Haskell 裡應該也有類似的東西。</li>
-<li>Q: 試想 zip implement, 是 <code>zip (x:xs) (y:ys) = (x, y) : zip xs ys</code> 而不是 list comprehension [… |  x&lt;-xs, y&lt;-ys, …]，這兩種使用 list element 的方式差別是什麼，後者如何以 recursion 實現。並考慮一下迴圈是否有類似的狀況。<br>A: 上述的 List Comprehension 會是兩層迴圈的情形（窮舉），所以沒辦法使用。之後看到唐鳳介紹 FP 時用 Haskell List Comprehension 做的<a href="https://stackoverflow.com/questions/27333923/haskell-write-zip-function-using-list-comprehension" target="_blank" rel="noopener">例子</a>，估計這 List Comprehension 的內部也有個 zip 的實現在用 pattern matching 去為參數配對吧。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>fp</tag>
-        <tag>haskell</tag>
-        <tag>scheme</tag>
-        <tag>lambda</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Haskell Note （Basic Syntax to Type）</title>
     <url>/2017/01/31/Haskell-Note/</url>
     <content><![CDATA[<center>
@@ -559,6 +484,81 @@ A world without loop , but recursion。<br>
         <tag>fp</tag>
         <tag>haskell</tag>
         <tag>lambda</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Scheme 初學者眼中的 Haskell</title>
+    <url>/2018/02/14/HaskellFromScheme/</url>
+    <content><![CDATA[<center>
+嘛，情人節，和 Haskell 約個會吧！<br>
+因為學完 Scheme 後回來看 Haskell，<br>
+發現有不少地方是已經會的。<br>
+而我覺得記些基本的東西意義不大，<br>
+所以改成以一個接觸過 Scheme 的 FP 初學者角度，<br>
+重新來看待 Haskell 這個語言。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><h3 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h3><p>我記得王垠的 40 行代碼好像有 require pmatch,<br>所以 Scheme 應該是有以 library 實現 pattern matching 的。</p>
+<p>而 Haskell 則是內建此種語言特性，大概可以有三種地方可以用到。</p>
+<ol>
+<li><p>函數定義，可以少去一些 if else</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 注意 match 的順序性</span></span><br><span class="line"><span class="title">fib</span> <span class="number">0</span> = <span class="number">0</span></span><br><span class="line"><span class="title">fib</span> <span class="number">1</span> = <span class="number">1</span></span><br><span class="line"><span class="title">fib</span> x = fib (x - <span class="number">1</span>) + fib (x - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">fib</span> x) <span class="comment">; 懶得寫 = 所以用 case</span></span><br><span class="line">   (<span class="name"><span class="builtin-name">case</span></span> x      <span class="comment">; 不過 racket 其實是用 equal?</span></span><br><span class="line">      [(<span class="name">0</span>) <span class="number">0</span>]   <span class="comment">; R6RS, R5RS 是用 eqv?</span></span><br><span class="line">      [(<span class="name">1</span>) <span class="number">1</span>]</span><br><span class="line">      [<span class="name"><span class="builtin-name">else</span></span> (<span class="name"><span class="builtin-name">+</span></span> (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">1</span>))</span><br><span class="line">               (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">2</span>)))]))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拆 tuple, list</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- as pattern</span></span><br><span class="line"><span class="title">all</span>@a:b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="comment">-- all == [1, 2, 3]</span></span><br><span class="line"><span class="comment">-- a == 1</span></span><br><span class="line"><span class="comment">-- b == [2, 3]</span></span><br><span class="line"></span><br><span class="line">(a, b, c) = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment">-- a == 1, b == 2, c == 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 結合 1. 定義 sum'</span></span><br><span class="line"><span class="title">sum</span> [] = <span class="number">0</span></span><br><span class="line"><span class="title">sum'</span> (x:xs) = x + (sum' xs)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>List comprehension 中</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">[x + y | (x, y) &lt;-zip [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line"><span class="comment">--       ^ match</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Guard"><a href="#Guard" class="headerlink" title="Guard"></a>Guard</h3><p>   感覺之前一直不能接受這個 syntax, 現在看作 cond 就好了。<br>   書中的例子藉由 Guard 定義一個函數。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> bmi <span class="comment">-- *attension! no = here</span></span><br><span class="line">    | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">    | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br></pre></td></tr></table></figure></p>
+<p>   其實就是</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> bmi)</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
+<h3 id="Where"><a href="#Where" class="headerlink" title="Where"></a>Where</h3><p>   用於函數定義中，於定義下方加入 where syntax 做簡易的 binding。</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> weight height <span class="comment">-- *attension! no = here</span></span><br><span class="line">      | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">      | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br><span class="line">        <span class="keyword">where</span></span><br><span class="line">           bim = weight / height ^ <span class="number">2</span></span><br><span class="line">        <span class="comment">-- where 裡面可作 pattern matching 亦可定義函數</span></span><br></pre></td></tr></table></figure>
+<p>   嘛，就是 Scheme 裡的 nested define 嘛。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> weight height)</span><br><span class="line">   (<span class="name"><span class="builtin-name">define</span></span> bim (<span class="name"><span class="builtin-name">/</span></span> weight (<span class="name"><span class="builtin-name">*</span></span> height height)))</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
+<h3 id="Let"><a href="#Let" class="headerlink" title="Let"></a>Let</h3><p>   當然也有 let expression，bindings 和 exprs 用 in 關鍵字隔開<br>   bindings 中可以用 pattern matching，也可以用 ; 隔開每個 binding</p>
+<p>   list comprehension 中也可以用 let bind 一些值，注意有效範圍。</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">   [nv | (x, y) &lt;- lst, <span class="keyword">let</span> nv = x + y, nv &gt; <span class="number">10</span>]</span><br><span class="line"><span class="comment">--  ^^   x-----------x  ^^^^^^^^^^^^^^  ^^^^^^^</span></span><br></pre></td></tr></table></figure>
+<h3 id="Case"><a href="#Case" class="headerlink" title="Case"></a>Case</h3><p>   pattern matching 本質上是 case exprs 的語法糖。<br>   而在我看來 pattern matching 在 Scheme 中也就是 cond 的語法糖 (null? 等函數去判斷）<br>   所以在 case exprs 可以解決的基本上 Guard 也可以解決，而回歸原始，用 if else 解決。<br>   重點是記得適用場景，Guard 用在 Bool，case 用在 pattern matching。<br>   之前這邊一直沒有摸清楚。</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">case</span> expression <span class="keyword">of</span> pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br></pre></td></tr></table></figure>
+<h3 id="HOF"><a href="#HOF" class="headerlink" title="HOF"></a>HOF</h3><p>   與 Scheme 最大的不同就是 Haskell 會自己做 currying。<br>   善用 currying 特性就可以很自然的做出 partially applied function。<br>   如此就不用再寫 lambda 去餵 HOF 啦～</p>
+<p>   還有就是 map 的力量，Haskell 的 map 是 map :: (a -&gt; b) -&gt; [a] -&gt; [b]，<br>   和 Scheme 的 map 不太一樣，Scheme 因為是動態語言所以 map 吃的 function 彈性比較大。<br>   如 <code>(map + &#39;(1 2 3) &#39;(1 2 3))</code> 後面可以接幾個 list 端看前面 function （加號的話可以無限啦～）。<br>   而 Haskell 要用 + 號則是用 zipWith，<code>zipWith (+) [1, 2, 3] [1, 2, 3]</code>。<br>   Haskell map 和 zipWith 也就只是差在 unary 和 binary，依舊不能和 Scheme map 比。<br>   或許有其他方法吧，這就要研究一下 Haskell 的 var args 用法了。</p>
+<p>   一些 Haskell hof 可以玩玩</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">map, filter,</span><br><span class="line">foldl, foldr, foldl1, foldr1,</span><br><span class="line">scahnl, scanr, scanl1, scanr1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意 foldl 系列的第一個參數的型態是 (b -&gt; a -&gt; b)<br>所以在寫 lambda 的時候是 (\ e acc -&gt; expr)<br>而 foldr 系列則是 (a -&gt; b -&gt; b)<br>寫 lambda 的時候則是 (\ acc e -&gt; expr)</p>
+</blockquote>
+<h3 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h3><p>   lambda 寫法 <code>\ bindings -&gt; exprs</code></p>
+<h3 id="的使用"><a href="#的使用" class="headerlink" title="$ 的使用"></a>$ 的使用</h3><p>   $ 號使用，一般下一個元素都會當作參數向左結合，<br>   但是前面有 $ 號的話，就可以不用被當成參數，<br>   直接當成 function apply 到右邊（後面）的參數上，<br>   直到完成，再餵回前面去。</p>
+<p>   還有可以將 data 當 func 特性，如 <code>map ($ 3) [(4+),(10*),(^2),sqrt]</code></p>
+<h3 id="Function-composition"><a href="#Function-composition" class="headerlink" title="Function composition"></a>Function composition</h3><p>   嘛，就是 f(g(x)) 可以用 Haskell 寫成 f . g。就是這樣而已！<br>   注意的是 apply to arguments 的部份搭配個 $ , 也就是 f . g $ arg</p>
+<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><blockquote>
+<p>transpose 函數可以反轉一組 List 的 List。</p>
+</blockquote>
+<p>光看中文還蠻容易誤解的，但看了他的例子及看了英文後，這不就轉置嗎？</p>
+<p>馬上想到 Python 是用 Scheme, Python 是用 zip (map) 達成，<br>但考慮到 Haskell 的靜態特性，所以把 var arg 裝到一個 list 成為一個新函數。</p>
+<h2 id="Self-suspicion"><a href="#Self-suspicion" class="headerlink" title="Self suspicion"></a>Self suspicion</h2><blockquote>
+<p>以下是一年前做 Note 提出的疑問。</p>
+</blockquote>
+<ul>
+<li>Q: tuple likes struct, while list likes array ?<br>A: 在念計概的時候有提到 record 這個概念，就是不同型態的資料的集合，所以 tuple 和 struct 都可以算是 record 的一種實作吧。不過 Haskell 也有 Record Syntax。而 list 不是 array，就是 linked list，要 array 的話 Scheme 有 vector，Haskell 裡應該也有類似的東西。</li>
+<li>Q: 試想 zip implement, 是 <code>zip (x:xs) (y:ys) = (x, y) : zip xs ys</code> 而不是 list comprehension [… |  x&lt;-xs, y&lt;-ys, …]，這兩種使用 list element 的方式差別是什麼，後者如何以 recursion 實現。並考慮一下迴圈是否有類似的狀況。<br>A: 上述的 List Comprehension 會是兩層迴圈的情形（窮舉），所以沒辦法使用。之後看到唐鳳介紹 FP 時用 Haskell List Comprehension 做的<a href="https://stackoverflow.com/questions/27333923/haskell-write-zip-function-using-list-comprehension" target="_blank" rel="noopener">例子</a>，估計這 List Comprehension 的內部也有個 zip 的實現在用 pattern matching 去為參數配對吧。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>fp</tag>
+        <tag>haskell</tag>
+        <tag>lambda</tag>
+        <tag>scheme</tag>
       </tags>
   </entry>
   <entry>
@@ -1900,8 +1900,8 @@ wait to refer:<br>
       </categories>
       <tags>
         <tag>fp</tag>
-        <tag>scheme</tag>
         <tag>lambda</tag>
+        <tag>scheme</tag>
         <tag>lisp</tag>
         <tag>continuation</tag>
       </tags>
