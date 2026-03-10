@@ -392,8 +392,8 @@
       <div class="row">
         <label>活動類型</label>
         <select id="activity-type-filter">
-          <option value="all" selected>All</option>
-          <option value="cycling">Cycling</option>
+          <option value="all">All</option>
+          <option value="cycling" selected>Cycling</option>
           <option value="run">Run</option>
         </select>
       </div>
@@ -595,7 +595,7 @@
     let heatGain = 1.85;
     let startHideKm = 1.0;
     let endHideKm = 1.0;
-    let activityTypeFilter = 'all';
+    let activityTypeFilter = 'cycling';
     let wheelZoomLevel = 'native';
     let wheelZoomStep = 0.03;
     let customWheelZoomEnabled = false;
@@ -1322,6 +1322,76 @@
       return 2 * R * Math.asin(Math.sqrt(x));
     };
 
+    const trackLengthMeters = (points) => {
+      if (!points || points.length < 2) return 0;
+      let acc = 0;
+      for (let i = 1; i < points.length; i += 1) acc += haversineMeters(points[i - 1], points[i]);
+      return acc;
+    };
+
+    const sanitizeTrack = (points, options = {}) => {
+      const jumpThresholdMeters = Number(options.jumpThresholdMeters ?? 3000);
+      const minSegmentPoints = Number(options.minSegmentPoints ?? 8);
+      const minSegmentMeters = Number(options.minSegmentMeters ?? 300);
+      const stats = {
+        removedInvalidPoints: 0,
+        jumpSplits: 0,
+        droppedShortSegments: 0,
+        keptSegments: 0,
+      };
+      if (!points || points.length < 2) return { segments: [], stats };
+
+      const valid = [];
+      for (let i = 0; i < points.length; i += 1) {
+        const p = points[i];
+        const lat = Number(p && p[0]);
+        const lon = Number(p && p[1]);
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+          stats.removedInvalidPoints += 1;
+          continue;
+        }
+        if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+          stats.removedInvalidPoints += 1;
+          continue;
+        }
+        if (Math.abs(lat) < 1e-8 && Math.abs(lon) < 1e-8) {
+          stats.removedInvalidPoints += 1;
+          continue;
+        }
+        valid.push([lat, lon]);
+      }
+      if (valid.length < 2) return { segments: [], stats };
+
+      const rawSegments = [];
+      let cur = [valid[0]];
+      for (let i = 1; i < valid.length; i += 1) {
+        const prev = valid[i - 1];
+        const next = valid[i];
+        const dist = haversineMeters(prev, next);
+        if (dist > jumpThresholdMeters) {
+          stats.jumpSplits += 1;
+          if (cur.length >= 2) rawSegments.push(cur);
+          cur = [next];
+          continue;
+        }
+        cur.push(next);
+      }
+      if (cur.length >= 2) rawSegments.push(cur);
+
+      const kept = [];
+      for (let i = 0; i < rawSegments.length; i += 1) {
+        const seg = rawSegments[i];
+        const len = trackLengthMeters(seg);
+        if (seg.length < minSegmentPoints || len < minSegmentMeters) {
+          stats.droppedShortSegments += 1;
+          continue;
+        }
+        kept.push(seg);
+      }
+      stats.keptSegments = kept.length;
+      return { segments: kept, stats };
+    };
+
     const trimStartByDistance = (points, km) => {
       const threshold = Math.max(0, km) * 1000;
       if (!threshold || points.length < 2) return points;
@@ -1586,6 +1656,10 @@
         let parsedFit = 0;
         let parseError = 0;
         let filteredOut = 0;
+        let removedInvalidPoints = 0;
+        let jumpSplits = 0;
+        let droppedShortSegments = 0;
+        let keptSegments = 0;
 
         for (let i = 0; i < entries.length; i += 1) {
           const e = entries[i];
@@ -1618,8 +1692,6 @@
             continue;
           }
 
-          const routePts = samplePoints(redacted, 40);
-          const heatPts = samplePoints(redacted, 40);
           const stem = stemFromPath(e.name);
           const meta = metaMaps.byId.get(stem) || metaMaps.byFilenameStem.get(stem) || {};
           const actType = String(meta['Activity Type'] || '').trim();
@@ -1636,20 +1708,39 @@
           const elevHighRaw = Number.parseFloat(String(meta['Elevation High'] || ''));
           const movingRaw = Number.parseFloat(String(meta['Moving Time'] || ''));
           const elapsedRaw = Number.parseFloat(String(meta['Elapsed Time'] || ''));
-          routeFeatures.push({
-            ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
-            properties: {
-              name: String(meta['Activity Name'] || e.name),
-              date: String(meta['Activity Date'] || ''),
-              distanceKm: Number.isFinite(distanceRaw) ? distanceRaw / 1000 : Number.NaN,
-              elevGainM: Number.isFinite(elevGainRaw) ? elevGainRaw : Number.NaN,
-              elevHighM: Number.isFinite(elevHighRaw) ? elevHighRaw : Number.NaN,
-              movingSec: Number.isFinite(movingRaw) ? movingRaw : Number.NaN,
-              elapsedSec: Number.isFinite(elapsedRaw) ? elapsedRaw : Number.NaN,
-            },
+          const clean = sanitizeTrack(redacted, {
+            jumpThresholdMeters: 3000,
+            minSegmentPoints: 8,
+            minSegmentMeters: 300,
           });
-          routePts.forEach((p) => bounds.extend([p[0], p[1]]));
-          heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
+          removedInvalidPoints += clean.stats.removedInvalidPoints;
+          jumpSplits += clean.stats.jumpSplits;
+          droppedShortSegments += clean.stats.droppedShortSegments;
+          keptSegments += clean.stats.keptSegments;
+          if (!clean.segments.length) {
+            skippedShort += 1;
+            continue;
+          }
+          for (let s = 0; s < clean.segments.length; s += 1) {
+            const seg = clean.segments[s];
+            const routePts = samplePoints(seg, 40);
+            const heatPts = samplePoints(seg, 40);
+            if (routePts.length < 2) continue;
+            routeFeatures.push({
+              ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
+              properties: {
+                name: String(meta['Activity Name'] || e.name),
+                date: String(meta['Activity Date'] || ''),
+                distanceKm: Number.isFinite(distanceRaw) ? distanceRaw / 1000 : Number.NaN,
+                elevGainM: Number.isFinite(elevGainRaw) ? elevGainRaw : Number.NaN,
+                elevHighM: Number.isFinite(elevHighRaw) ? elevHighRaw : Number.NaN,
+                movingSec: Number.isFinite(movingRaw) ? movingRaw : Number.NaN,
+                elapsedSec: Number.isFinite(elapsedRaw) ? elapsedRaw : Number.NaN,
+              },
+            });
+            routePts.forEach((p) => bounds.extend([p[0], p[1]]));
+            heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
+          }
         }
 
         const heatPoints = Array.from(cellCounts.entries()).map(([k, c]) => cellToHeatPoint(k, 900, c));
@@ -1660,7 +1751,11 @@
         heatLayer.setLatLngs(heatPoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
 
         if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
-        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}。`;
+        if (!routeFeatures.length) {
+          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
+          return true;
+        }
+        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
         return true;
       } catch (err) {
         metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
