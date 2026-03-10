@@ -33,6 +33,8 @@
     }
     .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
     .row label { min-width: 90px; font-size: 13px; color: #111827; }
+    .row.row-no-label { justify-content: flex-start; }
+    .row.row-no-label .btn { flex: 0 0 auto; }
     .row input[type="range"] { flex: 1; }
     .panel input[type="color"] { width: 100%; height: 32px; border: 1px solid #d1d5db; border-radius: 8px; padding: 2px; }
     .row.theme-actions { align-items: stretch; }
@@ -451,10 +453,6 @@
       <label for="zip-input">Strava Zip</label>
       <input id="zip-input" type="file" accept=".zip" />
     </div>
-    <div class="row">
-      <label></label>
-      <button id="demo-btn" class="btn" type="button">載入 Demo</button>
-    </div>
     <div class="meta" id="meta">尚未載入。選擇 Strava export zip 後按「繪圖」。</div>
     <div id="progress-wrap" class="progress-wrap">
       <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
@@ -464,6 +462,10 @@
     <div class="help-link">
       <button id="help-btn" class="btn" type="button">Strava Zip 下載教學</button>
       <button id="share-btn" class="btn" type="button">分享截圖</button>
+    </div>
+    <div class="row row-no-label">
+      <button id="demo-btn" class="btn" type="button">載入示範資料</button>
+      <button id="clear-map-btn" class="btn" type="button" disabled>清除路線</button>
     </div>
     <button id="advanced-toggle" class="spoiler-toggle" type="button">
       進階地圖設定<span class="spoiler-caret">▼</span>
@@ -1322,6 +1324,8 @@
     let mainPanelCollapsed = false;
     let textEditorState = null;
     let isShareDownloading = false;
+    let hasMapData = false;
+    let demoLockedAfterLoad = false;
     shareZonesEl.style.display = 'none';
 
     const updateLabels = () => {
@@ -2624,6 +2628,13 @@
       btn.textContent = isShareDownloading ? '下載中...' : '下載截圖';
     };
 
+    const refreshActionButtons = () => {
+      const clearBtn = el('clear-map-btn');
+      if (clearBtn) clearBtn.disabled = isLoading || !hasMapData;
+      demoBtnEl.disabled = isLoading || demoLockedAfterLoad;
+      demoBtnEl.textContent = isLoading ? '載入中...' : '載入示範資料';
+    };
+
     const stemFromPath = (name) => {
       const base = name.split('/').pop() || name;
       return base.replace(/\.(gpx|fit)(\.gz)?$/i, '');
@@ -2799,11 +2810,10 @@
     let isLoading = false;
     const setLoading = (loading) => {
       isLoading = !!loading;
-      demoBtnEl.disabled = isLoading;
       zipInputEl.disabled = isLoading;
       const applyBtn = el('date-filter-apply-btn');
       if (applyBtn) applyBtn.disabled = isLoading;
-      demoBtnEl.textContent = isLoading ? '載入中...' : '載入 Demo';
+      refreshActionButtons();
       if (!isLoading) clearProgress();
     };
     const drawFromZipBuffer = async (buffer, sourceLabel = 'zip') => {
@@ -2983,6 +2993,9 @@
         heatLayer.setLatLngs(heatPoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
         applyStyle();
         setProgress(100, '完成');
+        hasMapData = routeFeatures.length > 0 || heatPoints.length > 0;
+        if (hasMapData) demoLockedAfterLoad = true;
+        refreshActionButtons();
 
         if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
         if (!routeFeatures.length) {
@@ -3047,6 +3060,21 @@
       } catch (err) {
         metaEl.textContent = `載入 demo 失敗：${err && err.message ? err.message : String(err)}`;
       }
+    });
+    el('clear-map-btn').addEventListener('click', () => {
+      routeLayer.clearLayers();
+      weightedRouteLayer.clearLayers();
+      heatLayer.setLatLngs([]);
+      window.__heatBasePoints = [];
+      hasMapData = false;
+      demoLockedAfterLoad = false;
+      lastZipBuffer = null;
+      lastZipLabel = '';
+      const zipInput = el('zip-input');
+      if (zipInput) zipInput.value = '';
+      clearProgress();
+      refreshActionButtons();
+      metaEl.textContent = '已清除目前路線與熱區。';
     });
 
     const openHelpModal = () => {
@@ -3283,6 +3311,7 @@
 
     applyWheelZoomSensitivity();
     updateLabels();
+    refreshActionButtons();
     applyShareTextSpoiler();
     setAdvancedTab('style');
     syncYearQuickLabels();

@@ -66,427 +66,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Haskell Note （Basic Syntax to Type）</title>
-    <url>/2017/01/31/Haskell-Note/</url>
-    <content><![CDATA[<center>
-A world without loop , but recursion。<br>
-學校 PL 課程，及 <a href="https://learnyoua.haskell.sg/content/zh-tw/" target="_blank" rel="noopener">Haskell 趣學指南</a> 的一些心得筆記。<br>
-<s>更新：戰場轉換到 scheme，scheme 新坑開完再回來。</s><br>
-更更新：我回乃了。
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Some-hints"><a href="#Some-hints" class="headerlink" title="Some hints"></a>Some hints</h2><ul>
-<li>不像 PP , OOP 告訴電腦要做什麼，FP 的思考方式是描述問題。</li>
-<li>function call 有最高優先順序。</li>
-<li>if 在 haskell 裡是 exp 不是 statment</li>
-<li>function name 字首必須小寫 (Type 為大寫）。</li>
-<li>認清 <code>++</code> 和 <code>:</code> ，適時使用<code>:</code>，在<strong>前端</strong>插入元素。</li>
-<li>List 的比較依照字典序。</li>
-</ul>
-<h2 id="Function-list"><a href="#Function-list" class="headerlink" title="Function list"></a>Function list</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">function</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>+</code> , <code>-</code> , <code>*</code> , <code>/</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>mod</code> a b</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&amp;&amp;</code> , &lt;/code&gt;&#124;&#124;&lt;/code&gt; , <code>not</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>==</code> , <code>/=</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&gt;</code>, <code>&gt;=</code> , <code>&lt;</code> ,<code>&lt;=</code></td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center"><code>max</code> a b</td>
-<td style="text-align:center">(a &gt; b ? a : b)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>min</code> a b</td>
-<td style="text-align:center">(a &lt; b ? a : b)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>succ</code> a</td>
-<td style="text-align:center">return ++a;</td>
-</tr>
-<tr>
-<td style="text-align:center">a <code>`</code>func<code>`</code> b</td>
-<td style="text-align:center">func  a b</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>(</code>infixFunc<code>)</code> a b</td>
-<td style="text-align:center">a infixFunc b</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>if</code> boolean <code>then</code> val <br><code>else</code> val</td>
-<td style="text-align:center">boolean ? val : val</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>++</code></td>
-<td style="text-align:center">connect list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>:</code></td>
-<td style="text-align:center">ins elm to list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>!!</code></td>
-<td style="text-align:center">elm in list at idx</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>head</code> [t]</td>
-<td style="text-align:center">first elm in list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>tail</code> [t]</td>
-<td style="text-align:center">a list contains all elm in origin list except head</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>last</code> [t]</td>
-<td style="text-align:center">last elm in list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>init</code> [t]</td>
-<td style="text-align:center">a list contains all elm in origin list except last</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>length</code> [t]</td>
-<td style="text-align:center">the len of list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>null</code> [t]</td>
-<td style="text-align:center">check the list is null , better then [t] == null</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>reverse</code> [t]</td>
-<td style="text-align:center">reverse a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>take</code> num [t]</td>
-<td style="text-align:center">a list contains the first <code>num</code> elm in origin list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>drop</code> num [t]</td>
-<td style="text-align:center">a list which is <br>the origin list removes first <code>num</code> elms</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>maximum</code> [t]</td>
-<td style="text-align:center">the max elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>minimum</code> [t]</td>
-<td style="text-align:center">the min elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>sum</code>  [t]</td>
-<td style="text-align:center">the sum of all elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>product</code> [t]</td>
-<td style="text-align:center">the product of all elm in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>elem</code> [t]</td>
-<td style="text-align:center">check if the elm is in a list</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>..</code></td>
-<td style="text-align:center">range , [elm .. elm] , [elm , elm .. elm]<br>elm avoid using float</td>
-</tr>
-<tr>
-<td style="text-align:center">(<code>cycle</code> [t])</td>
-<td style="text-align:center">a list of cycling orign list</td>
-</tr>
-<tr>
-<td style="text-align:center">(<code>repeat</code>  elm)</td>
-<td style="text-align:center">a inf list made by a elm</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>replicate</code> num elm</td>
-<td style="text-align:center">same as <code>take num (repeat elm)</code></td>
-</tr>
-<tr>
-<td style="text-align:center">[ valOfFunc &lt;/code&gt;&#124;&lt;/code&gt; var* &lt;- [t] <code>, boolean(Guard)*</code> ]<br> <code>_</code> = anonymous var</td>
-<td style="text-align:center">list comprehension</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>fst</code> (t , t)</td>
-<td style="text-align:center">the first elm in tuple(pair)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>snd</code> (t , t)</td>
-<td style="text-align:center">the second elm in tuple(pair)</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>zip</code> [t] [t]</td>
-<td style="text-align:center">make a list of tuple(pair)</td>
-</tr>
-<tr>
-<td style="text-align:center">(\var -&gt; valOfFunc)</td>
-<td style="text-align:center">lambda exp</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>zipWith</code> (t->t’->t’’) [t] [t’]</td>
-<td style="text-align:center">zip two list by a func</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>flip</code> (t->t’’->t’’’)</td>
-<td style="text-align:center">flip the param order of a func call</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>map</code> (t->t’) [t]</td>
-<td style="text-align:center">like for_each , list comprehension</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>filter</code> (t->Bool) [t]</td>
-<td style="text-align:center">like Guard in list comprehension</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>takeWhile</code> t->Bool [t]</td>
-<td style="text-align:center">take elm to return a new list while …</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldl</code> (t->t’->t) t [t’]</td>
-<td style="text-align:center">do … to acc while elm \= []</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldr</code> (t->t’->t) t’ [t]</td>
-<td style="text-align:center">almost simialr to foldl</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldl1</code> (t->t->t) [t’]</td>
-<td style="text-align:center">take head of list as init</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>foldr1</code> (t->t->t) [t’]</td>
-<td style="text-align:center">almost simialr to foldl1</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanl</code> (t->t’->t) t [t’]</td>
-<td style="text-align:center">acc operated val to list from left</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanr</code> (t->t’->t) t’ [t]</td>
-<td style="text-align:center">acc operated val to list from right</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanl1</code> (t->t->t) [t]</td>
-<td style="text-align:center">omit</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>scanr1</code> (t->t->t) [t]</td>
-<td style="text-align:center">omit</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><h4 id="type"><a href="#type" class="headerlink" title="type"></a>type</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Type</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Bool</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Int</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Integer</td>
-<td style="text-align:center">Big Num , operations are not efficient as Int</td>
-</tr>
-<tr>
-<td style="text-align:center">Float</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Double</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Char</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Maybe</td>
-<td style="text-align:center">Nothing or single elm</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h4 id="structure"><a href="#structure" class="headerlink" title="structure"></a>structure</h4><div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Structure</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">List</td>
-<td style="text-align:center">[]</td>
-</tr>
-<tr>
-<td style="text-align:center">Tuple</td>
-<td style="text-align:center">()</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Typeclass"><a href="#Typeclass" class="headerlink" title="Typeclass"></a>Typeclass</h2><p>不禁讓我想到統計的三個 data Type , interval , odinal , categorical。</p>
-<p><code>=&gt;</code>符號左邊是型態約束（表示此 Type Var 屬於哪個 Typeclass)，<br>右邊是引數和回傳值。用於描述函式原型 (?)。</p>
-<p>例如將一般數字型態轉為更通用的 Integral 的函式 <code>fromIntegral</code><br>其定義為 <code>fromIntegral :: (Num b, Integral a) =&gt; a -&gt; b</code></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">Typeclass</th>
-<th style="text-align:center">Feature</th>
-<th style="text-align:center">Example type</th>
-<th style="text-align:center">support func</th>
-<th style="text-align:center">Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">Eq</td>
-<td style="text-align:center">可判斷相等</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">==</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Ord</td>
-<td style="text-align:center">可排序</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">&gt; , &lt; , &gt;= , &lt;= , compare</td>
-<td style="text-align:center">有 Eq 特性</td>
-</tr>
-<tr>
-<td style="text-align:center">Show</td>
-<td style="text-align:center">可轉字串</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">show</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Read</td>
-<td style="text-align:center">可由字串轉</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">read</td>
-<td style="text-align:center">注意聲明，否則型態推導可能沒辦法 work</td>
-</tr>
-<tr>
-<td style="text-align:center">Enum</td>
-<td style="text-align:center">順序可枚舉</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">.. , succ , pred</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Bounded</td>
-<td style="text-align:center">有上下界</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">minBound , maxBound</td>
-<td style="text-align:center">若 Tuple 內皆為 Bounded ， <br>則此 Tuple 亦有 Bounded 特性。</td>
-</tr>
-<tr>
-<td style="text-align:center">Num</td>
-<td style="text-align:center">數字類型</td>
-<td style="text-align:center">Int …</td>
-<td style="text-align:center">fromIntegral</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Integral</td>
-<td style="text-align:center">整數類型</td>
-<td style="text-align:center">Integer</td>
-<td style="text-align:center">fromIntegral</td>
-<td style="text-align:center"></td>
-</tr>
-<tr>
-<td style="text-align:center">Floating</td>
-<td style="text-align:center">浮點數類型</td>
-<td style="text-align:center">Float</td>
-<td style="text-align:center"></td>
-<td style="text-align:center"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h2><ul>
-<li>順序很重要</li>
-</ul>
-<ol>
-<li>函式定義內對參數的 pattern matching<br>一開始提到的是可以在 .hs 中像 select case 全部啪出來，不用 if else，在 ghci <a href="http://stackoverflow.com/questions/15733266/pattern-matching-in-ghci" target="_blank" rel="noopener">需要用 guard</a>。<br>其實是 case of 的語法糖。</li>
-<li>函式引數和參數的 pattern matching<br>其實就是參數可以將引數拆開（我用詞好<a href="http://no8dyzxc.pixnet.net/blog/post/290731567" target="_blank" rel="noopener">精準</a> >///&lt;)，好用。</li>
-<li>List Comprehension 的 pattern matching<br>指南的例子 : <code>[a + b | (a , b) &lt;- xs]</code></li>
-</ol>
-<ul>
-<li><p>以上前兩點是我亂叫的，意思知道就好。（奪門而出</p>
-<p>還有一種 at pattern , xs@(a:as)，表示把 xs 拆成 (a:as)。</p>
-</li>
-</ul>
-<h2 id="Guard-amp-Key-words"><a href="#Guard-amp-Key-words" class="headerlink" title="Guard &amp; Key words"></a>Guard &amp; Key words</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">func</span> param</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    <span class="comment">--let keyword(can be anywhere)</span></span><br><span class="line">    | [bool exp] = <span class="keyword">let</span> [name binding;...;...] <span class="keyword">in</span> [exp]</span><br><span class="line">    ...</span><br><span class="line">    | otherwise = val</span><br><span class="line">    <span class="comment">--where keyword(must be the structure end)</span></span><br><span class="line">    <span class="keyword">where</span> [name binding]</span><br><span class="line">          [function def balala]</span><br><span class="line"></span><br><span class="line"><span class="comment">--let keyword in list comprehension</span></span><br><span class="line">[nameCanSee | nameCannotSee , <span class="keyword">let</span> [name binding]]</span><br><span class="line">[nameCannotSee | nameCannotSee , <span class="keyword">let</span> [name binding] <span class="keyword">in</span> [bool exp]]</span><br><span class="line"></span><br><span class="line"><span class="title">func</span> param = <span class="keyword">case</span> [exp] <span class="keyword">of</span> [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br></pre></td></tr></table></figure>
-<h2 id="High-Order-Function"><a href="#High-Order-Function" class="headerlink" title="High Order Function"></a>High Order Function</h2><ul>
-<li><p>Curried functions = 不完全的 function<br>ex:</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen = max <span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen <span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; addThree = (+<span class="number">3</span>)</span><br><span class="line"><span class="title">ghci</span> &gt; addThree <span class="number">10</span></span><br><span class="line"><span class="number">13</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>High Order function = take function as parameter (<strong>Or return a function</strong>)</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt;  applyTwice func x = func (func x)</span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice addThree <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice (+<span class="number">3</span>) <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code>$</code> and <code>.</code></p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">$ comb to right</span><br><span class="line"></span><br><span class="line"><span class="title">f</span>(g(x)) = f . g $ x</span><br><span class="line"></span><br><span class="line"><span class="title">sum</span> . map (*<span class="number">3</span>) $ [<span class="number">1.</span><span class="number">.9</span>]</span><br><span class="line">(int)sum(list) . (list)map (*<span class="number">3</span>)(list) $ (list)[<span class="number">1.</span><span class="number">.9</span>]</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><p>引入函式庫。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">--in .hs</span></span><br><span class="line"><span class="keyword">import</span> Data.List</span><br><span class="line"><span class="keyword">import</span> Data.List <span class="keyword">hiding</span> (<span class="title">nub</span>)  <span class="comment">--ignore nub in module</span></span><br><span class="line"><span class="keyword">import</span> Data.List (<span class="title">nub</span>，<span class="title">sort</span>)   <span class="comment">--only import num 'n sort</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map      <span class="comment">--need use 'Data.Map.func' to call func</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map <span class="keyword">as</span> M <span class="comment">--can alias 'Data.Map' to 'M'</span></span><br><span class="line"><span class="comment">--in ghci can also use</span></span><br><span class="line">:m <span class="type">Data</span>.<span class="type">List</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="Our-own-data-type"><a href="#Our-own-data-type" class="headerlink" title="Our own data type"></a>Our own data type</h2><blockquote>
-<p>永遠不要在 data 聲明中加型別約束</p>
-</blockquote>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- Object method</span></span><br><span class="line"><span class="comment">-- data Typename = valueConstructor param ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Circle</span> = <span class="type">Circle</span> <span class="type">Float</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Enum method</span></span><br><span class="line"><span class="comment">-- data Typename = v0 | v1 | v2 ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tue</span> | <span class="type">Wed</span> | <span class="type">Thu</span> | <span class="type">Fri</span> | <span class="type">Sat</span> | <span class="type">Sun</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Point</span> = <span class="type">Point</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Shape</span> = <span class="type">Circle</span> <span class="type">Point</span> <span class="type">Float</span> | <span class="type">Rectangle</span> <span class="type">Point</span> <span class="type">Point</span></span></span><br><span class="line"></span><br><span class="line"><span class="title">modlue</span> <span class="type">Shape</span></span><br><span class="line">( <span class="type">Point</span> (..) <span class="comment">-- export all value constructor</span></span><br><span class="line">, <span class="type">Shape</span> (<span class="type">Circle</span> , <span class="type">Rectangle</span>) <span class="comment">-- export Circle and Rectangle</span></span><br><span class="line">, surface <span class="comment">-- function name</span></span><br><span class="line">, baseCircle <span class="comment">-- auxilliary function , baseCircle :: Float -&gt; Float -&gt; Shape</span></span><br><span class="line">) <span class="keyword">where</span></span><br><span class="line"><span class="comment">-- 可以選擇不導出 value constructor，這樣強迫使用者使用 auxilliary function，</span></span><br><span class="line"><span class="comment">-- 避免使用者直接對 value constructor 做 pattern matching，一個封裝的概念。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- record syntax avoid writting boring "get functions"</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Person</span> = <span class="type">Person</span> &#123; <span class="title">firstName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">lastName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">age</span> :: <span class="type">Int</span></span></span><br><span class="line"><span class="class">                     , <span class="title">height</span> :: <span class="type">Float</span></span></span><br><span class="line"><span class="class">                     , <span class="title">phoneNumber</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">secCrush</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     &#125; <span class="keyword">deriving</span> (<span class="type">Show</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">ghci</span> &gt; secCrush me</span><br><span class="line"><span class="string">"\x4a\x79\x75\x6e\x2d\x59\x69\x20\x4a\x68\x61\x6e\x67"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- deriving</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tues</span> | <span class="type">Wed</span> | <span class="type">Thur</span> | <span class="type">Fri</span> <span class="keyword">deriving</span> (<span class="type">Eq</span> , <span class="type">Ord</span> , <span class="type">Bounded</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type key word to alias type</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [char]</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> v = <span class="type">Map</span> <span class="type">Int</span> v</span></span><br><span class="line"><span class="comment">-- same as</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> = <span class="type">Map</span> <span class="type">Int</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- operator</span></span><br><span class="line"><span class="comment">-- infix[lr] seq symbol</span></span><br><span class="line"><span class="keyword">infixr</span> <span class="number">5</span> ++</span><br><span class="line"></span><br><span class="line"><span class="comment">-- an example of binary search tree</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Tree</span> a = <span class="type">EmptyTree</span> | <span class="type">Node</span> a (<span class="type">Tree</span> <span class="title">a</span>) (<span class="type">Tree</span> <span class="title">a</span>) <span class="keyword">deriving</span> (<span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Eq</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">singleton</span> x = <span class="type">Node</span> x <span class="type">EmptyTree</span> <span class="type">EmptyTree</span></span><br><span class="line"></span><br><span class="line"><span class="title">treeInsert</span> x <span class="type">EmptyTree</span> = singleton x</span><br><span class="line"><span class="title">treeInsert</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">      | x == a = <span class="type">Node</span> x left right</span><br><span class="line">      | x &lt; a  = <span class="type">Node</span> a (treeInsert x left) right</span><br><span class="line">      | x &gt; a  = <span class="type">Node</span> a left (treeInsert x right)</span><br><span class="line"></span><br><span class="line"><span class="title">treeElem</span> x <span class="type">EmptyTree</span> = <span class="type">False</span></span><br><span class="line"><span class="title">treeElem</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">    | x == a = <span class="type">True</span></span><br><span class="line">    | x &lt; a  = treeElem x left</span><br><span class="line">    | x &gt; a  = treeElem x right</span><br><span class="line"></span><br><span class="line"><span class="title">mkTree</span> ls = foldr treeInsert <span class="type">EmptyTree</span> ls</span><br></pre></td></tr></table></figure>
-<p>typeclass<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 先前有介紹過 TypeClass，在這裡我們為自己的資料型態加上 TypeClass</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Monday</span> | <span class="type">Tuesday</span> | <span class="type">Wednesday</span> | <span class="type">Thursday</span> | <span class="type">Friday</span> | <span class="type">Saturday</span> | <span class="type">Sunday</span></span></span><br><span class="line">           <span class="keyword">deriving</span> (<span class="type">Eq</span>, <span class="type">Ord</span>, <span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Bounded</span>, <span class="type">Enum</span>)</span><br><span class="line"><span class="comment">-- Eq 可比 , Ord 排序由左至右分別是小到大 , Show &amp; Read 提供 IO , Bounded 提供上下界 , Enum 順序枚舉</span></span><br><span class="line"><span class="comment">-- 因為 Enum 的特性，可以使用</span></span><br><span class="line">[minBound .. maxBound] :: [<span class="type">Day</span>]</span><br></pre></td></tr></table></figure></p>
-<p>type key word and the type constructor<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- type 提供了一個對類別不錯的 alias 方法</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [<span class="type">Char</span>] <span class="comment">-- 最常見的</span></span></span><br><span class="line"><span class="comment">-- 我們寫 Function 在宣告可能會用到</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type constructor</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">AssocList</span> k v = [(<span class="title">k</span>,<span class="title">v</span>)]</span></span><br><span class="line"><span class="comment">-- 用法嘛，宣告用（應該不只這樣，再想想）</span></span><br><span class="line">[(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">4</span>,<span class="number">5</span>),(<span class="number">7</span>,<span class="number">9</span>)] :: <span class="type">AssocList</span> <span class="type">Int</span> <span class="type">Int</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="Questions"><a href="#Questions" class="headerlink" title="Questions?"></a>Questions?</h2><ul>
-<li>tuple likes struct , while list likes array ?</li>
-<li>那就是右摺疊可以處理無限長度的資料結構，而左摺疊不可以。<br>（因為 Lazy Eval 所以 foldr 可以跑出結果，foldl 會無窮）<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">head'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">head'</span> = foldr1 (\x _ -&gt; x)</span><br><span class="line"><span class="title">last'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">last'</span> = foldl1 (\_ x -&gt; x)</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>fp</tag>
-        <tag>haskell</tag>
-        <tag>lambda</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Scheme 初學者眼中的 Haskell</title>
     <url>/2018/02/14/HaskellFromScheme/</url>
     <content><![CDATA[<center>
@@ -557,8 +136,8 @@ A world without loop , but recursion。<br>
       <tags>
         <tag>fp</tag>
         <tag>haskell</tag>
-        <tag>lambda</tag>
         <tag>scheme</tag>
+        <tag>lambda</tag>
       </tags>
   </entry>
   <entry>
@@ -1059,6 +638,427 @@ A world without loop , but recursion。<br>
       </categories>
       <tags>
         <tag>sql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Haskell Note （Basic Syntax to Type）</title>
+    <url>/2017/01/31/Haskell-Note/</url>
+    <content><![CDATA[<center>
+A world without loop , but recursion。<br>
+學校 PL 課程，及 <a href="https://learnyoua.haskell.sg/content/zh-tw/" target="_blank" rel="noopener">Haskell 趣學指南</a> 的一些心得筆記。<br>
+<s>更新：戰場轉換到 scheme，scheme 新坑開完再回來。</s><br>
+更更新：我回乃了。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Some-hints"><a href="#Some-hints" class="headerlink" title="Some hints"></a>Some hints</h2><ul>
+<li>不像 PP , OOP 告訴電腦要做什麼，FP 的思考方式是描述問題。</li>
+<li>function call 有最高優先順序。</li>
+<li>if 在 haskell 裡是 exp 不是 statment</li>
+<li>function name 字首必須小寫 (Type 為大寫）。</li>
+<li>認清 <code>++</code> 和 <code>:</code> ，適時使用<code>:</code>，在<strong>前端</strong>插入元素。</li>
+<li>List 的比較依照字典序。</li>
+</ul>
+<h2 id="Function-list"><a href="#Function-list" class="headerlink" title="Function list"></a>Function list</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">function</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>+</code> , <code>-</code> , <code>*</code> , <code>/</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>mod</code> a b</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;&amp;</code> , &lt;/code&gt;&#124;&#124;&lt;/code&gt; , <code>not</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>==</code> , <code>/=</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&gt;</code>, <code>&gt;=</code> , <code>&lt;</code> ,<code>&lt;=</code></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>max</code> a b</td>
+<td style="text-align:center">(a &gt; b ? a : b)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>min</code> a b</td>
+<td style="text-align:center">(a &lt; b ? a : b)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>succ</code> a</td>
+<td style="text-align:center">return ++a;</td>
+</tr>
+<tr>
+<td style="text-align:center">a <code>`</code>func<code>`</code> b</td>
+<td style="text-align:center">func  a b</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>(</code>infixFunc<code>)</code> a b</td>
+<td style="text-align:center">a infixFunc b</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>if</code> boolean <code>then</code> val <br><code>else</code> val</td>
+<td style="text-align:center">boolean ? val : val</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>++</code></td>
+<td style="text-align:center">connect list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>:</code></td>
+<td style="text-align:center">ins elm to list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>!!</code></td>
+<td style="text-align:center">elm in list at idx</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>head</code> [t]</td>
+<td style="text-align:center">first elm in list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>tail</code> [t]</td>
+<td style="text-align:center">a list contains all elm in origin list except head</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>last</code> [t]</td>
+<td style="text-align:center">last elm in list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>init</code> [t]</td>
+<td style="text-align:center">a list contains all elm in origin list except last</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>length</code> [t]</td>
+<td style="text-align:center">the len of list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>null</code> [t]</td>
+<td style="text-align:center">check the list is null , better then [t] == null</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>reverse</code> [t]</td>
+<td style="text-align:center">reverse a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>take</code> num [t]</td>
+<td style="text-align:center">a list contains the first <code>num</code> elm in origin list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>drop</code> num [t]</td>
+<td style="text-align:center">a list which is <br>the origin list removes first <code>num</code> elms</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>maximum</code> [t]</td>
+<td style="text-align:center">the max elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>minimum</code> [t]</td>
+<td style="text-align:center">the min elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>sum</code>  [t]</td>
+<td style="text-align:center">the sum of all elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>product</code> [t]</td>
+<td style="text-align:center">the product of all elm in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>elem</code> [t]</td>
+<td style="text-align:center">check if the elm is in a list</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>..</code></td>
+<td style="text-align:center">range , [elm .. elm] , [elm , elm .. elm]<br>elm avoid using float</td>
+</tr>
+<tr>
+<td style="text-align:center">(<code>cycle</code> [t])</td>
+<td style="text-align:center">a list of cycling orign list</td>
+</tr>
+<tr>
+<td style="text-align:center">(<code>repeat</code>  elm)</td>
+<td style="text-align:center">a inf list made by a elm</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>replicate</code> num elm</td>
+<td style="text-align:center">same as <code>take num (repeat elm)</code></td>
+</tr>
+<tr>
+<td style="text-align:center">[ valOfFunc &lt;/code&gt;&#124;&lt;/code&gt; var* &lt;- [t] <code>, boolean(Guard)*</code> ]<br> <code>_</code> = anonymous var</td>
+<td style="text-align:center">list comprehension</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>fst</code> (t , t)</td>
+<td style="text-align:center">the first elm in tuple(pair)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>snd</code> (t , t)</td>
+<td style="text-align:center">the second elm in tuple(pair)</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>zip</code> [t] [t]</td>
+<td style="text-align:center">make a list of tuple(pair)</td>
+</tr>
+<tr>
+<td style="text-align:center">(\var -&gt; valOfFunc)</td>
+<td style="text-align:center">lambda exp</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>zipWith</code> (t->t’->t’’) [t] [t’]</td>
+<td style="text-align:center">zip two list by a func</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>flip</code> (t->t’’->t’’’)</td>
+<td style="text-align:center">flip the param order of a func call</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>map</code> (t->t’) [t]</td>
+<td style="text-align:center">like for_each , list comprehension</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>filter</code> (t->Bool) [t]</td>
+<td style="text-align:center">like Guard in list comprehension</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>takeWhile</code> t->Bool [t]</td>
+<td style="text-align:center">take elm to return a new list while …</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldl</code> (t->t’->t) t [t’]</td>
+<td style="text-align:center">do … to acc while elm \= []</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldr</code> (t->t’->t) t’ [t]</td>
+<td style="text-align:center">almost simialr to foldl</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldl1</code> (t->t->t) [t’]</td>
+<td style="text-align:center">take head of list as init</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>foldr1</code> (t->t->t) [t’]</td>
+<td style="text-align:center">almost simialr to foldl1</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanl</code> (t->t’->t) t [t’]</td>
+<td style="text-align:center">acc operated val to list from left</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanr</code> (t->t’->t) t’ [t]</td>
+<td style="text-align:center">acc operated val to list from right</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanl1</code> (t->t->t) [t]</td>
+<td style="text-align:center">omit</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>scanr1</code> (t->t->t) [t]</td>
+<td style="text-align:center">omit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><h4 id="type"><a href="#type" class="headerlink" title="type"></a>type</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Bool</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Int</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Integer</td>
+<td style="text-align:center">Big Num , operations are not efficient as Int</td>
+</tr>
+<tr>
+<td style="text-align:center">Float</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Double</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Char</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Maybe</td>
+<td style="text-align:center">Nothing or single elm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="structure"><a href="#structure" class="headerlink" title="structure"></a>structure</h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Structure</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">List</td>
+<td style="text-align:center">[]</td>
+</tr>
+<tr>
+<td style="text-align:center">Tuple</td>
+<td style="text-align:center">()</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Typeclass"><a href="#Typeclass" class="headerlink" title="Typeclass"></a>Typeclass</h2><p>不禁讓我想到統計的三個 data Type , interval , odinal , categorical。</p>
+<p><code>=&gt;</code>符號左邊是型態約束（表示此 Type Var 屬於哪個 Typeclass)，<br>右邊是引數和回傳值。用於描述函式原型 (?)。</p>
+<p>例如將一般數字型態轉為更通用的 Integral 的函式 <code>fromIntegral</code><br>其定義為 <code>fromIntegral :: (Num b, Integral a) =&gt; a -&gt; b</code></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Typeclass</th>
+<th style="text-align:center">Feature</th>
+<th style="text-align:center">Example type</th>
+<th style="text-align:center">support func</th>
+<th style="text-align:center">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Eq</td>
+<td style="text-align:center">可判斷相等</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">==</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Ord</td>
+<td style="text-align:center">可排序</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">&gt; , &lt; , &gt;= , &lt;= , compare</td>
+<td style="text-align:center">有 Eq 特性</td>
+</tr>
+<tr>
+<td style="text-align:center">Show</td>
+<td style="text-align:center">可轉字串</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">show</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Read</td>
+<td style="text-align:center">可由字串轉</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">read</td>
+<td style="text-align:center">注意聲明，否則型態推導可能沒辦法 work</td>
+</tr>
+<tr>
+<td style="text-align:center">Enum</td>
+<td style="text-align:center">順序可枚舉</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">.. , succ , pred</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Bounded</td>
+<td style="text-align:center">有上下界</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">minBound , maxBound</td>
+<td style="text-align:center">若 Tuple 內皆為 Bounded ， <br>則此 Tuple 亦有 Bounded 特性。</td>
+</tr>
+<tr>
+<td style="text-align:center">Num</td>
+<td style="text-align:center">數字類型</td>
+<td style="text-align:center">Int …</td>
+<td style="text-align:center">fromIntegral</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Integral</td>
+<td style="text-align:center">整數類型</td>
+<td style="text-align:center">Integer</td>
+<td style="text-align:center">fromIntegral</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">Floating</td>
+<td style="text-align:center">浮點數類型</td>
+<td style="text-align:center">Float</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h2><ul>
+<li>順序很重要</li>
+</ul>
+<ol>
+<li>函式定義內對參數的 pattern matching<br>一開始提到的是可以在 .hs 中像 select case 全部啪出來，不用 if else，在 ghci <a href="http://stackoverflow.com/questions/15733266/pattern-matching-in-ghci" target="_blank" rel="noopener">需要用 guard</a>。<br>其實是 case of 的語法糖。</li>
+<li>函式引數和參數的 pattern matching<br>其實就是參數可以將引數拆開（我用詞好<a href="http://no8dyzxc.pixnet.net/blog/post/290731567" target="_blank" rel="noopener">精準</a> >///&lt;)，好用。</li>
+<li>List Comprehension 的 pattern matching<br>指南的例子 : <code>[a + b | (a , b) &lt;- xs]</code></li>
+</ol>
+<ul>
+<li><p>以上前兩點是我亂叫的，意思知道就好。（奪門而出</p>
+<p>還有一種 at pattern , xs@(a:as)，表示把 xs 拆成 (a:as)。</p>
+</li>
+</ul>
+<h2 id="Guard-amp-Key-words"><a href="#Guard-amp-Key-words" class="headerlink" title="Guard &amp; Key words"></a>Guard &amp; Key words</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">func</span> param</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    | [bool exp] = val</span><br><span class="line">    <span class="comment">--let keyword(can be anywhere)</span></span><br><span class="line">    | [bool exp] = <span class="keyword">let</span> [name binding;...;...] <span class="keyword">in</span> [exp]</span><br><span class="line">    ...</span><br><span class="line">    | otherwise = val</span><br><span class="line">    <span class="comment">--where keyword(must be the structure end)</span></span><br><span class="line">    <span class="keyword">where</span> [name binding]</span><br><span class="line">          [function def balala]</span><br><span class="line"></span><br><span class="line"><span class="comment">--let keyword in list comprehension</span></span><br><span class="line">[nameCanSee | nameCannotSee , <span class="keyword">let</span> [name binding]]</span><br><span class="line">[nameCannotSee | nameCannotSee , <span class="keyword">let</span> [name binding] <span class="keyword">in</span> [bool exp]]</span><br><span class="line"></span><br><span class="line"><span class="title">func</span> param = <span class="keyword">case</span> [exp] <span class="keyword">of</span> [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br><span class="line">                          [pattern] -&gt; val</span><br></pre></td></tr></table></figure>
+<h2 id="High-Order-Function"><a href="#High-Order-Function" class="headerlink" title="High Order Function"></a>High Order Function</h2><ul>
+<li><p>Curried functions = 不完全的 function<br>ex:</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen = max <span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; tkMaxCmpWithTen <span class="number">9</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="title">ghci</span> &gt; addThree = (+<span class="number">3</span>)</span><br><span class="line"><span class="title">ghci</span> &gt; addThree <span class="number">10</span></span><br><span class="line"><span class="number">13</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>High Order function = take function as parameter (<strong>Or return a function</strong>)</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">ghci</span> &gt;  applyTwice func x = func (func x)</span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice addThree <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br><span class="line"><span class="title">ghci</span> &gt; applyTwice (+<span class="number">3</span>) <span class="number">10</span></span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>$</code> and <code>.</code></p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">$ comb to right</span><br><span class="line"></span><br><span class="line"><span class="title">f</span>(g(x)) = f . g $ x</span><br><span class="line"></span><br><span class="line"><span class="title">sum</span> . map (*<span class="number">3</span>) $ [<span class="number">1.</span><span class="number">.9</span>]</span><br><span class="line">(int)sum(list) . (list)map (*<span class="number">3</span>)(list) $ (list)[<span class="number">1.</span><span class="number">.9</span>]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><p>引入函式庫。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">--in .hs</span></span><br><span class="line"><span class="keyword">import</span> Data.List</span><br><span class="line"><span class="keyword">import</span> Data.List <span class="keyword">hiding</span> (<span class="title">nub</span>)  <span class="comment">--ignore nub in module</span></span><br><span class="line"><span class="keyword">import</span> Data.List (<span class="title">nub</span>，<span class="title">sort</span>)   <span class="comment">--only import num 'n sort</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map      <span class="comment">--need use 'Data.Map.func' to call func</span></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">qualified</span> Data.Map <span class="keyword">as</span> M <span class="comment">--can alias 'Data.Map' to 'M'</span></span><br><span class="line"><span class="comment">--in ghci can also use</span></span><br><span class="line">:m <span class="type">Data</span>.<span class="type">List</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Our-own-data-type"><a href="#Our-own-data-type" class="headerlink" title="Our own data type"></a>Our own data type</h2><blockquote>
+<p>永遠不要在 data 聲明中加型別約束</p>
+</blockquote>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- Object method</span></span><br><span class="line"><span class="comment">-- data Typename = valueConstructor param ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Circle</span> = <span class="type">Circle</span> <span class="type">Float</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Enum method</span></span><br><span class="line"><span class="comment">-- data Typename = v0 | v1 | v2 ...</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tue</span> | <span class="type">Wed</span> | <span class="type">Thu</span> | <span class="type">Fri</span> | <span class="type">Sat</span> | <span class="type">Sun</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Point</span> = <span class="type">Point</span> <span class="type">Float</span> <span class="type">Float</span></span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Shape</span> = <span class="type">Circle</span> <span class="type">Point</span> <span class="type">Float</span> | <span class="type">Rectangle</span> <span class="type">Point</span> <span class="type">Point</span></span></span><br><span class="line"></span><br><span class="line"><span class="title">modlue</span> <span class="type">Shape</span></span><br><span class="line">( <span class="type">Point</span> (..) <span class="comment">-- export all value constructor</span></span><br><span class="line">, <span class="type">Shape</span> (<span class="type">Circle</span> , <span class="type">Rectangle</span>) <span class="comment">-- export Circle and Rectangle</span></span><br><span class="line">, surface <span class="comment">-- function name</span></span><br><span class="line">, baseCircle <span class="comment">-- auxilliary function , baseCircle :: Float -&gt; Float -&gt; Shape</span></span><br><span class="line">) <span class="keyword">where</span></span><br><span class="line"><span class="comment">-- 可以選擇不導出 value constructor，這樣強迫使用者使用 auxilliary function，</span></span><br><span class="line"><span class="comment">-- 避免使用者直接對 value constructor 做 pattern matching，一個封裝的概念。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- record syntax avoid writting boring "get functions"</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Person</span> = <span class="type">Person</span> &#123; <span class="title">firstName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">lastName</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">age</span> :: <span class="type">Int</span></span></span><br><span class="line"><span class="class">                     , <span class="title">height</span> :: <span class="type">Float</span></span></span><br><span class="line"><span class="class">                     , <span class="title">phoneNumber</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     , <span class="title">secCrush</span> :: <span class="type">String</span></span></span><br><span class="line"><span class="class">                     &#125; <span class="keyword">deriving</span> (<span class="type">Show</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">ghci</span> &gt; secCrush me</span><br><span class="line"><span class="string">"\x4a\x79\x75\x6e\x2d\x59\x69\x20\x4a\x68\x61\x6e\x67"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- deriving</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Mon</span> | <span class="type">Tues</span> | <span class="type">Wed</span> | <span class="type">Thur</span> | <span class="type">Fri</span> <span class="keyword">deriving</span> (<span class="type">Eq</span> , <span class="type">Ord</span> , <span class="type">Bounded</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type key word to alias type</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [char]</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> v = <span class="type">Map</span> <span class="type">Int</span> v</span></span><br><span class="line"><span class="comment">-- same as</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">IntMap</span> = <span class="type">Map</span> <span class="type">Int</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- operator</span></span><br><span class="line"><span class="comment">-- infix[lr] seq symbol</span></span><br><span class="line"><span class="keyword">infixr</span> <span class="number">5</span> ++</span><br><span class="line"></span><br><span class="line"><span class="comment">-- an example of binary search tree</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Tree</span> a = <span class="type">EmptyTree</span> | <span class="type">Node</span> a (<span class="type">Tree</span> <span class="title">a</span>) (<span class="type">Tree</span> <span class="title">a</span>) <span class="keyword">deriving</span> (<span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Eq</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="title">singleton</span> x = <span class="type">Node</span> x <span class="type">EmptyTree</span> <span class="type">EmptyTree</span></span><br><span class="line"></span><br><span class="line"><span class="title">treeInsert</span> x <span class="type">EmptyTree</span> = singleton x</span><br><span class="line"><span class="title">treeInsert</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">      | x == a = <span class="type">Node</span> x left right</span><br><span class="line">      | x &lt; a  = <span class="type">Node</span> a (treeInsert x left) right</span><br><span class="line">      | x &gt; a  = <span class="type">Node</span> a left (treeInsert x right)</span><br><span class="line"></span><br><span class="line"><span class="title">treeElem</span> x <span class="type">EmptyTree</span> = <span class="type">False</span></span><br><span class="line"><span class="title">treeElem</span> x (<span class="type">Node</span> a left right)</span><br><span class="line">    | x == a = <span class="type">True</span></span><br><span class="line">    | x &lt; a  = treeElem x left</span><br><span class="line">    | x &gt; a  = treeElem x right</span><br><span class="line"></span><br><span class="line"><span class="title">mkTree</span> ls = foldr treeInsert <span class="type">EmptyTree</span> ls</span><br></pre></td></tr></table></figure>
+<p>typeclass<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 先前有介紹過 TypeClass，在這裡我們為自己的資料型態加上 TypeClass</span></span><br><span class="line"><span class="class"><span class="keyword">data</span> <span class="type">Day</span> = <span class="type">Monday</span> | <span class="type">Tuesday</span> | <span class="type">Wednesday</span> | <span class="type">Thursday</span> | <span class="type">Friday</span> | <span class="type">Saturday</span> | <span class="type">Sunday</span></span></span><br><span class="line">           <span class="keyword">deriving</span> (<span class="type">Eq</span>, <span class="type">Ord</span>, <span class="type">Show</span>, <span class="type">Read</span>, <span class="type">Bounded</span>, <span class="type">Enum</span>)</span><br><span class="line"><span class="comment">-- Eq 可比 , Ord 排序由左至右分別是小到大 , Show &amp; Read 提供 IO , Bounded 提供上下界 , Enum 順序枚舉</span></span><br><span class="line"><span class="comment">-- 因為 Enum 的特性，可以使用</span></span><br><span class="line">[minBound .. maxBound] :: [<span class="type">Day</span>]</span><br></pre></td></tr></table></figure></p>
+<p>type key word and the type constructor<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- type 提供了一個對類別不錯的 alias 方法</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">String</span> = [<span class="type">Char</span>] <span class="comment">-- 最常見的</span></span></span><br><span class="line"><span class="comment">-- 我們寫 Function 在宣告可能會用到</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- type constructor</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="type">AssocList</span> k v = [(<span class="title">k</span>,<span class="title">v</span>)]</span></span><br><span class="line"><span class="comment">-- 用法嘛，宣告用（應該不只這樣，再想想）</span></span><br><span class="line">[(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">4</span>,<span class="number">5</span>),(<span class="number">7</span>,<span class="number">9</span>)] :: <span class="type">AssocList</span> <span class="type">Int</span> <span class="type">Int</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Questions"><a href="#Questions" class="headerlink" title="Questions?"></a>Questions?</h2><ul>
+<li>tuple likes struct , while list likes array ?</li>
+<li>那就是右摺疊可以處理無限長度的資料結構，而左摺疊不可以。<br>（因為 Lazy Eval 所以 foldr 可以跑出結果，foldl 會無窮）<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">head'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">head'</span> = foldr1 (\x _ -&gt; x)</span><br><span class="line"><span class="title">last'</span> :: [a] -&gt; a</span><br><span class="line"><span class="title">last'</span> = foldl1 (\_ x -&gt; x)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>fp</tag>
+        <tag>haskell</tag>
+        <tag>lambda</tag>
       </tags>
   </entry>
   <entry>
@@ -1900,8 +1900,8 @@ wait to refer:<br>
       </categories>
       <tags>
         <tag>fp</tag>
-        <tag>lambda</tag>
         <tag>scheme</tag>
+        <tag>lambda</tag>
         <tag>lisp</tag>
         <tag>continuation</tag>
       </tags>
