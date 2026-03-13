@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Strava ZIP 清理工具</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff, #ecfeff);
+      color: #0f172a;
+      min-height: 100vh;
+      padding: 18px;
+    }
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+    .sub {
+      color: #475569;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+    .row { display: flex; gap: 8px; align-items: center; margin: 10px 0; }
+    .row label:first-child { min-width: 132px; font-size: 13px; color: #1f2937; }
+    input[type='file'] {
+      flex: 1;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 8px;
+      background: #fff;
+    }
+    input[type='number'] {
+      width: 100px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 8px;
+    }
+    .checks {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin: 12px 0 14px;
+      padding: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    .checks label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 14px;
+    }
+    .btns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    button {
+      border: 1px solid #0ea5e9;
+      background: #0ea5e9;
+      color: #fff;
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button.secondary {
+      border-color: #cbd5e1;
+      background: #fff;
+      color: #0f172a;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .progress {
+      margin-top: 12px;
+      display: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 10px;
+      background: #e2e8f0;
+    }
+    .progress.show { display: block; }
+    .progress > div {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #22c55e);
+      transition: width 120ms linear;
+    }
+    .meta {
+      margin-top: 10px;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #0f172a;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 96px;
+    }
+    .muted { color: #64748b; font-size: 12px; }
+    @media (max-width: 720px) {
+      body { padding: 10px; }
+      .row { flex-wrap: wrap; }
+      .row label:first-child { min-width: 100%; }
+      input[type='file'] { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Strava ZIP 清理工具</h1>
+    <div class="sub">本頁全程在瀏覽器本機處理，不會上傳到伺服器。</div>
+
+    <div class="row">
+      <label>Strava ZIP</label>
+      <input id="zip-input" type="file" accept=".zip,application/zip" />
+    </div>
+
+    <div class="row">
+      <label>去頭尾距離</label>
+      <input id="trim-km" type="number" min="0" max="20" step="0.1" value="1.0" />
+      <span class="muted">km（套用到每條 GPX）</span>
+    </div>
+
+    <div class="checks">
+      <label><input id="opt-keep-activities" type="checkbox" checked />只保留活動資料（activities/* + activities.csv）</label>
+      <label><input id="opt-redact-csv" type="checkbox" checked />清理 activities.csv 機敏欄位</label>
+      <label><input id="opt-anon-name" type="checkbox" checked />匿名化 Activity Name（改成 Ride #）</label>
+      <label><input id="opt-redact-gpx-meta" type="checkbox" checked />移除 GPX metadata/name/desc</label>
+    </div>
+    <div class="muted">註：去頭尾只會作用在 GPX；FIT 若保留會原樣輸出。</div>
+
+    <div class="btns">
+      <button id="run-keep-fit-btn" type="button">下載（保留 FIT）</button>
+      <button id="run-no-fit-btn" type="button">下載（不含 FIT）</button>
+      <button id="reset-btn" type="button" class="secondary">重設</button>
+    </div>
+
+    <div id="progress" class="progress"><div id="progress-fill"></div></div>
+    <div id="meta" class="meta">等待輸入 ZIP...</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+  <script>
+    const el = (id) => document.getElementById(id);
+    const zipInputEl = el('zip-input');
+    const runKeepFitBtnEl = el('run-keep-fit-btn');
+    const runNoFitBtnEl = el('run-no-fit-btn');
+    const resetBtnEl = el('reset-btn');
+    const metaEl = el('meta');
+    const progressEl = el('progress');
+    const progressFillEl = el('progress-fill');
+
+    const setProgress = (pct) => {
+      const p = Math.max(0, Math.min(100, Number(pct) || 0));
+      progressEl.classList.add('show');
+      progressFillEl.style.width = `${p.toFixed(1)}%`;
+    };
+
+    const clearProgress = () => {
+      progressEl.classList.remove('show');
+      progressFillEl.style.width = '0%';
+    };
+
+    const setBusy = (busy) => {
+      runKeepFitBtnEl.disabled = !!busy;
+      runNoFitBtnEl.disabled = !!busy;
+      resetBtnEl.disabled = !!busy;
+      zipInputEl.disabled = !!busy;
+      runKeepFitBtnEl.textContent = busy ? '處理中...' : '下載（保留 FIT）';
+      runNoFitBtnEl.textContent = busy ? '處理中...' : '下載（不含 FIT）';
+      if (!busy) clearProgress();
+    };
+
+    const toRad = (v) => (v * Math.PI) / 180;
+    const haversineMeters = (a, b) => {
+      const R = 6371000;
+      const dLat = toRad(b[0] - a[0]);
+      const dLon = toRad(b[1] - a[1]);
+      const lat1 = toRad(a[0]);
+      const lat2 = toRad(b[0]);
+      const x = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(x));
+    };
+
+    const parseCsvLine = (line) => {
+      const out = [];
+      let cur = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i += 1) {
+        const ch = line[i];
+        if (ch === '"') {
+          if (inQuotes && line[i + 1] === '"') {
+            cur += '"';
+            i += 1;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (ch === ',' && !inQuotes) {
+          out.push(cur);
+          cur = '';
+        } else {
+          cur += ch;
+        }
+      }
+      out.push(cur);
+      return out;
+    };
+
+    const csvEscape = (v) => {
+      const s = String(v ?? '');
+      if (!/[",\n\r]/.test(s)) return s;
+      return `"${s.replace(/"/g, '""')}"`;
+    };
+
+    const sanitizeActivitiesCsv = (text, anonName) => {
+      const lines = String(text || '').split(/\r?\n/);
+      if (!lines.length || !lines[0].trim()) return { text, redactedColumns: 0, rows: 0 };
+      const headers = parseCsvLine(lines[0]);
+      const normalized = headers.map((h) => String(h || '').trim().toLowerCase());
+      const sensitiveIdx = new Set();
+      const keepNames = new Set(['activity id', 'activity date', 'activity type', 'distance', 'moving time', 'elapsed time', 'total elevation gain', 'elevation high', 'filename']);
+      const sensitiveKeywords = ['athlete', 'email', 'sex', 'gender', 'weight', 'phone', 'address', 'city', 'state', 'country', 'timezone', 'utc offset', 'private note', 'description', 'gear', 'bike', 'device', 'start lat', 'start lng', 'end lat', 'end lng', 'location'];
+      normalized.forEach((key, idx) => {
+        if (key === 'activity name' && anonName) return;
+        if (keepNames.has(key)) return;
+        if (sensitiveKeywords.some((kw) => key.includes(kw))) sensitiveIdx.add(idx);
+      });
+      const nameIdx = normalized.indexOf('activity name');
+
+      const out = [headers.map(csvEscape).join(',')];
+      let rows = 0;
+      for (let i = 1; i < lines.length; i += 1) {
+        const line = lines[i];
+        if (!line.trim()) continue;
+        const cols = parseCsvLine(line);
+        for (const idx of sensitiveIdx) {
+          if (idx < cols.length) cols[idx] = '';
+        }
+        if (anonName && nameIdx >= 0) {
+          cols[nameIdx] = `Ride ${String(rows + 1).padStart(4, '0')}`;
+        }
+        out.push(cols.map(csvEscape).join(','));
+        rows += 1;
+      }
+      return { text: out.join('\n'), redactedColumns: sensitiveIdx.size, rows };
+    };
+
+    const trimGpxText = (xmlText, trimKm, redactMeta) => {
+      const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+      if (doc.getElementsByTagName('parsererror').length) {
+        throw new Error('GPX XML parse failed');
+      }
+
+      if (redactMeta) {
+        const metadata = Array.from(doc.getElementsByTagNameNS('*', 'metadata'));
+        metadata.forEach((n) => n.parentNode && n.parentNode.removeChild(n));
+        const nameNodes = Array.from(doc.getElementsByTagNameNS('*', 'name'));
+        const descNodes = Array.from(doc.getElementsByTagNameNS('*', 'desc'));
+        nameNodes.concat(descNodes).forEach((n) => {
+          const p = n.parentNode && n.parentNode.nodeName ? String(n.parentNode.nodeName).toLowerCase() : '';
+          if (p.includes('trk') || p.includes('rte')) n.parentNode.removeChild(n);
+        });
+      }
+
+      const trkpts = Array.from(doc.getElementsByTagNameNS('*', 'trkpt'));
+      if (trkpts.length < 2 || trimKm <= 0) {
+        return { text: new XMLSerializer().serializeToString(doc), dropped: false, keptPoints: trkpts.length };
+      }
+
+      const pts = trkpts.map((n) => [Number(n.getAttribute('lat')), Number(n.getAttribute('lon'))]);
+      const n = pts.length;
+      const fromStart = new Array(n).fill(0);
+      const fromEnd = new Array(n).fill(0);
+
+      for (let i = 1; i < n; i += 1) {
+        fromStart[i] = fromStart[i - 1] + haversineMeters(pts[i - 1], pts[i]);
+      }
+      for (let i = n - 2; i >= 0; i -= 1) {
+        fromEnd[i] = fromEnd[i + 1] + haversineMeters(pts[i + 1], pts[i]);
+      }
+
+      const threshold = trimKm * 1000;
+      const keep = new Array(n).fill(false);
+      let kept = 0;
+      for (let i = 0; i < n; i += 1) {
+        if (fromStart[i] >= threshold && fromEnd[i] >= threshold) {
+          keep[i] = true;
+          kept += 1;
+        }
+      }
+
+      if (kept < 2) {
+        return { text: '', dropped: true, keptPoints: 0 };
+      }
+
+      for (let i = 0; i < n; i += 1) {
+        if (!keep[i]) {
+          const node = trkpts[i];
+          if (node && node.parentNode) node.parentNode.removeChild(node);
+        }
+      }
+
+      const trksegs = Array.from(doc.getElementsByTagNameNS('*', 'trkseg'));
+      trksegs.forEach((seg) => {
+        if (!seg.getElementsByTagNameNS('*', 'trkpt').length) {
+          seg.parentNode && seg.parentNode.removeChild(seg);
+        }
+      });
+
+      const trks = Array.from(doc.getElementsByTagNameNS('*', 'trk'));
+      trks.forEach((trk) => {
+        if (!trk.getElementsByTagNameNS('*', 'trkseg').length) {
+          trk.parentNode && trk.parentNode.removeChild(trk);
+        }
+      });
+
+      return { text: new XMLSerializer().serializeToString(doc), dropped: false, keptPoints: kept };
+    };
+
+    const isActivityTrack = (name) => /(^|\/)activities\/.+\.(gpx|fit)(\.gz)?$/i.test(name);
+    const isGpx = (name) => /\.gpx(\.gz)?$/i.test(name);
+    const isFit = (name) => /\.fit(\.gz)?$/i.test(name);
+
+    const processZip = async (file, stripFit = false) => {
+      const keepActivities = !!el('opt-keep-activities').checked;
+      const redactCsv = !!el('opt-redact-csv').checked;
+      const anonName = !!el('opt-anon-name').checked;
+      const redactGpxMeta = !!el('opt-redact-gpx-meta').checked;
+      const trimKm = Math.max(0, Number(el('trim-km').value) || 0);
+
+      const srcZip = await JSZip.loadAsync(await file.arrayBuffer());
+      const outZip = new JSZip();
+      const files = Object.values(srcZip.files).filter((f) => !f.dir);
+
+      const stats = {
+        total: files.length,
+        kept: 0,
+        removed: 0,
+        removedFit: 0,
+        removedNonActivities: 0,
+        gpxProcessed: 0,
+        gpxDroppedTooShort: 0,
+        csvSanitized: 0,
+        parseErrors: 0,
+      };
+
+      for (let i = 0; i < files.length; i += 1) {
+        const f = files[i];
+        const name = f.name;
+        setProgress((i / Math.max(1, files.length)) * 95);
+
+        if (keepActivities) {
+          const allow = name === 'activities.csv' || isActivityTrack(name);
+          if (!allow) {
+            stats.removed += 1;
+            stats.removedNonActivities += 1;
+            continue;
+          }
+        }
+
+        if (stripFit && isFit(name)) {
+          stats.removed += 1;
+          stats.removedFit += 1;
+          continue;
+        }
+
+        if (name === 'activities.csv' && redactCsv) {
+          const text = await f.async('text');
+          const res = sanitizeActivitiesCsv(text, anonName);
+          outZip.file(name, res.text);
+          stats.csvSanitized += 1;
+          stats.kept += 1;
+          continue;
+        }
+
+        if (isGpx(name)) {
+          try {
+            let u8 = await f.async('uint8array');
+            const isGzip = /\.gz$/i.test(name);
+            if (isGzip) u8 = pako.ungzip(u8);
+            const xmlText = new TextDecoder('utf-8').decode(u8);
+            const trimmed = trimGpxText(xmlText, trimKm, redactGpxMeta);
+            if (trimmed.dropped) {
+              stats.removed += 1;
+              stats.gpxDroppedTooShort += 1;
+              continue;
+            }
+            const outU8 = new TextEncoder().encode(trimmed.text);
+            outZip.file(name, isGzip ? pako.gzip(outU8) : outU8, { binary: true });
+            stats.gpxProcessed += 1;
+            stats.kept += 1;
+            continue;
+          } catch (_) {
+            stats.parseErrors += 1;
+            stats.removed += 1;
+            continue;
+          }
+        }
+
+        outZip.file(name, await f.async('uint8array'), { binary: true });
+        stats.kept += 1;
+      }
+
+      setProgress(97);
+      const blob = await outZip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+      setProgress(100);
+
+      const outName = `${String(file.name || 'strava').replace(/\.zip$/i, '')}-sanitized-${stripFit ? 'no-fit' : 'keep-fit'}.zip`;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = outName;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+
+      metaEl.textContent = [
+        `完成：${outName}`,
+        `總檔案：${stats.total}`,
+        `保留：${stats.kept}`,
+        `移除：${stats.removed}`,
+        `- 移除非活動檔：${stats.removedNonActivities}`,
+        `- 移除 FIT：${stats.removedFit}`,
+        `- GPX 過短移除：${stats.gpxDroppedTooShort}`,
+        `GPX 處理：${stats.gpxProcessed}`,
+        `activities.csv 清理：${stats.csvSanitized}`,
+        `解析錯誤移除：${stats.parseErrors}`,
+        `去頭尾距離：${trimKm.toFixed(1)} km`,
+        `輸出模式：${stripFit ? '不含 FIT' : '保留 FIT'}`,
+      ].join('\n');
+    };
+
+    const runWithMode = async (stripFit) => {
+      const file = zipInputEl.files && zipInputEl.files[0];
+      if (!file) {
+        metaEl.textContent = '請先選擇 Strava ZIP。';
+        return;
+      }
+      setBusy(true);
+      metaEl.textContent = '處理中...';
+      setProgress(1);
+      try {
+        await processZip(file, stripFit);
+      } catch (err) {
+        metaEl.textContent = `失敗：${err && err.message ? err.message : String(err)}`;
+      } finally {
+        setBusy(false);
+      }
+    };
+
+    runKeepFitBtnEl.addEventListener('click', async () => runWithMode(false));
+    runNoFitBtnEl.addEventListener('click', async () => runWithMode(true));
+
+    resetBtnEl.addEventListener('click', () => {
+      zipInputEl.value = '';
+      el('trim-km').value = '1.0';
+      el('opt-keep-activities').checked = true;
+      el('opt-redact-csv').checked = true;
+      el('opt-anon-name').checked = true;
+      el('opt-redact-gpx-meta').checked = true;
+      metaEl.textContent = '等待輸入 ZIP...';
+      clearProgress();
+    });
+  </script>
+</body>
+</html>
