@@ -3,2370 +3,186 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>cycle-lab | Strava Zip Upload Map</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <title>Strava ZIP 清理工具</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body, #map { height: 100%; margin: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; overflow-x: hidden; }
-    .panel {
-      position: absolute; z-index: 1000; top: 12px; left: 12px; width: min(335px, calc(100vw - 24px));
-      background: rgba(255,255,255,0.96); border: 1px solid #d1d5db; border-radius: 10px; padding: 10px 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff, #ecfeff);
+      color: #0f172a;
+      min-height: 100vh;
+      padding: 18px;
     }
-    .panel.hidden-in-share { display: none; }
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
     }
-    .panel-body.collapsed { display: none; }
-    .panel-toggle {
-      border: 1px solid #9ca3af;
-      background: #fff;
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 12px;
-      cursor: pointer;
+    h1 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.2;
     }
-    .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
-    .row label { min-width: 90px; font-size: 13px; color: #111827; }
-    .row.row-no-label { justify-content: flex-start; }
-    .row.row-no-label .btn { flex: 0 0 auto; }
-    .row input[type="range"] { flex: 1; }
-    .panel input[type="color"] { width: 100%; height: 32px; border: 1px solid #d1d5db; border-radius: 8px; padding: 2px; }
-    .row.theme-actions { align-items: stretch; }
-    .row.theme-actions .btn { flex: 1; padding: 6px 6px; font-size: 12px; }
-    .year-quick-wrap {
+    .sub {
+      color: #475569;
+      margin-bottom: 14px;
+      font-size: 14px;
+    }
+    .row { display: flex; gap: 8px; align-items: center; margin: 10px 0; }
+    .row label:first-child { min-width: 132px; font-size: 13px; color: #1f2937; }
+    input[type='file'] {
       flex: 1;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .year-quick-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 999px;
-      padding: 2px 8px;
-      background: #fff;
-      user-select: none;
-      white-space: nowrap;
-    }
-    .year-quick-chip input { margin: 0; }
-    .meta { font-size: 12px; color: #374151; margin-top: 6px; line-height: 1.4; }
-    .progress-wrap { display: none; margin-top: 8px; }
-    .progress-wrap.show { display: block; }
-    .progress-track {
-      width: 100%;
-      height: 8px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
-      transition: width 0.15s ease;
-    }
-    .progress-text {
-      margin-top: 4px;
-      font-size: 12px;
-      color: #374151;
-    }
-    .title { font-weight: 700; margin-bottom: 8px; }
-    .btn { border: 1px solid #9ca3af; background: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
-    .btn:disabled { opacity: 0.5; cursor: default; }
-    .muted { color: #6b7280; font-size: 12px; }
-    .help-link { margin-top: 8px; }
-    .spoiler-toggle {
-      margin-top: 8px;
-      background: transparent;
-      border: 0;
-      padding: 0;
-      cursor: pointer;
-      color: #374151;
-      font-size: 13px;
-    }
-    .spoiler-caret {
-      display: inline-block;
-      margin-left: 6px;
-      transition: transform 0.15s ease;
-    }
-    .spoiler-toggle.open .spoiler-caret { transform: rotate(180deg); }
-    .advanced-panel { display: none; margin-top: 6px; }
-    .advanced-panel.open { display: block; }
-    .adv-tab-nav {
-      display: flex;
-      gap: 6px;
-      margin: 6px 0 8px;
-      flex-wrap: wrap;
-    }
-    .adv-tab-btn {
-      border: 1px solid #9ca3af;
-      background: #fff;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .adv-tab-btn.active {
-      border-color: #0f766e;
-      background: #ccfbf1;
-      color: #134e4a;
-      font-weight: 600;
-    }
-    .adv-tab-panel { display: none; }
-    .adv-tab-panel.active { display: block; }
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(15, 23, 42, 0.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .modal.open { display: flex; }
-    .modal-card {
-      width: min(900px, calc(100vw - 32px));
-      max-height: calc(100vh - 32px);
-      overflow: auto;
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid #d1d5db;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.2);
-      padding: 14px;
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-    .modal-title { font-weight: 700; }
-    .help-step { margin-top: 10px; }
-    .help-step strong { color: #111827; }
-    .help-step img {
-      display: block;
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      margin-top: 6px;
-    }
-    .warn {
-      margin-top: 10px;
-      color: #7f1d1d;
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 13px;
-    }
-    .share-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2100;
-      display: none;
-      pointer-events: none;
-    }
-    .share-overlay.open { display: block; }
-    .share-zones {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-    .share-zone {
-      position: absolute;
-      pointer-events: auto;
-    }
-    .share-zone.mid { background: rgba(0,0,0,0.48); }
-    .share-zone.deep { background: rgba(0,0,0,0.72); }
-    .share-mask {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-    .share-frame {
-      position: absolute;
-      border: 2px solid rgba(255,255,255,0.95);
-      border-radius: 10px;
-      pointer-events: none;
-      cursor: default;
-      overflow: hidden;
-    }
-    .share-text-layer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-    .share-text-object {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      color: #fff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-      white-space: pre-wrap;
-      line-height: 1.25;
-      cursor: grab;
-      pointer-events: auto;
-      user-select: none;
-      touch-action: none;
-      padding: 2px 4px;
-      border-radius: 6px;
-      max-width: 82%;
-      text-align: center;
-      word-break: break-word;
-    }
-    .share-text-content { pointer-events: none; }
-    .share-text-object.selected {
-      outline: 1px dashed rgba(255,255,255,0.9);
-      background: rgba(0,0,0,0.18);
-    }
-    .share-text-object.dragging { cursor: grabbing; }
-    .share-text-handle {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      border: 1px solid rgba(17,24,39,0.8);
-      background: #fff;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
-      pointer-events: auto;
-    }
-    .share-text-handle.size {
-      right: -10px;
-      bottom: -10px;
-      cursor: nwse-resize;
-    }
-    .share-text-handle.rotate {
-      left: 50%;
-      top: -18px;
-      transform: translateX(-50%);
-      cursor: crosshair;
-      background: #fde68a;
-    }
-    .share-frame.add-mode { cursor: crosshair; pointer-events: auto; }
-    .share-handle {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #fff;
-      border: 1px solid rgba(17,24,39,0.7);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
-      pointer-events: auto;
-    }
-    .share-handle.nw { left: -7px; top: -7px; cursor: nwse-resize; }
-    .share-handle.ne { right: -7px; top: -7px; cursor: nesw-resize; }
-    .share-handle.sw { left: -7px; bottom: -7px; cursor: nesw-resize; }
-    .share-handle.se { right: -7px; bottom: -7px; cursor: nwse-resize; }
-    .share-handle.n { left: 50%; top: -7px; transform: translateX(-50%); cursor: ns-resize; }
-    .share-handle.s { left: 50%; bottom: -7px; transform: translateX(-50%); cursor: ns-resize; }
-    .share-handle.w { left: -7px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
-    .share-handle.e { right: -7px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
-    .share-controls {
-      position: absolute;
-      right: 12px;
-      top: 12px;
-      width: min(184px, calc(100vw - 24px));
-      background: rgba(255,255,255,0.97);
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      padding: 10px 12px;
-      pointer-events: auto;
-    }
-    .share-controls-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-    .share-controls-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #111827;
-    }
-    .share-controls-body.collapsed { display: none; }
-    .share-controls-toggle {
-      border: 1px solid #9ca3af;
-      background: #fff;
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .share-controls .row { margin: 6px 0; }
-    .share-spoiler-toggle {
-      width: 100%;
-      border: 1px solid #d1d5db;
-      background: #fff;
-      border-radius: 8px;
-      padding: 6px 8px;
-      text-align: left;
-      cursor: pointer;
-      font-size: 13px;
-      color: #374151;
-    }
-    .share-spoiler-caret {
-      display: inline-block;
-      margin-left: 6px;
-      transition: transform 0.15s ease;
-    }
-    .share-spoiler-toggle.open .share-spoiler-caret { transform: rotate(180deg); }
-    .share-spoiler-panel { display: none; }
-    .share-spoiler-panel.open { display: block; }
-    .preset-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin: 6px 0 8px;
-    }
-    .preset-btn {
-      border: 1px solid #9ca3af;
-      background: #fff;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .preset-btn.active {
-      border-color: #0f766e;
-      background: #ccfbf1;
-      color: #134e4a;
-      font-weight: 600;
-    }
-    .share-controls input[type="text"], .share-controls select, .share-controls input[type="color"], .share-controls input[type="range"] {
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      padding: 6px 8px;
-      font: inherit;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .share-controls input[type="color"] { padding: 2px; height: 34px; }
-    .share-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .small { font-size: 12px; color: #4b5563; }
-    .text-editor-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 2300;
-      background: rgba(0,0,0,0.45);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .text-editor-modal.open { display: flex; }
-    .text-editor-card {
-      width: min(560px, calc(100vw - 32px));
-      background: #fff;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      box-shadow: 0 14px 36px rgba(0,0,0,0.25);
-      padding: 12px;
-    }
-    .text-editor-card textarea {
-      width: 100%;
-      min-height: 130px;
-      border: 1px solid #d1d5db;
+      border: 1px solid #cbd5e1;
       border-radius: 8px;
       padding: 8px;
-      resize: vertical;
-      font: inherit;
-      line-height: 1.35;
-      box-sizing: border-box;
+      background: #fff;
     }
-    .text-editor-actions {
+    input[type='number'] {
+      width: 100px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 8px;
+    }
+    .checks {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin: 12px 0 14px;
+      padding: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    .checks label {
       display: flex;
       gap: 8px;
-      justify-content: flex-end;
-      margin-top: 8px;
+      align-items: center;
+      font-size: 14px;
     }
-    @media (max-width: 768px) {
-      .share-controls {
-        left: 8px;
-        right: 8px;
-        top: auto;
-        bottom: 8px;
-        width: auto;
-        max-height: 34vh;
-        overflow: auto;
-        padding: 8px 10px;
-      }
-      .share-controls .row {
-        margin: 4px 0;
-      }
-      .share-actions {
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .share-actions .btn {
-        padding: 5px 8px;
-      }
+    .btns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    button {
+      border: 1px solid #0ea5e9;
+      background: #0ea5e9;
+      color: #fff;
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
     }
-    @media (max-width: 480px) {
-      .panel {
-        left: 8px;
-        top: 8px;
-        width: calc(100vw - 16px);
-        padding: 8px 10px;
-      }
-      .row {
-        gap: 6px;
-      }
-      .row label {
-        min-width: 72px;
-        font-size: 12px;
-      }
-      .year-quick-wrap {
-        gap: 4px;
-      }
-      .year-quick-chip {
-        font-size: 11px;
-        padding: 2px 6px;
-      }
+    button.secondary {
+      border-color: #cbd5e1;
+      background: #fff;
+      color: #0f172a;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .progress {
+      margin-top: 12px;
+      display: none;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      overflow: hidden;
+      height: 10px;
+      background: #e2e8f0;
+    }
+    .progress.show { display: block; }
+    .progress > div {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #22c55e);
+      transition: width 120ms linear;
+    }
+    .meta {
+      margin-top: 10px;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #0f172a;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 96px;
+    }
+    .muted { color: #64748b; font-size: 12px; }
+    @media (max-width: 720px) {
+      body { padding: 10px; }
+      .row { flex-wrap: wrap; }
+      .row label:first-child { min-width: 100%; }
+      input[type='file'] { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
-  <div id="main-panel" class="panel">
-    <div class="panel-header">
-      <div class="title" style="margin-bottom:0">Strava Zip Upload Map (GPX)</div>
-      <button id="main-panel-toggle" class="panel-toggle" type="button">收合</button>
-    </div>
-    <div id="main-panel-body" class="panel-body">
+  <div class="wrap">
+    <h1>Strava ZIP 清理工具</h1>
+    <div class="sub">本頁全程在瀏覽器本機處理，不會上傳到伺服器。</div>
+
     <div class="row">
-      <label for="zip-input">Strava Zip</label>
-      <input id="zip-input" type="file" accept=".zip" />
+      <label>Strava ZIP</label>
+      <input id="zip-input" type="file" accept=".zip,application/zip" />
     </div>
-    <div class="meta" id="meta">尚未載入。選擇 Strava export zip 後按「繪圖」。</div>
-    <div id="progress-wrap" class="progress-wrap">
-      <div class="progress-track"><div id="progress-fill" class="progress-fill"></div></div>
-      <div id="progress-text" class="progress-text">0%</div>
+
+    <div class="row">
+      <label>去頭尾距離</label>
+      <input id="trim-km" type="number" min="0" max="20" step="0.1" value="1.0" />
+      <span class="muted">km（套用到每條 GPX）</span>
     </div>
-    <div class="muted">目前支援 zip 內 `activities/*.gpx|*.fit` 與 `*.gz`。</div>
-    <div class="help-link">
-      <button id="help-btn" class="btn" type="button">Strava Zip 下載教學</button>
-      <button id="share-btn" class="btn" type="button">分享截圖</button>
+
+    <div class="checks">
+      <label><input id="opt-keep-activities" type="checkbox" checked />只保留活動資料（activities/* + activities.csv）</label>
+      <label><input id="opt-redact-csv" type="checkbox" checked />清理 activities.csv 機敏欄位</label>
+      <label><input id="opt-anon-name" type="checkbox" checked />匿名化 Activity Name（改成 Ride #）</label>
+      <label><input id="opt-redact-gpx-meta" type="checkbox" checked />移除 GPX metadata/name/desc</label>
     </div>
-    <div class="row row-no-label">
-      <button id="demo-btn" class="btn" type="button">載入示範資料</button>
-      <button id="clear-map-btn" class="btn" type="button" disabled>清除路線</button>
+    <div class="muted">註：去頭尾只會作用在 GPX；FIT 若保留會原樣輸出。</div>
+
+    <div class="btns">
+      <button id="run-keep-fit-btn" type="button">下載（保留 FIT）</button>
+      <button id="run-no-fit-btn" type="button">下載（不含 FIT）</button>
+      <button id="reset-btn" type="button" class="secondary">重設</button>
     </div>
-    <button id="advanced-toggle" class="spoiler-toggle" type="button">
-      進階地圖設定<span class="spoiler-caret">▼</span>
-    </button>
-    <div id="advanced-panel" class="advanced-panel">
-      <div class="adv-tab-nav">
-        <button class="adv-tab-btn active" type="button" data-tab="style">樣式</button>
-        <button class="adv-tab-btn" type="button" data-tab="filter">篩選</button>
-      </div>
-      <div id="adv-tab-style" class="adv-tab-panel active">
-        <div class="row">
-          <label>路線透明度</label>
-          <input id="route-opacity" type="range" min="0.05" max="0.8" step="0.01" value="0.4" />
-          <span id="route-opacity-val">0.40</span>
-        </div>
-        <div class="row">
-          <label>顯示路徑</label>
-          <input id="show-route" type="checkbox" checked />
-        </div>
-        <div class="row">
-          <label>路徑顏色</label>
-          <input id="route-color" type="color" value="#f97316" />
-        </div>
-        <div class="row">
-          <label>路線線寬</label>
-          <input id="route-weight" type="range" min="1" max="4" step="0.1" value="2.2" />
-          <span id="route-weight-val">2.2</span>
-        </div>
-        <div class="row">
-          <label>粗細模式</label>
-          <select id="route-weight-mode">
-            <option value="stack" selected>原本重疊</option>
-            <option value="linear">加權 Linear</option>
-            <option value="log">加權 Log</option>
-          </select>
-        </div>
-        <div class="row">
-          <label>熱區底亮度</label>
-          <input id="heat-min" type="range" min="0.08" max="0.85" step="0.01" value="0.65" />
-          <span id="heat-min-val">0.65</span>
-        </div>
-        <div class="row">
-          <label>熱區增益</label>
-          <input id="heat-gain" type="range" min="0.6" max="3" step="0.05" value="1.85" />
-          <span id="heat-gain-val">1.85</span>
-        </div>
-        <div class="row">
-          <label>顯示熱點</label>
-          <input id="show-heat" type="checkbox" checked />
-        </div>
-        <div class="row">
-          <label>熱區低色</label>
-          <input id="heat-color-low" type="color" value="#5eead4" />
-        </div>
-        <div class="row">
-          <label>熱區高色</label>
-          <input id="heat-color-high" type="color" value="#164e63" />
-        </div>
-        <div class="row">
-          <label>地圖風格</label>
-          <select id="theme-select">
-            <optgroup label="Light">
-              <option value="classic" selected>Classic</option>
-              <option value="heat">Heatmap Style</option>
-              <option value="minimal">Minimal</option>
-              <option value="terrain">Terrain</option>
-              <option value="cycle-hot">Cycle Hot</option>
-              <option value="mint-topo">Mint Topo</option>
-              <option value="paper">Paper</option>
-            </optgroup>
-            <optgroup label="Dark">
-              <option value="dark">Dark Mode</option>
-              <option value="mono-night">Mono Night</option>
-              <option value="neon-night">Neon Night</option>
-              <option value="royal-blue">Royal Blue</option>
-              <option value="ink-minimal">Ink Minimal</option>
-            </optgroup>
-            <optgroup label="Artistic">
-              <option value="poster">Poster Style</option>
-              <option value="sunset-poster">Sunset Poster</option>
-              <option value="terrain-warm">Terrain Warm</option>
-              <option value="candy-pop">Candy Pop</option>
-            </optgroup>
-          </select>
-        </div>
-        <div class="row theme-actions">
-          <label>Theme JSON</label>
-          <button id="theme-export-btn" class="btn" type="button">匯出</button>
-          <button id="theme-import-btn" class="btn" type="button">匯入</button>
-          <button id="theme-reset-btn" class="btn" type="button">重設</button>
-          <input id="theme-import-input" type="file" accept=".json,application/json" style="display:none" />
-        </div>
-      </div>
-      <div id="adv-tab-filter" class="adv-tab-panel">
-        <div class="row">
-          <label>起點隱藏距離</label>
-          <input id="start-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
-          <span id="start-hide-km-val">1.0 km</span>
-        </div>
-        <div class="row">
-          <label>終點隱藏距離</label>
-          <input id="end-hide-km" type="range" min="0" max="5" step="0.1" value="1.0" />
-          <span id="end-hide-km-val">1.0 km</span>
-        </div>
-        <div class="row">
-          <label>活動類型</label>
-          <select id="activity-type-filter">
-            <option value="all">All</option>
-            <option value="cycling" selected>Cycling</option>
-            <option value="run">Run</option>
-          </select>
-        </div>
-        <div class="row">
-          <label>啟用軌跡清洗</label>
-          <input id="enable-track-cleaning" type="checkbox" checked />
-          <span class="muted">關閉可能保留飛線。</span>
-        </div>
-        <div class="row">
-          <label>只看台灣</label>
-          <input id="taiwan-only" type="checkbox" />
-          <span class="muted">避免海外點拉到全球。</span>
-        </div>
-        <div class="row">
-          <label>快速聚焦</label>
-          <button id="focus-taiwan-btn" class="btn" type="button">聚焦台灣</button>
-          <button id="focus-all-btn" class="btn" type="button">聚焦全部</button>
-        </div>
-        <div class="row">
-          <label>開始日期</label>
-          <input id="date-from" type="date" />
-        </div>
-        <div class="row">
-          <label>結束日期</label>
-          <input id="date-to" type="date" />
-        </div>
-        <div class="row">
-          <label></label>
-          <button id="date-filter-apply-btn" class="btn" type="button">套用日期/年份</button>
-          <span id="date-filter-dirty" class="muted" style="display:none">有未套用變更</span>
-        </div>
-        <div class="row">
-          <label>年份快捷</label>
-          <div class="year-quick-wrap">
-            <label class="year-quick-chip"><input id="year-q-all" type="checkbox" checked />全部</label>
-            <label class="year-quick-chip"><input id="year-q-y0" type="checkbox" /><span id="year-q-y0-label">今年</span></label>
-            <label class="year-quick-chip"><input id="year-q-y1" type="checkbox" /><span id="year-q-y1-label">去年</span></label>
-            <label class="year-quick-chip"><input id="year-q-y2" type="checkbox" /><span id="year-q-y2-label">前2年</span></label>
-            <label class="year-quick-chip"><input id="year-q-y3" type="checkbox" /><span id="year-q-y3-label">前3年</span></label>
-            <label class="year-quick-chip"><input id="year-q-older" type="checkbox" /><span id="year-q-older-label">更久</span></label>
-          </div>
-        </div>
-        <div class="row">
-          <label>滾輪縮放</label>
-          <select id="wheel-zoom-level">
-            <option value="native" selected>原生預設</option>
-            <option value="fine">細緻 (3%)</option>
-            <option value="normal">標準 (6%)</option>
-            <option value="fast">快速 (10%)</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    </div>
+
+    <div id="progress" class="progress"><div id="progress-fill"></div></div>
+    <div id="meta" class="meta">等待輸入 ZIP...</div>
   </div>
 
-  <div id="help-modal" class="modal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="help-title">
-      <div class="modal-header">
-        <div id="help-title" class="modal-title">如何下載 Strava 匯出 Zip</div>
-        <button id="help-close-btn" class="btn" type="button">關閉</button>
-      </div>
-      <div class="help-step">
-        <strong>Step 1.</strong>
-        進入
-        <a href="https://www.strava.com/account" target="_blank" rel="noopener noreferrer">Strava 我的帳戶</a>，
-        拉到最下面的「下載或刪除帳戶」，點「開始使用」。
-        <img src="./help1.png" alt="Strava account page: download or delete account" />
-      </div>
-      <div class="help-step">
-        <strong>Step 2.</strong>
-        在第二步按「下載要求」進行 Strava 資料下載。
-        <img src="./help2.webp" alt="Strava data export request step" />
-      </div>
-      <div class="warn">
-        只需要下載資料，<strong>不要刪除帳號</strong>。
-      </div>
-    </div>
-  </div>
-
-  <div id="share-overlay" class="share-overlay" aria-hidden="true">
-    <div id="share-zones" class="share-zones">
-      <div id="share-deep-top" class="share-zone deep"></div>
-      <div id="share-deep-right" class="share-zone deep"></div>
-      <div id="share-deep-bottom" class="share-zone deep"></div>
-      <div id="share-deep-left" class="share-zone deep"></div>
-      <div id="share-mid-top" class="share-zone mid"></div>
-      <div id="share-mid-right" class="share-zone mid"></div>
-      <div id="share-mid-bottom" class="share-zone mid"></div>
-      <div id="share-mid-left" class="share-zone mid"></div>
-    </div>
-    <div class="share-mask">
-      <div id="share-frame" class="share-frame">
-        <div id="share-text-layer" class="share-text-layer"></div>
-        <div class="share-handle nw" data-dir="nw"></div>
-        <div class="share-handle ne" data-dir="ne"></div>
-        <div class="share-handle sw" data-dir="sw"></div>
-        <div class="share-handle se" data-dir="se"></div>
-        <div class="share-handle n" data-dir="n"></div>
-        <div class="share-handle s" data-dir="s"></div>
-        <div class="share-handle w" data-dir="w"></div>
-        <div class="share-handle e" data-dir="e"></div>
-      </div>
-    </div>
-    <div class="share-controls">
-      <div class="share-controls-header">
-        <div class="share-controls-title">分享截圖</div>
-        <button id="share-controls-toggle" class="share-controls-toggle" type="button">收合設定</button>
-      </div>
-      <div id="share-controls-body" class="share-controls-body">
-      <div class="row">
-        <label>版型</label>
-      </div>
-      <div class="preset-row">
-        <button class="preset-btn active" type="button" data-preset="insta-post">Post</button>
-        <button class="preset-btn" type="button" data-preset="insta-story">Story</button>
-        <button class="preset-btn" type="button" data-preset="square">Square</button>
-        <button class="preset-btn" type="button" data-preset="landscape">Landscape</button>
-        <button class="preset-btn" type="button" data-preset="custom">Custom</button>
-      </div>
-      <button id="share-text-spoiler-toggle" class="share-spoiler-toggle" type="button">
-        文字物件設定<span class="share-spoiler-caret">▼</span>
-      </button>
-      <div id="share-text-spoiler-panel" class="share-spoiler-panel">
-      <div class="share-actions">
-        <button id="share-add-text-btn" class="btn" type="button">+ 新增文字</button>
-        <button id="share-edit-text-btn" class="btn" type="button">編輯文字</button>
-        <button id="share-delete-text-btn" class="btn" type="button">刪除文字</button>
-      </div>
-      <div class="row">
-        <label>字色</label>
-        <input id="share-text-color" type="color" value="#ffffff" />
-      </div>
-      <div class="row">
-        <label>字級</label>
-        <input id="share-text-size" type="range" min="12" max="72" step="1" value="24" />
-      </div>
-      <div class="row">
-        <label>粗細</label>
-        <select id="share-text-weight">
-          <option value="400">Regular</option>
-          <option value="600">SemiBold</option>
-          <option value="700" selected>Bold</option>
-          <option value="800">ExtraBold</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>字體</label>
-        <select id="share-text-family">
-          <option value="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" selected>Sans</option>
-          <option value="Georgia,'Times New Roman',serif">Serif</option>
-          <option value="'Courier New',Courier,monospace">Monospace</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>旋轉</label>
-        <input id="share-text-rotate" type="range" min="-180" max="180" step="1" value="0" />
-      </div>
-      <div class="row">
-        <label>對齊</label>
-        <select id="share-text-align">
-          <option value="left">Left</option>
-          <option value="center" selected>Center</option>
-          <option value="right">Right</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>底色</label>
-        <select id="share-text-bg-mode">
-          <option value="dark" selected>Dark</option>
-          <option value="transparent">Transparent</option>
-          <option value="light">Light</option>
-          <option value="yellow">Yellow</option>
-          <option value="custom">Custom</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>自訂底色</label>
-        <input id="share-text-bg-color" type="color" value="#222222" />
-      </div>
-      <div class="row">
-        <label>斜體</label>
-        <select id="share-text-italic">
-          <option value="no" selected>Normal</option>
-          <option value="yes">Italic</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>陰影</label>
-        <select id="share-text-shadow">
-          <option value="yes" selected>On</option>
-          <option value="no">Off</option>
-        </select>
-      </div>
-      <div class="row">
-        <label>陰影強度</label>
-        <input id="share-text-shadow-blur" type="range" min="0" max="24" step="1" value="8" />
-      </div>
-      </div>
-      <div class="small">按「下載截圖」會輸出透明框範圍內的地圖並疊上這段文字。</div>
-      </div>
-      <div id="share-progress-wrap" class="progress-wrap">
-        <div class="progress-track"><div id="share-progress-fill" class="progress-fill"></div></div>
-        <div id="share-progress-text" class="progress-text">0%</div>
-      </div>
-      <div class="share-actions">
-        <button id="share-download-btn" class="btn" type="button">下載截圖</button>
-        <button id="share-close-btn" class="btn" type="button">關閉</button>
-      </div>
-    </div>
-  </div>
-  <div id="text-editor-modal" class="text-editor-modal" aria-hidden="true">
-    <div class="text-editor-card">
-      <div class="title">編輯文字</div>
-      <textarea id="text-editor-input" placeholder="輸入文字，Enter 可換行"></textarea>
-      <div class="text-editor-actions">
-        <button id="text-editor-cancel" class="btn" type="button">取消</button>
-        <button id="text-editor-save" class="btn" type="button">套用</button>
-      </div>
-      <div class="small">快捷鍵：Ctrl/Cmd + Enter 套用，Esc 取消。</div>
-    </div>
-  </div>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
-    const map = L.map('map', { preferCanvas: true, zoomSnap: 0, zoomDelta: 0.01, wheelPxPerZoomLevel: 80 }).setView([23.8, 121], 7);
-    const THEMES = {
-      classic: {
-        label: 'Classic',
-        routeColor: '#f97316',
-        routeOpacity: 0.4,
-        routeWeightScale: 1.0,
-        heatMin: 0.65,
-        heatGain: 1.85,
-        heatGradient: {
-          0.15: '#5eead4',
-          0.35: '#2dd4bf',
-          0.6: '#14b8a6',
-          0.8: '#0f766e',
-          1.0: '#164e63',
-        },
-        tile: {
-          url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          options: {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap contributors',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'none',
-      },
-      dark: {
-        label: 'Dark Mode',
-        routeColor: '#f43f5e',
-        routeOpacity: 0.78,
-        routeWeightScale: 1.25,
-        heatMin: 0.5,
-        heatGain: 2.15,
-        heatGradient: {
-          0.18: '#38bdf8',
-          0.42: '#a78bfa',
-          0.65: '#e879f9',
-          0.84: '#f43f5e',
-          1.0: '#fda4af',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'contrast(1.06) saturate(0.92)',
-      },
-      heat: {
-        label: 'Heatmap Style',
-        routeColor: '#0ea5e9',
-        routeOpacity: 0.35,
-        routeWeightScale: 1.0,
-        heatMin: 0.62,
-        heatGain: 2.35,
-        heatGradient: {
-          0.08: '#2563eb',
-          0.3: '#06b6d4',
-          0.52: '#22c55e',
-          0.72: '#f59e0b',
-          0.9: '#ef4444',
-          1.0: '#7f1d1d',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'none',
-      },
-      minimal: {
-        label: 'Minimal',
-        routeColor: '#111111',
-        routeOpacity: 0.52,
-        routeWeightScale: 0.72,
-        heatMin: 0.4,
-        heatGain: 1.2,
-        heatGradient: {
-          0.2: '#94a3b8',
-          0.55: '#64748b',
-          0.82: '#334155',
-          1.0: '#0f172a',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'grayscale(38%) brightness(1.05)',
-      },
-      poster: {
-        label: 'Poster Style',
-        routeColor: '#fb923c',
-        routeOpacity: 0.85,
-        routeWeightScale: 1.5,
-        heatMin: 0.45,
-        heatGain: 1.7,
-        heatGradient: {
-          0.2: '#a5b4fc',
-          0.45: '#60a5fa',
-          0.68: '#22d3ee',
-          0.84: '#f59e0b',
-          1.0: '#b91c1c',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'grayscale(76%) saturate(0.34) contrast(1.1)',
-      },
-      terrain: {
-        label: 'Terrain',
-        routeColor: '#d97706',
-        routeOpacity: 0.72,
-        routeWeightScale: 1.18,
-        heatMin: 0.52,
-        heatGain: 1.9,
-        heatGradient: {
-          0.18: '#fde68a',
-          0.42: '#fbbf24',
-          0.68: '#d97706',
-          0.86: '#92400e',
-          1.0: '#451a03',
-        },
-        tile: {
-          url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-          options: {
-            maxZoom: 17,
-            attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'none',
-      },
-      'cycle-hot': {
-        label: 'Cycle Hot',
-        routeColor: '#ea580c',
-        routeOpacity: 0.68,
-        routeWeightScale: 1.1,
-        heatMin: 0.55,
-        heatGain: 1.95,
-        heatGradient: {
-          0.16: '#67e8f9',
-          0.4: '#22d3ee',
-          0.62: '#06b6d4',
-          0.82: '#f59e0b',
-          1.0: '#ef4444',
-        },
-        tile: {
-          url: 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
-          options: {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap contributors, tiles style by Humanitarian OpenStreetMap Team hosted by OpenStreetMap France',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'none',
-      },
-      'mono-night': {
-        label: 'Mono Night',
-        routeColor: '#f8fafc',
-        routeOpacity: 0.92,
-        routeWeightScale: 1.3,
-        heatMin: 0.38,
-        heatGain: 1.85,
-        heatGradient: {
-          0.18: '#475569',
-          0.42: '#64748b',
-          0.7: '#94a3b8',
-          0.88: '#cbd5e1',
-          1.0: '#f8fafc',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'grayscale(100%) contrast(1.2) brightness(0.9)',
-      },
-      paper: {
-        label: 'Paper',
-        routeColor: '#92400e',
-        routeOpacity: 0.74,
-        routeWeightScale: 1.1,
-        heatMin: 0.44,
-        heatGain: 1.65,
-        heatGradient: {
-          0.2: '#f5f5f4',
-          0.44: '#e7e5e4',
-          0.68: '#c4b5a5',
-          0.86: '#a16207',
-          1.0: '#78350f',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'sepia(58%) saturate(0.62) contrast(0.94) brightness(1.03)',
-      },
-      'neon-night': {
-        label: 'Neon Night',
-        routeColor: '#67e8f9',
-        routeOpacity: 0.88,
-        routeWeightScale: 1.42,
-        heatMin: 0.5,
-        heatGain: 2.35,
-        heatGradient: {
-          0.1: '#22d3ee',
-          0.3: '#06b6d4',
-          0.52: '#818cf8',
-          0.74: '#e879f9',
-          0.92: '#f472b6',
-          1.0: '#fef08a',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'saturate(1.2) contrast(1.12)',
-      },
-      'mint-topo': {
-        label: 'Mint Topo',
-        routeColor: '#059669',
-        routeOpacity: 0.66,
-        routeWeightScale: 1.12,
-        heatMin: 0.62,
-        heatGain: 1.85,
-        heatGradient: {
-          0.14: '#dcfce7',
-          0.34: '#86efac',
-          0.56: '#34d399',
-          0.78: '#059669',
-          1.0: '#064e3b',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'hue-rotate(8deg) saturate(0.9) brightness(1.02)',
-      },
-      'sunset-poster': {
-        label: 'Sunset Poster',
-        routeColor: '#fb7185',
-        routeOpacity: 0.88,
-        routeWeightScale: 1.6,
-        heatMin: 0.48,
-        heatGain: 1.8,
-        heatGradient: {
-          0.16: '#fbcfe8',
-          0.38: '#f9a8d4',
-          0.6: '#fb7185',
-          0.82: '#f97316',
-          1.0: '#7c2d12',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'sepia(28%) hue-rotate(-12deg) saturate(1.15) contrast(1.06)',
-      },
-      'ink-minimal': {
-        label: 'Ink Minimal',
-        routeColor: '#f8fafc',
-        routeOpacity: 0.72,
-        routeWeightScale: 0.9,
-        heatMin: 0.34,
-        heatGain: 1.4,
-        heatGradient: {
-          0.2: '#64748b',
-          0.48: '#94a3b8',
-          0.74: '#cbd5e1',
-          1.0: '#f8fafc',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'grayscale(100%) contrast(1.18) brightness(0.86)',
-      },
-      'royal-blue': {
-        label: 'Royal Blue',
-        routeColor: '#60a5fa',
-        routeOpacity: 0.78,
-        routeWeightScale: 1.25,
-        heatMin: 0.56,
-        heatGain: 2.15,
-        heatGradient: {
-          0.14: '#dbeafe',
-          0.34: '#93c5fd',
-          0.56: '#60a5fa',
-          0.78: '#2563eb',
-          1.0: '#172554',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'hue-rotate(8deg) saturate(1.15) contrast(1.08)',
-      },
-      'terrain-warm': {
-        label: 'Terrain Warm',
-        routeColor: '#9a3412',
-        routeOpacity: 0.8,
-        routeWeightScale: 1.3,
-        heatMin: 0.5,
-        heatGain: 2.05,
-        heatGradient: {
-          0.16: '#ffedd5',
-          0.38: '#fdba74',
-          0.6: '#fb923c',
-          0.82: '#ea580c',
-          1.0: '#7c2d12',
-        },
-        tile: {
-          url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-          options: {
-            maxZoom: 17,
-            attribution: 'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'sepia(48%) saturate(1.22) hue-rotate(-8deg) contrast(1.04)',
-      },
-      'candy-pop': {
-        label: 'Candy Pop',
-        routeColor: '#ec4899',
-        routeOpacity: 0.78,
-        routeWeightScale: 1.42,
-        heatMin: 0.52,
-        heatGain: 2.3,
-        heatGradient: {
-          0.1: '#22d3ee',
-          0.3: '#818cf8',
-          0.5: '#e879f9',
-          0.72: '#fb7185',
-          0.9: '#f59e0b',
-          1.0: '#dc2626',
-        },
-        tile: {
-          url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-          options: {
-            maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            crossOrigin: true,
-          },
-        },
-        tileFilter: 'saturate(1.08)',
-      },
-    };
-    const DEFAULT_THEMES = JSON.parse(JSON.stringify(THEMES));
-    const BUILTIN_THEME_KEYS = new Set(Object.keys(DEFAULT_THEMES));
-    let currentThemeKey = 'classic';
-    let baseTileLayer = L.tileLayer(THEMES.classic.tile.url, THEMES.classic.tile.options).addTo(map);
-
-    map.createPane('heatPane');
-    map.createPane('routePane');
-    map.getPane('heatPane').style.zIndex = '420';
-    map.getPane('routePane').style.zIndex = '430';
-    map.getPane('tilePane').style.filter = THEMES.classic.tileFilter || 'none';
-
-    let routeColor = THEMES.classic.routeColor;
-    let routeOpacity = THEMES.classic.routeOpacity;
-    let routeWeight = 2.2;
-    let routeWeightScale = THEMES.classic.routeWeightScale;
-    let heatMin = THEMES.classic.heatMin;
-    let heatGain = THEMES.classic.heatGain;
-    let heatGradient = THEMES.classic.heatGradient;
-    let startHideKm = 1.0;
-    let endHideKm = 1.0;
-    let activityTypeFilter = 'cycling';
-    let enableTrackCleaning = true;
-    let taiwanOnly = false;
-    let dateFromTs = Number.NaN;
-    let dateToTs = Number.NaN;
-    const yearQuick = { all: true, y0: false, y1: false, y2: false, y3: false, older: false };
-    let wheelZoomLevel = 'native';
-    let wheelZoomStep = 0.03;
-    let customWheelZoomEnabled = false;
-    let heatColorLow = '#5eead4';
-    let heatColorHigh = '#164e63';
-    let showRoute = true;
-    let showHeat = true;
-    let routeWeightMode = 'stack';
-    let weightedRouteCountMax = 1;
-
-    const routeLayer = L.geoJSON([], {
-      pane: 'routePane',
-      style: { color: routeColor, weight: routeWeight * routeWeightScale, opacity: routeOpacity },
-      onEachFeature: (feature, layer) => {
-        const p = feature.properties || {};
-        const dateText = p.date || 'N/A';
-        const distText = Number.isFinite(p.distanceKm) ? `${p.distanceKm.toFixed(2)} km` : 'N/A';
-        const elevGainText = Number.isFinite(p.elevGainM) ? `${p.elevGainM.toFixed(0)} m` : 'N/A';
-        const elevHighText = Number.isFinite(p.elevHighM) ? `${p.elevHighM.toFixed(0)} m` : 'N/A';
-        const movingText = formatSeconds(p.movingSec);
-        const elapsedText = formatSeconds(p.elapsedSec);
-        const nameText = p.name || 'Unnamed';
-        layer.bindTooltip(
-          `<strong>${nameText}</strong><br/>日期: ${dateText}<br/>距離: ${distText}<br/>總爬升: ${elevGainText}<br/>最高海拔: ${elevHighText}<br/>移動時間: ${movingText}<br/>總耗時: ${elapsedText}`,
-          { sticky: true, direction: 'top', opacity: 0.95 }
-        );
-      }
-    }).addTo(map);
-
-    const weightedRouteLayer = L.geoJSON([], {
-      pane: 'routePane',
-      style: () => ({ color: routeColor, weight: routeWeight * routeWeightScale, opacity: routeOpacity }),
-      onEachFeature: (feature, layer) => {
-        const p = feature.properties || {};
-        const c = Number(p.count || 1);
-        layer.bindTooltip(`重疊次數: ${c}`, { sticky: true, direction: 'top', opacity: 0.9 });
-      },
-    });
-
-    const heatLayer = L.heatLayer([], {
-      pane: 'heatPane',
-      radius: 12,
-      blur: 18,
-      minOpacity: heatMin,
-      maxZoom: 14,
-      gradient: heatGradient
-    }).addTo(map);
-
     const el = (id) => document.getElementById(id);
-    const metaEl = el('meta');
-    const progressWrapEl = el('progress-wrap');
-    const progressFillEl = el('progress-fill');
-    const progressTextEl = el('progress-text');
-    const shareProgressWrapEl = el('share-progress-wrap');
-    const shareProgressFillEl = el('share-progress-fill');
-    const shareProgressTextEl = el('share-progress-text');
-    const demoBtnEl = el('demo-btn');
     const zipInputEl = el('zip-input');
-    const advancedToggleEl = el('advanced-toggle');
-    const advancedPanelEl = el('advanced-panel');
-    const advTabButtons = Array.from(document.querySelectorAll('.adv-tab-btn'));
-    const advTabPanels = {
-      style: el('adv-tab-style'),
-      filter: el('adv-tab-filter'),
-    };
-    const helpModalEl = el('help-modal');
-    const mainPanelEl = el('main-panel');
-    const mainPanelBodyEl = el('main-panel-body');
-    const mainPanelToggleEl = el('main-panel-toggle');
-    const shareOverlayEl = el('share-overlay');
-    const shareZonesEl = el('share-zones');
-    const shareDeepTopEl = el('share-deep-top');
-    const shareDeepRightEl = el('share-deep-right');
-    const shareDeepBottomEl = el('share-deep-bottom');
-    const shareDeepLeftEl = el('share-deep-left');
-    const shareMidTopEl = el('share-mid-top');
-    const shareMidRightEl = el('share-mid-right');
-    const shareMidBottomEl = el('share-mid-bottom');
-    const shareMidLeftEl = el('share-mid-left');
-    const shareFrameEl = el('share-frame');
-    const shareTextLayerEl = el('share-text-layer');
-    const shareControlsBodyEl = el('share-controls-body');
-    const shareControlsToggleEl = el('share-controls-toggle');
-    const shareTextSpoilerToggleEl = el('share-text-spoiler-toggle');
-    const shareTextSpoilerPanelEl = el('share-text-spoiler-panel');
-    const textEditorModalEl = el('text-editor-modal');
-    const textEditorInputEl = el('text-editor-input');
-    const textEditorSaveEl = el('text-editor-save');
-    const textEditorCancelEl = el('text-editor-cancel');
-    let lastZipBuffer = null;
-    let lastZipLabel = '';
-    const sharePresetRatios = {
-      'insta-post': 4 / 5,
-      'insta-story': 9 / 16,
-      'square': 1,
-      'landscape': 16 / 9,
-    };
-    let sharePreset = 'insta-post';
-    let shareRect = { x: 0, y: 0, w: 0, h: 0 };
-    let shareResize = null;
-    let shareTexts = [];
-    let shareSelectedTextId = null;
-    let shareTextDrag = null;
-    let shareTextHandleDrag = null;
-    let shareTextLastTap = { id: null, ts: 0 };
-    let shareAddMode = false;
-    let shareTextIdSeq = 1;
-    let shareControlsCollapsed = false;
-    let shareTextSpoilerOpen = false;
-    let mainPanelCollapsed = false;
-    let textEditorState = null;
-    let isShareDownloading = false;
-    let hasMapData = false;
-    let demoLockedAfterLoad = false;
-    let lastRenderBounds = null;
-    let lastTaiwanBounds = null;
-    const TAIWAN_BBOX = {
-      minLat: 21.5,
-      maxLat: 25.5,
-      minLon: 119.0,
-      maxLon: 122.5,
-    };
-    shareZonesEl.style.display = 'none';
+    const runKeepFitBtnEl = el('run-keep-fit-btn');
+    const runNoFitBtnEl = el('run-no-fit-btn');
+    const resetBtnEl = el('reset-btn');
+    const metaEl = el('meta');
+    const progressEl = el('progress');
+    const progressFillEl = el('progress-fill');
 
-    const updateLabels = () => {
-      el('route-opacity-val').textContent = routeOpacity.toFixed(2);
-      el('route-weight-val').textContent = routeWeight.toFixed(1);
-      el('heat-min-val').textContent = heatMin.toFixed(2);
-      el('heat-gain-val').textContent = heatGain.toFixed(2);
-      el('start-hide-km-val').textContent = `${startHideKm.toFixed(1)} km`;
-      el('end-hide-km-val').textContent = `${endHideKm.toFixed(1)} km`;
+    const setProgress = (pct) => {
+      const p = Math.max(0, Math.min(100, Number(pct) || 0));
+      progressEl.classList.add('show');
+      progressFillEl.style.width = `${p.toFixed(1)}%`;
     };
 
-    const hexToRgb = (hex) => {
-      const h = String(hex || '').trim().replace('#', '');
-      if (!/^[0-9a-f]{3}$|^[0-9a-f]{6}$/i.test(h)) return null;
-      const full = h.length === 3 ? h.split('').map((ch) => ch + ch).join('') : h;
-      const n = Number.parseInt(full, 16);
-      return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+    const clearProgress = () => {
+      progressEl.classList.remove('show');
+      progressFillEl.style.width = '0%';
     };
 
-    const rgbToHex = (r, g, b) => {
-      const to = (v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
-      return `#${to(r)}${to(g)}${to(b)}`;
-    };
-
-    const lerpColor = (a, b, t) => {
-      const aa = hexToRgb(a);
-      const bb = hexToRgb(b);
-      if (!aa || !bb) return a || '#000000';
-      return rgbToHex(
-        aa.r + (bb.r - aa.r) * t,
-        aa.g + (bb.g - aa.g) * t,
-        aa.b + (bb.b - aa.b) * t
-      );
-    };
-
-    const buildHeatGradientFromEnds = (low, high) => ({
-      0.12: low,
-      0.34: lerpColor(low, high, 0.25),
-      0.56: lerpColor(low, high, 0.5),
-      0.78: lerpColor(low, high, 0.75),
-      1.0: high,
-    });
-
-    const resolveGradientEnds = (gradient) => {
-      const entries = Object.entries(gradient || {})
-        .map(([k, v]) => [Number(k), String(v)])
-        .filter(([k, v]) => Number.isFinite(k) && !!v)
-        .sort((a, b) => a[0] - b[0]);
-      if (!entries.length) return { low: '#5eead4', high: '#164e63' };
-      return { low: entries[0][1], high: entries[entries.length - 1][1] };
-    };
-
-    const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
-
-    const clampShareRect = (r) => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const minW = 180;
-      const minH = 120;
-      const w = clamp(r.w, minW, vw);
-      const h = clamp(r.h, minH, vh);
-      const x = clamp(r.x, 0, vw - w);
-      const y = clamp(r.y, 0, vh - h);
-      return { x, y, w, h };
-    };
-
-    const setPresetActive = (preset) => {
-      sharePreset = preset;
-      document.querySelectorAll('.preset-btn').forEach((btn) => {
-        btn.classList.toggle('active', btn.dataset.preset === preset);
-      });
-    };
-
-    const fitRectByRatio = (ratio) => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const maxW = vw * 0.88;
-      const maxH = vh * 0.82;
-      let w = maxW;
-      let h = w / ratio;
-      if (h > maxH) {
-        h = maxH;
-        w = h * ratio;
-      }
-      return {
-        x: (vw - w) / 2,
-        y: (vh - h) / 2,
-        w,
-        h,
-      };
-    };
-
-    const updateShareFrame = () => {
-      shareRect = clampShareRect(shareRect);
-      shareRect.x = (window.innerWidth - shareRect.w) / 2;
-      shareRect.y = (window.innerHeight - shareRect.h) / 2;
-      shareFrameEl.style.left = `${shareRect.x}px`;
-      shareFrameEl.style.top = `${shareRect.y}px`;
-      shareFrameEl.style.width = `${shareRect.w}px`;
-      shareFrameEl.style.height = `${shareRect.h}px`;
-      updateShareZones();
-      renderShareTexts();
-    };
-
-    const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
-    const applyMainPanelCollapsed = () => {
-      mainPanelBodyEl.classList.toggle('collapsed', mainPanelCollapsed);
-      mainPanelToggleEl.textContent = mainPanelCollapsed ? '展開' : '收合';
-    };
-    const applyShareControlsCollapsed = () => {
-      shareControlsBodyEl.classList.toggle('collapsed', shareControlsCollapsed);
-      shareControlsToggleEl.textContent = shareControlsCollapsed ? '展開設定' : '收合設定';
-    };
-    const applyShareTextSpoiler = () => {
-      shareTextSpoilerOpen = !!shareTextSpoilerOpen;
-      shareTextSpoilerToggleEl.classList.toggle('open', shareTextSpoilerOpen);
-      shareTextSpoilerPanelEl.classList.toggle('open', shareTextSpoilerOpen);
-    };
-
-    const placeZone = (elNode, left, top, width, height) => {
-      const w = Math.max(0, width);
-      const h = Math.max(0, height);
-      elNode.style.left = `${Math.max(0, left)}px`;
-      elNode.style.top = `${Math.max(0, top)}px`;
-      elNode.style.width = `${w}px`;
-      elNode.style.height = `${h}px`;
-      elNode.style.display = (w > 0 && h > 0) ? 'block' : 'none';
-    };
-
-    const updateShareZones = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const x1 = shareRect.x;
-      const y1 = shareRect.y;
-      const x2 = shareRect.x + shareRect.w;
-      const y2 = shareRect.y + shareRect.h;
-      const ring = 130;
-      const mx1 = Math.max(0, x1 - ring);
-      const my1 = Math.max(0, y1 - ring);
-      const mx2 = Math.min(vw, x2 + ring);
-      const my2 = Math.min(vh, y2 + ring);
-
-      placeZone(shareDeepTopEl, 0, 0, vw, my1);
-      placeZone(shareDeepBottomEl, 0, my2, vw, vh - my2);
-      placeZone(shareDeepLeftEl, 0, my1, mx1, my2 - my1);
-      placeZone(shareDeepRightEl, mx2, my1, vw - mx2, my2 - my1);
-
-      placeZone(shareMidTopEl, mx1, my1, mx2 - mx1, y1 - my1);
-      placeZone(shareMidBottomEl, mx1, y2, mx2 - mx1, my2 - y2);
-      placeZone(shareMidLeftEl, mx1, y1, x1 - mx1, y2 - y1);
-      placeZone(shareMidRightEl, x2, y1, mx2 - x2, y2 - y1);
-    };
-
-    const weightedWidthForCount = (count) => {
-      const base = routeWeight * routeWeightScale;
-      const c = Math.max(1, Number(count || 1));
-      const maxC = Math.max(1, Number(weightedRouteCountMax || 1));
-      if (routeWeightMode === 'linear') {
-        const ratio = maxC <= 1 ? 0 : (c - 1) / (maxC - 1);
-        return base * (1 + 2.4 * ratio);
-      }
-      if (routeWeightMode === 'log') {
-        const ratio = Math.log(1 + c) / Math.log(1 + maxC);
-        return base * (0.85 + 2.15 * ratio);
-      }
-      return base;
-    };
-
-    const applyStyle = () => {
-      routeLayer.setStyle({ color: routeColor, weight: routeWeight * routeWeightScale, opacity: routeOpacity });
-      weightedRouteLayer.setStyle((feature) => ({
-        color: routeColor,
-        weight: weightedWidthForCount(feature && feature.properties ? feature.properties.count : 1),
-        opacity: routeOpacity,
-      }));
-      heatLayer.setOptions({ minOpacity: heatMin, gradient: heatGradient });
-      if (window.__heatBasePoints) {
-        heatLayer.setLatLngs(window.__heatBasePoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
-      }
-      if (showRoute) {
-        if (routeWeightMode === 'stack') {
-          if (!map.hasLayer(routeLayer)) routeLayer.addTo(map);
-          if (map.hasLayer(weightedRouteLayer)) map.removeLayer(weightedRouteLayer);
-        } else {
-          if (!map.hasLayer(weightedRouteLayer)) weightedRouteLayer.addTo(map);
-          if (map.hasLayer(routeLayer)) map.removeLayer(routeLayer);
-        }
-      } else {
-        if (map.hasLayer(routeLayer)) map.removeLayer(routeLayer);
-        if (map.hasLayer(weightedRouteLayer)) map.removeLayer(weightedRouteLayer);
-      }
-      if (showHeat) {
-        if (!map.hasLayer(heatLayer)) heatLayer.addTo(map);
-      } else if (map.hasLayer(heatLayer)) {
-        map.removeLayer(heatLayer);
-      }
-      heatLayer.redraw();
-    };
-
-    const applyTheme = (themeKey) => {
-      const theme = THEMES[themeKey] || THEMES.classic;
-      currentThemeKey = THEMES[themeKey] ? themeKey : 'classic';
-      routeColor = theme.routeColor;
-      routeOpacity = theme.routeOpacity;
-      routeWeightScale = theme.routeWeightScale;
-      heatMin = theme.heatMin;
-      heatGain = theme.heatGain;
-      heatGradient = theme.heatGradient;
-      const ends = resolveGradientEnds(heatGradient);
-      heatColorLow = ends.low;
-      heatColorHigh = ends.high;
-      map.getPane('tilePane').style.filter = theme.tileFilter || 'none';
-      if (baseTileLayer) map.removeLayer(baseTileLayer);
-      baseTileLayer = L.tileLayer(theme.tile.url, theme.tile.options).addTo(map);
-      const themeSelectEl = el('theme-select');
-      if (themeSelectEl && themeSelectEl.querySelector(`option[value="${currentThemeKey}"]`)) {
-        themeSelectEl.value = currentThemeKey;
-      }
-      el('route-opacity').value = String(routeOpacity);
-      el('route-color').value = routeColor;
-      el('heat-min').value = String(heatMin);
-      el('heat-gain').value = String(heatGain);
-      el('heat-color-low').value = heatColorLow;
-      el('heat-color-high').value = heatColorHigh;
-      el('show-route').checked = showRoute;
-      el('show-heat').checked = showHeat;
-      el('route-weight-mode').value = routeWeightMode;
-      updateLabels();
-      applyStyle();
-    };
-
-    const themeKeyFromLabel = (label) => String(label || 'custom')
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 40) || 'custom';
-
-    const ensureThemeOption = (key, label) => {
-      const sel = el('theme-select');
-      if (!sel) return;
-      let opt = sel.querySelector(`option[value="${key}"]`);
-      if (!opt) {
-        opt = document.createElement('option');
-        opt.value = key;
-        sel.appendChild(opt);
-      }
-      opt.textContent = label || key;
-    };
-
-    const removeCustomThemeOptions = () => {
-      const sel = el('theme-select');
-      if (!sel) return;
-      Array.from(sel.options).forEach((opt) => {
-        if (!BUILTIN_THEME_KEYS.has(opt.value)) opt.remove();
-      });
-    };
-
-    const clampNum = (v, min, max, fallback) => {
-      const n = Number(v);
-      if (!Number.isFinite(n)) return fallback;
-      return Math.min(max, Math.max(min, n));
-    };
-
-    const sanitizeTheme = (raw, fallback = THEMES.classic) => {
-      const src = (raw && typeof raw === 'object') ? raw : {};
-      const base = fallback || THEMES.classic;
-      const out = JSON.parse(JSON.stringify(base));
-      if (typeof src.label === 'string' && src.label.trim()) out.label = src.label.trim().slice(0, 64);
-      if (typeof src.routeColor === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(src.routeColor.trim())) out.routeColor = src.routeColor.trim();
-      out.routeOpacity = clampNum(src.routeOpacity, 0.05, 1, out.routeOpacity);
-      out.routeWeightScale = clampNum(src.routeWeightScale, 0.4, 3, out.routeWeightScale);
-      out.heatMin = clampNum(src.heatMin, 0.05, 0.95, out.heatMin);
-      out.heatGain = clampNum(src.heatGain, 0.1, 4, out.heatGain);
-      if (typeof src.tileFilter === 'string') out.tileFilter = src.tileFilter.slice(0, 160);
-      if (src.tile && typeof src.tile === 'object') {
-        if (typeof src.tile.url === 'string' && /^https?:\/\//i.test(src.tile.url)) out.tile.url = src.tile.url;
-        if (src.tile.options && typeof src.tile.options === 'object') out.tile.options = { ...out.tile.options, ...src.tile.options };
-      }
-      if (src.heatGradient && typeof src.heatGradient === 'object') {
-        const g = {};
-        Object.entries(src.heatGradient).forEach(([k, v]) => {
-          const kk = Number(k);
-          if (!Number.isFinite(kk) || kk < 0 || kk > 1) return;
-          if (typeof v !== 'string' || !v.trim()) return;
-          g[kk] = v.trim();
-        });
-        if (Object.keys(g).length >= 2) out.heatGradient = g;
-      }
-      return out;
-    };
-
-    const buildCurrentThemeSnapshot = () => {
-      const base = THEMES[currentThemeKey] || THEMES.classic;
-      return sanitizeTheme({
-        label: `${(base.label || 'Custom')} Export`,
-        routeColor,
-        routeOpacity,
-        routeWeightScale,
-        heatMin,
-        heatGain,
-        heatGradient: JSON.parse(JSON.stringify(heatGradient)),
-        tile: JSON.parse(JSON.stringify(base.tile || THEMES.classic.tile)),
-        tileFilter: base.tileFilter || 'none',
-      }, base);
-    };
-
-    const exportCurrentTheme = () => {
-      try {
-        const payload = {
-          version: 1,
-          key: currentThemeKey,
-          exportedAt: new Date().toISOString(),
-          theme: buildCurrentThemeSnapshot(),
-        };
-        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `ride-theme-${payload.key || 'custom'}.json`;
-        a.click();
-        URL.revokeObjectURL(a.href);
-        metaEl.textContent = 'Theme JSON 已匯出。';
-      } catch (err) {
-        metaEl.textContent = `Theme 匯出失敗：${err && err.message ? err.message : String(err)}`;
-      }
-    };
-
-    const importThemeFromText = (text) => {
-      const data = JSON.parse(text);
-      const list = [];
-      if (data && typeof data === 'object' && data.themes && typeof data.themes === 'object') {
-        Object.entries(data.themes).forEach(([k, v]) => list.push({ key: k, theme: v }));
-      } else if (data && typeof data === 'object' && data.theme && typeof data.theme === 'object') {
-        list.push({ key: data.key || data.name || 'custom', theme: data.theme });
-      } else {
-        throw new Error('JSON 格式不支援');
-      }
-      if (!list.length) throw new Error('沒有可匯入的 theme');
-      let appliedKey = 'classic';
-      list.forEach((item) => {
-        const sanitized = sanitizeTheme(item.theme, THEMES.classic);
-        const key0 = themeKeyFromLabel(item.key || sanitized.label || 'custom');
-        let key = key0;
-        let seq = 2;
-        while (THEMES[key] && key !== item.key) {
-          key = `${key0}-${seq}`;
-          seq += 1;
-        }
-        THEMES[key] = sanitized;
-        ensureThemeOption(key, sanitized.label || key);
-        appliedKey = key;
-      });
-      applyTheme(appliedKey);
-      metaEl.textContent = `Theme 匯入完成：${list.length} 個。`;
-    };
-
-    const resetThemes = () => {
-      Object.keys(THEMES).forEach((k) => {
-        if (!BUILTIN_THEME_KEYS.has(k)) delete THEMES[k];
-      });
-      Object.keys(DEFAULT_THEMES).forEach((k) => { THEMES[k] = JSON.parse(JSON.stringify(DEFAULT_THEMES[k])); });
-      removeCustomThemeOptions();
-      applyTheme('classic');
-      metaEl.textContent = 'Theme 已重設為預設。';
-    };
-
-    const applyWheelZoomSensitivity = () => {
-      if (wheelZoomLevel === 'fast') wheelZoomStep = 0.10;
-      else if (wheelZoomLevel === 'normal') wheelZoomStep = 0.06;
-      else wheelZoomStep = 0.03;
-      if (wheelZoomLevel === 'native') {
-        customWheelZoomEnabled = false;
-        map.scrollWheelZoom.enable();
-      } else {
-        customWheelZoomEnabled = true;
-        map.scrollWheelZoom.disable();
-      }
-    };
-
-    const isTypingTarget = (target) => {
-      if (!target || !(target instanceof HTMLElement)) return false;
-      const tag = (target.tagName || '').toUpperCase();
-      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
-      if (target.isContentEditable) return true;
-      return false;
-    };
-
-    const setAdvancedTab = (tab) => {
-      const next = (tab && advTabPanels[tab]) ? tab : 'style';
-      advTabButtons.forEach((btn) => btn.classList.toggle('active', btn.dataset.tab === next));
-      Object.entries(advTabPanels).forEach(([k, panel]) => {
-        if (!panel) return;
-        panel.classList.toggle('active', k === next);
-      });
-    };
-    advTabButtons.forEach((btn) => {
-      btn.addEventListener('click', () => setAdvancedTab(String(btn.dataset.tab || 'style')));
-    });
-
-    el('route-opacity').addEventListener('input', () => { routeOpacity = Number(el('route-opacity').value); updateLabels(); applyStyle(); });
-    el('show-route').addEventListener('change', () => {
-      showRoute = !!el('show-route').checked;
-      applyStyle();
-    });
-    el('route-color').addEventListener('input', () => {
-      routeColor = String(el('route-color').value || routeColor);
-      applyStyle();
-    });
-    el('route-weight').addEventListener('input', () => { routeWeight = Number(el('route-weight').value); updateLabels(); applyStyle(); });
-    el('route-weight-mode').addEventListener('change', () => {
-      routeWeightMode = String(el('route-weight-mode').value || 'stack');
-      applyStyle();
-    });
-    el('heat-min').addEventListener('input', () => { heatMin = Number(el('heat-min').value); updateLabels(); applyStyle(); });
-    el('heat-gain').addEventListener('input', () => { heatGain = Number(el('heat-gain').value); updateLabels(); applyStyle(); });
-    el('show-heat').addEventListener('change', () => {
-      showHeat = !!el('show-heat').checked;
-      applyStyle();
-    });
-    el('heat-color-low').addEventListener('input', () => {
-      heatColorLow = String(el('heat-color-low').value || heatColorLow);
-      heatGradient = buildHeatGradientFromEnds(heatColorLow, heatColorHigh);
-      applyStyle();
-    });
-    el('heat-color-high').addEventListener('input', () => {
-      heatColorHigh = String(el('heat-color-high').value || heatColorHigh);
-      heatGradient = buildHeatGradientFromEnds(heatColorLow, heatColorHigh);
-      applyStyle();
-    });
-    el('start-hide-km').addEventListener('input', async () => {
-      startHideKm = Number(el('start-hide-km').value);
-      updateLabels();
-      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
-    });
-    el('end-hide-km').addEventListener('input', async () => {
-      endHideKm = Number(el('end-hide-km').value);
-      updateLabels();
-      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
-    });
-    el('activity-type-filter').addEventListener('change', async () => {
-      activityTypeFilter = String(el('activity-type-filter').value || 'all');
-      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
-    });
-    el('enable-track-cleaning').addEventListener('change', async () => {
-      enableTrackCleaning = !!el('enable-track-cleaning').checked;
-      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
-    });
-    el('taiwan-only').addEventListener('change', async () => {
-      taiwanOnly = !!el('taiwan-only').checked;
-      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
-      else focusTaiwanView();
-    });
-    el('focus-taiwan-btn').addEventListener('click', () => {
-      focusTaiwanView();
-    });
-    el('focus-all-btn').addEventListener('click', () => {
-      focusAllView();
-    });
-    el('date-from').addEventListener('change', async () => {
-      dateFromTs = parseDateInputStartTs(el('date-from').value);
-      setDateFilterDirty(true);
-    });
-    el('date-to').addEventListener('change', async () => {
-      dateToTs = parseDateInputEndTs(el('date-to').value);
-      setDateFilterDirty(true);
-    });
-    el('date-filter-apply-btn').addEventListener('click', applyDateYearFilters);
-    [el('date-from'), el('date-to')].forEach((node) => {
-      node.addEventListener('keydown', async (ev) => {
-        if (ev.key !== 'Enter') return;
-        ev.preventDefault();
-        await applyDateYearFilters();
-      });
-    });
-    const onYearQuickChanged = async () => {
-      normalizeYearQuick();
-      setDateFilterDirty(true);
-    };
-    el('year-q-all').addEventListener('change', async () => {
-      yearQuick.all = !!el('year-q-all').checked;
-      if (yearQuick.all) {
-        yearQuick.y0 = false;
-        yearQuick.y1 = false;
-        yearQuick.y2 = false;
-        yearQuick.y3 = false;
-        yearQuick.older = false;
-      }
-      await onYearQuickChanged();
-    });
-    el('year-q-y0').addEventListener('change', async () => {
-      yearQuick.y0 = !!el('year-q-y0').checked;
-      if (yearQuick.y0) yearQuick.all = false;
-      await onYearQuickChanged();
-    });
-    el('year-q-y1').addEventListener('change', async () => {
-      yearQuick.y1 = !!el('year-q-y1').checked;
-      if (yearQuick.y1) yearQuick.all = false;
-      await onYearQuickChanged();
-    });
-    el('year-q-y2').addEventListener('change', async () => {
-      yearQuick.y2 = !!el('year-q-y2').checked;
-      if (yearQuick.y2) yearQuick.all = false;
-      await onYearQuickChanged();
-    });
-    el('year-q-y3').addEventListener('change', async () => {
-      yearQuick.y3 = !!el('year-q-y3').checked;
-      if (yearQuick.y3) yearQuick.all = false;
-      await onYearQuickChanged();
-    });
-    el('year-q-older').addEventListener('change', async () => {
-      yearQuick.older = !!el('year-q-older').checked;
-      if (yearQuick.older) yearQuick.all = false;
-      await onYearQuickChanged();
-    });
-    el('theme-select').addEventListener('change', () => {
-      applyTheme(String(el('theme-select').value || 'classic'));
-    });
-    el('theme-export-btn').addEventListener('click', exportCurrentTheme);
-    el('theme-import-btn').addEventListener('click', () => {
-      const input = el('theme-import-input');
-      if (!input) return;
-      input.value = '';
-      input.click();
-    });
-    el('theme-reset-btn').addEventListener('click', resetThemes);
-    el('theme-import-input').addEventListener('change', async () => {
-      const f = el('theme-import-input').files && el('theme-import-input').files[0];
-      if (!f) return;
-      try {
-        const text = await f.text();
-        importThemeFromText(text);
-      } catch (err) {
-        metaEl.textContent = `Theme 匯入失敗：${err && err.message ? err.message : String(err)}`;
-      }
-    });
-    el('wheel-zoom-level').addEventListener('change', () => {
-      wheelZoomLevel = String(el('wheel-zoom-level').value || 'native');
-      applyWheelZoomSensitivity();
-    });
-    document.querySelectorAll('.preset-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const preset = String(btn.dataset.preset || 'insta-post');
-        if (preset === 'custom') {
-          setPresetActive('custom');
-          updateShareFrame();
-          return;
-        }
-        const ratio = sharePresetRatios[preset];
-        shareRect = fitRectByRatio(ratio);
-        setPresetActive(preset);
-        updateShareFrame();
-      });
-    });
-    const resizeCentered = (dir, base, dx, dy) => {
-      let w = base.w;
-      let h = base.h;
-      const minW = 180;
-      const minH = 120;
-      if (dir.includes('e')) w = base.w + dx * 2;
-      if (dir.includes('w')) w = base.w - dx * 2;
-      if (dir.includes('s')) h = base.h + dy * 2;
-      if (dir.includes('n')) h = base.h - dy * 2;
-      w = clamp(w, minW, window.innerWidth);
-      h = clamp(h, minH, window.innerHeight);
-      return { x: 0, y: 0, w, h };
-    };
-
-    shareOverlayEl.addEventListener('pointerdown', (ev) => {
-      const handle = ev.target.closest('.share-handle');
-      if (!handle) return;
-      shareResize = {
-        pointerId: ev.pointerId,
-        dir: String(handle.dataset.dir || ''),
-        startX: ev.clientX,
-        startY: ev.clientY,
-        base: { ...shareRect },
-      };
-      handle.setPointerCapture(ev.pointerId);
-      ev.preventDefault();
-      ev.stopPropagation();
-    });
-
-    shareOverlayEl.addEventListener('pointermove', (ev) => {
-      if (!shareResize || ev.pointerId !== shareResize.pointerId) return;
-      const dx = ev.clientX - shareResize.startX;
-      const dy = ev.clientY - shareResize.startY;
-      shareRect = resizeCentered(shareResize.dir, shareResize.base, dx, dy);
-      setPresetActive('custom');
-      updateShareFrame();
-      ev.preventDefault();
-      ev.stopPropagation();
-    });
-
-    const endResize = (ev) => {
-      if (!shareResize || ev.pointerId !== shareResize.pointerId) return;
-      shareResize = null;
-      ev.preventDefault();
-      ev.stopPropagation();
-    };
-    shareOverlayEl.addEventListener('pointerup', endResize);
-    shareOverlayEl.addEventListener('pointercancel', endResize);
-
-    const findShareTextById = (id) => shareTexts.find((t) => t.id === id) || null;
-
-    const resolveTextBg = (t) => {
-      const mode = String(t.bgMode || 'dark');
-      if (mode === 'transparent') return 'transparent';
-      if (mode === 'light') return 'rgba(255,255,255,0.78)';
-      if (mode === 'yellow') return 'rgba(254,240,138,0.82)';
-      if (mode === 'custom') return t.bgColor || '#222222';
-      return 'rgba(0,0,0,0.45)';
-    };
-
-    const drawRoundRect = (ctx, x, y, w, h, r) => {
-      const rr = Math.max(0, Math.min(r, Math.min(w, h) / 2));
-      ctx.beginPath();
-      ctx.moveTo(x + rr, y);
-      ctx.arcTo(x + w, y, x + w, y + h, rr);
-      ctx.arcTo(x + w, y + h, x, y + h, rr);
-      ctx.arcTo(x, y + h, x, y, rr);
-      ctx.arcTo(x, y, x + w, y, rr);
-      ctx.closePath();
-      ctx.fill();
-    };
-
-    const openTextEditor = (initialValue, onSave) => {
-      textEditorState = { onSave };
-      textEditorInputEl.value = String(initialValue || '');
-      textEditorModalEl.classList.add('open');
-      textEditorModalEl.setAttribute('aria-hidden', 'false');
-      setTimeout(() => {
-        textEditorInputEl.focus();
-        textEditorInputEl.select();
-      }, 0);
-    };
-
-    const closeTextEditor = () => {
-      textEditorModalEl.classList.remove('open');
-      textEditorModalEl.setAttribute('aria-hidden', 'true');
-      textEditorState = null;
-    };
-
-    const saveTextEditor = () => {
-      if (textEditorState && typeof textEditorState.onSave === 'function') {
-        textEditorState.onSave(textEditorInputEl.value);
-      }
-      closeTextEditor();
-    };
-
-    const setSelectedText = (id) => {
-      shareSelectedTextId = id;
-      const t = findShareTextById(id);
-      if (t) {
-        el('share-text-color').value = t.color || '#ffffff';
-        el('share-text-size').value = String(Math.round(t.size || 24));
-        el('share-text-weight').value = String(t.weight || 700);
-        el('share-text-family').value = t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
-        el('share-text-rotate').value = String(Math.round(t.rotate || 0));
-        el('share-text-align').value = t.align || 'center';
-        el('share-text-bg-mode').value = t.bgMode || 'dark';
-        el('share-text-bg-color').value = t.bgColor || '#222222';
-        el('share-text-italic').value = t.italic ? 'yes' : 'no';
-        el('share-text-shadow').value = t.shadow === false ? 'no' : 'yes';
-        el('share-text-shadow-blur').value = String(Math.round(t.shadowBlur ?? 8));
-      }
-      renderShareTexts();
-    };
-
-    const renderShareTexts = () => {
-      shareTextLayerEl.innerHTML = '';
-      shareTexts.forEach((t) => {
-        const node = document.createElement('div');
-        node.className = `share-text-object${t.id === shareSelectedTextId ? ' selected' : ''}`;
-        node.dataset.id = String(t.id);
-        node.style.left = `${(t.x || 0.5) * 100}%`;
-        node.style.top = `${(t.y || 0.5) * 100}%`;
-        node.style.color = t.color;
-        node.style.fontSize = `${t.size}px`;
-        node.style.fontWeight = String(t.weight);
-        node.style.fontFamily = t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
-        node.style.textAlign = t.align || 'center';
-        node.style.fontStyle = t.italic ? 'italic' : 'normal';
-        node.style.textShadow = t.shadow === false ? 'none' : `0 2px ${(t.shadowBlur ?? 8)}px rgba(0,0,0,0.7)`;
-        node.style.background = resolveTextBg(t);
-        node.style.borderRadius = '10px';
-        node.style.transform = `translate(-50%, -50%) rotate(${t.rotate || 0}deg)`;
-        const content = document.createElement('div');
-        content.className = 'share-text-content';
-        content.textContent = t.text;
-        node.appendChild(content);
-        if (t.id === shareSelectedTextId) {
-          const hSize = document.createElement('div');
-          hSize.className = 'share-text-handle size';
-          hSize.dataset.kind = 'size';
-          const hRotate = document.createElement('div');
-          hRotate.className = 'share-text-handle rotate';
-          hRotate.dataset.kind = 'rotate';
-          node.appendChild(hSize);
-          node.appendChild(hRotate);
-        }
-        shareTextLayerEl.appendChild(node);
-      });
-    };
-
-    const addTextAt = (rx, ry, markCustom = true, promptEdit = false) => {
-      const textObj = {
-        id: shareTextIdSeq++,
-        text: '新文字',
-        x: clamp(rx, 0.03, 0.97),
-        y: clamp(ry, 0.03, 0.97),
-        color: '#ffffff',
-        size: 24,
-        weight: 700,
-        family: "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif",
-        rotate: 0,
-        align: 'center',
-        bgMode: 'dark',
-        bgColor: '#222222',
-        italic: false,
-        shadow: true,
-        shadowBlur: 8,
-      };
-      shareTexts.push(textObj);
-      if (markCustom) setPresetActive('custom');
-      setSelectedText(textObj.id);
-      if (promptEdit) {
-        openTextEditor(textObj.text, (value) => {
-          textObj.text = String(value || '').trim() || '新文字';
-          setSelectedText(textObj.id);
-        });
-      }
-    };
-
-    el('share-add-text-btn').addEventListener('click', () => {
-      shareAddMode = !shareAddMode;
-      shareFrameEl.classList.toggle('add-mode', shareAddMode);
-      el('share-add-text-btn').textContent = shareAddMode ? '點框內放置' : '+ 新增文字';
-    });
-
-    el('share-edit-text-btn').addEventListener('click', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      openTextEditor(t.text, (value) => {
-        t.text = String(value || '').trim() || '新文字';
-        renderShareTexts();
-      });
-    });
-
-    el('share-text-color').addEventListener('input', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.color = el('share-text-color').value;
-      renderShareTexts();
-    });
-
-    el('share-text-size').addEventListener('input', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.size = Number(el('share-text-size').value);
-      renderShareTexts();
-    });
-
-    el('share-text-weight').addEventListener('change', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.weight = Number(el('share-text-weight').value);
-      renderShareTexts();
-    });
-
-    advancedToggleEl.addEventListener('click', () => {
-      const open = !advancedPanelEl.classList.contains('open');
-      advancedPanelEl.classList.toggle('open', open);
-      advancedToggleEl.classList.toggle('open', open);
-    });
-
-    el('share-text-family').addEventListener('change', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.family = el('share-text-family').value;
-      renderShareTexts();
-    });
-
-    el('share-text-rotate').addEventListener('input', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.rotate = Number(el('share-text-rotate').value);
-      renderShareTexts();
-    });
-
-    el('share-text-align').addEventListener('change', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.align = String(el('share-text-align').value || 'center');
-      renderShareTexts();
-    });
-
-    el('share-text-bg-mode').addEventListener('change', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.bgMode = String(el('share-text-bg-mode').value || 'dark');
-      renderShareTexts();
-    });
-
-    el('share-text-bg-color').addEventListener('input', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.bgColor = String(el('share-text-bg-color').value || '#222222');
-      if (t.bgMode !== 'custom') t.bgMode = 'custom';
-      el('share-text-bg-mode').value = 'custom';
-      renderShareTexts();
-    });
-
-    el('share-text-italic').addEventListener('change', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.italic = el('share-text-italic').value === 'yes';
-      renderShareTexts();
-    });
-
-    el('share-text-shadow').addEventListener('change', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.shadow = el('share-text-shadow').value !== 'no';
-      renderShareTexts();
-    });
-
-    el('share-text-shadow-blur').addEventListener('input', () => {
-      const t = findShareTextById(shareSelectedTextId);
-      if (!t) return;
-      t.shadowBlur = Number(el('share-text-shadow-blur').value);
-      renderShareTexts();
-    });
-
-    el('share-delete-text-btn').addEventListener('click', () => {
-      if (shareSelectedTextId == null) return;
-      shareTexts = shareTexts.filter((t) => t.id !== shareSelectedTextId);
-      shareSelectedTextId = shareTexts.length ? shareTexts[shareTexts.length - 1].id : null;
-      if (shareSelectedTextId != null) {
-        setSelectedText(shareSelectedTextId);
-      } else {
-        renderShareTexts();
-      }
-    });
-
-    shareTextLayerEl.addEventListener('pointerdown', (ev) => {
-      const handle = ev.target.closest('.share-text-handle');
-      if (handle) {
-        const node = handle.closest('.share-text-object');
-        if (!node) return;
-        const id = Number(node.dataset.id);
-        const t = findShareTextById(id);
-        if (!t) return;
-        setSelectedText(id);
-        const rect = node.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const sx = ev.clientX - cx;
-        const sy = ev.clientY - cy;
-        shareTextHandleDrag = {
-          pointerId: ev.pointerId,
-          id,
-          kind: String(handle.dataset.kind || ''),
-          baseSize: Number(t.size || 24),
-          baseRotate: Number(t.rotate || 0),
-          centerX: cx,
-          centerY: cy,
-          startDist: Math.max(1, Math.hypot(sx, sy)),
-          startAngle: Math.atan2(sy, sx),
-          node,
-        };
-        handle.setPointerCapture(ev.pointerId);
-        map.dragging.disable();
-        map.doubleClickZoom.disable();
-        map.scrollWheelZoom.disable();
-        customWheelZoomEnabled = false;
-        ev.preventDefault();
-        ev.stopPropagation();
-        return;
-      }
-      const hit = ev.target.closest('.share-text-object');
-      if (!hit) return;
-      const id = Number(hit.dataset.id);
-      const t = findShareTextById(id);
-      if (!t) return;
-      setSelectedText(id);
-      const node = shareTextLayerEl.querySelector(`.share-text-object[data-id="${id}"]`);
-      if (!node) return;
-      shareTextDrag = {
-        pointerId: ev.pointerId,
-        id,
-        startX: ev.clientX,
-        startY: ev.clientY,
-        baseX: t.x,
-        baseY: t.y,
-        node,
-        moved: false,
-      };
-      node.classList.add('dragging');
-      node.setPointerCapture(ev.pointerId);
-      map.dragging.disable();
-      map.doubleClickZoom.disable();
-      map.scrollWheelZoom.disable();
-      customWheelZoomEnabled = false;
-      ev.preventDefault();
-      ev.stopPropagation();
-    });
-
-    window.addEventListener('pointermove', (ev) => {
-      if (shareTextHandleDrag && ev.pointerId === shareTextHandleDrag.pointerId) {
-        const t = findShareTextById(shareTextHandleDrag.id);
-        if (!t) return;
-        const dx = ev.clientX - shareTextHandleDrag.centerX;
-        const dy = ev.clientY - shareTextHandleDrag.centerY;
-        if (shareTextHandleDrag.kind === 'size') {
-          const dist = Math.max(1, Math.hypot(dx, dy));
-          const scale = dist / shareTextHandleDrag.startDist;
-          t.size = clamp(Math.round(shareTextHandleDrag.baseSize * scale), 10, 140);
-          el('share-text-size').value = String(Math.round(t.size));
-        } else if (shareTextHandleDrag.kind === 'rotate') {
-          const angle = Math.atan2(dy, dx);
-          const delta = (shareTextHandleDrag.startAngle - angle) * 180 / Math.PI;
-          t.rotate = Math.round(shareTextHandleDrag.baseRotate + delta);
-          el('share-text-rotate').value = String(t.rotate);
-        }
-        renderShareTexts();
-        ev.preventDefault();
-        return;
-      }
-      if (!shareTextDrag || ev.pointerId !== shareTextDrag.pointerId) return;
-      const t = findShareTextById(shareTextDrag.id);
-      if (!t) return;
-      const dx = (ev.clientX - shareTextDrag.startX) / Math.max(1, shareRect.w);
-      const dy = (ev.clientY - shareTextDrag.startY) / Math.max(1, shareRect.h);
-      const movePx = Math.hypot(ev.clientX - shareTextDrag.startX, ev.clientY - shareTextDrag.startY);
-      if (movePx > 4) shareTextDrag.moved = true;
-      t.x = clamp(shareTextDrag.baseX + dx, 0.03, 0.97);
-      t.y = clamp(shareTextDrag.baseY + dy, 0.03, 0.97);
-      if (shareTextDrag.node) {
-        shareTextDrag.node.style.left = `${t.x * 100}%`;
-        shareTextDrag.node.style.top = `${t.y * 100}%`;
-      }
-      ev.preventDefault();
-    });
-
-    const endTextDrag = (ev) => {
-      if (shareTextHandleDrag && ev.pointerId === shareTextHandleDrag.pointerId) {
-        shareTextHandleDrag = null;
-        renderShareTexts();
-        map.dragging.enable();
-        map.doubleClickZoom.enable();
-        applyWheelZoomSensitivity();
-        ev.preventDefault();
-        return;
-      }
-      if (!shareTextDrag || ev.pointerId !== shareTextDrag.pointerId) return;
-      const drag = shareTextDrag;
-      const tappedText = findShareTextById(drag.id);
-      if (shareTextDrag.node) shareTextDrag.node.classList.remove('dragging');
-      shareTextDrag = null;
-      renderShareTexts();
-      map.dragging.enable();
-      map.doubleClickZoom.enable();
-      applyWheelZoomSensitivity();
-      if (!drag.moved && tappedText) {
-        const now = Date.now();
-        if (shareTextLastTap.id === drag.id && now - shareTextLastTap.ts < 350) {
-          shareTextLastTap = { id: null, ts: 0 };
-          openTextEditor(tappedText.text, (value) => {
-            tappedText.text = String(value || '').trim() || '新文字';
-            renderShareTexts();
-          });
-        } else {
-          shareTextLastTap = { id: drag.id, ts: now };
-        }
-      }
-      ev.preventDefault();
-    };
-    window.addEventListener('pointerup', endTextDrag);
-    window.addEventListener('pointercancel', endTextDrag);
-
-    shareFrameEl.addEventListener('click', (ev) => {
-      if (!shareAddMode) return;
-      if (ev.target.closest('.share-handle') || ev.target.closest('.share-text-object')) return;
-      const rect = shareFrameEl.getBoundingClientRect();
-      const rx = clamp((ev.clientX - rect.left) / Math.max(1, rect.width), 0.03, 0.97);
-      const ry = clamp((ev.clientY - rect.top) / Math.max(1, rect.height), 0.03, 0.97);
-      addTextAt(rx, ry, true, true);
-      shareAddMode = false;
-      shareFrameEl.classList.remove('add-mode');
-      el('share-add-text-btn').textContent = '+ 新增文字';
-      ev.preventDefault();
-      ev.stopPropagation();
-    });
-
-    const samplePoints = (points, step) => {
-      if (step <= 1) return points;
-      const out = [];
-      for (let i = 0; i < points.length; i += step) out.push(points[i]);
-      if (points.length && out[out.length - 1] !== points[points.length - 1]) out.push(points[points.length - 1]);
-      return out;
-    };
-
-    const parseGpxText = (text) => {
-      const doc = new DOMParser().parseFromString(text, 'application/xml');
-      const pts = [];
-      const a = Array.from(doc.getElementsByTagName('trkpt'));
-      const b = Array.from(doc.getElementsByTagNameNS('*', 'trkpt'));
-      const trkpts = [...a];
-      b.forEach((n) => { if (!trkpts.includes(n)) trkpts.push(n); });
-      for (let i = 0; i < trkpts.length; i += 1) {
-        const n = trkpts[i];
-        const lat = Number(n.getAttribute('lat'));
-        const lon = Number(n.getAttribute('lon'));
-        if (Number.isFinite(lat) && Number.isFinite(lon)) pts.push([lat, lon]);
-      }
-      return pts;
+    const setBusy = (busy) => {
+      runKeepFitBtnEl.disabled = !!busy;
+      runNoFitBtnEl.disabled = !!busy;
+      resetBtnEl.disabled = !!busy;
+      zipInputEl.disabled = !!busy;
+      runKeepFitBtnEl.textContent = busy ? '處理中...' : '下載（保留 FIT）';
+      runNoFitBtnEl.textContent = busy ? '處理中...' : '下載（不含 FIT）';
+      if (!busy) clearProgress();
     };
 
     const toRad = (v) => (v * Math.PI) / 180;
@@ -2380,1074 +196,283 @@
       return 2 * R * Math.asin(Math.sqrt(x));
     };
 
-    const trackLengthMeters = (points) => {
-      if (!points || points.length < 2) return 0;
-      let acc = 0;
-      for (let i = 1; i < points.length; i += 1) acc += haversineMeters(points[i - 1], points[i]);
-      return acc;
-    };
-
-    const isInBbox = (lat, lon, bbox) => {
-      if (!bbox) return true;
-      return lat >= bbox.minLat && lat <= bbox.maxLat && lon >= bbox.minLon && lon <= bbox.maxLon;
-    };
-
-    const clipTrackToBbox = (points, bbox, minPoints = 2) => {
-      const out = [];
-      let cur = [];
-      for (let i = 0; i < points.length; i += 1) {
-        const p = points[i];
-        const lat = Number(p && p[0]);
-        const lon = Number(p && p[1]);
-        if (Number.isFinite(lat) && Number.isFinite(lon) && isInBbox(lat, lon, bbox)) {
-          cur.push([lat, lon]);
-          continue;
-        }
-        if (cur.length >= minPoints) out.push(cur);
-        cur = [];
-      }
-      if (cur.length >= minPoints) out.push(cur);
-      return out;
-    };
-
-    const fitToBounds = (bounds) => {
-      if (bounds && bounds.isValid && bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
-    };
-
-    const focusTaiwanView = () => {
-      if (lastTaiwanBounds && lastTaiwanBounds.isValid()) {
-        fitToBounds(lastTaiwanBounds);
-        return;
-      }
-      fitToBounds(L.latLngBounds([
-        [TAIWAN_BBOX.minLat, TAIWAN_BBOX.minLon],
-        [TAIWAN_BBOX.maxLat, TAIWAN_BBOX.maxLon],
-      ]));
-    };
-
-    const focusAllView = () => {
-      if (lastRenderBounds && lastRenderBounds.isValid()) fitToBounds(lastRenderBounds);
-    };
-
-    const sanitizeTrack = (points, options = {}) => {
-      const jumpThresholdMeters = Number(options.jumpThresholdMeters ?? 3000);
-      const minSegmentPoints = Number(options.minSegmentPoints ?? 8);
-      const minSegmentMeters = Number(options.minSegmentMeters ?? 300);
-      const stats = {
-        removedInvalidPoints: 0,
-        jumpSplits: 0,
-        droppedShortSegments: 0,
-        keptSegments: 0,
-      };
-      if (!points || points.length < 2) return { segments: [], stats };
-
-      const valid = [];
-      for (let i = 0; i < points.length; i += 1) {
-        const p = points[i];
-        const lat = Number(p && p[0]);
-        const lon = Number(p && p[1]);
-        if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-          stats.removedInvalidPoints += 1;
-          continue;
-        }
-        if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-          stats.removedInvalidPoints += 1;
-          continue;
-        }
-        if (Math.abs(lat) < 1e-8 && Math.abs(lon) < 1e-8) {
-          stats.removedInvalidPoints += 1;
-          continue;
-        }
-        valid.push([lat, lon]);
-      }
-      if (valid.length < 2) return { segments: [], stats };
-
-      const rawSegments = [];
-      let cur = [valid[0]];
-      for (let i = 1; i < valid.length; i += 1) {
-        const prev = valid[i - 1];
-        const next = valid[i];
-        const dist = haversineMeters(prev, next);
-        if (dist > jumpThresholdMeters) {
-          stats.jumpSplits += 1;
-          if (cur.length >= 2) rawSegments.push(cur);
-          cur = [next];
-          continue;
-        }
-        cur.push(next);
-      }
-      if (cur.length >= 2) rawSegments.push(cur);
-
-      const kept = [];
-      for (let i = 0; i < rawSegments.length; i += 1) {
-        const seg = rawSegments[i];
-        const len = trackLengthMeters(seg);
-        if (seg.length < minSegmentPoints || len < minSegmentMeters) {
-          stats.droppedShortSegments += 1;
-          continue;
-        }
-        kept.push(seg);
-      }
-      stats.keptSegments = kept.length;
-      return { segments: kept, stats };
-    };
-
-    const trimStartByDistance = (points, km) => {
-      const threshold = Math.max(0, km) * 1000;
-      if (!threshold || points.length < 2) return points;
-      let acc = 0;
-      let idx = 0;
-      while (idx + 1 < points.length && acc < threshold) {
-        acc += haversineMeters(points[idx], points[idx + 1]);
-        idx += 1;
-      }
-      const out = points.slice(idx);
-      return out.length >= 2 ? out : [];
-    };
-
-    const trimEndByDistance = (points, km) => {
-      const threshold = Math.max(0, km) * 1000;
-      if (!threshold || points.length < 2) return points;
-      let acc = 0;
-      let idx = points.length - 1;
-      while (idx - 1 >= 0 && acc < threshold) {
-        acc += haversineMeters(points[idx], points[idx - 1]);
-        idx -= 1;
-      }
-      const out = points.slice(0, idx + 1);
-      return out.length >= 2 ? out : [];
-    };
-
-    const wrapTextByWidth = (ctx, text, maxWidth) => {
-      const lines = [];
-      const paragraphs = String(text || '').split('\n');
-      paragraphs.forEach((p) => {
-        if (!p) {
-          lines.push('');
-          return;
-        }
-        let line = '';
-        for (const ch of p) {
-          const test = line + ch;
-          if (line && ctx.measureText(test).width > maxWidth) {
-            lines.push(line);
-            line = ch;
-          } else {
-            line = test;
-          }
-        }
-        if (line) lines.push(line);
-      });
-      return lines.length ? lines : [''];
-    };
-
-    const isCyclingType = (typeText) => {
-      const t = String(typeText || '').toLowerCase();
-      return t.includes('ride') || t.includes('cycle');
-    };
-
-    const isRunType = (typeText) => {
-      const t = String(typeText || '').toLowerCase();
-      return t.includes('run');
-    };
-
     const parseCsvLine = (line) => {
-      const result = [];
-      let current = '';
+      const out = [];
+      let cur = '';
       let inQuotes = false;
       for (let i = 0; i < line.length; i += 1) {
         const ch = line[i];
         if (ch === '"') {
           if (inQuotes && line[i + 1] === '"') {
-            current += '"';
+            cur += '"';
             i += 1;
           } else {
             inQuotes = !inQuotes;
           }
         } else if (ch === ',' && !inQuotes) {
-          result.push(current);
-          current = '';
+          out.push(cur);
+          cur = '';
         } else {
-          current += ch;
+          cur += ch;
         }
       }
-      result.push(current);
-      return result;
+      out.push(cur);
+      return out;
     };
 
-    const parseCsv = (text) => {
-      const lines = text.split(/\r?\n/).filter(Boolean);
-      if (!lines.length) return [];
+    const csvEscape = (v) => {
+      const s = String(v ?? '');
+      if (!/[",\n\r]/.test(s)) return s;
+      return `"${s.replace(/"/g, '""')}"`;
+    };
+
+    const sanitizeActivitiesCsv = (text, anonName) => {
+      const lines = String(text || '').split(/\r?\n/);
+      if (!lines.length || !lines[0].trim()) return { text, redactedColumns: 0, rows: 0 };
       const headers = parseCsvLine(lines[0]);
-      return lines.slice(1).map((line) => {
+      const normalized = headers.map((h) => String(h || '').trim().toLowerCase());
+      const sensitiveIdx = new Set();
+      const keepNames = new Set(['activity id', 'activity date', 'activity type', 'distance', 'moving time', 'elapsed time', 'total elevation gain', 'elevation high', 'filename']);
+      const sensitiveKeywords = ['athlete', 'email', 'sex', 'gender', 'weight', 'phone', 'address', 'city', 'state', 'country', 'timezone', 'utc offset', 'private note', 'description', 'gear', 'bike', 'device', 'start lat', 'start lng', 'end lat', 'end lng', 'location'];
+      normalized.forEach((key, idx) => {
+        if (key === 'activity name' && anonName) return;
+        if (keepNames.has(key)) return;
+        if (sensitiveKeywords.some((kw) => key.includes(kw))) sensitiveIdx.add(idx);
+      });
+      const nameIdx = normalized.indexOf('activity name');
+
+      const out = [headers.map(csvEscape).join(',')];
+      let rows = 0;
+      for (let i = 1; i < lines.length; i += 1) {
+        const line = lines[i];
+        if (!line.trim()) continue;
         const cols = parseCsvLine(line);
-        const row = {};
-        headers.forEach((h, idx) => { row[h] = cols[idx] ?? ''; });
-        return row;
+        for (const idx of sensitiveIdx) {
+          if (idx < cols.length) cols[idx] = '';
+        }
+        if (anonName && nameIdx >= 0) {
+          cols[nameIdx] = `Ride ${String(rows + 1).padStart(4, '0')}`;
+        }
+        out.push(cols.map(csvEscape).join(','));
+        rows += 1;
+      }
+      return { text: out.join('\n'), redactedColumns: sensitiveIdx.size, rows };
+    };
+
+    const trimGpxText = (xmlText, trimKm, redactMeta) => {
+      const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+      if (doc.getElementsByTagName('parsererror').length) {
+        throw new Error('GPX XML parse failed');
+      }
+
+      if (redactMeta) {
+        const metadata = Array.from(doc.getElementsByTagNameNS('*', 'metadata'));
+        metadata.forEach((n) => n.parentNode && n.parentNode.removeChild(n));
+        const nameNodes = Array.from(doc.getElementsByTagNameNS('*', 'name'));
+        const descNodes = Array.from(doc.getElementsByTagNameNS('*', 'desc'));
+        nameNodes.concat(descNodes).forEach((n) => {
+          const p = n.parentNode && n.parentNode.nodeName ? String(n.parentNode.nodeName).toLowerCase() : '';
+          if (p.includes('trk') || p.includes('rte')) n.parentNode.removeChild(n);
+        });
+      }
+
+      const trkpts = Array.from(doc.getElementsByTagNameNS('*', 'trkpt'));
+      if (trkpts.length < 2 || trimKm <= 0) {
+        return { text: new XMLSerializer().serializeToString(doc), dropped: false, keptPoints: trkpts.length };
+      }
+
+      const pts = trkpts.map((n) => [Number(n.getAttribute('lat')), Number(n.getAttribute('lon'))]);
+      const n = pts.length;
+      const fromStart = new Array(n).fill(0);
+      const fromEnd = new Array(n).fill(0);
+
+      for (let i = 1; i < n; i += 1) {
+        fromStart[i] = fromStart[i - 1] + haversineMeters(pts[i - 1], pts[i]);
+      }
+      for (let i = n - 2; i >= 0; i -= 1) {
+        fromEnd[i] = fromEnd[i + 1] + haversineMeters(pts[i + 1], pts[i]);
+      }
+
+      const threshold = trimKm * 1000;
+      const keep = new Array(n).fill(false);
+      let kept = 0;
+      for (let i = 0; i < n; i += 1) {
+        if (fromStart[i] >= threshold && fromEnd[i] >= threshold) {
+          keep[i] = true;
+          kept += 1;
+        }
+      }
+
+      if (kept < 2) {
+        return { text: '', dropped: true, keptPoints: 0 };
+      }
+
+      for (let i = 0; i < n; i += 1) {
+        if (!keep[i]) {
+          const node = trkpts[i];
+          if (node && node.parentNode) node.parentNode.removeChild(node);
+        }
+      }
+
+      const trksegs = Array.from(doc.getElementsByTagNameNS('*', 'trkseg'));
+      trksegs.forEach((seg) => {
+        if (!seg.getElementsByTagNameNS('*', 'trkpt').length) {
+          seg.parentNode && seg.parentNode.removeChild(seg);
+        }
       });
-    };
 
-    const parseDateInputStartTs = (v) => {
-      const s = String(v || '').trim();
-      if (!s) return Number.NaN;
-      const d = new Date(`${s}T00:00:00`);
-      const ts = d.getTime();
-      return Number.isFinite(ts) ? ts : Number.NaN;
-    };
-
-    const parseDateInputEndTs = (v) => {
-      const s = String(v || '').trim();
-      if (!s) return Number.NaN;
-      const d = new Date(`${s}T23:59:59.999`);
-      const ts = d.getTime();
-      return Number.isFinite(ts) ? ts : Number.NaN;
-    };
-
-    const parseActivityDateTs = (raw) => {
-      const s = String(raw || '').trim();
-      if (!s) return Number.NaN;
-      let ts = Date.parse(s);
-      if (Number.isFinite(ts)) return ts;
-      const m = s.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-      if (!m) return Number.NaN;
-      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 12, 0, 0, 0);
-      ts = d.getTime();
-      return Number.isFinite(ts) ? ts : Number.NaN;
-    };
-
-    const currentYear = () => new Date().getFullYear();
-
-    const syncYearQuickLabels = () => {
-      const y = currentYear();
-      el('year-q-y0-label').textContent = `${y}`;
-      el('year-q-y1-label').textContent = `${y - 1}`;
-      el('year-q-y2-label').textContent = `${y - 2}`;
-      el('year-q-y3-label').textContent = `${y - 3}`;
-      el('year-q-older-label').textContent = `${y - 4}以前`;
-    };
-
-    const syncYearQuickChecks = () => {
-      el('year-q-all').checked = !!yearQuick.all;
-      el('year-q-y0').checked = !!yearQuick.y0;
-      el('year-q-y1').checked = !!yearQuick.y1;
-      el('year-q-y2').checked = !!yearQuick.y2;
-      el('year-q-y3').checked = !!yearQuick.y3;
-      el('year-q-older').checked = !!yearQuick.older;
-    };
-
-    const hasAnyYearQuickSpecific = () => !!(yearQuick.y0 || yearQuick.y1 || yearQuick.y2 || yearQuick.y3 || yearQuick.older);
-    const isAllYearQuickSpecific = () => !!(yearQuick.y0 && yearQuick.y1 && yearQuick.y2 && yearQuick.y3 && yearQuick.older);
-
-    const normalizeYearQuick = () => {
-      if (yearQuick.all) {
-        yearQuick.y0 = false;
-        yearQuick.y1 = false;
-        yearQuick.y2 = false;
-        yearQuick.y3 = false;
-        yearQuick.older = false;
-      } else if (!hasAnyYearQuickSpecific()) {
-        yearQuick.all = true;
-      }
-      syncYearQuickChecks();
-    };
-
-    const matchesYearQuick = (yearNum) => {
-      if (yearQuick.all) return true;
-      const y = currentYear();
-      if (yearQuick.y0 && yearNum === y) return true;
-      if (yearQuick.y1 && yearNum === y - 1) return true;
-      if (yearQuick.y2 && yearNum === y - 2) return true;
-      if (yearQuick.y3 && yearNum === y - 3) return true;
-      if (yearQuick.older && yearNum <= y - 4) return true;
-      return false;
-    };
-
-    let dateFilterDirty = false;
-    const setDateFilterDirty = (dirty) => {
-      dateFilterDirty = !!dirty;
-      const hint = el('date-filter-dirty');
-      if (hint) hint.style.display = dateFilterDirty ? 'inline' : 'none';
-    };
-
-    async function applyDateYearFilters() {
-      setDateFilterDirty(false);
-      if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
-    }
-
-    const setProgress = (percent, text = '') => {
-      const p = Math.max(0, Math.min(100, Number(percent) || 0));
-      const label = text ? `${text} (${Math.round(p)}%)` : `${Math.round(p)}%`;
-      if (progressWrapEl && progressFillEl && progressTextEl) {
-        progressWrapEl.classList.add('show');
-        progressFillEl.style.width = `${p.toFixed(1)}%`;
-        progressTextEl.textContent = label;
-      }
-      if (shareProgressWrapEl && shareProgressFillEl && shareProgressTextEl) {
-        shareProgressWrapEl.classList.add('show');
-        shareProgressFillEl.style.width = `${p.toFixed(1)}%`;
-        shareProgressTextEl.textContent = label;
-      }
-    };
-
-    const clearProgress = () => {
-      if (progressWrapEl && progressFillEl && progressTextEl) {
-        progressWrapEl.classList.remove('show');
-        progressFillEl.style.width = '0%';
-        progressTextEl.textContent = '0%';
-      }
-      if (shareProgressWrapEl && shareProgressFillEl && shareProgressTextEl) {
-        shareProgressWrapEl.classList.remove('show');
-        shareProgressFillEl.style.width = '0%';
-        shareProgressTextEl.textContent = '0%';
-      }
-    };
-
-    const setShareDownloadBusy = (busy) => {
-      isShareDownloading = !!busy;
-      const btn = el('share-download-btn');
-      if (!btn) return;
-      btn.disabled = isShareDownloading;
-      btn.textContent = isShareDownloading ? '下載中...' : '下載截圖';
-    };
-
-    const refreshActionButtons = () => {
-      const clearBtn = el('clear-map-btn');
-      if (clearBtn) clearBtn.disabled = isLoading || !hasMapData;
-      demoBtnEl.disabled = isLoading || demoLockedAfterLoad;
-      demoBtnEl.textContent = isLoading ? '載入中...' : '載入示範資料';
-    };
-
-    const stemFromPath = (name) => {
-      const base = name.split('/').pop() || name;
-      return base.replace(/\.(gpx|fit)(\.gz)?$/i, '');
-    };
-
-    const buildMetaMaps = (rows) => {
-      const byId = new Map();
-      const byFilenameStem = new Map();
-      rows.forEach((row) => {
-        const id = String(row['Activity ID'] || '').trim();
-        if (id) byId.set(id, row);
-        const filename = String(row.Filename || '').trim();
-        if (filename) byFilenameStem.set(stemFromPath(filename), row);
+      const trks = Array.from(doc.getElementsByTagNameNS('*', 'trk'));
+      trks.forEach((trk) => {
+        if (!trk.getElementsByTagNameNS('*', 'trkseg').length) {
+          trk.parentNode && trk.parentNode.removeChild(trk);
+        }
       });
-      return { byId, byFilenameStem };
+
+      return { text: new XMLSerializer().serializeToString(doc), dropped: false, keptPoints: kept };
     };
 
-    const fitSemicircleToDegrees = (value) => (value * 180) / 2147483648;
-    const parseFitPoints = (u8) => {
-      const points = [];
-      if (!u8 || u8.length < 14) return points;
-      const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
-      const headerSize = dv.getUint8(0);
-      if (headerSize < 12 || u8.length < headerSize + 2) return points;
+    const isActivityTrack = (name) => /(^|\/)activities\/.+\.(gpx|fit)(\.gz)?$/i.test(name);
+    const isGpx = (name) => /\.gpx(\.gz)?$/i.test(name);
+    const isFit = (name) => /\.fit(\.gz)?$/i.test(name);
 
-      const dataSize = dv.getUint32(4, true);
-      const dataStart = headerSize;
-      const dataEnd = Math.min(u8.length, dataStart + dataSize);
-      const definitions = new Map();
-      let offset = dataStart;
+    const processZip = async (file, stripFit = false) => {
+      const keepActivities = !!el('opt-keep-activities').checked;
+      const redactCsv = !!el('opt-redact-csv').checked;
+      const anonName = !!el('opt-anon-name').checked;
+      const redactGpxMeta = !!el('opt-redact-gpx-meta').checked;
+      const trimKm = Math.max(0, Number(el('trim-km').value) || 0);
 
-      const readSint32 = (pos, littleEndian) => {
-        if (pos + 4 > dataEnd) return null;
-        return dv.getInt32(pos, littleEndian);
+      const srcZip = await JSZip.loadAsync(await file.arrayBuffer());
+      const outZip = new JSZip();
+      const files = Object.values(srcZip.files).filter((f) => !f.dir);
+
+      const stats = {
+        total: files.length,
+        kept: 0,
+        removed: 0,
+        removedFit: 0,
+        removedNonActivities: 0,
+        gpxProcessed: 0,
+        gpxDroppedTooShort: 0,
+        csvSanitized: 0,
+        parseErrors: 0,
       };
 
-      while (offset < dataEnd) {
-        const header = dv.getUint8(offset);
-        offset += 1;
+      for (let i = 0; i < files.length; i += 1) {
+        const f = files[i];
+        const name = f.name;
+        setProgress((i / Math.max(1, files.length)) * 95);
 
-        if (header & 0x80) {
-          const localMsgType = (header >> 5) & 0x03;
-          const def = definitions.get(localMsgType);
-          if (!def) continue;
-
-          let lat = null;
-          let lon = null;
-          for (const field of def.fields) {
-            if (offset + field.size > dataEnd) { offset = dataEnd; break; }
-            if (def.globalMsgNum === 20 && field.size === 4 && (field.num === 0 || field.num === 1)) {
-              const value = readSint32(offset, def.littleEndian);
-              if (value !== null && value !== 0x7fffffff) {
-                if (field.num === 0) lat = fitSemicircleToDegrees(value);
-                if (field.num === 1) lon = fitSemicircleToDegrees(value);
-              }
-            }
-            offset += field.size;
+        if (keepActivities) {
+          const allow = name === 'activities.csv' || isActivityTrack(name);
+          if (!allow) {
+            stats.removed += 1;
+            stats.removedNonActivities += 1;
+            continue;
           }
-          if (Number.isFinite(lat) && Number.isFinite(lon)) points.push([lat, lon]);
+        }
+
+        if (stripFit && isFit(name)) {
+          stats.removed += 1;
+          stats.removedFit += 1;
           continue;
         }
 
-        const isDefinition = (header & 0x40) !== 0;
-        const hasDeveloperData = (header & 0x20) !== 0;
-        const localMsgType = header & 0x0f;
-
-        if (isDefinition) {
-          if (offset + 5 > dataEnd) break;
-          offset += 1;
-          const architecture = dv.getUint8(offset); offset += 1;
-          const littleEndian = architecture === 0;
-          const globalMsgNum = dv.getUint16(offset, littleEndian); offset += 2;
-          const numFields = dv.getUint8(offset); offset += 1;
-          const fields = [];
-          for (let i = 0; i < numFields; i += 1) {
-            if (offset + 3 > dataEnd) break;
-            const num = dv.getUint8(offset);
-            const size = dv.getUint8(offset + 1);
-            fields.push({ num, size });
-            offset += 3;
-          }
-          if (hasDeveloperData) {
-            if (offset + 1 > dataEnd) break;
-            const numDevFields = dv.getUint8(offset);
-            offset += 1 + numDevFields * 3;
-          }
-          definitions.set(localMsgType, { globalMsgNum, littleEndian, fields });
+        if (name === 'activities.csv' && redactCsv) {
+          const text = await f.async('text');
+          const res = sanitizeActivitiesCsv(text, anonName);
+          outZip.file(name, res.text);
+          stats.csvSanitized += 1;
+          stats.kept += 1;
           continue;
         }
 
-        const def = definitions.get(localMsgType);
-        if (!def) continue;
-        let lat = null;
-        let lon = null;
-        for (const field of def.fields) {
-          if (offset + field.size > dataEnd) { offset = dataEnd; break; }
-          if (def.globalMsgNum === 20 && field.size === 4 && (field.num === 0 || field.num === 1)) {
-            const value = readSint32(offset, def.littleEndian);
-            if (value !== null && value !== 0x7fffffff) {
-              if (field.num === 0) lat = fitSemicircleToDegrees(value);
-              if (field.num === 1) lon = fitSemicircleToDegrees(value);
+        if (isGpx(name)) {
+          try {
+            let u8 = await f.async('uint8array');
+            const isGzip = /\.gz$/i.test(name);
+            if (isGzip) u8 = pako.ungzip(u8);
+            const xmlText = new TextDecoder('utf-8').decode(u8);
+            const trimmed = trimGpxText(xmlText, trimKm, redactGpxMeta);
+            if (trimmed.dropped) {
+              stats.removed += 1;
+              stats.gpxDroppedTooShort += 1;
+              continue;
             }
+            const outU8 = new TextEncoder().encode(trimmed.text);
+            outZip.file(name, isGzip ? pako.gzip(outU8) : outU8, { binary: true });
+            stats.gpxProcessed += 1;
+            stats.kept += 1;
+            continue;
+          } catch (_) {
+            stats.parseErrors += 1;
+            stats.removed += 1;
+            continue;
           }
-          offset += field.size;
         }
-        if (Number.isFinite(lat) && Number.isFinite(lon)) points.push([lat, lon]);
+
+        outZip.file(name, await f.async('uint8array'), { binary: true });
+        stats.kept += 1;
       }
-      return points;
+
+      setProgress(97);
+      const blob = await outZip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+      setProgress(100);
+
+      const outName = `${String(file.name || 'strava').replace(/\.zip$/i, '')}-sanitized-${stripFit ? 'no-fit' : 'keep-fit'}.zip`;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = outName;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+
+      metaEl.textContent = [
+        `完成：${outName}`,
+        `總檔案：${stats.total}`,
+        `保留：${stats.kept}`,
+        `移除：${stats.removed}`,
+        `- 移除非活動檔：${stats.removedNonActivities}`,
+        `- 移除 FIT：${stats.removedFit}`,
+        `- GPX 過短移除：${stats.gpxDroppedTooShort}`,
+        `GPX 處理：${stats.gpxProcessed}`,
+        `activities.csv 清理：${stats.csvSanitized}`,
+        `解析錯誤移除：${stats.parseErrors}`,
+        `去頭尾距離：${trimKm.toFixed(1)} km`,
+        `輸出模式：${stripFit ? '不含 FIT' : '保留 FIT'}`,
+      ].join('\n');
     };
 
-    const bumpCell = (mapObj, lat, lon, scale) => {
-      const ilat = Math.round(lat * scale);
-      const ilon = Math.round(lon * scale);
-      const key = ilat + ':' + ilon;
-      mapObj.set(key, (mapObj.get(key) || 0) + 1);
-    };
-
-    const edgePointKey = (p, scale) => {
-      const ilat = Math.round(Number(p[0]) * scale);
-      const ilon = Math.round(Number(p[1]) * scale);
-      return `${ilat}:${ilon}`;
-    };
-
-    const makeEdgeKey = (a, b) => {
-      return a <= b ? `${a}|${b}` : `${b}|${a}`;
-    };
-
-    const bumpEdgeCount = (mapObj, a, b, scale) => {
-      if (!a || !b) return;
-      const k1 = edgePointKey(a, scale);
-      const k2 = edgePointKey(b, scale);
-      if (k1 === k2) return;
-      const k = makeEdgeKey(k1, k2);
-      const prev = mapObj.get(k);
-      if (prev) {
-        prev.count += 1;
-      } else {
-        mapObj.set(k, { k1, k2, count: 1 });
-      }
-    };
-
-    const parsePointKey = (k, scale) => {
-      const parts = String(k || '').split(':');
-      if (parts.length !== 2) return null;
-      const lat = Number(parts[0]) / scale;
-      const lon = Number(parts[1]) / scale;
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
-      return [lat, lon];
-    };
-
-    const cellToHeatPoint = (key, scale, count) => {
-      const parts = key.split(':');
-      const lat = Number(parts[0]) / scale;
-      const lon = Number(parts[1]) / scale;
-      return [lat, lon, Math.min(1, 0.25 + count * 0.04)];
-    };
-
-    const toFeature = (points, name) => ({
-      type: 'Feature',
-      geometry: { type: 'LineString', coordinates: points.map((p) => [p[1], p[0]]) },
-      properties: { name }
-    });
-
-    const formatSeconds = (sec) => {
-      if (!Number.isFinite(sec) || sec < 0) return 'N/A';
-      const total = Math.round(sec);
-      const h = Math.floor(total / 3600);
-      const m = Math.floor((total % 3600) / 60);
-      const s = total % 60;
-      return `${h}h ${m}m ${s}s`;
-    };
-
-    let isLoading = false;
-    const setLoading = (loading) => {
-      isLoading = !!loading;
-      zipInputEl.disabled = isLoading;
-      const applyBtn = el('date-filter-apply-btn');
-      if (applyBtn) applyBtn.disabled = isLoading;
-      refreshActionButtons();
-      if (!isLoading) clearProgress();
-    };
-    const drawFromZipBuffer = async (buffer, sourceLabel = 'zip') => {
-      lastZipBuffer = buffer;
-      lastZipLabel = sourceLabel;
-      setLoading(true);
-      setProgress(0, `準備解析 ${sourceLabel}`);
-      metaEl.textContent = `解析 ${sourceLabel} 中...`;
-
-      try {
-        const zip = await JSZip.loadAsync(buffer);
-        let metaMaps = { byId: new Map(), byFilenameStem: new Map() };
-        const csvEntry = zip.file('activities.csv');
-        if (csvEntry) {
-          const csvText = await csvEntry.async('text');
-          metaMaps = buildMetaMaps(parseCsv(csvText));
-        }
-        const entries = Object.values(zip.files).filter((f) => !f.dir && /(^|\/)activities\/.+\.(gpx|fit)(\.gz)?$/i.test(f.name));
-        if (!entries.length) {
-          metaEl.textContent = '沒找到 activities/*.gpx|*.fit（可含 .gz）。';
-          setLoading(false);
-          return false;
-        }
-
-        const routeFeatures = [];
-        const edgeCounts = new Map();
-        const cellCounts = new Map();
-        const bounds = L.latLngBounds([]);
-        let skippedShort = 0;
-        let parsedGpx = 0;
-        let parsedFit = 0;
-        let parseError = 0;
-        let filteredOut = 0;
-        let filteredByDate = 0;
-        let filteredByDateUnknown = 0;
-        let filteredByYear = 0;
-        let filteredByYearUnknown = 0;
-        let filteredByRegion = 0;
-        let removedInvalidPoints = 0;
-        let jumpSplits = 0;
-        let droppedShortSegments = 0;
-        let keptSegments = 0;
-        const taiwanBounds = L.latLngBounds([]);
-
-        for (let i = 0; i < entries.length; i += 1) {
-          const e = entries[i];
-          setProgress((i / Math.max(1, entries.length)) * 85, `解析檔案 ${i + 1}/${entries.length}`);
-          metaEl.textContent = `解析中 ${i + 1}/${entries.length}: ${e.name}`;
-          let u8 = await e.async('uint8array');
-          if (/\.gz$/i.test(e.name)) u8 = pako.ungzip(u8);
-          let points = [];
-          if (/\.fit(\.gz)?$/i.test(e.name)) {
-            points = parseFitPoints(u8);
-            if (points.length >= 2) parsedFit += 1;
-          } else {
-            try {
-              const text = new TextDecoder('utf-8').decode(u8);
-              points = parseGpxText(text);
-              if (points.length >= 2) parsedGpx += 1;
-            } catch (_) {
-              points = [];
-            }
-          }
-          if (points.length < 2) {
-            skippedShort += 1;
-            parseError += 1;
-            continue;
-          }
-
-          const redacted = trimEndByDistance(trimStartByDistance(points, startHideKm), endHideKm);
-          if (redacted.length < 2) {
-            skippedShort += 1;
-            parseError += 1;
-            continue;
-          }
-
-          const stem = stemFromPath(e.name);
-          const meta = metaMaps.byId.get(stem) || metaMaps.byFilenameStem.get(stem) || {};
-          const actType = String(meta['Activity Type'] || '').trim();
-          if (activityTypeFilter === 'cycling' && !isCyclingType(actType)) {
-            filteredOut += 1;
-            continue;
-          }
-          if (activityTypeFilter === 'run' && !isRunType(actType)) {
-            filteredOut += 1;
-            continue;
-          }
-          const actDate = String(meta['Activity Date'] || '').trim();
-          const actTs = parseActivityDateTs(actDate);
-          if (Number.isFinite(dateFromTs) || Number.isFinite(dateToTs)) {
-            if (!Number.isFinite(actTs)) {
-              filteredByDateUnknown += 1;
-              continue;
-            }
-            if (Number.isFinite(dateFromTs) && actTs < dateFromTs) {
-              filteredByDate += 1;
-              continue;
-            }
-            if (Number.isFinite(dateToTs) && actTs > dateToTs) {
-              filteredByDate += 1;
-              continue;
-            }
-          }
-          const yearFilteringActive = !yearQuick.all && !isAllYearQuickSpecific();
-          if (yearFilteringActive) {
-            if (!Number.isFinite(actTs)) {
-              filteredByYearUnknown += 1;
-              continue;
-            }
-            const actYear = new Date(actTs).getFullYear();
-            if (!matchesYearQuick(actYear)) {
-              filteredByYear += 1;
-              continue;
-            }
-          }
-          const distanceRaw = Number.parseFloat(String(meta.Distance || ''));
-          const elevGainRaw = Number.parseFloat(String(meta['Total Elevation Gain'] || ''));
-          const elevHighRaw = Number.parseFloat(String(meta['Elevation High'] || ''));
-          const movingRaw = Number.parseFloat(String(meta['Moving Time'] || ''));
-          const elapsedRaw = Number.parseFloat(String(meta['Elapsed Time'] || ''));
-          const clean = enableTrackCleaning
-            ? sanitizeTrack(redacted, {
-              jumpThresholdMeters: 3000,
-              minSegmentPoints: 8,
-              minSegmentMeters: 300,
-            })
-            : (() => {
-              const stats = {
-                removedInvalidPoints: 0,
-                jumpSplits: 0,
-                droppedShortSegments: 0,
-                keptSegments: 0,
-              };
-              const valid = redacted.filter((p) => {
-                const lat = Number(p && p[0]);
-                const lon = Number(p && p[1]);
-                if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-                  stats.removedInvalidPoints += 1;
-                  return false;
-                }
-                if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-                  stats.removedInvalidPoints += 1;
-                  return false;
-                }
-                if (Math.abs(lat) < 1e-8 && Math.abs(lon) < 1e-8) {
-                  stats.removedInvalidPoints += 1;
-                  return false;
-                }
-                return true;
-              });
-              const segments = valid.length >= 2 ? [valid] : [];
-              stats.keptSegments = segments.length;
-              return { segments, stats };
-            })();
-          removedInvalidPoints += clean.stats.removedInvalidPoints;
-          jumpSplits += clean.stats.jumpSplits;
-          droppedShortSegments += clean.stats.droppedShortSegments;
-          keptSegments += clean.stats.keptSegments;
-          if (!clean.segments.length) {
-            skippedShort += 1;
-            continue;
-          }
-          for (let s = 0; s < clean.segments.length; s += 1) {
-            const seg = clean.segments[s];
-            const renderSegments = taiwanOnly ? clipTrackToBbox(seg, TAIWAN_BBOX, 2) : [seg];
-            if (!renderSegments.length) {
-              filteredByRegion += 1;
-              continue;
-            }
-            for (let rs = 0; rs < renderSegments.length; rs += 1) {
-              const renderSeg = renderSegments[rs];
-              const routePts = samplePoints(renderSeg, 40);
-              const heatPts = samplePoints(renderSeg, 40);
-              const weightPts = samplePoints(renderSeg, 12);
-              if (routePts.length < 2) continue;
-              routeFeatures.push({
-                ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
-                properties: {
-                  name: String(meta['Activity Name'] || e.name),
-                  date: String(meta['Activity Date'] || ''),
-                  distanceKm: Number.isFinite(distanceRaw) ? distanceRaw / 1000 : Number.NaN,
-                  elevGainM: Number.isFinite(elevGainRaw) ? elevGainRaw : Number.NaN,
-                  elevHighM: Number.isFinite(elevHighRaw) ? elevHighRaw : Number.NaN,
-                  movingSec: Number.isFinite(movingRaw) ? movingRaw : Number.NaN,
-                  elapsedSec: Number.isFinite(elapsedRaw) ? elapsedRaw : Number.NaN,
-                },
-              });
-              routePts.forEach((p) => {
-                bounds.extend([p[0], p[1]]);
-                if (isInBbox(p[0], p[1], TAIWAN_BBOX)) taiwanBounds.extend([p[0], p[1]]);
-              });
-              heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
-              for (let j = 1; j < weightPts.length; j += 1) {
-                bumpEdgeCount(edgeCounts, weightPts[j - 1], weightPts[j], 1800);
-              }
-            }
-          }
-        }
-
-        const heatPoints = Array.from(cellCounts.entries()).map(([k, c]) => cellToHeatPoint(k, 900, c));
-        setProgress(90, '整理圖層');
-        window.__heatBasePoints = heatPoints;
-        const weightedFeatures = Array.from(edgeCounts.values()).map((e) => {
-          const p1 = parsePointKey(e.k1, 1800);
-          const p2 = parsePointKey(e.k2, 1800);
-          if (!p1 || !p2) return null;
-          return {
-            type: 'Feature',
-            geometry: { type: 'LineString', coordinates: [[p1[1], p1[0]], [p2[1], p2[0]]] },
-            properties: { count: e.count },
-          };
-        }).filter(Boolean);
-        weightedRouteCountMax = weightedFeatures.reduce((m, f) => Math.max(m, Number(f.properties && f.properties.count || 1)), 1);
-
-        routeLayer.clearLayers();
-        routeLayer.addData({ type: 'FeatureCollection', features: routeFeatures });
-        weightedRouteLayer.clearLayers();
-        weightedRouteLayer.addData({ type: 'FeatureCollection', features: weightedFeatures });
-        heatLayer.setLatLngs(heatPoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
-        applyStyle();
-        setProgress(100, '完成');
-        hasMapData = routeFeatures.length > 0 || heatPoints.length > 0;
-        if (hasMapData) demoLockedAfterLoad = true;
-        lastRenderBounds = bounds.isValid() ? bounds : null;
-        lastTaiwanBounds = taiwanBounds.isValid() ? taiwanBounds : null;
-        refreshActionButtons();
-
-        if (taiwanOnly) focusTaiwanView();
-        else fitToBounds(lastRenderBounds);
-        if (!routeFeatures.length) {
-          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
-          return true;
-        }
-        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
-        return true;
-      } catch (err) {
-        metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
-        return false;
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const drawFromZipFile = async (file) => {
+    const runWithMode = async (stripFit) => {
+      const file = zipInputEl.files && zipInputEl.files[0];
       if (!file) {
-        metaEl.textContent = '請先選擇 zip 檔。';
-        return false;
+        metaEl.textContent = '請先選擇 Strava ZIP。';
+        return;
       }
-      return drawFromZipBuffer(await file.arrayBuffer(), file.name);
-    };
-
-    const loadDemoZipBuffer = async () => {
-      const candidates = [
-        './demo/ride-demo.zip',
-        './web/demo/ride-demo.zip',
-        './output/demo/ride-demo.zip',
-        '/demo/ride-demo.zip',
-        '/web/demo/ride-demo.zip',
-        '/output/demo/ride-demo.zip',
-      ];
-      let lastErr = 'not found';
-      for (const p of candidates) {
-        try {
-          const resp = await fetch(p, { cache: 'no-store' });
-          if (!resp.ok) {
-            lastErr = `HTTP ${resp.status} @ ${p}`;
-            continue;
-          }
-          const buf = await resp.arrayBuffer();
-          return { buffer: buf, path: p };
-        } catch (err) {
-          lastErr = `${err && err.message ? err.message : String(err)} @ ${p}`;
-        }
-      }
-      throw new Error(lastErr);
-    };
-
-    el('zip-input').addEventListener('change', async () => {
-      const file = el('zip-input').files && el('zip-input').files[0];
-      if (!file) return;
-      await drawFromZipFile(file);
-    });
-
-    el('demo-btn').addEventListener('click', async () => {
+      setBusy(true);
+      metaEl.textContent = '處理中...';
+      setProgress(1);
       try {
-        metaEl.textContent = '下載 demo 檔案中...';
-        const demo = await loadDemoZipBuffer();
-        await drawFromZipBuffer(demo.buffer, demo.path);
+        await processZip(file, stripFit);
       } catch (err) {
-        metaEl.textContent = `載入 demo 失敗：${err && err.message ? err.message : String(err)}`;
+        metaEl.textContent = `失敗：${err && err.message ? err.message : String(err)}`;
+      } finally {
+        setBusy(false);
       }
-    });
-    el('clear-map-btn').addEventListener('click', () => {
-      routeLayer.clearLayers();
-      weightedRouteLayer.clearLayers();
-      heatLayer.setLatLngs([]);
-      window.__heatBasePoints = [];
-      hasMapData = false;
-      demoLockedAfterLoad = false;
-      lastRenderBounds = null;
-      lastTaiwanBounds = null;
-      lastZipBuffer = null;
-      lastZipLabel = '';
-      const zipInput = el('zip-input');
-      if (zipInput) zipInput.value = '';
+    };
+
+    runKeepFitBtnEl.addEventListener('click', async () => runWithMode(false));
+    runNoFitBtnEl.addEventListener('click', async () => runWithMode(true));
+
+    resetBtnEl.addEventListener('click', () => {
+      zipInputEl.value = '';
+      el('trim-km').value = '1.0';
+      el('opt-keep-activities').checked = true;
+      el('opt-redact-csv').checked = true;
+      el('opt-anon-name').checked = true;
+      el('opt-redact-gpx-meta').checked = true;
+      metaEl.textContent = '等待輸入 ZIP...';
       clearProgress();
-      refreshActionButtons();
-      metaEl.textContent = '已清除目前路線與熱區。';
     });
-
-    const openHelpModal = () => {
-      helpModalEl.classList.add('open');
-      helpModalEl.setAttribute('aria-hidden', 'false');
-    };
-
-    const closeHelpModal = () => {
-      helpModalEl.classList.remove('open');
-      helpModalEl.setAttribute('aria-hidden', 'true');
-    };
-
-    el('help-btn').addEventListener('click', openHelpModal);
-    el('help-close-btn').addEventListener('click', closeHelpModal);
-    helpModalEl.addEventListener('click', (ev) => {
-      if (ev.target === helpModalEl) closeHelpModal();
-    });
-    document.addEventListener('keydown', (ev) => {
-      if (isTypingTarget(ev.target)) return;
-      if (textEditorModalEl.classList.contains('open')) {
-        if (ev.key === 'Escape') {
-          ev.preventDefault();
-          closeTextEditor();
-          return;
-        }
-        if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) {
-          ev.preventDefault();
-          saveTextEditor();
-          return;
-        }
-      }
-      if (ev.key === 'Escape' && helpModalEl.classList.contains('open')) closeHelpModal();
-      if (ev.key === 'Escape' && shareOverlayEl.classList.contains('open')) closeShareOverlay();
-      if (!ev.metaKey && !ev.ctrlKey && !ev.altKey) {
-        const key = String(ev.key || '').toLowerCase();
-        if (key === 'r') {
-          showRoute = !showRoute;
-          el('show-route').checked = showRoute;
-          applyStyle();
-          ev.preventDefault();
-          return;
-        }
-        if (key === 'h') {
-          showHeat = !showHeat;
-          el('show-heat').checked = showHeat;
-          applyStyle();
-          ev.preventDefault();
-        }
-      }
-    });
-    [shareDeepTopEl, shareDeepRightEl, shareDeepBottomEl, shareDeepLeftEl].forEach((z) => {
-      z.addEventListener('click', (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        closeShareOverlay();
-      });
-    });
-    [shareMidTopEl, shareMidRightEl, shareMidBottomEl, shareMidLeftEl].forEach((z) => {
-      z.addEventListener('click', (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-      });
-    });
-    textEditorSaveEl.addEventListener('click', saveTextEditor);
-    textEditorCancelEl.addEventListener('click', closeTextEditor);
-    textEditorModalEl.addEventListener('click', (ev) => {
-      if (ev.target === textEditorModalEl) closeTextEditor();
-    });
-
-    const openShareOverlay = () => {
-      shareRect = fitRectByRatio(sharePresetRatios[sharePreset] || (4 / 5));
-      mainPanelEl.classList.add('hidden-in-share');
-      shareControlsCollapsed = isMobileViewport();
-      applyShareControlsCollapsed();
-      shareOverlayEl.classList.add('open');
-      shareOverlayEl.setAttribute('aria-hidden', 'false');
-      shareZonesEl.style.display = 'block';
-      applyWheelZoomSensitivity();
-      updateShareFrame();
-    };
-
-    const closeShareOverlay = () => {
-      mainPanelEl.classList.remove('hidden-in-share');
-      shareOverlayEl.classList.remove('open');
-      shareOverlayEl.setAttribute('aria-hidden', 'true');
-      shareZonesEl.style.display = 'none';
-      shareResize = null;
-      shareTextHandleDrag = null;
-      shareAddMode = false;
-      shareFrameEl.classList.remove('add-mode');
-      el('share-add-text-btn').textContent = '+ 新增文字';
-      applyWheelZoomSensitivity();
-    };
-
-    map.scrollWheelZoom.enable();
-    map.getContainer().addEventListener('wheel', (ev) => {
-      if (!customWheelZoomEnabled) return;
-      ev.preventDefault();
-      const rect = map.getContainer().getBoundingClientRect();
-      const point = L.point(ev.clientX - rect.left, ev.clientY - rect.top);
-      const direction = ev.deltaY < 0 ? 1 : -1;
-      const dz = Math.log(1 + wheelZoomStep) / Math.LN2;
-      const minZoom = map.getMinZoom();
-      const maxZoom = map.getMaxZoom();
-      const target = Math.max(minZoom, Math.min(maxZoom, map.getZoom() + direction * dz));
-      map.setZoomAround(point, target, { animate: false });
-    }, { passive: false });
-
-    const downloadShareImage = async () => {
-      if (isShareDownloading) return;
-      try {
-        setShareDownloadBusy(true);
-        setProgress(5, '準備截圖');
-        metaEl.textContent = '產生分享截圖中...';
-        const mapRect = el('map').getBoundingClientRect();
-        const frameRect = shareFrameEl.getBoundingClientRect();
-        const cropXCss = Math.max(0, frameRect.left - mapRect.left);
-        const cropYCss = Math.max(0, frameRect.top - mapRect.top);
-        const cropWCss = Math.min(mapRect.width - cropXCss, frameRect.width);
-        const cropHCss = Math.min(mapRect.height - cropYCss, frameRect.height);
-
-        setProgress(25, '擷取地圖');
-        const baseCanvas = await html2canvas(el('map'), {
-          useCORS: true,
-          allowTaint: false,
-          backgroundColor: null,
-          logging: false,
-        });
-        const sx = baseCanvas.width / Math.max(1, mapRect.width);
-        const sy = baseCanvas.height / Math.max(1, mapRect.height);
-        const cropX = cropXCss * sx;
-        const cropY = cropYCss * sy;
-        const cropW = cropWCss * sx;
-        const cropH = cropHCss * sy;
-
-        const out = document.createElement('canvas');
-        out.width = Math.max(1, Math.round(cropWCss));
-        out.height = Math.max(1, Math.round(cropHCss));
-        const ctx = out.getContext('2d');
-        setProgress(45, '裁切畫面');
-        ctx.drawImage(
-          baseCanvas,
-          cropX, cropY, cropW, cropH,
-          0, 0, out.width, out.height
-        );
-
-        const totalText = Math.max(1, shareTexts.length);
-        shareTexts.forEach((t, idx) => {
-          if (!t.text) return;
-          const prog = 55 + (idx / totalText) * 30;
-          setProgress(prog, '繪製文字');
-          const x = clamp((t.x || 0.5), 0, 1) * out.width;
-          const y = clamp((t.y || 0.5), 0, 1) * out.height;
-          const size = Math.max(10, Math.round((t.size || 24) * (out.width / Math.max(1, shareRect.w))));
-          const align = String(t.align || 'center');
-          const stylePrefix = t.italic ? 'italic ' : '';
-          ctx.font = `${stylePrefix}${t.weight || 700} ${size}px ${t.family || "-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"}`;
-          ctx.fillStyle = t.color || '#ffffff';
-          ctx.textBaseline = 'middle';
-          ctx.textAlign = align === 'left' ? 'left' : (align === 'right' ? 'right' : 'center');
-          ctx.shadowColor = (t.shadow === false) ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.7)';
-          ctx.shadowBlur = (t.shadow === false) ? 0 : Math.max(0, Number(t.shadowBlur ?? 8));
-          const maxLineWidth = out.width * 0.82;
-          const lines = wrapTextByWidth(ctx, t.text, maxLineWidth);
-          const lh = Math.round(size * 1.25);
-          const yStart = y - ((lines.length - 1) * lh) / 2;
-          const lineWidths = lines.map((line) => ctx.measureText(line).width);
-          const maxW = lineWidths.length ? Math.max(...lineWidths) : 0;
-          const padX = Math.max(8, Math.round(size * 0.35));
-          const padY = Math.max(4, Math.round(size * 0.22));
-          const boxW = maxW + padX * 2;
-          const boxH = lines.length * lh + padY * 2;
-          const boxX = x - boxW / 2;
-          const boxY = y - boxH / 2;
-          const xDraw = align === 'left'
-            ? (x - boxW / 2 + padX)
-            : (align === 'right' ? (x + boxW / 2 - padX) : x);
-          const bg = resolveTextBg(t);
-          ctx.save();
-          ctx.translate(x, y);
-          ctx.rotate(((t.rotate || 0) * Math.PI) / 180);
-          if (bg !== 'transparent') {
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = bg;
-            drawRoundRect(ctx, boxX - x, boxY - y, boxW, boxH, Math.max(6, Math.round(size * 0.35)));
-            ctx.fillStyle = t.color || '#ffffff';
-            ctx.shadowColor = (t.shadow === false) ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,0.7)';
-            ctx.shadowBlur = (t.shadow === false) ? 0 : Math.max(0, Number(t.shadowBlur ?? 8));
-          }
-          lines.forEach((line, i) => ctx.fillText(line, xDraw - x, (yStart + i * lh) - y));
-          ctx.restore();
-          ctx.shadowBlur = 0;
-        });
-
-        const a = document.createElement('a');
-        a.href = out.toDataURL('image/png');
-        const ts = new Date().toISOString().replace(/[:.]/g, '-');
-        setProgress(95, '輸出檔案');
-        a.download = `ride-share-${ts}.png`;
-        a.click();
-        setProgress(100, '完成');
-        metaEl.textContent = '分享截圖已下載。';
-        setTimeout(() => {
-          clearProgress();
-          setShareDownloadBusy(false);
-        }, 700);
-      } catch (err) {
-        clearProgress();
-        setShareDownloadBusy(false);
-        metaEl.textContent = `分享截圖失敗：${err && err.message ? err.message : String(err)}`;
-      }
-    };
-
-    el('share-btn').addEventListener('click', openShareOverlay);
-    mainPanelToggleEl.addEventListener('click', () => {
-      mainPanelCollapsed = !mainPanelCollapsed;
-      applyMainPanelCollapsed();
-    });
-    shareControlsToggleEl.addEventListener('click', () => {
-      shareControlsCollapsed = !shareControlsCollapsed;
-      applyShareControlsCollapsed();
-    });
-    shareTextSpoilerToggleEl.addEventListener('click', () => {
-      shareTextSpoilerOpen = !shareTextSpoilerOpen;
-      applyShareTextSpoiler();
-    });
-    el('share-close-btn').addEventListener('click', closeShareOverlay);
-    el('share-download-btn').addEventListener('click', downloadShareImage);
-    window.addEventListener('resize', () => {
-      if (!shareOverlayEl.classList.contains('open')) return;
-      shareRect = clampShareRect(shareRect);
-      updateShareFrame();
-    });
-
-    applyWheelZoomSensitivity();
-    updateLabels();
-    refreshActionButtons();
-    applyShareTextSpoiler();
-    setAdvancedTab('style');
-    syncYearQuickLabels();
-    normalizeYearQuick();
-    setDateFilterDirty(false);
-    applyMainPanelCollapsed();
-    updateShareFrame();
   </script>
 </body>
 </html>
