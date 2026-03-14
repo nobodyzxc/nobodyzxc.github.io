@@ -39,6 +39,38 @@
     .panel input[type="color"] { width: 100%; height: 32px; border: 1px solid #d1d5db; border-radius: 8px; padding: 2px; }
     .row.theme-actions { align-items: stretch; }
     .row.theme-actions .btn { flex: 1; padding: 6px 6px; font-size: 12px; }
+    .filter-group {
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #f8fafc;
+      padding: 8px 10px;
+      margin: 8px 0;
+    }
+    .filter-group-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    .filter-group-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .filter-group-title-row .filter-group-title { margin-bottom: 0; }
+    .title-inline-select {
+      min-width: 120px;
+      max-width: 180px;
+      padding: 4px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 12px;
+      background: #fff;
+    }
+    .time-mode-panel { display: none; }
+    .time-mode-panel.active { display: block; }
     .year-quick-wrap {
       flex: 1;
       display: flex;
@@ -123,6 +155,42 @@
     }
     .adv-tab-panel { display: none; }
     .adv-tab-panel.active { display: block; }
+    .milestone-summary {
+      margin-bottom: 8px;
+      color: #64748b;
+      font-size: 12px;
+    }
+    .milestone-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 260px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+    .milestone-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px;
+      background: #ffffff;
+    }
+    .milestone-item-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #0f172a;
+    }
+    .milestone-item-meta {
+      font-size: 12px;
+      color: #334155;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .milestone-item-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+    }
     .modal {
       position: fixed;
       inset: 0;
@@ -474,6 +542,7 @@
       <div class="adv-tab-nav">
         <button class="adv-tab-btn active" type="button" data-tab="style">樣式</button>
         <button class="adv-tab-btn" type="button" data-tab="filter">篩選</button>
+        <button class="adv-tab-btn" type="button" data-tab="milestone">成就</button>
       </div>
       <div id="adv-tab-style" class="adv-tab-panel active">
         <div class="row">
@@ -551,6 +620,15 @@
             </optgroup>
           </select>
         </div>
+        <div class="row">
+          <label>滾輪縮放</label>
+          <select id="wheel-zoom-level">
+            <option value="native" selected>原生預設</option>
+            <option value="fine">細緻 (3%)</option>
+            <option value="normal">標準 (6%)</option>
+            <option value="fast">快速 (10%)</option>
+          </select>
+        </div>
         <div class="row theme-actions">
           <label>Theme JSON</label>
           <button id="theme-export-btn" class="btn" type="button">匯出</button>
@@ -573,9 +651,12 @@
         <div class="row">
           <label>活動類型</label>
           <select id="activity-type-filter">
-            <option value="all">All</option>
-            <option value="cycling" selected>Cycling</option>
-            <option value="run">Run</option>
+            <option value="all">全部</option>
+            <option value="ride" selected>騎乘</option>
+            <option value="ride-real">真實騎乘</option>
+            <option value="ride-virtual">虛擬騎乘</option>
+            <option value="run">跑步</option>
+            <option value="anomaly">可能異常</option>
           </select>
         </div>
         <div class="row">
@@ -593,39 +674,54 @@
           <button id="focus-taiwan-btn" class="btn" type="button">聚焦台灣</button>
           <button id="focus-all-btn" class="btn" type="button">聚焦全部</button>
         </div>
-        <div class="row">
-          <label>開始日期</label>
-          <input id="date-from" type="date" />
-        </div>
-        <div class="row">
-          <label>結束日期</label>
-          <input id="date-to" type="date" />
-        </div>
-        <div class="row">
-          <label></label>
-          <button id="date-filter-apply-btn" class="btn" type="button">套用日期/年份</button>
-          <span id="date-filter-dirty" class="muted" style="display:none">有未套用變更</span>
-        </div>
-        <div class="row">
-          <label>年份快捷</label>
-          <div class="year-quick-wrap">
-            <label class="year-quick-chip"><input id="year-q-all" type="checkbox" checked />全部</label>
-            <label class="year-quick-chip"><input id="year-q-y0" type="checkbox" /><span id="year-q-y0-label">今年</span></label>
-            <label class="year-quick-chip"><input id="year-q-y1" type="checkbox" /><span id="year-q-y1-label">去年</span></label>
-            <label class="year-quick-chip"><input id="year-q-y2" type="checkbox" /><span id="year-q-y2-label">前2年</span></label>
-            <label class="year-quick-chip"><input id="year-q-y3" type="checkbox" /><span id="year-q-y3-label">前3年</span></label>
-            <label class="year-quick-chip"><input id="year-q-older" type="checkbox" /><span id="year-q-older-label">更久</span></label>
+        <div class="filter-group">
+          <div class="filter-group-title-row">
+            <div class="filter-group-title">時間篩選</div>
+            <select id="time-filter-mode" class="title-inline-select">
+              <option value="date">日期</option>
+              <option value="year" selected>年份</option>
+            </select>
+          </div>
+          <div id="time-mode-date" class="time-mode-panel active">
+            <div class="row">
+              <label>開始日期</label>
+              <input id="date-from" type="date" />
+            </div>
+            <div class="row">
+              <label>結束日期</label>
+              <input id="date-to" type="date" />
+            </div>
+          </div>
+          <div id="time-mode-year" class="time-mode-panel">
+            <div class="row">
+              <label>年份快捷</label>
+              <div class="year-quick-wrap">
+                <label class="year-quick-chip"><input id="year-q-all" type="checkbox" checked />全部</label>
+                <label class="year-quick-chip"><input id="year-q-y0" type="checkbox" /><span id="year-q-y0-label">今年</span></label>
+                <label class="year-quick-chip"><input id="year-q-y1" type="checkbox" /><span id="year-q-y1-label">去年</span></label>
+                <label class="year-quick-chip"><input id="year-q-y2" type="checkbox" /><span id="year-q-y2-label">前2年</span></label>
+                <label class="year-quick-chip"><input id="year-q-y3" type="checkbox" /><span id="year-q-y3-label">前3年</span></label>
+                <label class="year-quick-chip"><input id="year-q-older" type="checkbox" /><span id="year-q-older-label">更久</span></label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <label></label>
+            <button id="date-filter-apply-btn" class="btn" type="button">套用日期/年份</button>
+            <span id="date-filter-dirty" class="muted" style="display:none">有未套用變更</span>
           </div>
         </div>
-        <div class="row">
-          <label>滾輪縮放</label>
-          <select id="wheel-zoom-level">
-            <option value="native" selected>原生預設</option>
-            <option value="fine">細緻 (3%)</option>
-            <option value="normal">標準 (6%)</option>
-            <option value="fast">快速 (10%)</option>
-          </select>
+      </div>
+      <div id="adv-tab-milestone" class="adv-tab-panel">
+        <div class="muted" style="margin-bottom:8px;">
+          規則：去重後僅保留長途（>=40km 或 >=500m），旅程可休整 2 天，串接距離 <=30km。
         </div>
+        <div id="milestone-summary" class="milestone-summary">尚未載入資料。</div>
+        <div class="row">
+          <label></label>
+          <button id="milestone-restore-btn" class="btn" type="button" disabled>還原全部</button>
+        </div>
+        <div id="milestone-list" class="milestone-list"></div>
       </div>
     </div>
     </div>
@@ -1223,11 +1319,12 @@
     let heatGradient = THEMES.classic.heatGradient;
     let startHideKm = 1.0;
     let endHideKm = 1.0;
-    let activityTypeFilter = 'cycling';
+    let activityTypeFilter = 'ride';
     let enableTrackCleaning = true;
     let taiwanOnly = false;
     let dateFromTs = Number.NaN;
     let dateToTs = Number.NaN;
+    let timeFilterMode = 'year';
     const yearQuick = { all: true, y0: false, y1: false, y2: false, y3: false, older: false };
     let wheelZoomLevel = 'native';
     let wheelZoomStep = 0.03;
@@ -1238,6 +1335,10 @@
     let showHeat = true;
     let routeWeightMode = 'stack';
     let weightedRouteCountMax = 1;
+    const ACH_MIN_DIST_KM = 40;
+    const ACH_MIN_ELEV_M = 500;
+    const ACH_MAX_REST_DAYS = 2;
+    const ACH_LINK_MAX_KM = 30;
 
     const routeLayer = L.geoJSON([], {
       pane: 'routePane',
@@ -1293,7 +1394,11 @@
     const advTabPanels = {
       style: el('adv-tab-style'),
       filter: el('adv-tab-filter'),
+      milestone: el('adv-tab-milestone'),
     };
+    const milestoneSummaryEl = el('milestone-summary');
+    const milestoneListEl = el('milestone-list');
+    const milestoneRestoreBtnEl = el('milestone-restore-btn');
     const helpModalEl = el('help-modal');
     const mainPanelEl = el('main-panel');
     const mainPanelBodyEl = el('main-panel-body');
@@ -1320,6 +1425,9 @@
     const textEditorCancelEl = el('text-editor-cancel');
     let lastZipBuffer = null;
     let lastZipLabel = '';
+    let parsedZipCache = null;
+    let parseWorker = null;
+    let parseWorkerReqSeq = 0;
     const sharePresetRatios = {
       'insta-post': 4 / 5,
       'insta-story': 9 / 16,
@@ -1345,6 +1453,12 @@
     let demoLockedAfterLoad = false;
     let lastRenderBounds = null;
     let lastTaiwanBounds = null;
+    let currentMilestones = [];
+    let achievementFocusActive = false;
+    let fullRouteFeatures = [];
+    let fullWeightedFeatures = [];
+    let fullHeatPoints = [];
+    let fullRouteDetailByTrackKey = new Map();
     const TAIWAN_BBOX = {
       minLat: 21.5,
       maxLat: 25.5,
@@ -1749,6 +1863,38 @@
     advTabButtons.forEach((btn) => {
       btn.addEventListener('click', () => setAdvancedTab(String(btn.dataset.tab || 'style')));
     });
+    milestoneListEl.addEventListener('click', (ev) => {
+      const btn = ev.target && ev.target.closest ? ev.target.closest('.milestone-focus-btn') : null;
+      if (!btn) return;
+      const idx = Number(btn.dataset.midx);
+      if (!Number.isFinite(idx) || idx < 0 || idx >= currentMilestones.length) return;
+      const m = currentMilestones[idx];
+      const keys = new Set(Array.isArray(m.trackKeys) ? m.trackKeys : []);
+      if (!keys.size) return;
+      const focusRoute = [];
+      keys.forEach((key) => {
+        const feats = fullRouteDetailByTrackKey.get(key);
+        if (Array.isArray(feats) && feats.length) focusRoute.push(...feats);
+      });
+      if (!focusRoute.length) return;
+      const focusWeighted = buildWeightedFeaturesFromRoutes(focusRoute);
+      const focusHeat = buildHeatPointsFromRoutes(focusRoute);
+      applyMapData(focusRoute, focusWeighted, focusHeat);
+      achievementFocusActive = true;
+      refreshActionButtons();
+      const b = boundsFromArray(m.bounds);
+      if (b) map.fitBounds(b, { padding: [24, 24] });
+      metaEl.textContent = `成就聚焦：${m.title}`;
+    });
+    milestoneRestoreBtnEl.addEventListener('click', () => {
+      if (!achievementFocusActive) return;
+      applyMapData(fullRouteFeatures, fullWeightedFeatures, fullHeatPoints);
+      achievementFocusActive = false;
+      refreshActionButtons();
+      if (taiwanOnly) focusTaiwanView();
+      else fitToBounds(lastRenderBounds);
+      metaEl.textContent = '已還原全部路線。';
+    });
 
     el('route-opacity').addEventListener('input', () => { routeOpacity = Number(el('route-opacity').value); updateLabels(); applyStyle(); });
     el('show-route').addEventListener('change', () => {
@@ -1791,7 +1937,7 @@
       if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
     });
     el('activity-type-filter').addEventListener('change', async () => {
-      activityTypeFilter = String(el('activity-type-filter').value || 'all');
+      activityTypeFilter = String(el('activity-type-filter').value || 'ride');
       if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
     });
     el('enable-track-cleaning').addEventListener('change', async () => {
@@ -1815,6 +1961,11 @@
     });
     el('date-to').addEventListener('change', async () => {
       dateToTs = parseDateInputEndTs(el('date-to').value);
+      setDateFilterDirty(true);
+    });
+    el('time-filter-mode').addEventListener('change', () => {
+      timeFilterMode = String(el('time-filter-mode').value || 'year');
+      applyTimeFilterModeUI();
       setDateFilterDirty(true);
     });
     el('date-filter-apply-btn').addEventListener('click', applyDateYearFilters);
@@ -2387,6 +2538,40 @@
       return acc;
     };
 
+    const detectTrackAnomaly = (points) => {
+      if (!points || points.length < 2) return true;
+      let minLat = Infinity;
+      let maxLat = -Infinity;
+      let minLon = Infinity;
+      let maxLon = -Infinity;
+      let jump200 = 0;
+      let jump1000 = 0;
+      let nearZero = 0;
+      for (let i = 0; i < points.length; i += 1) {
+        const p = points[i];
+        const lat = Number(p && p[0]);
+        const lon = Number(p && p[1]);
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+        if (lon < minLon) minLon = lon;
+        if (lon > maxLon) maxLon = lon;
+        if (Math.abs(lat) < 0.5 && Math.abs(lon) < 0.5) nearZero += 1;
+        if (i > 0) {
+          const d = haversineMeters(points[i - 1], points[i]);
+          if (d > 200000) jump200 += 1;
+          if (d > 1000000) jump1000 += 1;
+        }
+      }
+      const latSpan = maxLat - minLat;
+      const lonSpan = maxLon - minLon;
+      const nearZeroRatio = nearZero / Math.max(1, points.length);
+      return jump1000 >= 1
+        || jump200 >= 3
+        || (latSpan > 10 && lonSpan > 10)
+        || nearZeroRatio > 0.02;
+    };
+
     const isInBbox = (lat, lon, bbox) => {
       if (!bbox) return true;
       return lat >= bbox.minLat && lat <= bbox.maxLat && lon >= bbox.minLon && lon <= bbox.maxLon;
@@ -2541,14 +2726,45 @@
       return lines.length ? lines : [''];
     };
 
-    const isCyclingType = (typeText) => {
+    const isVirtualRideType = (typeText) => {
       const t = String(typeText || '').toLowerCase();
-      return t.includes('ride') || t.includes('cycle');
+      return t.includes('virtual ride')
+        || t.includes('virtualride')
+        || t.includes('virtual cycling')
+        || t.includes('zwift')
+        || t.includes('rouvy')
+        || t.includes('trainer')
+        || t.includes('虛擬騎乘')
+        || t.includes('虛擬單車');
+    };
+
+    const isRideType = (typeText) => {
+      const t = String(typeText || '').toLowerCase();
+      return t.includes('ride')
+        || t.includes('cycle')
+        || t.includes('cycling')
+        || t.includes('ebikeride')
+        || t.includes('騎車')
+        || t.includes('騎乘')
+        || t.includes('單車')
+        || t.includes('自行車')
+        || isVirtualRideType(t);
     };
 
     const isRunType = (typeText) => {
       const t = String(typeText || '').toLowerCase();
-      return t.includes('run');
+      return t.includes('run') || t.includes('跑步') || t.includes('慢跑');
+    };
+
+    const matchesActivityTypeFilter = (typeText, mode, isAnomaly = false) => {
+      const m = String(mode || 'all');
+      if (m === 'all') return true;
+      if (m === 'ride') return isRideType(typeText);
+      if (m === 'ride-real') return isRideType(typeText) && !isVirtualRideType(typeText) && !isAnomaly;
+      if (m === 'ride-virtual') return isVirtualRideType(typeText);
+      if (m === 'run') return isRunType(typeText);
+      if (m === 'anomaly') return !!isAnomaly;
+      return true;
     };
 
     const parseCsvLine = (line) => {
@@ -2609,8 +2825,14 @@
       let ts = Date.parse(s);
       if (Number.isFinite(ts)) return ts;
       const m = s.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-      if (!m) return Number.NaN;
-      const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 12, 0, 0, 0);
+      if (m) {
+        const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]), 12, 0, 0, 0);
+        ts = d.getTime();
+        return Number.isFinite(ts) ? ts : Number.NaN;
+      }
+      const zh = s.match(/(\d{4})\s*年\s*(\d{1,2})\s*月\s*(\d{1,2})\s*日/);
+      if (!zh) return Number.NaN;
+      const d = new Date(Number(zh[1]), Number(zh[2]) - 1, Number(zh[3]), 12, 0, 0, 0);
       ts = d.getTime();
       return Number.isFinite(ts) ? ts : Number.NaN;
     };
@@ -2669,6 +2891,14 @@
       if (hint) hint.style.display = dateFilterDirty ? 'inline' : 'none';
     };
 
+    const applyTimeFilterModeUI = () => {
+      const mode = timeFilterMode === 'year' ? 'year' : 'date';
+      const datePanel = el('time-mode-date');
+      const yearPanel = el('time-mode-year');
+      if (datePanel) datePanel.classList.toggle('active', mode === 'date');
+      if (yearPanel) yearPanel.classList.toggle('active', mode === 'year');
+    };
+
     async function applyDateYearFilters() {
       setDateFilterDirty(false);
       if (lastZipBuffer) await drawFromZipBuffer(lastZipBuffer, lastZipLabel || 'zip');
@@ -2715,6 +2945,7 @@
       if (clearBtn) clearBtn.disabled = isLoading || !hasMapData;
       demoBtnEl.disabled = isLoading || demoLockedAfterLoad;
       demoBtnEl.textContent = isLoading ? '載入中...' : '載入示範資料';
+      if (milestoneRestoreBtnEl) milestoneRestoreBtnEl.disabled = isLoading || !achievementFocusActive || !fullRouteFeatures.length;
     };
 
     const stemFromPath = (name) => {
@@ -2726,12 +2957,28 @@
       const byId = new Map();
       const byFilenameStem = new Map();
       rows.forEach((row) => {
-        const id = String(row['Activity ID'] || '').trim();
+        const id = String(row['Activity ID'] || row['活動 ID'] || '').trim();
         if (id) byId.set(id, row);
-        const filename = String(row.Filename || '').trim();
+        const filename = String(row.Filename || row['檔案名稱'] || '').trim();
         if (filename) byFilenameStem.set(stemFromPath(filename), row);
       });
       return { byId, byFilenameStem };
+    };
+
+    const metaPick = (meta, keys, fallback = '') => {
+      if (!meta || !keys || !keys.length) return fallback;
+      for (let i = 0; i < keys.length; i += 1) {
+        const v = meta[keys[i]];
+        if (v !== undefined && v !== null && String(v).trim() !== '') return v;
+      }
+      return fallback;
+    };
+
+    const parseMetaNumber = (value) => {
+      const s = String(value ?? '').trim().replace(/,/g, '');
+      if (!s) return Number.NaN;
+      const n = Number.parseFloat(s);
+      return Number.isFinite(n) ? n : Number.NaN;
     };
 
     const fitSemicircleToDegrees = (value) => (value * 180) / 2147483648;
@@ -2874,6 +3121,64 @@
       return [lat, lon, Math.min(1, 0.25 + count * 0.04)];
     };
 
+    const buildWeightedFeaturesFromRoutes = (features) => {
+      const edgeCounts = new Map();
+      const arr = Array.isArray(features) ? features : [];
+      arr.forEach((f) => {
+        const coords = (f && f.geometry && Array.isArray(f.geometry.coordinates)) ? f.geometry.coordinates : [];
+        let prev = null;
+        for (let i = 0; i < coords.length; i += 1) {
+          const c = coords[i];
+          const lon = Number(c && c[0]);
+          const lat = Number(c && c[1]);
+          if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+          const cur = [lat, lon];
+          if (prev) bumpEdgeCount(edgeCounts, prev, cur, 1800);
+          prev = cur;
+        }
+      });
+      return Array.from(edgeCounts.values()).map((e) => {
+        const p1 = parsePointKey(e.k1, 1800);
+        const p2 = parsePointKey(e.k2, 1800);
+        if (!p1 || !p2) return null;
+        return {
+          type: 'Feature',
+          geometry: { type: 'LineString', coordinates: [[p1[1], p1[0]], [p2[1], p2[0]]] },
+          properties: { count: e.count },
+        };
+      }).filter(Boolean);
+    };
+
+    const buildHeatPointsFromRoutes = (features) => {
+      const cellCounts = new Map();
+      const arr = Array.isArray(features) ? features : [];
+      arr.forEach((f) => {
+        const coords = (f && f.geometry && Array.isArray(f.geometry.coordinates)) ? f.geometry.coordinates : [];
+        for (let i = 0; i < coords.length; i += 1) {
+          const c = coords[i];
+          const lon = Number(c && c[0]);
+          const lat = Number(c && c[1]);
+          if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+          bumpCell(cellCounts, lat, lon, 900);
+        }
+      });
+      return Array.from(cellCounts.entries()).map(([k, c]) => cellToHeatPoint(k, 900, c));
+    };
+
+    const applyMapData = (routeFeatures, weightedFeatures, heatPoints) => {
+      const rf = Array.isArray(routeFeatures) ? routeFeatures : [];
+      const wf = Array.isArray(weightedFeatures) ? weightedFeatures : [];
+      const hp = Array.isArray(heatPoints) ? heatPoints : [];
+      weightedRouteCountMax = wf.reduce((m, f) => Math.max(m, Number(f.properties && f.properties.count || 1)), 1);
+      routeLayer.clearLayers();
+      routeLayer.addData({ type: 'FeatureCollection', features: rf });
+      weightedRouteLayer.clearLayers();
+      weightedRouteLayer.addData({ type: 'FeatureCollection', features: wf });
+      window.__heatBasePoints = hp;
+      heatLayer.setLatLngs(hp.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
+      applyStyle();
+    };
+
     const toFeature = (points, name) => ({
       type: 'Feature',
       geometry: { type: 'LineString', coordinates: points.map((p) => [p[1], p[0]]) },
@@ -2889,6 +3194,289 @@
       return `${h}h ${m}m ${s}s`;
     };
 
+    const escapeHtml = (text) => String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
+    const formatDateShort = (ts, fallback = '') => {
+      if (!Number.isFinite(ts)) return fallback || '日期未知';
+      const d = new Date(ts);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    };
+
+    const pointsBoundsArray = (points) => {
+      if (!points || !points.length) return null;
+      let minLat = Infinity;
+      let maxLat = -Infinity;
+      let minLon = Infinity;
+      let maxLon = -Infinity;
+      for (let i = 0; i < points.length; i += 1) {
+        const p = points[i];
+        const lat = Number(p && p[0]);
+        const lon = Number(p && p[1]);
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+        if (lat < minLat) minLat = lat;
+        if (lat > maxLat) maxLat = lat;
+        if (lon < minLon) minLon = lon;
+        if (lon > maxLon) maxLon = lon;
+      }
+      if (!Number.isFinite(minLat) || !Number.isFinite(minLon) || !Number.isFinite(maxLat) || !Number.isFinite(maxLon)) return null;
+      return [minLat, minLon, maxLat, maxLon];
+    };
+
+    const boundsFromArray = (arr) => {
+      if (!arr || arr.length !== 4) return null;
+      const b = L.latLngBounds([]);
+      b.extend([arr[0], arr[1]]);
+      b.extend([arr[2], arr[3]]);
+      return b.isValid() ? b : null;
+    };
+
+    const buildMilestones = (trackSummaries) => {
+      const list = Array.isArray(trackSummaries) ? trackSummaries.slice() : [];
+      if (!list.length) return [];
+
+      const normDistanceKm = (t) => {
+        if (Number.isFinite(t && t.distanceKm)) return Number(t.distanceKm);
+        if (Number.isFinite(t && t.derivedDistanceKm)) return Number(t.derivedDistanceKm);
+        return Number.NaN;
+      };
+      const normElevM = (t) => Number.isFinite(t && t.elevGainM) ? Number(t.elevGainM) : Number.NaN;
+      const dateDayTs = (t) => {
+        const key = formatDateShort(Number(t && t.ts), String(t && t.date || ''));
+        if (!key || key === '日期未知') return Number.NaN;
+        const ts = Date.parse(`${key}T00:00:00`);
+        return Number.isFinite(ts) ? ts : Number.NaN;
+      };
+      const mergeBounds = (acc, b) => {
+        if (!Array.isArray(b) || b.length !== 4) return;
+        if (!Number.isFinite(acc[0])) {
+          acc[0] = b[0]; acc[1] = b[1]; acc[2] = b[2]; acc[3] = b[3];
+          return;
+        }
+        acc[0] = Math.min(acc[0], b[0]);
+        acc[1] = Math.min(acc[1], b[1]);
+        acc[2] = Math.max(acc[2], b[2]);
+        acc[3] = Math.max(acc[3], b[3]);
+      };
+      const isDuplicateTrack = (a, b) => {
+        if (!Number.isFinite(a.ts) || !Number.isFinite(b.ts)) return false;
+        const dayA = dateDayTs(a);
+        const dayB = dateDayTs(b);
+        if (!Number.isFinite(dayA) || !Number.isFinite(dayB) || dayA !== dayB) return false;
+        if (Math.abs(a.ts - b.ts) > 90 * 60 * 1000) return false;
+        const da = normDistanceKm(a);
+        const db = normDistanceKm(b);
+        if (!Number.isFinite(da) || !Number.isFinite(db)) return false;
+        const ratio = Math.abs(da - db) / Math.max(1e-6, Math.max(da, db));
+        if (ratio > 0.15) return false;
+        if (!Array.isArray(a.startPt) || !Array.isArray(a.endPt) || !Array.isArray(b.startPt) || !Array.isArray(b.endPt)) return false;
+        const startGapKm = haversineMeters(a.startPt, b.startPt) / 1000;
+        const endGapKm = haversineMeters(a.endPt, b.endPt) / 1000;
+        return startGapKm <= 5 && endGapKm <= 5;
+      };
+      const pickBetterTrack = (a, b) => {
+        const pa = Number.isFinite(a.pointCount) ? a.pointCount : 0;
+        const pb = Number.isFinite(b.pointCount) ? b.pointCount : 0;
+        if (pa !== pb) return pa > pb ? a : b;
+        const da = normDistanceKm(a);
+        const db = normDistanceKm(b);
+        if (Number.isFinite(da) && Number.isFinite(db) && da !== db) return da > db ? a : b;
+        return a;
+      };
+      const dedupeTracks = (tracks) => {
+        const sorted = tracks.slice().sort((a, b) => (Number(a.ts || 0) - Number(b.ts || 0)));
+        const out = [];
+        for (let i = 0; i < sorted.length; i += 1) {
+          const cur = sorted[i];
+          let merged = false;
+          for (let j = out.length - 1; j >= 0; j -= 1) {
+            const prev = out[j];
+            if (!isDuplicateTrack(prev, cur)) continue;
+            out[j] = pickBetterTrack(prev, cur);
+            merged = true;
+            break;
+          }
+          if (!merged) out.push(cur);
+        }
+        return out;
+      };
+      const longTracksOnly = (tracks) => tracks.filter((t) => {
+        const d = normDistanceKm(t);
+        const g = normElevM(t);
+        return (Number.isFinite(d) && d >= ACH_MIN_DIST_KM) || (Number.isFinite(g) && g >= ACH_MIN_ELEV_M);
+      });
+      const groupJourneys = (tracks) => {
+        const src = tracks
+          .filter((t) => Number.isFinite(t.ts) && Array.isArray(t.startPt) && Array.isArray(t.endPt))
+          .sort((a, b) => a.ts - b.ts);
+        if (!src.length) return [];
+        const groups = [];
+        let cur = [src[0]];
+        for (let i = 1; i < src.length; i += 1) {
+          const prev = cur[cur.length - 1];
+          const next = src[i];
+          const prevDay = dateDayTs(prev);
+          const nextDay = dateDayTs(next);
+          const gapDays = (Number.isFinite(prevDay) && Number.isFinite(nextDay))
+            ? Math.round((nextDay - prevDay) / (24 * 3600 * 1000))
+            : 99;
+          const linkKm = haversineMeters(prev.endPt, next.startPt) / 1000;
+          if (gapDays >= 0 && gapDays <= ACH_MAX_REST_DAYS && linkKm <= ACH_LINK_MAX_KM) cur.push(next);
+          else {
+            groups.push(cur);
+            cur = [next];
+          }
+        }
+        groups.push(cur);
+        return groups
+          .filter((g) => g.length >= 2)
+          .map((g, idx) => {
+            let totalDist = 0;
+            let totalGain = 0;
+            const b = [Infinity, Infinity, -Infinity, -Infinity];
+            const keys = [];
+            g.forEach((t) => {
+              const d = normDistanceKm(t);
+              const e = normElevM(t);
+              if (Number.isFinite(d)) totalDist += d;
+              if (Number.isFinite(e)) totalGain += e;
+              if (t.trackKey) keys.push(t.trackKey);
+              mergeBounds(b, t.bounds);
+            });
+            const first = g[0];
+            const last = g[g.length - 1];
+            const startDayKey = formatDateShort(first.ts, first.date);
+            const endDayKey = formatDateShort(last.ts, last.date);
+            const daysSpan = (Number.isFinite(dateDayTs(first)) && Number.isFinite(dateDayTs(last)))
+              ? Math.max(1, Math.round((dateDayTs(last) - dateDayTs(first)) / (24 * 3600 * 1000)) + 1)
+              : g.length;
+            return {
+              id: `journey-${idx + 1}`,
+              startDayKey,
+              endDayKey,
+              daysSpan,
+              totalDist,
+              totalGain,
+              bounds: Number.isFinite(b[0]) ? b : null,
+              trackKeys: keys,
+            };
+          });
+      };
+
+      const deduped = dedupeTracks(list);
+      const longTracks = longTracksOnly(deduped);
+      const journeys = groupJourneys(longTracks);
+      const out = [];
+
+      const climbs = longTracks
+        .filter((t) => Number.isFinite(normElevM(t)))
+        .sort((a, b) => normElevM(b) - normElevM(a))
+        .slice(0, 6)
+        .map((t) => ({
+          title: `高爬升 ${Math.round(normElevM(t))}m`,
+          subtitle: `${formatDateShort(t.ts, t.date)} | ${t.name || '未命名活動'}`,
+          detail: `距離 ${Number.isFinite(normDistanceKm(t)) ? normDistanceKm(t).toFixed(1) : 'N/A'} km`,
+          bounds: t.bounds,
+          trackKeys: t.trackKey ? [t.trackKey] : [],
+        }));
+      out.push(...climbs);
+
+      const longRides = longTracks
+        .filter((t) => Number.isFinite(normDistanceKm(t)))
+        .sort((a, b) => normDistanceKm(b) - normDistanceKm(a))
+        .slice(0, 6)
+        .map((t) => ({
+          title: `長距離 ${normDistanceKm(t).toFixed(1)} km`,
+          subtitle: `${formatDateShort(t.ts, t.date)} | ${t.name || '未命名活動'}`,
+          detail: `爬升 ${Number.isFinite(normElevM(t)) ? Math.round(normElevM(t)) : 'N/A'} m`,
+          bounds: t.bounds,
+          trackKeys: t.trackKey ? [t.trackKey] : [],
+        }));
+      out.push(...longRides);
+
+      const journeyItems = journeys
+        .filter((j) => Number.isFinite(j.totalDist) && j.totalDist >= 180)
+        .sort((a, b) => (b.totalDist - a.totalDist) || (b.daysSpan - a.daysSpan))
+        .slice(0, 6)
+        .map((j) => ({
+          title: `旅程 ${j.daysSpan} 天`,
+          subtitle: `${j.startDayKey} ~ ${j.endDayKey}`,
+          detail: `總距離 ${j.totalDist.toFixed(1)} km | 總爬升 ${Math.round(j.totalGain)} m`,
+          bounds: j.bounds,
+          trackKeys: j.trackKeys,
+        }));
+      out.push(...journeyItems);
+
+      const unique = [];
+      const seen = new Set();
+      for (let i = 0; i < out.length; i += 1) {
+        const m = out[i];
+        const key = `${m.title}__${m.subtitle}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        unique.push(m);
+      }
+
+      if (unique.length < 6) {
+        const byDistance = deduped
+          .filter((t) => Number.isFinite(normDistanceKm(t)) && normDistanceKm(t) > 0)
+          .sort((a, b) => normDistanceKm(b) - normDistanceKm(a));
+        const byClimb = deduped
+          .filter((t) => Number.isFinite(normElevM(t)) && normElevM(t) > 0)
+          .sort((a, b) => normElevM(b) - normElevM(a));
+        const pushPersonal = (title, t, detail) => {
+          if (!t) return;
+          const key = `${title}__${t.trackKey || t.name || ''}`;
+          if (seen.has(key)) return;
+          seen.add(key);
+          unique.push({
+            title,
+            subtitle: `${formatDateShort(t.ts, t.date)} | ${t.name || '未命名活動'}`,
+            detail,
+            bounds: t.bounds,
+            trackKeys: t.trackKey ? [t.trackKey] : [],
+          });
+        };
+        pushPersonal(
+          '個人最長騎乘',
+          byDistance[0],
+          `距離 ${byDistance[0] ? normDistanceKm(byDistance[0]).toFixed(1) : 'N/A'} km | 爬升 ${byDistance[0] && Number.isFinite(normElevM(byDistance[0])) ? Math.round(normElevM(byDistance[0])) : 'N/A'} m`
+        );
+        pushPersonal(
+          '個人最高爬升',
+          byClimb[0],
+          `爬升 ${byClimb[0] ? Math.round(normElevM(byClimb[0])) : 'N/A'} m | 距離 ${byClimb[0] && Number.isFinite(normDistanceKm(byClimb[0])) ? normDistanceKm(byClimb[0]).toFixed(1) : 'N/A'} km`
+        );
+      }
+      return unique.slice(0, 18);
+    };
+
+    const renderMilestones = (milestones) => {
+      currentMilestones = Array.isArray(milestones) ? milestones.slice() : [];
+      if (!currentMilestones.length) {
+        milestoneSummaryEl.textContent = '目前篩選結果無成就。';
+        milestoneListEl.innerHTML = '';
+        return;
+      }
+      milestoneSummaryEl.textContent = `偵測到 ${currentMilestones.length} 個成就（依目前篩選）。`;
+      milestoneListEl.innerHTML = currentMilestones.map((m, idx) => `
+        <div class="milestone-item">
+          <div class="milestone-item-title">${escapeHtml(m.title)}</div>
+          <div class="milestone-item-meta">${escapeHtml(m.subtitle)}<br>${escapeHtml(m.detail)}</div>
+          <div class="milestone-item-actions">
+            <button class="btn milestone-focus-btn" type="button" data-midx="${idx}">只看這個</button>
+          </div>
+        </div>
+      `).join('');
+    };
+
     let isLoading = false;
     const setLoading = (loading) => {
       isLoading = !!loading;
@@ -2898,36 +3486,166 @@
       refreshActionButtons();
       if (!isLoading) clearProgress();
     };
+    const yieldToUI = () => new Promise((resolve) => {
+      if (typeof requestAnimationFrame === 'function') requestAnimationFrame(() => resolve());
+      else setTimeout(resolve, 0);
+    });
+
+    const ensureParseWorker = () => {
+      if (parseWorker) return parseWorker;
+      const url = new URL('./ride-parse.worker.js', window.location.href);
+      parseWorker = new Worker(url.href);
+      return parseWorker;
+    };
+
+    const parseZipWithWorker = (buffer, sourceLabel = 'zip') => {
+      const worker = ensureParseWorker();
+      const reqId = ++parseWorkerReqSeq;
+      return new Promise((resolve, reject) => {
+        const onMsg = (ev) => {
+          const data = ev && ev.data ? ev.data : {};
+          if (data.id !== reqId) return;
+          if (data.type === 'progress') {
+            const pct = Number(data.percent || 0);
+            const txt = String(data.text || '');
+            setProgress(pct, txt || `解析 ${sourceLabel}`);
+            if (txt) metaEl.textContent = txt;
+            return;
+          }
+          worker.removeEventListener('message', onMsg);
+          worker.removeEventListener('error', onErr);
+          if (data.type === 'error') {
+            reject(new Error(data.message || 'worker parse failed'));
+            return;
+          }
+          if (data.type === 'result') {
+            resolve(data.cache || null);
+            return;
+          }
+          reject(new Error('worker unknown response'));
+        };
+        const onErr = (err) => {
+          worker.removeEventListener('message', onMsg);
+          worker.removeEventListener('error', onErr);
+          reject(err instanceof Error ? err : new Error(String(err)));
+        };
+        worker.addEventListener('message', onMsg);
+        worker.addEventListener('error', onErr);
+        worker.postMessage({ id: reqId, kind: 'parseZip', buffer, sourceLabel });
+      });
+    };
+
+    const buildParsedZipCacheLocal = async (buffer, sourceLabel = 'zip') => {
+      setProgress(0, `準備解析 ${sourceLabel}`);
+      metaEl.textContent = `解析 ${sourceLabel} 中...`;
+      const zip = await JSZip.loadAsync(buffer);
+      let metaMaps = { byId: new Map(), byFilenameStem: new Map() };
+      const csvEntry = zip.file('activities.csv');
+      if (csvEntry) {
+        const csvText = await csvEntry.async('text');
+        metaMaps = buildMetaMaps(parseCsv(csvText));
+      }
+      const entries = Object.values(zip.files).filter((f) => !f.dir && /(^|\/)activities\/.+\.(gpx|fit)(\.gz)?$/i.test(f.name));
+      if (!entries.length) return null;
+      const tracks = [];
+      let parsedGpx = 0;
+      let parsedFit = 0;
+      let parseError = 0;
+      for (let i = 0; i < entries.length; i += 1) {
+        const e = entries[i];
+        if (i > 0 && i % 40 === 0) await yieldToUI();
+        setProgress((i / Math.max(1, entries.length)) * 82, `解析檔案 ${i + 1}/${entries.length}`);
+        metaEl.textContent = `解析中 ${i + 1}/${entries.length}: ${e.name}`;
+        let u8 = await e.async('uint8array');
+        if (/\.gz$/i.test(e.name)) u8 = pako.ungzip(u8);
+        let points = [];
+        if (/\.fit(\.gz)?$/i.test(e.name)) {
+          points = parseFitPoints(u8);
+          if (points.length >= 2) parsedFit += 1;
+        } else {
+          try {
+            const text = new TextDecoder('utf-8').decode(u8);
+            points = parseGpxText(text);
+            if (points.length >= 2) parsedGpx += 1;
+          } catch (_) {
+            points = [];
+          }
+        }
+        if (points.length < 2) {
+          parseError += 1;
+          continue;
+        }
+        const stem = stemFromPath(e.name);
+        const meta = metaMaps.byId.get(stem) || metaMaps.byFilenameStem.get(stem) || {};
+        tracks.push({
+          entryName: e.name,
+          points,
+          isAnomaly: detectTrackAnomaly(points),
+          actType: String(metaPick(meta, ['Activity Type', '活動類型'], '')).trim(),
+          actDate: String(metaPick(meta, ['Activity Date', '活動日期'], '')),
+          actTs: parseActivityDateTs(String(metaPick(meta, ['Activity Date', '活動日期'], '')).trim()),
+          activityName: String(metaPick(meta, ['Activity Name', '活動名稱'], e.name)),
+          distanceRaw: parseMetaNumber(metaPick(meta, ['Distance', '距離'], '')),
+          elevGainRaw: parseMetaNumber(metaPick(meta, ['Total Elevation Gain', 'Elevation Gain', '爬升海拔'], '')),
+          elevHighRaw: parseMetaNumber(metaPick(meta, ['Elevation High', '最高海拔'], '')),
+          movingRaw: parseMetaNumber(metaPick(meta, ['Moving Time', '移動時間'], '')),
+          elapsedRaw: parseMetaNumber(metaPick(meta, ['Elapsed Time', '經過時間'], '')),
+        });
+      }
+      return {
+        buffer,
+        sourceLabel,
+        tracks,
+        parsedGpx,
+        parsedFit,
+        parseError,
+      };
+    };
+
+    const buildParsedZipCache = async (buffer, sourceLabel = 'zip') => {
+      try {
+        const cache = await parseZipWithWorker(buffer, sourceLabel);
+        if (!cache) return null;
+        return { ...cache, buffer };
+      } catch (_) {
+        return buildParsedZipCacheLocal(buffer, sourceLabel);
+      }
+    };
+
     const drawFromZipBuffer = async (buffer, sourceLabel = 'zip') => {
       lastZipBuffer = buffer;
       lastZipLabel = sourceLabel;
       setLoading(true);
-      setProgress(0, `準備解析 ${sourceLabel}`);
-      metaEl.textContent = `解析 ${sourceLabel} 中...`;
 
       try {
-        const zip = await JSZip.loadAsync(buffer);
-        let metaMaps = { byId: new Map(), byFilenameStem: new Map() };
-        const csvEntry = zip.file('activities.csv');
-        if (csvEntry) {
-          const csvText = await csvEntry.async('text');
-          metaMaps = buildMetaMaps(parseCsv(csvText));
-        }
-        const entries = Object.values(zip.files).filter((f) => !f.dir && /(^|\/)activities\/.+\.(gpx|fit)(\.gz)?$/i.test(f.name));
-        if (!entries.length) {
-          metaEl.textContent = '沒找到 activities/*.gpx|*.fit（可含 .gz）。';
-          setLoading(false);
-          return false;
+        const canReuseCache = !!(parsedZipCache && parsedZipCache.buffer === buffer);
+        const showProgress = !canReuseCache;
+        if (!canReuseCache) {
+          const newCache = await buildParsedZipCache(buffer, sourceLabel);
+          if (!newCache) {
+            parsedZipCache = null;
+            fullRouteFeatures = [];
+            fullWeightedFeatures = [];
+            fullHeatPoints = [];
+            fullRouteDetailByTrackKey = new Map();
+            achievementFocusActive = false;
+            renderMilestones([]);
+            refreshActionButtons();
+            metaEl.textContent = '沒找到 activities/*.gpx|*.fit（可含 .gz）。';
+            return false;
+          }
+          parsedZipCache = newCache;
+        } else {
+          clearProgress();
+          metaEl.textContent = '套用篩選中...';
         }
 
         const routeFeatures = [];
         const edgeCounts = new Map();
         const cellCounts = new Map();
         const bounds = L.latLngBounds([]);
+        const taiwanBounds = L.latLngBounds([]);
         let skippedShort = 0;
-        let parsedGpx = 0;
-        let parsedFit = 0;
-        let parseError = 0;
         let filteredOut = 0;
         let filteredByDate = 0;
         let filteredByDateUnknown = 0;
@@ -2938,84 +3656,75 @@
         let jumpSplits = 0;
         let droppedShortSegments = 0;
         let keptSegments = 0;
-        const taiwanBounds = L.latLngBounds([]);
+        const milestoneTracks = [];
+        const detailRouteByTrackKey = new Map();
 
-        for (let i = 0; i < entries.length; i += 1) {
-          const e = entries[i];
-          setProgress((i / Math.max(1, entries.length)) * 85, `解析檔案 ${i + 1}/${entries.length}`);
-          metaEl.textContent = `解析中 ${i + 1}/${entries.length}: ${e.name}`;
-          let u8 = await e.async('uint8array');
-          if (/\.gz$/i.test(e.name)) u8 = pako.ungzip(u8);
-          let points = [];
-          if (/\.fit(\.gz)?$/i.test(e.name)) {
-            points = parseFitPoints(u8);
-            if (points.length >= 2) parsedFit += 1;
-          } else {
-            try {
-              const text = new TextDecoder('utf-8').decode(u8);
-              points = parseGpxText(text);
-              if (points.length >= 2) parsedGpx += 1;
-            } catch (_) {
-              points = [];
+        const tracks = parsedZipCache.tracks || [];
+        const anomalyTotal = tracks.reduce((n, t) => n + (t && t.isAnomaly ? 1 : 0), 0);
+
+        for (let i = 0; i < tracks.length; i += 1) {
+          const t = tracks[i];
+          if (i > 0 && i % 80 === 0) await yieldToUI();
+          if (showProgress) {
+            setProgress(8 + (i / Math.max(1, tracks.length)) * 80, `套用篩選 ${i + 1}/${tracks.length}`);
+          }
+          if (!matchesActivityTypeFilter(t.actType, activityTypeFilter, !!t.isAnomaly)) {
+            filteredOut += 1;
+            continue;
+          }
+          const dateFilteringConfigured = Number.isFinite(dateFromTs) || Number.isFinite(dateToTs);
+          const yearFilteringConfigured = !yearQuick.all && !isAllYearQuickSpecific();
+          const dateFilteringActive = timeFilterMode === 'date' && dateFilteringConfigured;
+          const yearFilteringActive = timeFilterMode === 'year' && yearFilteringConfigured;
+
+          let matchesDate = true;
+          let dateUnknown = false;
+          if (dateFilteringActive) {
+            if (!Number.isFinite(t.actTs)) {
+              matchesDate = false;
+              dateUnknown = true;
+            } else {
+              if (Number.isFinite(dateFromTs) && t.actTs < dateFromTs) matchesDate = false;
+              if (Number.isFinite(dateToTs) && t.actTs > dateToTs) matchesDate = false;
             }
           }
-          if (points.length < 2) {
-            skippedShort += 1;
-            parseError += 1;
+
+          let matchesYear = true;
+          let yearUnknown = false;
+          if (yearFilteringActive) {
+            if (!Number.isFinite(t.actTs)) {
+              matchesYear = false;
+              yearUnknown = true;
+            } else {
+              const actYear = new Date(t.actTs).getFullYear();
+              matchesYear = matchesYearQuick(actYear);
+            }
+          }
+
+          let passDateYear = true;
+          if (dateFilteringActive) {
+            passDateYear = matchesDate;
+          } else if (yearFilteringActive) {
+            passDateYear = matchesYear;
+          }
+
+          if (!passDateYear) {
+            if (dateFilteringActive && !matchesDate) {
+              if (dateUnknown) filteredByDateUnknown += 1;
+              else filteredByDate += 1;
+            }
+            if (yearFilteringActive && !matchesYear) {
+              if (yearUnknown) filteredByYearUnknown += 1;
+              else filteredByYear += 1;
+            }
             continue;
           }
 
-          const redacted = trimEndByDistance(trimStartByDistance(points, startHideKm), endHideKm);
+          const redacted = trimEndByDistance(trimStartByDistance(t.points, startHideKm), endHideKm);
           if (redacted.length < 2) {
             skippedShort += 1;
-            parseError += 1;
             continue;
           }
-
-          const stem = stemFromPath(e.name);
-          const meta = metaMaps.byId.get(stem) || metaMaps.byFilenameStem.get(stem) || {};
-          const actType = String(meta['Activity Type'] || '').trim();
-          if (activityTypeFilter === 'cycling' && !isCyclingType(actType)) {
-            filteredOut += 1;
-            continue;
-          }
-          if (activityTypeFilter === 'run' && !isRunType(actType)) {
-            filteredOut += 1;
-            continue;
-          }
-          const actDate = String(meta['Activity Date'] || '').trim();
-          const actTs = parseActivityDateTs(actDate);
-          if (Number.isFinite(dateFromTs) || Number.isFinite(dateToTs)) {
-            if (!Number.isFinite(actTs)) {
-              filteredByDateUnknown += 1;
-              continue;
-            }
-            if (Number.isFinite(dateFromTs) && actTs < dateFromTs) {
-              filteredByDate += 1;
-              continue;
-            }
-            if (Number.isFinite(dateToTs) && actTs > dateToTs) {
-              filteredByDate += 1;
-              continue;
-            }
-          }
-          const yearFilteringActive = !yearQuick.all && !isAllYearQuickSpecific();
-          if (yearFilteringActive) {
-            if (!Number.isFinite(actTs)) {
-              filteredByYearUnknown += 1;
-              continue;
-            }
-            const actYear = new Date(actTs).getFullYear();
-            if (!matchesYearQuick(actYear)) {
-              filteredByYear += 1;
-              continue;
-            }
-          }
-          const distanceRaw = Number.parseFloat(String(meta.Distance || ''));
-          const elevGainRaw = Number.parseFloat(String(meta['Total Elevation Gain'] || ''));
-          const elevHighRaw = Number.parseFloat(String(meta['Elevation High'] || ''));
-          const movingRaw = Number.parseFloat(String(meta['Moving Time'] || ''));
-          const elapsedRaw = Number.parseFloat(String(meta['Elapsed Time'] || ''));
           const clean = enableTrackCleaning
             ? sanitizeTrack(redacted, {
               jumpThresholdMeters: 3000,
@@ -3058,6 +3767,7 @@
             skippedShort += 1;
             continue;
           }
+          const milestonePts = [];
           for (let s = 0; s < clean.segments.length; s += 1) {
             const seg = clean.segments[s];
             const renderSegments = taiwanOnly ? clipTrackToBbox(seg, TAIWAN_BBOX, 2) : [seg];
@@ -3067,20 +3777,40 @@
             }
             for (let rs = 0; rs < renderSegments.length; rs += 1) {
               const renderSeg = renderSegments[rs];
+              for (let pi = 0; pi < renderSeg.length; pi += 1) milestonePts.push(renderSeg[pi]);
+              const detailPts = samplePoints(renderSeg, 6);
               const routePts = samplePoints(renderSeg, 40);
               const heatPts = samplePoints(renderSeg, 40);
               const weightPts = samplePoints(renderSeg, 12);
+              if (detailPts.length >= 2) {
+                const arr = detailRouteByTrackKey.get(t.entryName) || [];
+                arr.push({
+                  ...toFeature(detailPts, t.activityName),
+                  properties: {
+                    name: t.activityName,
+                    date: t.actDate,
+                    trackKey: t.entryName,
+                    distanceKm: Number.isFinite(t.distanceRaw) ? t.distanceRaw / 1000 : Number.NaN,
+                    elevGainM: Number.isFinite(t.elevGainRaw) ? t.elevGainRaw : Number.NaN,
+                    elevHighM: Number.isFinite(t.elevHighRaw) ? t.elevHighRaw : Number.NaN,
+                    movingSec: Number.isFinite(t.movingRaw) ? t.movingRaw : Number.NaN,
+                    elapsedSec: Number.isFinite(t.elapsedRaw) ? t.elapsedRaw : Number.NaN,
+                  },
+                });
+                detailRouteByTrackKey.set(t.entryName, arr);
+              }
               if (routePts.length < 2) continue;
               routeFeatures.push({
-                ...toFeature(routePts, String(meta['Activity Name'] || e.name)),
+                ...toFeature(routePts, t.activityName),
                 properties: {
-                  name: String(meta['Activity Name'] || e.name),
-                  date: String(meta['Activity Date'] || ''),
-                  distanceKm: Number.isFinite(distanceRaw) ? distanceRaw / 1000 : Number.NaN,
-                  elevGainM: Number.isFinite(elevGainRaw) ? elevGainRaw : Number.NaN,
-                  elevHighM: Number.isFinite(elevHighRaw) ? elevHighRaw : Number.NaN,
-                  movingSec: Number.isFinite(movingRaw) ? movingRaw : Number.NaN,
-                  elapsedSec: Number.isFinite(elapsedRaw) ? elapsedRaw : Number.NaN,
+                  name: t.activityName,
+                  date: t.actDate,
+                  trackKey: t.entryName,
+                  distanceKm: Number.isFinite(t.distanceRaw) ? t.distanceRaw / 1000 : Number.NaN,
+                  elevGainM: Number.isFinite(t.elevGainRaw) ? t.elevGainRaw : Number.NaN,
+                  elevHighM: Number.isFinite(t.elevHighRaw) ? t.elevHighRaw : Number.NaN,
+                  movingSec: Number.isFinite(t.movingRaw) ? t.movingRaw : Number.NaN,
+                  elapsedSec: Number.isFinite(t.elapsedRaw) ? t.elapsedRaw : Number.NaN,
                 },
               });
               routePts.forEach((p) => {
@@ -3088,16 +3818,30 @@
                 if (isInBbox(p[0], p[1], TAIWAN_BBOX)) taiwanBounds.extend([p[0], p[1]]);
               });
               heatPts.forEach((p) => bumpCell(cellCounts, p[0], p[1], 900));
-              for (let j = 1; j < weightPts.length; j += 1) {
-                bumpEdgeCount(edgeCounts, weightPts[j - 1], weightPts[j], 1800);
-              }
+              for (let j = 1; j < weightPts.length; j += 1) bumpEdgeCount(edgeCounts, weightPts[j - 1], weightPts[j], 1800);
             }
+          }
+          if (milestonePts.length >= 2) {
+            const distanceKm = Number.isFinite(t.distanceRaw)
+              ? (t.distanceRaw / 1000)
+              : (trackLengthMeters(milestonePts) / 1000);
+            milestoneTracks.push({
+              name: t.activityName,
+              date: t.actDate,
+              ts: t.actTs,
+              trackKey: t.entryName,
+              distanceKm,
+              derivedDistanceKm: trackLengthMeters(milestonePts) / 1000,
+              elevGainM: Number.isFinite(t.elevGainRaw) ? t.elevGainRaw : Number.NaN,
+              bounds: pointsBoundsArray(milestonePts),
+              startPt: milestonePts[0],
+              endPt: milestonePts[milestonePts.length - 1],
+              pointCount: milestonePts.length,
+            });
           }
         }
 
-        const heatPoints = Array.from(cellCounts.entries()).map(([k, c]) => cellToHeatPoint(k, 900, c));
-        setProgress(90, '整理圖層');
-        window.__heatBasePoints = heatPoints;
+        if (showProgress) setProgress(92, '整理加權路線');
         const weightedFeatures = Array.from(edgeCounts.values()).map((e) => {
           const p1 = parsePointKey(e.k1, 1800);
           const p2 = parsePointKey(e.k2, 1800);
@@ -3108,28 +3852,33 @@
             properties: { count: e.count },
           };
         }).filter(Boolean);
-        weightedRouteCountMax = weightedFeatures.reduce((m, f) => Math.max(m, Number(f.properties && f.properties.count || 1)), 1);
+        const heatPoints = Array.from(cellCounts.entries()).map(([k, c]) => cellToHeatPoint(k, 900, c));
+        if (showProgress) setProgress(95, '套用圖層');
+        fullRouteFeatures = routeFeatures;
+        fullWeightedFeatures = weightedFeatures;
+        fullHeatPoints = heatPoints;
+        fullRouteDetailByTrackKey = detailRouteByTrackKey;
+        achievementFocusActive = false;
+        applyMapData(fullRouteFeatures, fullWeightedFeatures, fullHeatPoints);
+        renderMilestones(buildMilestones(milestoneTracks));
+        if (showProgress) setProgress(100, '完成');
 
-        routeLayer.clearLayers();
-        routeLayer.addData({ type: 'FeatureCollection', features: routeFeatures });
-        weightedRouteLayer.clearLayers();
-        weightedRouteLayer.addData({ type: 'FeatureCollection', features: weightedFeatures });
-        heatLayer.setLatLngs(heatPoints.map((p) => [p[0], p[1], Math.min(1, p[2] * heatGain)]));
-        applyStyle();
-        setProgress(100, '完成');
         hasMapData = routeFeatures.length > 0 || heatPoints.length > 0;
         if (hasMapData) demoLockedAfterLoad = true;
         lastRenderBounds = bounds.isValid() ? bounds : null;
         lastTaiwanBounds = taiwanBounds.isValid() ? taiwanBounds : null;
         refreshActionButtons();
-
         if (taiwanOnly) focusTaiwanView();
         else fitToBounds(lastRenderBounds);
+
+        const parsedGpx = parsedZipCache.parsedGpx || 0;
+        const parsedFit = parsedZipCache.parsedFit || 0;
+        const parseError = parsedZipCache.parseError || 0;
         if (!routeFeatures.length) {
-          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
+          metaEl.textContent = `完成：清洗後無可用軌跡（GPX ${parsedGpx} / FIT ${parsedFit}）；未解析 ${parseError}；異常軌跡 ${anomalyTotal}；去頭尾/清洗略過 ${skippedShort}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；套用模式 ${timeFilterMode === 'year' ? '年份' : '日期'}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}。`;
           return true;
         }
-        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
+        metaEl.textContent = `完成：路線 ${routeFeatures.length} 條（GPX ${parsedGpx} / FIT ${parsedFit}），熱點 ${heatPoints.length}；未解析 ${parseError}；異常軌跡 ${anomalyTotal}；去頭尾/清洗略過 ${skippedShort}；類型過濾 ${filteredOut}；日期過濾 ${filteredByDate}；日期未知略過 ${filteredByDateUnknown}；年份過濾 ${filteredByYear}；年份未知略過 ${filteredByYearUnknown}；套用模式 ${timeFilterMode === 'year' ? '年份' : '日期'}；區域過濾 ${filteredByRegion}；清洗狀態 ${enableTrackCleaning ? '開啟' : '關閉'}；清洗移除點 ${removedInvalidPoints}；跳點切段 ${jumpSplits}；捨棄短段 ${droppedShortSegments}；保留分段 ${keptSegments}。`;
         return true;
       } catch (err) {
         metaEl.textContent = `解析失敗：${err && err.message ? err.message : String(err)}`;
@@ -3199,6 +3948,13 @@
       lastTaiwanBounds = null;
       lastZipBuffer = null;
       lastZipLabel = '';
+      parsedZipCache = null;
+      fullRouteFeatures = [];
+      fullWeightedFeatures = [];
+      fullHeatPoints = [];
+      fullRouteDetailByTrackKey = new Map();
+      achievementFocusActive = false;
+      renderMilestones([]);
       const zipInput = el('zip-input');
       if (zipInput) zipInput.value = '';
       clearProgress();
@@ -3439,6 +4195,8 @@
     });
 
     applyWheelZoomSensitivity();
+    el('time-filter-mode').value = timeFilterMode;
+    applyTimeFilterModeUI();
     updateLabels();
     refreshActionButtons();
     applyShareTextSpoiler();
@@ -3448,6 +4206,7 @@
     setDateFilterDirty(false);
     applyMainPanelCollapsed();
     updateShareFrame();
+    renderMilestones([]);
   </script>
 </body>
 </html>

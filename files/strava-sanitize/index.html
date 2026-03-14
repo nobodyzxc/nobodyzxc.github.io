@@ -130,7 +130,7 @@
 
     <div class="row">
       <label>去頭尾距離</label>
-      <input id="trim-km" type="number" min="0" max="20" step="0.1" value="1.0" />
+      <input id="trim-km" type="number" min="0" max="20" step="0.1" value="2.0" />
       <span class="muted">km（套用到每條 GPX）</span>
     </div>
 
@@ -143,10 +143,11 @@
     <div class="muted">註：去頭尾只會作用在 GPX；FIT 若保留會原樣輸出。</div>
 
     <div class="btns">
-      <button id="run-keep-fit-btn" type="button">下載（保留 FIT）</button>
-      <button id="run-no-fit-btn" type="button">下載（不含 FIT）</button>
+      <button id="run-keep-fit-btn" type="button">下載 Debug 版（保留 FIT）</button>
+      <button id="run-no-fit-btn" type="button">下載分享版（不含 FIT）</button>
       <button id="reset-btn" type="button" class="secondary">重設</button>
     </div>
+    <div class="muted">建議：除錯用 Debug 版；公開分享用分享版（不含 FIT）。</div>
 
     <div id="progress" class="progress"><div id="progress-fill"></div></div>
     <div id="meta" class="meta">等待輸入 ZIP...</div>
@@ -180,8 +181,8 @@
       runNoFitBtnEl.disabled = !!busy;
       resetBtnEl.disabled = !!busy;
       zipInputEl.disabled = !!busy;
-      runKeepFitBtnEl.textContent = busy ? '處理中...' : '下載（保留 FIT）';
-      runNoFitBtnEl.textContent = busy ? '處理中...' : '下載（不含 FIT）';
+      runKeepFitBtnEl.textContent = busy ? '處理中...' : '下載 Debug 版（保留 FIT）';
+      runNoFitBtnEl.textContent = busy ? '處理中...' : '下載分享版（不含 FIT）';
       if (!busy) clearProgress();
     };
 
@@ -465,7 +466,7 @@
 
     resetBtnEl.addEventListener('click', () => {
       zipInputEl.value = '';
-      el('trim-km').value = '1.0';
+      el('trim-km').value = '2.0';
       el('opt-keep-activities').checked = true;
       el('opt-redact-csv').checked = true;
       el('opt-anon-name').checked = true;

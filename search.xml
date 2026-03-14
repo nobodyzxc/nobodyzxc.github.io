@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Scheme 初學者眼中的 Haskell</title>
+    <url>/2018/02/14/HaskellFromScheme/</url>
+    <content><![CDATA[<center>
+嘛，情人節，和 Haskell 約個會吧！<br>
+因為學完 Scheme 後回來看 Haskell，<br>
+發現有不少地方是已經會的。<br>
+而我覺得記些基本的東西意義不大，<br>
+所以改成以一個接觸過 Scheme 的 FP 初學者角度，<br>
+重新來看待 Haskell 這個語言。
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><h3 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h3><p>我記得王垠的 40 行代碼好像有 require pmatch,<br>所以 Scheme 應該是有以 library 實現 pattern matching 的。</p>
+<p>而 Haskell 則是內建此種語言特性，大概可以有三種地方可以用到。</p>
+<ol>
+<li><p>函數定義，可以少去一些 if else</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 注意 match 的順序性</span></span><br><span class="line"><span class="title">fib</span> <span class="number">0</span> = <span class="number">0</span></span><br><span class="line"><span class="title">fib</span> <span class="number">1</span> = <span class="number">1</span></span><br><span class="line"><span class="title">fib</span> x = fib (x - <span class="number">1</span>) + fib (x - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">fib</span> x) <span class="comment">; 懶得寫 = 所以用 case</span></span><br><span class="line">   (<span class="name"><span class="builtin-name">case</span></span> x      <span class="comment">; 不過 racket 其實是用 equal?</span></span><br><span class="line">      [(<span class="name">0</span>) <span class="number">0</span>]   <span class="comment">; R6RS, R5RS 是用 eqv?</span></span><br><span class="line">      [(<span class="name">1</span>) <span class="number">1</span>]</span><br><span class="line">      [<span class="name"><span class="builtin-name">else</span></span> (<span class="name"><span class="builtin-name">+</span></span> (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">1</span>))</span><br><span class="line">               (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">2</span>)))]))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拆 tuple, list</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- as pattern</span></span><br><span class="line"><span class="title">all</span>@a:b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="comment">-- all == [1, 2, 3]</span></span><br><span class="line"><span class="comment">-- a == 1</span></span><br><span class="line"><span class="comment">-- b == [2, 3]</span></span><br><span class="line"></span><br><span class="line">(a, b, c) = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment">-- a == 1, b == 2, c == 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 結合 1. 定義 sum'</span></span><br><span class="line"><span class="title">sum</span> [] = <span class="number">0</span></span><br><span class="line"><span class="title">sum'</span> (x:xs) = x + (sum' xs)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>List comprehension 中</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">[x + y | (x, y) &lt;-zip [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line"><span class="comment">--       ^ match</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Guard"><a href="#Guard" class="headerlink" title="Guard"></a>Guard</h3><p>   感覺之前一直不能接受這個 syntax, 現在看作 cond 就好了。<br>   書中的例子藉由 Guard 定義一個函數。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> bmi <span class="comment">-- *attension! no = here</span></span><br><span class="line">    | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">    | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br></pre></td></tr></table></figure></p>
+<p>   其實就是</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> bmi)</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
+<h3 id="Where"><a href="#Where" class="headerlink" title="Where"></a>Where</h3><p>   用於函數定義中，於定義下方加入 where syntax 做簡易的 binding。</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> weight height <span class="comment">-- *attension! no = here</span></span><br><span class="line">      | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">      | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br><span class="line">        <span class="keyword">where</span></span><br><span class="line">           bim = weight / height ^ <span class="number">2</span></span><br><span class="line">        <span class="comment">-- where 裡面可作 pattern matching 亦可定義函數</span></span><br></pre></td></tr></table></figure>
+<p>   嘛，就是 Scheme 裡的 nested define 嘛。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> weight height)</span><br><span class="line">   (<span class="name"><span class="builtin-name">define</span></span> bim (<span class="name"><span class="builtin-name">/</span></span> weight (<span class="name"><span class="builtin-name">*</span></span> height height)))</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
+<h3 id="Let"><a href="#Let" class="headerlink" title="Let"></a>Let</h3><p>   當然也有 let expression，bindings 和 exprs 用 in 關鍵字隔開<br>   bindings 中可以用 pattern matching，也可以用 ; 隔開每個 binding</p>
+<p>   list comprehension 中也可以用 let bind 一些值，注意有效範圍。</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">   [nv | (x, y) &lt;- lst, <span class="keyword">let</span> nv = x + y, nv &gt; <span class="number">10</span>]</span><br><span class="line"><span class="comment">--  ^^   x-----------x  ^^^^^^^^^^^^^^  ^^^^^^^</span></span><br></pre></td></tr></table></figure>
+<h3 id="Case"><a href="#Case" class="headerlink" title="Case"></a>Case</h3><p>   pattern matching 本質上是 case exprs 的語法糖。<br>   而在我看來 pattern matching 在 Scheme 中也就是 cond 的語法糖 (null? 等函數去判斷）<br>   所以在 case exprs 可以解決的基本上 Guard 也可以解決，而回歸原始，用 if else 解決。<br>   重點是記得適用場景，Guard 用在 Bool，case 用在 pattern matching。<br>   之前這邊一直沒有摸清楚。</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">case</span> expression <span class="keyword">of</span> pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br></pre></td></tr></table></figure>
+<h3 id="HOF"><a href="#HOF" class="headerlink" title="HOF"></a>HOF</h3><p>   與 Scheme 最大的不同就是 Haskell 會自己做 currying。<br>   善用 currying 特性就可以很自然的做出 partially applied function。<br>   如此就不用再寫 lambda 去餵 HOF 啦～</p>
+<p>   還有就是 map 的力量，Haskell 的 map 是 map :: (a -&gt; b) -&gt; [a] -&gt; [b]，<br>   和 Scheme 的 map 不太一樣，Scheme 因為是動態語言所以 map 吃的 function 彈性比較大。<br>   如 <code>(map + &#39;(1 2 3) &#39;(1 2 3))</code> 後面可以接幾個 list 端看前面 function （加號的話可以無限啦～）。<br>   而 Haskell 要用 + 號則是用 zipWith，<code>zipWith (+) [1, 2, 3] [1, 2, 3]</code>。<br>   Haskell map 和 zipWith 也就只是差在 unary 和 binary，依舊不能和 Scheme map 比。<br>   或許有其他方法吧，這就要研究一下 Haskell 的 var args 用法了。</p>
+<p>   一些 Haskell hof 可以玩玩</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">map, filter,</span><br><span class="line">foldl, foldr, foldl1, foldr1,</span><br><span class="line">scahnl, scanr, scanl1, scanr1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意 foldl 系列的第一個參數的型態是 (b -&gt; a -&gt; b)<br>所以在寫 lambda 的時候是 (\ e acc -&gt; expr)<br>而 foldr 系列則是 (a -&gt; b -&gt; b)<br>寫 lambda 的時候則是 (\ acc e -&gt; expr)</p>
+</blockquote>
+<h3 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h3><p>   lambda 寫法 <code>\ bindings -&gt; exprs</code></p>
+<h3 id="的使用"><a href="#的使用" class="headerlink" title="$ 的使用"></a>$ 的使用</h3><p>   $ 號使用，一般下一個元素都會當作參數向左結合，<br>   但是前面有 $ 號的話，就可以不用被當成參數，<br>   直接當成 function apply 到右邊（後面）的參數上，<br>   直到完成，再餵回前面去。</p>
+<p>   還有可以將 data 當 func 特性，如 <code>map ($ 3) [(4+),(10*),(^2),sqrt]</code></p>
+<h3 id="Function-composition"><a href="#Function-composition" class="headerlink" title="Function composition"></a>Function composition</h3><p>   嘛，就是 f(g(x)) 可以用 Haskell 寫成 f . g。就是這樣而已！<br>   注意的是 apply to arguments 的部份搭配個 $ , 也就是 f . g $ arg</p>
+<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><blockquote>
+<p>transpose 函數可以反轉一組 List 的 List。</p>
+</blockquote>
+<p>光看中文還蠻容易誤解的，但看了他的例子及看了英文後，這不就轉置嗎？</p>
+<p>馬上想到 Python 是用 Scheme, Python 是用 zip (map) 達成，<br>但考慮到 Haskell 的靜態特性，所以把 var arg 裝到一個 list 成為一個新函數。</p>
+<h2 id="Self-suspicion"><a href="#Self-suspicion" class="headerlink" title="Self suspicion"></a>Self suspicion</h2><blockquote>
+<p>以下是一年前做 Note 提出的疑問。</p>
+</blockquote>
+<ul>
+<li>Q: tuple likes struct, while list likes array ?<br>A: 在念計概的時候有提到 record 這個概念，就是不同型態的資料的集合，所以 tuple 和 struct 都可以算是 record 的一種實作吧。不過 Haskell 也有 Record Syntax。而 list 不是 array，就是 linked list，要 array 的話 Scheme 有 vector，Haskell 裡應該也有類似的東西。</li>
+<li>Q: 試想 zip implement, 是 <code>zip (x:xs) (y:ys) = (x, y) : zip xs ys</code> 而不是 list comprehension [… |  x&lt;-xs, y&lt;-ys, …]，這兩種使用 list element 的方式差別是什麼，後者如何以 recursion 實現。並考慮一下迴圈是否有類似的狀況。<br>A: 上述的 List Comprehension 會是兩層迴圈的情形（窮舉），所以沒辦法使用。之後看到唐鳳介紹 FP 時用 Haskell List Comprehension 做的<a href="https://stackoverflow.com/questions/27333923/haskell-write-zip-function-using-list-comprehension" target="_blank" rel="noopener">例子</a>，估計這 List Comprehension 的內部也有個 zip 的實現在用 pattern matching 去為參數配對吧。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>haskell</tag>
+        <tag>scheme</tag>
+        <tag>lambda</tag>
+        <tag>fp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>A Little Game</title>
     <url>/2018/02/21/A-Little-Game/</url>
     <content><![CDATA[<center>
@@ -60,9 +135,9 @@
         <category>Fun</category>
       </categories>
       <tags>
+        <tag>fp</tag>
         <tag>game</tag>
         <tag>logic</tag>
-        <tag>fp</tag>
       </tags>
   </entry>
   <entry>
@@ -481,199 +556,128 @@ A world without loop , but recursion。<br>
         <category>Note</category>
       </categories>
       <tags>
-        <tag>fp</tag>
         <tag>haskell</tag>
         <tag>lambda</tag>
+        <tag>fp</tag>
       </tags>
   </entry>
   <entry>
-    <title>Scheme 初學者眼中的 Haskell</title>
-    <url>/2018/02/14/HaskellFromScheme/</url>
+    <title>Memoir - Road</title>
+    <url>/2016/12/31/MyRoad/</url>
     <content><![CDATA[<center>
-嘛，情人節，和 Haskell 約個會吧！<br>
-因為學完 Scheme 後回來看 Haskell，<br>
-發現有不少地方是已經會的。<br>
-而我覺得記些基本的東西意義不大，<br>
-所以改成以一個接觸過 Scheme 的 FP 初學者角度，<br>
-重新來看待 Haskell 這個語言。
+<strong><em>謹記我跌跌撞撞，那不成熟的過去。</em></strong>
 </center>
 
 
 <a id="more"></a>
 <p><br><br></p>
-<h2 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h2><h3 id="Pattern-matching"><a href="#Pattern-matching" class="headerlink" title="Pattern matching"></a>Pattern matching</h3><p>我記得王垠的 40 行代碼好像有 require pmatch,<br>所以 Scheme 應該是有以 library 實現 pattern matching 的。</p>
-<p>而 Haskell 則是內建此種語言特性，大概可以有三種地方可以用到。</p>
-<ol>
-<li><p>函數定義，可以少去一些 if else</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 注意 match 的順序性</span></span><br><span class="line"><span class="title">fib</span> <span class="number">0</span> = <span class="number">0</span></span><br><span class="line"><span class="title">fib</span> <span class="number">1</span> = <span class="number">1</span></span><br><span class="line"><span class="title">fib</span> x = fib (x - <span class="number">1</span>) + fib (x - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">fib</span> x) <span class="comment">; 懶得寫 = 所以用 case</span></span><br><span class="line">   (<span class="name"><span class="builtin-name">case</span></span> x      <span class="comment">; 不過 racket 其實是用 equal?</span></span><br><span class="line">      [(<span class="name">0</span>) <span class="number">0</span>]   <span class="comment">; R6RS, R5RS 是用 eqv?</span></span><br><span class="line">      [(<span class="name">1</span>) <span class="number">1</span>]</span><br><span class="line">      [<span class="name"><span class="builtin-name">else</span></span> (<span class="name"><span class="builtin-name">+</span></span> (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">1</span>))</span><br><span class="line">               (<span class="name">fib</span> (<span class="name"><span class="builtin-name">-</span></span> x <span class="number">2</span>)))]))</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>拆 tuple, list</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- as pattern</span></span><br><span class="line"><span class="title">all</span>@a:b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="comment">-- all == [1, 2, 3]</span></span><br><span class="line"><span class="comment">-- a == 1</span></span><br><span class="line"><span class="comment">-- b == [2, 3]</span></span><br><span class="line"></span><br><span class="line">(a, b, c) = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="comment">-- a == 1, b == 2, c == 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 結合 1. 定義 sum'</span></span><br><span class="line"><span class="title">sum</span> [] = <span class="number">0</span></span><br><span class="line"><span class="title">sum'</span> (x:xs) = x + (sum' xs)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>List comprehension 中</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">[x + y | (x, y) &lt;-zip [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]</span><br><span class="line"><span class="comment">--       ^ match</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="Guard"><a href="#Guard" class="headerlink" title="Guard"></a>Guard</h3><p>   感覺之前一直不能接受這個 syntax, 現在看作 cond 就好了。<br>   書中的例子藉由 Guard 定義一個函數。<br><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> bmi <span class="comment">-- *attension! no = here</span></span><br><span class="line">    | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">    | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">    | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br></pre></td></tr></table></figure></p>
-<p>   其實就是</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> bmi)</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
-<h3 id="Where"><a href="#Where" class="headerlink" title="Where"></a>Where</h3><p>   用於函數定義中，於定義下方加入 where syntax 做簡易的 binding。</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">bmiTell</span> weight height <span class="comment">-- *attension! no = here</span></span><br><span class="line">      | bmi &lt;= <span class="number">18.5</span> = <span class="string">"You're underweight, you emo, you!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">25.0</span> = <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span></span><br><span class="line">      | bmi &lt;= <span class="number">30.0</span> = <span class="string">"You're fat! Lose some weight, fatty!"</span></span><br><span class="line">      | otherwise   = <span class="string">"You're a whale, congratulations!"</span></span><br><span class="line">        <span class="keyword">where</span></span><br><span class="line">           bim = weight / height ^ <span class="number">2</span></span><br><span class="line">        <span class="comment">-- where 裡面可作 pattern matching 亦可定義函數</span></span><br></pre></td></tr></table></figure>
-<p>   嘛，就是 Scheme 裡的 nested define 嘛。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">bmiTell</span> weight height)</span><br><span class="line">   (<span class="name"><span class="builtin-name">define</span></span> bim (<span class="name"><span class="builtin-name">/</span></span> weight (<span class="name"><span class="builtin-name">*</span></span> height height)))</span><br><span class="line">   (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">18.5</span>) <span class="string">"You're underweight, you emo, you!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">25.0</span>) <span class="string">"You're supposedly normal. Pffft, I bet you're ugly!"</span>)</span><br><span class="line">      ((<span class="name"><span class="builtin-name">&lt;=</span></span> bmi <span class="number">30.0</span>) <span class="string">"You're fat! Lose some weight, fatty!"</span>)</span><br><span class="line">      (<span class="name"><span class="builtin-name">else</span></span>          <span class="string">"You're a whale, congratulations!"</span>)))</span><br></pre></td></tr></table></figure>
-<h3 id="Let"><a href="#Let" class="headerlink" title="Let"></a>Let</h3><p>   當然也有 let expression，bindings 和 exprs 用 in 關鍵字隔開<br>   bindings 中可以用 pattern matching，也可以用 ; 隔開每個 binding</p>
-<p>   list comprehension 中也可以用 let bind 一些值，注意有效範圍。</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">   [nv | (x, y) &lt;- lst, <span class="keyword">let</span> nv = x + y, nv &gt; <span class="number">10</span>]</span><br><span class="line"><span class="comment">--  ^^   x-----------x  ^^^^^^^^^^^^^^  ^^^^^^^</span></span><br></pre></td></tr></table></figure>
-<h3 id="Case"><a href="#Case" class="headerlink" title="Case"></a>Case</h3><p>   pattern matching 本質上是 case exprs 的語法糖。<br>   而在我看來 pattern matching 在 Scheme 中也就是 cond 的語法糖 (null? 等函數去判斷）<br>   所以在 case exprs 可以解決的基本上 Guard 也可以解決，而回歸原始，用 if else 解決。<br>   重點是記得適用場景，Guard 用在 Bool，case 用在 pattern matching。<br>   之前這邊一直沒有摸清楚。</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">case</span> expression <span class="keyword">of</span> pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br><span class="line">                   pattern -&gt; result</span><br></pre></td></tr></table></figure>
-<h3 id="HOF"><a href="#HOF" class="headerlink" title="HOF"></a>HOF</h3><p>   與 Scheme 最大的不同就是 Haskell 會自己做 currying。<br>   善用 currying 特性就可以很自然的做出 partially applied function。<br>   如此就不用再寫 lambda 去餵 HOF 啦～</p>
-<p>   還有就是 map 的力量，Haskell 的 map 是 map :: (a -&gt; b) -&gt; [a] -&gt; [b]，<br>   和 Scheme 的 map 不太一樣，Scheme 因為是動態語言所以 map 吃的 function 彈性比較大。<br>   如 <code>(map + &#39;(1 2 3) &#39;(1 2 3))</code> 後面可以接幾個 list 端看前面 function （加號的話可以無限啦～）。<br>   而 Haskell 要用 + 號則是用 zipWith，<code>zipWith (+) [1, 2, 3] [1, 2, 3]</code>。<br>   Haskell map 和 zipWith 也就只是差在 unary 和 binary，依舊不能和 Scheme map 比。<br>   或許有其他方法吧，這就要研究一下 Haskell 的 var args 用法了。</p>
-<p>   一些 Haskell hof 可以玩玩</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">map, filter,</span><br><span class="line">foldl, foldr, foldl1, foldr1,</span><br><span class="line">scahnl, scanr, scanl1, scanr1</span><br></pre></td></tr></table></figure>
+<h3 id="路？"><a href="#路？" class="headerlink" title="路？"></a>路？</h3><p>元旦連假回家，老爸載著我，吃晚餐的路上。</p>
+<p>“唸到現在，你還會想念電機嗎？”，爸提了個問題。</p>
+<p>“還好，只是不知道念電機的話現在會怎樣”<br>“不過可能沒辦法像現在一樣方便，上個網找個方向就能充實專業”，我想想了後說。</p>
+<p>“那樣就要像我一樣買單芯片機，一些材料，動手實作吧”，爸說。</p>
+<p>“那樣很麻煩吧？”，我不禁嘆道。</p>
+<h3 id="憶"><a href="#憶" class="headerlink" title="憶"></a>憶</h3><p>當初選志願時，對資訊甚是排斥，主要是因為高中有過挫折吧。</p>
+<p>高中電腦課學 C++ ，當時適應非常不良。<br>對於<code>using namespace std</code>及<code>cin &gt;&gt;</code> , <code>cout &lt;&lt;</code>，感到沒有 sense。<br>這些老師僅是帶過，我是有聽沒有懂，由於沒有深入講解，我對整個架構觀念，建立不太起來。</p>
 <blockquote>
-<p>注意 foldl 系列的第一個參數的型態是 (b -&gt; a -&gt; b)<br>所以在寫 lambda 的時候是 (\ e acc -&gt; expr)<br>而 foldr 系列則是 (a -&gt; b -&gt; b)<br>寫 lambda 的時候則是 (\ acc e -&gt; expr)</p>
+<p>一切是如此的抽象。</p>
 </blockquote>
-<h3 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h3><p>   lambda 寫法 <code>\ bindings -&gt; exprs</code></p>
-<h3 id="的使用"><a href="#的使用" class="headerlink" title="$ 的使用"></a>$ 的使用</h3><p>   $ 號使用，一般下一個元素都會當作參數向左結合，<br>   但是前面有 $ 號的話，就可以不用被當成參數，<br>   直接當成 function apply 到右邊（後面）的參數上，<br>   直到完成，再餵回前面去。</p>
-<p>   還有可以將 data 當 func 特性，如 <code>map ($ 3) [(4+),(10*),(^2),sqrt]</code></p>
-<h3 id="Function-composition"><a href="#Function-composition" class="headerlink" title="Function composition"></a>Function composition</h3><p>   嘛，就是 f(g(x)) 可以用 Haskell 寫成 f . g。就是這樣而已！<br>   注意的是 apply to arguments 的部份搭配個 $ , 也就是 f . g $ arg</p>
-<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><blockquote>
-<p>transpose 函數可以反轉一組 List 的 List。</p>
+<p>對於引入頭文件云云感覺都記不太起來，可能是不太熟練吧。</p>
+<p>但畢竟住宿，也沒有電腦可以搞這些。</p>
+<p>對於沒辦法操作的程式，要我光看課本複習，我是辦不到的。</p>
+<p>而結果是每次上課，我都只能生硬的使用這些東西，對於這一切一切，我感到非常恐懼，<br>一種對陌生感到的恐懼。</p>
+<p>一個段落寫完，運行不起來，底下錯誤訊息也不會看，老師好像也沒教。</p>
+<p>總之，感覺要完成一段可以跑的東西，困難重重，一個不會就杵在那裏。</p>
+<p>常常只能向老師求救，對自己的無能感到厭惡。</p>
+<p>連 cout、cin 的 <code>&lt;&lt;</code> 及 <code>&gt;&gt;</code> 都常常寫反。</p>
+<blockquote>
+<p>每每使用這些東西，我都會感到痛苦。</p>
 </blockquote>
-<p>光看中文還蠻容易誤解的，但看了他的例子及看了英文後，這不就轉置嗎？</p>
-<p>馬上想到 Python 是用 Scheme, Python 是用 zip (map) 達成，<br>但考慮到 Haskell 的靜態特性，所以把 var arg 裝到一個 list 成為一個新函數。</p>
-<h2 id="Self-suspicion"><a href="#Self-suspicion" class="headerlink" title="Self suspicion"></a>Self suspicion</h2><blockquote>
-<p>以下是一年前做 Note 提出的疑問。</p>
+<p>在這堂課中，我體會不到編程的樂趣，沒有成就，只有挫敗感。</p>
+<p>記得曾向老爸抱怨聽不懂，他只是表示你現在只要把書讀好，不用去搞那些。</p>
+<hr>
+<p>就這樣渾渾噩噩了三年</p>
+<hr>
+<p>升大學的暑假，老爸教了我 VB6 ，我開始對程式開發產生了些興趣，<br>也終於能開始熟練的使用簡單的語法了。</p>
+<p>比起那時 Dev C++ 視窗裡的天書般的除錯訊息，VB6 更是直接的標示出有問題的地方。</p>
+<p>而且不用引入函式庫， syntax 的 support 感覺強很多。</p>
+<p>物件都帶有各自的屬性，一切具體了起來，OBP 帶我看到更結構化的世界，<br>也為我鋪好了 OOP 的道路。</p>
+<p>程式原來是嚴謹但不失彈性的，我深刻的體會到了這點。</p>
+<blockquote>
+<p>“你怎麼會這樣寫捏？”</p>
 </blockquote>
+<p>彷彿又回到了兩年前，老爸竟然說出了和電腦老師一模一樣的話。</p>
+<p>但是這次我已可以好好說出我的想法，而不是當年的支支吾吾。</p>
+<p>看著老爸拉著元件，加上程式碼，我好像可以了解到一些程式碼後的行為。</p>
+<p>感覺經歷一兩年的沉澱，思路終於和這領域銜接上了，每個問題好像都能問到點上。</p>
+<p>拉著表單，為各式各樣的元件加上程式碼，一切的一切如我所願的跑了起來。</p>
+<blockquote>
+<p>程式能終於照著我的想法去跑了。</p>
+</blockquote>
+<p>遇到 bug 我也終於看得懂錯誤訊息。</p>
+<blockquote>
+<p>更重要的是學會了設中斷點，逐行運行程式，學會調試。</p>
+</blockquote>
+<p>感覺 VB6 比 C++ 親切很多，語法檢查，錯誤提示，對我來說都點到了點上。</p>
+<p>學習不再窒礙，我可以的，這是一個我可以掌握的世界。</p>
+<p>上了大學學了 C 語言，感覺自己看了夠多，兩種語言間 (C/C++ , VB) 能互相輝映。<br>剛碰 C ，就深深感到他比 C++ 親切，感覺少了很多奇怪的東西。</p>
+<p>有了先前的經驗，我覺得即使再複雜，只要能跟我說明其中含意，我就能好好記住他。</p>
+<p>好，那就開始吐槽 C 和 C++ 吧，我覺得用 C 入門比 C++ 好的一些點。</p>
+<p>雖然說總的來說是我高中時不認真成分居多。（其實 VB6 才是最好入門的啊）</p>
+<ol>
+<li>
+<blockquote>`#include<stdio.h>` vs `#include<iostream>`</iostream></stdio.h></blockquote>
+恩，我覺得前者比較有 sense ， 標準的 io 嘛，那 stream 是什麼鬼 ( murmuring )
+</li>
+<li>
+<blockquote>`using namespace std;`</blockquote>
+這個我不知要怎麼說了，完全沒有頭緒啊。
+可能你跟我講沒有用的話，`cout`要改成`std::cout`，我就會有 sense 了。
+</li>
+<li>
+<blockquote>`scanf("%c%d") printf("%c%d")` vs `cin >> cout <<`< blockquote>
+前者可能會有`&`符號的問題。
+不過比起莫名其妙且老是記不起來的`>>`與`<<`， 我相信前者的 format string 和 `&` 對我比較有 sense 不要說為了打比賽啊，但說起來 c 是 c++ 子集，要用 ++ 的庫講一下應該就會知道了吧？ 況且`stdio.h`的東西比`iostream`的快啊，怎不教`cstdio`? < li>
+<li>
+<blockquote>`fopen` </blockquote>
+現在想起來怪怪的，如果有教 fopen 那當初是用甚麼寫入？`fputs` ? 那怎不教 `cstdio`?
+要再查一下，記憶模糊了。
+</li>
+<li>
+<blockquote>`'\n'` vs `<< endl;`</blockquote>
+換行，好像過了很久才明白 `endl` 是 end line 的意思，
+相形之下 `\n` new line 似乎比較有 sense。
+</li>
+</`，></`<></blockquote></li></ol>
+
+<p>而漸漸的，我從 VB6 回歸到 C，是種反璞歸真的感覺。<br>VB6 的視窗化，讓我覺得一切都太麻煩，而 Linux 簡單明瞭，深深的吸引了我。</p>
+<p>在 VB6 中寫一段簡單的東西，都要拉一個元件出來，也許也是到了個瓶頸，感覺做不出甚麼東西出來，<br>開始想要追求功能性的我，投向了 C 語言的懷抱。</p>
 <ul>
-<li>Q: tuple likes struct, while list likes array ?<br>A: 在念計概的時候有提到 record 這個概念，就是不同型態的資料的集合，所以 tuple 和 struct 都可以算是 record 的一種實作吧。不過 Haskell 也有 Record Syntax。而 list 不是 array，就是 linked list，要 array 的話 Scheme 有 vector，Haskell 裡應該也有類似的東西。</li>
-<li>Q: 試想 zip implement, 是 <code>zip (x:xs) (y:ys) = (x, y) : zip xs ys</code> 而不是 list comprehension [… |  x&lt;-xs, y&lt;-ys, …]，這兩種使用 list element 的方式差別是什麼，後者如何以 recursion 實現。並考慮一下迴圈是否有類似的狀況。<br>A: 上述的 List Comprehension 會是兩層迴圈的情形（窮舉），所以沒辦法使用。之後看到唐鳳介紹 FP 時用 Haskell List Comprehension 做的<a href="https://stackoverflow.com/questions/27333923/haskell-write-zip-function-using-list-comprehension" target="_blank" rel="noopener">例子</a>，估計這 List Comprehension 的內部也有個 zip 的實現在用 pattern matching 去為參數配對吧。</li>
+<li>大一期中，用 C 調 ncurses 寫了個俄羅斯方塊，<br>感覺能開始做複雜的東西，之後也寫了個多人聊天室。<br><s>儘管現在看了，那些 code 全都醜的要命。</s></li>
+<li>回憶高中所學，用一招 fopen 開啟了更大的世界（壞笑）。</li>
+<li>開始熟悉 script，寫了蠻多小東西（也是壞笑）。</li>
+<li>學會了 system() 各種花式亂搞（反正主機不是我家的（逃。</li>
+<li>學了很多語言，開了眼界，覺得學習新東西，是件有趣的事情。</li>
 </ul>
+<p>然而一切的一切在之後的之後，回來看這些事總覺得 too naive。</p>
+<h3 id="？"><a href="#？" class="headerlink" title="？"></a>？</h3><p>雖然常常感嘆高中沒得引發興趣，踏入這領域，不過至少現在是在路上的。</p>
+<blockquote>
+<p>我浪費了太多時間在別人無意義的程式上了，從現在起，我要寫我自己的。</p>
+</blockquote>
+<p>上知乎，感覺看到的東西越來越多，只要我肯伸出手，就可以抓住這世界。</p>
+<p>開始頻繁的上 GitHub ，雖然可能推的 repo 不夠入流，大多只是些小 script，</p>
+<p>但是確實是有在累積的，屬於自己的某些東西。</p>
+<p>在 zerojudge 刷了些題，看著排行上的那些高中學長同學等，不禁感嘆錯過了電研。</p>
+<blockquote>
+<p>想要刷到章魚的高度呢，不過還有距離呢，笑。</p>
+</blockquote>
+<h3 id="結"><a href="#結" class="headerlink" title="結"></a>結</h3><p>看起來好像是在吐槽高中電腦課，其實更多的是對自己的憾恨。<br>是當年那個找不到目標的自己，造成現在的碌碌無為，<br>總想著要做些好玩的事情逃離課業，卻一次次和計算機擦身而過，</p>
+<blockquote>
+<p>罷了，就讓過去的一切，都封存在這篇文章中吧。</p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>Note</category>
+        <category>Memoir</category>
       </categories>
-      <tags>
-        <tag>fp</tag>
-        <tag>haskell</tag>
-        <tag>lambda</tag>
-        <tag>scheme</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Markdown Note</title>
-    <url>/2016/12/22/Markdown/</url>
-    <content><![CDATA[<center>
-工欲善其事，必先利其器啊，<br>
-既然 hexo 使用了 Markdown 來渲染文章，那就趕快來學個。<br>
-</center>
-
-
-<a id="more"></a>
-<p>所謂 Markdown 是種輕量級標記語言，透過簡單的語法便可將.md 轉成.html。</p>
-<p>等等！看來我對 Markdown 有誤解，<br>它的目的在於作為一個網路<strong>寫作</strong>用語言，重點在讓文檔<strong>易讀易寫</strong>，<br>至於轉成 html 是為了易於發布（當然嘛，瀏覽器讀的是 html)，<br>Markdown 宗旨是讓寫作變得容易，所以沒有 html 這麼多花招。</p>
-<p>當然，要用 html 的東西，直接用就是了，<br>其實渲染器說穿了就是文本替換罷了… 吧？<br>剛好之前對 html 有些涉獵，所以 Markdown 在做些甚麼大抵上也是摸的到的。<br>所以學完 Markdown 後，我應該也可試試寫個渲染器（咦？)</p>
-<p><br><br></p>
-<h2 id="0-轉義"><a href="#0-轉義" class="headerlink" title="0. 轉義"></a>0. 轉義</h2><p>進入各類用法前，先來個提要吧，遇到 Markdown 有歸為特殊用法的符號時，<br>如果要讓它顯示原本的意思，就需要轉義，這時只要加一個反斜線<code>\</code>，在前就好了。</p>
-<h2 id="1-標題"><a href="#1-標題" class="headerlink" title="1. 標題"></a>1. 標題</h2><p>先來個所謂的”起手式”，也是 html 都會教的第一課，就是標題啦~<br>html 的標題是用<code>&lt;h[1-6]&gt;&lt;/h[1-6]&gt;</code>（就是 h1 到 h6)，轉成 Markdown 用<code>#</code>號表示</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># \# is equal to h1</span><br><span class="line">h1 還可以用這樣</span><br><span class="line">===============</span><br><span class="line">## \#\# is equal to h2</span><br><span class="line">h2 也可以用這樣</span><br><span class="line">---------------</span><br><span class="line">### \#\#\# is equal to h3</span><br></pre></td></tr></table></figure>
-<p>記得井號後要空格</p>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><blockquote>
-<h1 id="is-equal-to-h1"><a href="#is-equal-to-h1" class="headerlink" title="# is equal to h1"></a># is equal to h1</h1><h1 id="h1-還可以用這樣"><a href="#h1-還可以用這樣" class="headerlink" title="h1 還可以用這樣"></a>h1 還可以用這樣</h1><h2 id="is-equal-to-h2"><a href="#is-equal-to-h2" class="headerlink" title="## is equal to h2"></a>## is equal to h2</h2><h2 id="h2-也可以用這樣"><a href="#h2-也可以用這樣" class="headerlink" title="h2 也可以用這樣"></a>h2 也可以用這樣</h2><h3 id="is-equal-to-h3"><a href="#is-equal-to-h3" class="headerlink" title="### is equal to h3"></a>### is equal to h3</h3></blockquote>
-<h2 id="2-內文"><a href="#2-內文" class="headerlink" title="2. 內文"></a>2. 內文</h2><p>html 的內文 tag<code>&lt;p&gt;&lt;/p&gt;</code>，在 Markdown 即是一個簡單文章的區段，不用特別加符號，<br><code>&lt;p&gt;&lt;/p&gt;</code>的開合用空行即能達成</p>
-<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">就是一個簡單的內文，用 f12 確認一下吧</span><br></pre></td></tr></table></figure>
-<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p>就是一個簡單的內文，用 f12 確認一下吧</p>
-<h2 id="3-強調"><a href="#3-強調" class="headerlink" title="3. 強調"></a>3. 強調</h2><p>html 的強調用法有斜體<code>&lt;i&gt;&lt;/i&gt;</code>、粗體<code>&lt;b&gt;&lt;/b&gt;</code>、刪除線<code>&lt;s&gt;&lt;/s&gt;</code>，<br>Markdown 分別是使用<code>*</code>或<code>_</code>、<code>**</code>或<code>__</code>、<code>~~</code></p>
-<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*我是斜體呦* _我也是斜體_</span><br><span class="line">**我是粗體呦** __我也是粗體__</span><br><span class="line">*__兩個混著用__* _**注意遞迴式包裝**_</span><br><span class="line">_**剩下的兩種**_ *__我也幫你試過了__*</span><br><span class="line">***這種呢我也試*** ___我猜是不行___</span><br><span class="line">~~刪除線是這樣，混著用我就不試了~~</span><br></pre></td></tr></table></figure>
-<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p><em>我是斜體呦</em> <em>我也是斜體</em><br><strong>我是粗體呦</strong> <strong>我也是粗體</strong><br><em><strong>兩個混著用</strong></em> <em><strong>注意遞迴式包裝</strong></em><br><em><strong>剩下的兩種</strong></em> <em><strong>我也幫你試過了</strong></em><br><strong><em>這種呢我也試</em></strong> <strong><em>我猜是不行</em></strong><br><del>刪除線是這樣，混著用我就不試了</del></p>
-<p>誒誒，竟然可以？! 我錯了（逃<br>不行，這時不能逃，才學到一半（正經臉<br>有點好奇底線是怎樣，結果發現好像是 style/CSS 的坑，<a href="http://softwareengineering.stackexchange.com/questions/207727/why-there-is-no-markdown-for-underline" target="_blank" rel="noopener">標記語言不用理</a></p>
-<h2 id="4-清單"><a href="#4-清單" class="headerlink" title="4. 清單"></a>4. 清單</h2><p>html 的清單… 沒記錯的話，最外層都是要先包一層<code>&lt;li&gt;&lt;/li&gt;</code>，<br>再來看是要列順序 (ordered) 的<code>&lt;ol&gt;&lt;/ol&gt;</code>，還是要<code>&lt;ul&gt;&lt;/ul&gt;</code>就看尼囉。<br>Markdown 對於<code>&lt;ol&gt;</code>就編個號，例如<code>1.</code>就好，<code>&lt;ul&gt;</code>可以用<code>*</code>、<code>+</code>或<code>-</code>。</p>
-<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">基本上不用理會 li 的存在，Markdown 會判斷，恩，我猜的（逃</span><br><span class="line">巢狀清單的話用縮排達成。跟標題一樣，注意編號和*+- 號後要空格</span><br><span class="line">1. 第一大條</span><br><span class="line">  * 一大的無序一中</span><br><span class="line">  * 一大的無序二中</span><br><span class="line">2. 第二大條</span><br><span class="line">  1. 二大的有序一中</span><br><span class="line">  2. 二大的有序二中</span><br><span class="line">    * 二大二中的無序一小</span><br></pre></td></tr></table></figure>
-<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><ol>
-<li>第一大條<ul>
-<li>一大的無序一中</li>
-<li>一大的無序二中</li>
-</ul>
-</li>
-<li>第二大條<ol>
-<li>二大的有序一中</li>
-<li>二大的有序二中<ul>
-<li>二大二中的無序一小</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="5-超鏈結"><a href="#5-超鏈結" class="headerlink" title="5. 超鏈結"></a>5. 超鏈結</h2><p>再來就是 html 最重要（我覺得）的超鏈結啦~，複習一下 html 全名 <a href="https://zh.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">HyperText Markup Language</a><br>html 的超鏈結就是<code>&lt;a&gt;&lt;/a&gt;</code>tag，在 Markdown 可以用<code>[]()</code>及<code>[][] + []:</code>使用</p>
-<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href=&quot;超鏈結&quot; title=&quot;標題（可略）&quot;&gt;超鏈結名稱&lt;/a&gt;</span><br><span class="line">[超鏈結名稱](超鏈結 &quot;標題（可略）&quot;)</span><br><span class="line"></span><br><span class="line">標題就是滑鼠一到鏈結上面會顯示的東東啦</span><br><span class="line">當然，超鏈結也可以用相對路徑啦，寫過網頁的就知道了</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[It&apos;s a google link](https://www.google.com)</span><br><span class="line">[nobodyzxc github](http://github.com/nobodyzxc &quot;你瞅啥&quot;)</span><br><span class="line"></span><br><span class="line">這邊有種特殊用法，就是參考鏈結，有點像註腳，個人覺得像是變數</span><br><span class="line"></span><br><span class="line">[超鏈結名稱][參考名稱]</span><br><span class="line">『參考名稱』: 超鏈結</span><br><span class="line"></span><br><span class="line">如此一來，他的參考名稱就會去參考到超鏈結。</span><br><span class="line">兩行可以放得很開，第二習慣放最後面，當註腳（的樣子）。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[知乎][zhihu 注意大小寫，這是一個變數參考 0]</span><br><span class="line">many lines</span><br><span class="line">[zhihu 注意大小寫，這是一個變數參考 0]: http://zhihu.com</span><br></pre></td></tr></table></figure>
-<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><p><a href="https://www.google.com" target="_blank" rel="noopener">It’s a google link</a><br><a href="http://github.com/nobodyzxc" title="你瞅啥" target="_blank" rel="noopener">nobodyzxc github</a></p>
-<p><a href="http://zhihu.com" target="_blank" rel="noopener">知乎</a><br>many lines</p>
-<h2 id="6-註腳"><a href="#6-註腳" class="headerlink" title="6. 註腳"></a>6. 註腳</h2><p>“聽說！”生成 html 時會變成清單，放在檔案最下面，或是變成視窗跳出來，不太一定<br>用中括號加<code>^</code>數字，<code>[^0]</code></p>
-<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">註解零  [^0]</span><br><span class="line">[^0] 就是這樣嗎？</span><br><span class="line">一樣要注意空格啊</span><br></pre></td></tr></table></figure>
-<h3 id="效果-5"><a href="#效果-5" class="headerlink" title="效果"></a>效果</h3><p>註解零  <sup><a href="#fn_0" id="reffn_0">0</a></sup><br><sup><a href="#fn_0" id="reffn_0">0</a></sup> 就是這樣嗎？</p>
-<p>Text prior to footnote reference.<sup><a href="#fn_2" id="reffn_2">2</a></sup><br><sup><a href="#fn_2" id="reffn_2">2</a></sup> Comment to include in footnote.</p>
-<p>WTF? 好像弄不太起來… 有需要再找吧…</p>
-<h2 id="7-圖片"><a href="#7-圖片" class="headerlink" title="7. 圖片"></a>7. 圖片</h2><p>敘述最少的一個，超鏈結前加驚嘆號</p>
-<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![my logo](https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460)</span><br><span class="line">![看山醬萌萌噠][ref]</span><br><span class="line">[ref]: /images/zhi.jpg &quot;zhi~~侵刪呦&quot;</span><br></pre></td></tr></table></figure>
-<h3 id="效果-6"><a href="#效果-6" class="headerlink" title="效果"></a>效果</h3><p><img src="https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460" alt="my logo"><br><img src="/images/zhi.jpg" alt="看山醬萌萌噠" title="zhi~~侵刪呦"></p>
-<p>Image from <a href="https://www.zhihu.com/question/35778876/answer/65568580" target="_blank" rel="noopener">zhihu</a>、<a href="http://tw.weibo.com/liukanshan" target="_blank" rel="noopener">看山微博</a></p>
-<h2 id="8-程式碼區塊"><a href="#8-程式碼區塊" class="headerlink" title="8. 程式碼區塊"></a>8. 程式碼區塊</h2><p>如果鑲嵌行間請用<code>` </code>前後包裝，一大塊則用<code>```</code>包（可以加語言名稱）</p>
-<h3 id="用法-7"><a href="#用法-7" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><div class="line">行間鑲嵌一個 &bprime;/&bprime; </div><div class="line"></div><div class="line">\`\`\`C</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">int main(void){// 對 我是不換行派的，打我啊</div><div class="line">    return 0;</div><div class="line">}</div><div class="line">\`\`\`</div></pre></td></tr></tbody></table></figure>
-
-<h3 id="效果-7"><a href="#效果-7" class="headerlink" title="效果"></a>效果</h3><p>行間鑲嵌一個<code>/</code></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;<span class="comment">// 對 我是不換行派的，打我啊</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不要問我<code>```</code>是怎麼打出來的，<br>我絕對不會說<code><code>```</code>&lt;/code&gt;是借助 html 和反斜線之力完成的。</code></p>
-<h2 id="9-表格"><a href="#9-表格" class="headerlink" title="9. 表格"></a>9. 表格</h2><p>恩，就是 html 的<code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code>等</p>
-<h3 id="用法-8"><a href="#用法-8" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">冒號用來對齊（擺左齊左、擺右齊右，都擺置中）</span><br><span class="line"></span><br><span class="line">| editor        | intro     | comment            |</span><br><span class="line">|---------------|:---------:|-------------------:|</span><br><span class="line">| emacs         | 神的編輯器| 聽說這表格他很會畫 |</span><br><span class="line">| vim           | 編輯器之神| 本人目前用此編輯器 |</span><br><span class="line"></span><br><span class="line">最左最右的 | 不一定需要</span><br><span class="line">表格內部亦支援 Markdown 格式</span><br></pre></td></tr></table></figure>
-<h3 id="效果-8"><a href="#效果-8" class="headerlink" title="效果"></a>效果</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>editor</th>
-<th style="text-align:center">intro</th>
-<th style="text-align:right">comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>emacs</td>
-<td style="text-align:center">神的編輯器</td>
-<td style="text-align:right">聽說這表格他很會畫</td>
-</tr>
-<tr>
-<td>vim</td>
-<td style="text-align:center">編輯器之神</td>
-<td style="text-align:right">本人目前用此編輯器</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="10-引言"><a href="#10-引言" class="headerlink" title="10. 引言"></a>10. 引言</h2><p>電子郵件或論壇常見到的咚咚<code>&gt;</code></p>
-<h3 id="用法-9"><a href="#用法-9" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; 引言</span><br></pre></td></tr></table></figure>
-<h3 id="效果-9"><a href="#效果-9" class="headerlink" title="效果"></a>效果</h3><blockquote>
-<p>引言</p>
-</blockquote>
-<h2 id="11-內嵌-html"><a href="#11-內嵌-html" class="headerlink" title="11. 內嵌 html"></a>11. 內嵌 html</h2><p>不用多說，用下去就對了。</p>
-<h2 id="12-水平分割線"><a href="#12-水平分割線" class="headerlink" title="12. 水平分割線"></a>12. 水平分割線</h2><h3 id="用法-10"><a href="#用法-10" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">獨立一行，大於等於三個符號接起來即可</span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line"></span><br><span class="line">***********</span><br><span class="line">___________</span><br></pre></td></tr></table></figure>
-<h3 id="效果-10"><a href="#效果-10" class="headerlink" title="效果"></a>效果</h3><hr>
-<hr>
-<hr>
-<p>凌晨四點… 我睡了… 本文的 Markdown 版本在<a href="https://github.com/nobodyzxc/BlogBackUp/blob/master/source/_posts/Markdown.md" target="_blank" rel="noopener">這裡</a>，晚安</p>
-<ul>
-<li>reference<ul>
-<li><a href="https://wastemobile.gitbooks.io/gitbook-chinese/content/format/markdown.html" target="_blank" rel="noopener">一本 gitbook</a></li>
-<li><a href="http://markdown.tw/" target="_blank" rel="noopener">domain name 像官網</a></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>markdown</tag>
-      </tags>
   </entry>
   <entry>
     <title>MySQL Note</title>
@@ -944,122 +948,118 @@ A world without loop , but recursion。<br>
       </tags>
   </entry>
   <entry>
-    <title>Memoir - Road</title>
-    <url>/2016/12/31/MyRoad/</url>
+    <title>Markdown Note</title>
+    <url>/2016/12/22/Markdown/</url>
     <content><![CDATA[<center>
-<strong><em>謹記我跌跌撞撞，那不成熟的過去。</em></strong>
+工欲善其事，必先利其器啊，<br>
+既然 hexo 使用了 Markdown 來渲染文章，那就趕快來學個。<br>
 </center>
 
 
 <a id="more"></a>
+<p>所謂 Markdown 是種輕量級標記語言，透過簡單的語法便可將.md 轉成.html。</p>
+<p>等等！看來我對 Markdown 有誤解，<br>它的目的在於作為一個網路<strong>寫作</strong>用語言，重點在讓文檔<strong>易讀易寫</strong>，<br>至於轉成 html 是為了易於發布（當然嘛，瀏覽器讀的是 html)，<br>Markdown 宗旨是讓寫作變得容易，所以沒有 html 這麼多花招。</p>
+<p>當然，要用 html 的東西，直接用就是了，<br>其實渲染器說穿了就是文本替換罷了… 吧？<br>剛好之前對 html 有些涉獵，所以 Markdown 在做些甚麼大抵上也是摸的到的。<br>所以學完 Markdown 後，我應該也可試試寫個渲染器（咦？)</p>
 <p><br><br></p>
-<h3 id="路？"><a href="#路？" class="headerlink" title="路？"></a>路？</h3><p>元旦連假回家，老爸載著我，吃晚餐的路上。</p>
-<p>“唸到現在，你還會想念電機嗎？”，爸提了個問題。</p>
-<p>“還好，只是不知道念電機的話現在會怎樣”<br>“不過可能沒辦法像現在一樣方便，上個網找個方向就能充實專業”，我想想了後說。</p>
-<p>“那樣就要像我一樣買單芯片機，一些材料，動手實作吧”，爸說。</p>
-<p>“那樣很麻煩吧？”，我不禁嘆道。</p>
-<h3 id="憶"><a href="#憶" class="headerlink" title="憶"></a>憶</h3><p>當初選志願時，對資訊甚是排斥，主要是因為高中有過挫折吧。</p>
-<p>高中電腦課學 C++ ，當時適應非常不良。<br>對於<code>using namespace std</code>及<code>cin &gt;&gt;</code> , <code>cout &lt;&lt;</code>，感到沒有 sense。<br>這些老師僅是帶過，我是有聽沒有懂，由於沒有深入講解，我對整個架構觀念，建立不太起來。</p>
-<blockquote>
-<p>一切是如此的抽象。</p>
-</blockquote>
-<p>對於引入頭文件云云感覺都記不太起來，可能是不太熟練吧。</p>
-<p>但畢竟住宿，也沒有電腦可以搞這些。</p>
-<p>對於沒辦法操作的程式，要我光看課本複習，我是辦不到的。</p>
-<p>而結果是每次上課，我都只能生硬的使用這些東西，對於這一切一切，我感到非常恐懼，<br>一種對陌生感到的恐懼。</p>
-<p>一個段落寫完，運行不起來，底下錯誤訊息也不會看，老師好像也沒教。</p>
-<p>總之，感覺要完成一段可以跑的東西，困難重重，一個不會就杵在那裏。</p>
-<p>常常只能向老師求救，對自己的無能感到厭惡。</p>
-<p>連 cout、cin 的 <code>&lt;&lt;</code> 及 <code>&gt;&gt;</code> 都常常寫反。</p>
-<blockquote>
-<p>每每使用這些東西，我都會感到痛苦。</p>
-</blockquote>
-<p>在這堂課中，我體會不到編程的樂趣，沒有成就，只有挫敗感。</p>
-<p>記得曾向老爸抱怨聽不懂，他只是表示你現在只要把書讀好，不用去搞那些。</p>
-<hr>
-<p>就這樣渾渾噩噩了三年</p>
-<hr>
-<p>升大學的暑假，老爸教了我 VB6 ，我開始對程式開發產生了些興趣，<br>也終於能開始熟練的使用簡單的語法了。</p>
-<p>比起那時 Dev C++ 視窗裡的天書般的除錯訊息，VB6 更是直接的標示出有問題的地方。</p>
-<p>而且不用引入函式庫， syntax 的 support 感覺強很多。</p>
-<p>物件都帶有各自的屬性，一切具體了起來，OBP 帶我看到更結構化的世界，<br>也為我鋪好了 OOP 的道路。</p>
-<p>程式原來是嚴謹但不失彈性的，我深刻的體會到了這點。</p>
-<blockquote>
-<p>“你怎麼會這樣寫捏？”</p>
-</blockquote>
-<p>彷彿又回到了兩年前，老爸竟然說出了和電腦老師一模一樣的話。</p>
-<p>但是這次我已可以好好說出我的想法，而不是當年的支支吾吾。</p>
-<p>看著老爸拉著元件，加上程式碼，我好像可以了解到一些程式碼後的行為。</p>
-<p>感覺經歷一兩年的沉澱，思路終於和這領域銜接上了，每個問題好像都能問到點上。</p>
-<p>拉著表單，為各式各樣的元件加上程式碼，一切的一切如我所願的跑了起來。</p>
-<blockquote>
-<p>程式能終於照著我的想法去跑了。</p>
-</blockquote>
-<p>遇到 bug 我也終於看得懂錯誤訊息。</p>
-<blockquote>
-<p>更重要的是學會了設中斷點，逐行運行程式，學會調試。</p>
-</blockquote>
-<p>感覺 VB6 比 C++ 親切很多，語法檢查，錯誤提示，對我來說都點到了點上。</p>
-<p>學習不再窒礙，我可以的，這是一個我可以掌握的世界。</p>
-<p>上了大學學了 C 語言，感覺自己看了夠多，兩種語言間 (C/C++ , VB) 能互相輝映。<br>剛碰 C ，就深深感到他比 C++ 親切，感覺少了很多奇怪的東西。</p>
-<p>有了先前的經驗，我覺得即使再複雜，只要能跟我說明其中含意，我就能好好記住他。</p>
-<p>好，那就開始吐槽 C 和 C++ 吧，我覺得用 C 入門比 C++ 好的一些點。</p>
-<p>雖然說總的來說是我高中時不認真成分居多。（其實 VB6 才是最好入門的啊）</p>
-<ol>
-<li>
-<blockquote>`#include<stdio.h>` vs `#include<iostream>`</iostream></stdio.h></blockquote>
-恩，我覺得前者比較有 sense ， 標準的 io 嘛，那 stream 是什麼鬼 ( murmuring )
-</li>
-<li>
-<blockquote>`using namespace std;`</blockquote>
-這個我不知要怎麼說了，完全沒有頭緒啊。
-可能你跟我講沒有用的話，`cout`要改成`std::cout`，我就會有 sense 了。
-</li>
-<li>
-<blockquote>`scanf("%c%d") printf("%c%d")` vs `cin >> cout <<`< blockquote>
-前者可能會有`&`符號的問題。
-不過比起莫名其妙且老是記不起來的`>>`與`<<`， 我相信前者的 format string 和 `&` 對我比較有 sense 不要說為了打比賽啊，但說起來 c 是 c++ 子集，要用 ++ 的庫講一下應該就會知道了吧？ 況且`stdio.h`的東西比`iostream`的快啊，怎不教`cstdio`? < li>
-<li>
-<blockquote>`fopen` </blockquote>
-現在想起來怪怪的，如果有教 fopen 那當初是用甚麼寫入？`fputs` ? 那怎不教 `cstdio`?
-要再查一下，記憶模糊了。
-</li>
-<li>
-<blockquote>`'\n'` vs `<< endl;`</blockquote>
-換行，好像過了很久才明白 `endl` 是 end line 的意思，
-相形之下 `\n` new line 似乎比較有 sense。
-</li>
-</`，></`<></blockquote></li></ol>
-
-<p>而漸漸的，我從 VB6 回歸到 C，是種反璞歸真的感覺。<br>VB6 的視窗化，讓我覺得一切都太麻煩，而 Linux 簡單明瞭，深深的吸引了我。</p>
-<p>在 VB6 中寫一段簡單的東西，都要拉一個元件出來，也許也是到了個瓶頸，感覺做不出甚麼東西出來，<br>開始想要追求功能性的我，投向了 C 語言的懷抱。</p>
-<ul>
-<li>大一期中，用 C 調 ncurses 寫了個俄羅斯方塊，<br>感覺能開始做複雜的東西，之後也寫了個多人聊天室。<br><s>儘管現在看了，那些 code 全都醜的要命。</s></li>
-<li>回憶高中所學，用一招 fopen 開啟了更大的世界（壞笑）。</li>
-<li>開始熟悉 script，寫了蠻多小東西（也是壞笑）。</li>
-<li>學會了 system() 各種花式亂搞（反正主機不是我家的（逃。</li>
-<li>學了很多語言，開了眼界，覺得學習新東西，是件有趣的事情。</li>
+<h2 id="0-轉義"><a href="#0-轉義" class="headerlink" title="0. 轉義"></a>0. 轉義</h2><p>進入各類用法前，先來個提要吧，遇到 Markdown 有歸為特殊用法的符號時，<br>如果要讓它顯示原本的意思，就需要轉義，這時只要加一個反斜線<code>\</code>，在前就好了。</p>
+<h2 id="1-標題"><a href="#1-標題" class="headerlink" title="1. 標題"></a>1. 標題</h2><p>先來個所謂的”起手式”，也是 html 都會教的第一課，就是標題啦~<br>html 的標題是用<code>&lt;h[1-6]&gt;&lt;/h[1-6]&gt;</code>（就是 h1 到 h6)，轉成 Markdown 用<code>#</code>號表示</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># \# is equal to h1</span><br><span class="line">h1 還可以用這樣</span><br><span class="line">===============</span><br><span class="line">## \#\# is equal to h2</span><br><span class="line">h2 也可以用這樣</span><br><span class="line">---------------</span><br><span class="line">### \#\#\# is equal to h3</span><br></pre></td></tr></table></figure>
+<p>記得井號後要空格</p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><blockquote>
+<h1 id="is-equal-to-h1"><a href="#is-equal-to-h1" class="headerlink" title="# is equal to h1"></a># is equal to h1</h1><h1 id="h1-還可以用這樣"><a href="#h1-還可以用這樣" class="headerlink" title="h1 還可以用這樣"></a>h1 還可以用這樣</h1><h2 id="is-equal-to-h2"><a href="#is-equal-to-h2" class="headerlink" title="## is equal to h2"></a>## is equal to h2</h2><h2 id="h2-也可以用這樣"><a href="#h2-也可以用這樣" class="headerlink" title="h2 也可以用這樣"></a>h2 也可以用這樣</h2><h3 id="is-equal-to-h3"><a href="#is-equal-to-h3" class="headerlink" title="### is equal to h3"></a>### is equal to h3</h3></blockquote>
+<h2 id="2-內文"><a href="#2-內文" class="headerlink" title="2. 內文"></a>2. 內文</h2><p>html 的內文 tag<code>&lt;p&gt;&lt;/p&gt;</code>，在 Markdown 即是一個簡單文章的區段，不用特別加符號，<br><code>&lt;p&gt;&lt;/p&gt;</code>的開合用空行即能達成</p>
+<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">就是一個簡單的內文，用 f12 確認一下吧</span><br></pre></td></tr></table></figure>
+<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p>就是一個簡單的內文，用 f12 確認一下吧</p>
+<h2 id="3-強調"><a href="#3-強調" class="headerlink" title="3. 強調"></a>3. 強調</h2><p>html 的強調用法有斜體<code>&lt;i&gt;&lt;/i&gt;</code>、粗體<code>&lt;b&gt;&lt;/b&gt;</code>、刪除線<code>&lt;s&gt;&lt;/s&gt;</code>，<br>Markdown 分別是使用<code>*</code>或<code>_</code>、<code>**</code>或<code>__</code>、<code>~~</code></p>
+<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*我是斜體呦* _我也是斜體_</span><br><span class="line">**我是粗體呦** __我也是粗體__</span><br><span class="line">*__兩個混著用__* _**注意遞迴式包裝**_</span><br><span class="line">_**剩下的兩種**_ *__我也幫你試過了__*</span><br><span class="line">***這種呢我也試*** ___我猜是不行___</span><br><span class="line">~~刪除線是這樣，混著用我就不試了~~</span><br></pre></td></tr></table></figure>
+<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p><em>我是斜體呦</em> <em>我也是斜體</em><br><strong>我是粗體呦</strong> <strong>我也是粗體</strong><br><em><strong>兩個混著用</strong></em> <em><strong>注意遞迴式包裝</strong></em><br><em><strong>剩下的兩種</strong></em> <em><strong>我也幫你試過了</strong></em><br><strong><em>這種呢我也試</em></strong> <strong><em>我猜是不行</em></strong><br><del>刪除線是這樣，混著用我就不試了</del></p>
+<p>誒誒，竟然可以？! 我錯了（逃<br>不行，這時不能逃，才學到一半（正經臉<br>有點好奇底線是怎樣，結果發現好像是 style/CSS 的坑，<a href="http://softwareengineering.stackexchange.com/questions/207727/why-there-is-no-markdown-for-underline" target="_blank" rel="noopener">標記語言不用理</a></p>
+<h2 id="4-清單"><a href="#4-清單" class="headerlink" title="4. 清單"></a>4. 清單</h2><p>html 的清單… 沒記錯的話，最外層都是要先包一層<code>&lt;li&gt;&lt;/li&gt;</code>，<br>再來看是要列順序 (ordered) 的<code>&lt;ol&gt;&lt;/ol&gt;</code>，還是要<code>&lt;ul&gt;&lt;/ul&gt;</code>就看尼囉。<br>Markdown 對於<code>&lt;ol&gt;</code>就編個號，例如<code>1.</code>就好，<code>&lt;ul&gt;</code>可以用<code>*</code>、<code>+</code>或<code>-</code>。</p>
+<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">基本上不用理會 li 的存在，Markdown 會判斷，恩，我猜的（逃</span><br><span class="line">巢狀清單的話用縮排達成。跟標題一樣，注意編號和*+- 號後要空格</span><br><span class="line">1. 第一大條</span><br><span class="line">  * 一大的無序一中</span><br><span class="line">  * 一大的無序二中</span><br><span class="line">2. 第二大條</span><br><span class="line">  1. 二大的有序一中</span><br><span class="line">  2. 二大的有序二中</span><br><span class="line">    * 二大二中的無序一小</span><br></pre></td></tr></table></figure>
+<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><ol>
+<li>第一大條<ul>
+<li>一大的無序一中</li>
+<li>一大的無序二中</li>
 </ul>
-<p>然而一切的一切在之後的之後，回來看這些事總覺得 too naive。</p>
-<h3 id="？"><a href="#？" class="headerlink" title="？"></a>？</h3><p>雖然常常感嘆高中沒得引發興趣，踏入這領域，不過至少現在是在路上的。</p>
-<blockquote>
-<p>我浪費了太多時間在別人無意義的程式上了，從現在起，我要寫我自己的。</p>
+</li>
+<li>第二大條<ol>
+<li>二大的有序一中</li>
+<li>二大的有序二中<ul>
+<li>二大二中的無序一小</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-超鏈結"><a href="#5-超鏈結" class="headerlink" title="5. 超鏈結"></a>5. 超鏈結</h2><p>再來就是 html 最重要（我覺得）的超鏈結啦~，複習一下 html 全名 <a href="https://zh.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">HyperText Markup Language</a><br>html 的超鏈結就是<code>&lt;a&gt;&lt;/a&gt;</code>tag，在 Markdown 可以用<code>[]()</code>及<code>[][] + []:</code>使用</p>
+<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href=&quot;超鏈結&quot; title=&quot;標題（可略）&quot;&gt;超鏈結名稱&lt;/a&gt;</span><br><span class="line">[超鏈結名稱](超鏈結 &quot;標題（可略）&quot;)</span><br><span class="line"></span><br><span class="line">標題就是滑鼠一到鏈結上面會顯示的東東啦</span><br><span class="line">當然，超鏈結也可以用相對路徑啦，寫過網頁的就知道了</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[It&apos;s a google link](https://www.google.com)</span><br><span class="line">[nobodyzxc github](http://github.com/nobodyzxc &quot;你瞅啥&quot;)</span><br><span class="line"></span><br><span class="line">這邊有種特殊用法，就是參考鏈結，有點像註腳，個人覺得像是變數</span><br><span class="line"></span><br><span class="line">[超鏈結名稱][參考名稱]</span><br><span class="line">『參考名稱』: 超鏈結</span><br><span class="line"></span><br><span class="line">如此一來，他的參考名稱就會去參考到超鏈結。</span><br><span class="line">兩行可以放得很開，第二習慣放最後面，當註腳（的樣子）。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[知乎][zhihu 注意大小寫，這是一個變數參考 0]</span><br><span class="line">many lines</span><br><span class="line">[zhihu 注意大小寫，這是一個變數參考 0]: http://zhihu.com</span><br></pre></td></tr></table></figure>
+<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><p><a href="https://www.google.com" target="_blank" rel="noopener">It’s a google link</a><br><a href="http://github.com/nobodyzxc" title="你瞅啥" target="_blank" rel="noopener">nobodyzxc github</a></p>
+<p><a href="http://zhihu.com" target="_blank" rel="noopener">知乎</a><br>many lines</p>
+<h2 id="6-註腳"><a href="#6-註腳" class="headerlink" title="6. 註腳"></a>6. 註腳</h2><p>“聽說！”生成 html 時會變成清單，放在檔案最下面，或是變成視窗跳出來，不太一定<br>用中括號加<code>^</code>數字，<code>[^0]</code></p>
+<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">註解零  [^0]</span><br><span class="line">[^0] 就是這樣嗎？</span><br><span class="line">一樣要注意空格啊</span><br></pre></td></tr></table></figure>
+<h3 id="效果-5"><a href="#效果-5" class="headerlink" title="效果"></a>效果</h3><p>註解零  <sup><a href="#fn_0" id="reffn_0">0</a></sup><br><sup><a href="#fn_0" id="reffn_0">0</a></sup> 就是這樣嗎？</p>
+<p>Text prior to footnote reference.<sup><a href="#fn_2" id="reffn_2">2</a></sup><br><sup><a href="#fn_2" id="reffn_2">2</a></sup> Comment to include in footnote.</p>
+<p>WTF? 好像弄不太起來… 有需要再找吧…</p>
+<h2 id="7-圖片"><a href="#7-圖片" class="headerlink" title="7. 圖片"></a>7. 圖片</h2><p>敘述最少的一個，超鏈結前加驚嘆號</p>
+<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![my logo](https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460)</span><br><span class="line">![看山醬萌萌噠][ref]</span><br><span class="line">[ref]: /images/zhi.jpg &quot;zhi~~侵刪呦&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="效果-6"><a href="#效果-6" class="headerlink" title="效果"></a>效果</h3><p><img src="https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460" alt="my logo"><br><img src="/images/zhi.jpg" alt="看山醬萌萌噠" title="zhi~~侵刪呦"></p>
+<p>Image from <a href="https://www.zhihu.com/question/35778876/answer/65568580" target="_blank" rel="noopener">zhihu</a>、<a href="http://tw.weibo.com/liukanshan" target="_blank" rel="noopener">看山微博</a></p>
+<h2 id="8-程式碼區塊"><a href="#8-程式碼區塊" class="headerlink" title="8. 程式碼區塊"></a>8. 程式碼區塊</h2><p>如果鑲嵌行間請用<code>` </code>前後包裝，一大塊則用<code>```</code>包（可以加語言名稱）</p>
+<h3 id="用法-7"><a href="#用法-7" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><div class="line">行間鑲嵌一個 &bprime;/&bprime; </div><div class="line"></div><div class="line">\`\`\`C</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">int main(void){// 對 我是不換行派的，打我啊</div><div class="line">    return 0;</div><div class="line">}</div><div class="line">\`\`\`</div></pre></td></tr></tbody></table></figure>
+
+<h3 id="效果-7"><a href="#效果-7" class="headerlink" title="效果"></a>效果</h3><p>行間鑲嵌一個<code>/</code></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;<span class="comment">// 對 我是不換行派的，打我啊</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不要問我<code>```</code>是怎麼打出來的，<br>我絕對不會說<code><code>```</code>&lt;/code&gt;是借助 html 和反斜線之力完成的。</code></p>
+<h2 id="9-表格"><a href="#9-表格" class="headerlink" title="9. 表格"></a>9. 表格</h2><p>恩，就是 html 的<code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code>等</p>
+<h3 id="用法-8"><a href="#用法-8" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">冒號用來對齊（擺左齊左、擺右齊右，都擺置中）</span><br><span class="line"></span><br><span class="line">| editor        | intro     | comment            |</span><br><span class="line">|---------------|:---------:|-------------------:|</span><br><span class="line">| emacs         | 神的編輯器| 聽說這表格他很會畫 |</span><br><span class="line">| vim           | 編輯器之神| 本人目前用此編輯器 |</span><br><span class="line"></span><br><span class="line">最左最右的 | 不一定需要</span><br><span class="line">表格內部亦支援 Markdown 格式</span><br></pre></td></tr></table></figure>
+<h3 id="效果-8"><a href="#效果-8" class="headerlink" title="效果"></a>效果</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>editor</th>
+<th style="text-align:center">intro</th>
+<th style="text-align:right">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emacs</td>
+<td style="text-align:center">神的編輯器</td>
+<td style="text-align:right">聽說這表格他很會畫</td>
+</tr>
+<tr>
+<td>vim</td>
+<td style="text-align:center">編輯器之神</td>
+<td style="text-align:right">本人目前用此編輯器</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="10-引言"><a href="#10-引言" class="headerlink" title="10. 引言"></a>10. 引言</h2><p>電子郵件或論壇常見到的咚咚<code>&gt;</code></p>
+<h3 id="用法-9"><a href="#用法-9" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; 引言</span><br></pre></td></tr></table></figure>
+<h3 id="效果-9"><a href="#效果-9" class="headerlink" title="效果"></a>效果</h3><blockquote>
+<p>引言</p>
 </blockquote>
-<p>上知乎，感覺看到的東西越來越多，只要我肯伸出手，就可以抓住這世界。</p>
-<p>開始頻繁的上 GitHub ，雖然可能推的 repo 不夠入流，大多只是些小 script，</p>
-<p>但是確實是有在累積的，屬於自己的某些東西。</p>
-<p>在 zerojudge 刷了些題，看著排行上的那些高中學長同學等，不禁感嘆錯過了電研。</p>
-<blockquote>
-<p>想要刷到章魚的高度呢，不過還有距離呢，笑。</p>
-</blockquote>
-<h3 id="結"><a href="#結" class="headerlink" title="結"></a>結</h3><p>看起來好像是在吐槽高中電腦課，其實更多的是對自己的憾恨。<br>是當年那個找不到目標的自己，造成現在的碌碌無為，<br>總想著要做些好玩的事情逃離課業，卻一次次和計算機擦身而過，</p>
-<blockquote>
-<p>罷了，就讓過去的一切，都封存在這篇文章中吧。</p>
-</blockquote>
+<h2 id="11-內嵌-html"><a href="#11-內嵌-html" class="headerlink" title="11. 內嵌 html"></a>11. 內嵌 html</h2><p>不用多說，用下去就對了。</p>
+<h2 id="12-水平分割線"><a href="#12-水平分割線" class="headerlink" title="12. 水平分割線"></a>12. 水平分割線</h2><h3 id="用法-10"><a href="#用法-10" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">獨立一行，大於等於三個符號接起來即可</span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line"></span><br><span class="line">***********</span><br><span class="line">___________</span><br></pre></td></tr></table></figure>
+<h3 id="效果-10"><a href="#效果-10" class="headerlink" title="效果"></a>效果</h3><hr>
+<hr>
+<hr>
+<p>凌晨四點… 我睡了… 本文的 Markdown 版本在<a href="https://github.com/nobodyzxc/BlogBackUp/blob/master/source/_posts/Markdown.md" target="_blank" rel="noopener">這裡</a>，晚安</p>
+<ul>
+<li>reference<ul>
+<li><a href="https://wastemobile.gitbooks.io/gitbook-chinese/content/format/markdown.html" target="_blank" rel="noopener">一本 gitbook</a></li>
+<li><a href="http://markdown.tw/" target="_blank" rel="noopener">domain name 像官網</a></li>
+</ul>
+</li>
+</ul>
 ]]></content>
       <categories>
-        <category>Memoir</category>
+        <category>Note</category>
       </categories>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
   </entry>
   <entry>
     <title>PHP Note</title>
@@ -1555,136 +1555,6 @@ wait to refer:<br>
       </tags>
   </entry>
   <entry>
-    <title>Cygwin Beginner Guide</title>
-    <url>/2017/05/30/basic-linux/</url>
-    <content><![CDATA[<center>
-本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。
-</center>
-
-
-<a id="more"></a>
-<p><br><br><br>事先聲明 Cygwin != Linux，它是 Windows 下一個模擬 Linux terminal 的介面。</p>
-<p>關於 Cygwin 的<a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=47282" target="_blank" rel="noopener">安裝</a>。</p>
-<p>不過可以注意的是套件的部分只要多載一個 wget 就夠了，其他部分（如 vim 等）用 <a href="https://github.com/transcode-open/apt-cyg" target="_blank" rel="noopener">apt-cyg</a> 下載就好。<br>(apt-cyg 的使用置於文末）</p>
-<p>當你開啟 Cygwin 時，先不要嫌它醜，這之後可以慢慢調。<br>（或是直接抓現成的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/cygwin.bashrc.sh" target="_blank" rel="noopener">設定檔</a> 存到<code>~/.bashrc</code>）</p>
-<h2 id="WHERE-AM-I"><a href="#WHERE-AM-I" class="headerlink" title="WHERE AM I ?"></a>WHERE AM I ?</h2><p>首先，你可以看到有個命令列。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">userName@computerName ~</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
-<p>記住，你現在位置為家目錄，如果沒有特別改命令列的話，你可以發現命令列是以<code>~</code>表示家目錄。</p>
-<p>你現在有的只有簡單命令列，你可以先下個<code>pwd</code>指令來確認自己現在在檔案系統中的位置。</p>
-<p>不過你會發現這個位置有點奇怪，怎麼在 windows 的檔案總管中沒有見過，</p>
-<p>這是因為 Cygwin 要模擬 linux 的檔案環境，</p>
-<p>將你當初安裝的路徑選為根目錄 (root)，長出一套類似 linux 的檔案環境（樹狀）。<br>（而且 windows 的檔案分層是使用<code>\</code>，linux 則是使用<code>/</code>）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/                &lt;- 根目錄 (root)，為 windows 下的某個資料夾</span><br><span class="line">|</span><br><span class="line">├── bin          &lt;- 很多指令（程式）存放的位置</span><br><span class="line">├── cygdrive</span><br><span class="line">│   ├── c        &lt;- 注意！這裡可以切到 C 槽</span><br><span class="line">│   └── d        &lt;- 注意！這裡可以切到 D 槽</span><br><span class="line">├── dev          &lt;- 對 linux 來說，這裡有很多硬體裝置有關的檔案</span><br><span class="line">├── etc          &lt;- Linux 開機（這裡就是開 Cygwin) 的一些設定檔</span><br><span class="line">├── home</span><br><span class="line">│   └── ~        &lt;- 家目錄，你現在的位置</span><br><span class="line">├── lib          &lt;- 程式語言的一堆 library</span><br><span class="line">├── sbin         &lt;- 放著系統管理者常用的指令</span><br><span class="line">├── tmp          &lt;- 一般使用者暫存檔案的地方，重要的東西不要放這</span><br><span class="line">├── usr          &lt;- 跟系統息息相關的目錄</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── etc</span><br><span class="line">│   ├── include</span><br><span class="line">│   ├── lib</span><br><span class="line">│   └── tmp</span><br><span class="line">└── var          &lt;- 系統工作預設的工作目錄。</span><br></pre></td></tr></table></figure></p>
-<p>你現在的位置其實和 windows 還是有應對關係的，</p>
-<p>你可以下個<br><code>cygpath -w $HOME</code>來確認自己家目錄在 windows 的位置。<br><code>cygpath -w $PWD</code>來確認自己當前  在 windows 的位置。</p>
-<h2 id="動身"><a href="#動身" class="headerlink" title="動身"></a>動身</h2><p>知道了自己的位置後，接下來就是改變位置了，</p>
-<p>想像一下，你現在是一個人，每個資料夾是個房間，你現在知道自己的位置，再來就是走來走去了。</p>
-<p>你可以先下個<code>ls</code>指令，看一下現在的房間和哪幾間相連著。(ls 是 list 的縮寫）</p>
-<p>沒意外的話是空空如也啊。</p>
-<p>可以再下個<code>ls -a</code>，(a 是 all 的意思），把所有隱藏的房間（和物品 -&gt;文件） show 出來。<br>(<code>ls -la</code> 可以詳列更多訊息，l 是 long list format 的意思）</p>
-<p>你可以發現多了 <code>.</code> 和 <code>..</code> 這兩個房間。</p>
-<p><code>.</code>表示當前這間房間。至於為啥要有這種設計，你之後就會知道了。<br><code>..</code>則是上一層房間。方才我們說過，linux 的檔案系統是以樹狀的結構存在。</p>
-<p>接下了可以開始切換了，可以使用<code>cd dirname</code>切換路徑。<br>使用<code>cd ..</code>切到上一層。(cd 是 change directory 的縮寫）<br>沒有任何 output，只是命令列 (prompt) 稍稍改變了一下，這代表你成功切到上一層了。</p>
-<blockquote>
-<p>沒有消息就是好消息。—— linux 的哲學</p>
-</blockquote>
-<p>沒有 output 大多就是程序正常運行。</p>
-<p>接著下<code>ls</code>，看到的目錄應該就是你的家目錄，注意一點的是，名字為什麼不是<code>~</code>呢？</p>
-<p>因為<code>~</code>只是個縮寫啦。</p>
-<p>關於回到家目錄，你可以用<code>cd ~</code> 或 <code>cd</code>。</p>
-<blockquote>
-<p>對於路徑，<a href="http://linux.vbird.org/linux_basic/0220filemanager.php#dir_pathway" target="_blank" rel="noopener">這裡</a> 有更詳細的說明。</p>
-</blockquote>
-<h2 id="建立捷徑"><a href="#建立捷徑" class="headerlink" title="建立捷徑"></a>建立捷徑</h2><p>linux 和 windows 的捷徑其實是不太一樣的，在 cygwin 中不可用 .lnk 的捷徑。</p>
-<p>在家目錄如果想要建一個到桌面的捷徑，<br>你可以下 <code>ln -s /cygdrive/c/Users/$USER/Desktop/ ~/desktop</code>。</p>
-<p>然後你在家目錄可以使用 <code>cd desktop</code> 移動到桌面了。</p>
-<h2 id="創建、刪除與移動"><a href="#創建、刪除與移動" class="headerlink" title="創建、刪除與移動"></a>創建、刪除與移動</h2><ul>
-<li><p>創建<br>當你要創建一個資料夾的時候使用 <code>mkdir dirname</code>。<br>當你要創建一個空文檔的時候使用 <code>touch filename</code>。</p>
-<blockquote>
-<p>補充一點，檔案大致分為兩種類型 text 和 binary，<br><a href="https://en.wikipedia.org/wiki/Text_file" target="_blank" rel="noopener">text</a> 是存 ASCII 和 UTF-8 一類，一般用 vim 或記事本等編輯。<br><a href="https://en.wikipedia.org/wiki/Binary_file" target="_blank" rel="noopener">binary</a> 是 non-text file，例如可執行的二進制檔案。<br>不過 .py 檔是純文本也可執行，因為它是直譯的。<br>但是說到底，在電腦裡都是以二進制的方式儲存啦 :P</p>
-</blockquote>
-</li>
-<li><p>刪除<br>當你要移除一個檔案時 <code>rm filename</code>。<br>當你要移除一個<em>空</em>資料夾的時候 <code>rmdir dirname</code>。<br>當你要移除一個資料夾（空或非空都適用）和裡面的東西 <code>rm -r dirname</code>。<br>(-r flag 是 recursively 的意思）</p>
-<blockquote>
-<p>注意！使用 rm 刪除資料就真的回不來了，它沒有資源回收垃圾桶。</p>
-</blockquote>
-</li>
-<li><p>移動（或更名）<br>當你要移動檔案（或資料夾）A 到資料夾 B 時 <code>mv a b</code>。<br>當你要重新命名檔案（或資料夾） A 為 B 時 <code>mv a b</code>。</p>
-<blockquote>
-<p>看出來了嗎，若 B <strong>資料夾</strong>不存在，則會視為更名，存在則是移動。<br>要非常小心的一點是 B 如果是已存在的<strong>檔案</strong>時，B 會被 A 覆蓋，而 A 命名為 B。<br>還有一點要注意的是，Windows 下大小寫其實是不分的。<br>（但你在 Cygwin 中打字還是要分大小寫）。</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="關於強大的-TAB-和-Arrow-Keys-快捷鍵等"><a href="#關於強大的-TAB-和-Arrow-Keys-快捷鍵等" class="headerlink" title="關於強大的 TAB 和 Arrow Keys , 快捷鍵等"></a>關於強大的 TAB 和 Arrow Keys , 快捷鍵等</h2><ul>
-<li><p>tab<br>假設你要切換到一個名字很長的資料夾時，<br><code>cd aDirWithALongLongLongName</code>，你可能會打到瘋掉，<br>這時可以適時的使用 tab 鍵。<br><code>cd aDirW</code> 打幾個字後敲一下 tab 鍵，他會盡可能挑出當前可能的選項幫你補上去。</p>
-</li>
-<li><p>arrow keys<br>你方才輸過的指令可以用方向鍵上下來叫出來。</p>
-</li>
-<li><p>快捷鍵（有興趣請走<a href="https://wiki.archlinux.org/index.php/Keyboard_shortcuts" target="_blank" rel="noopener">這</a>)<br>輸過的指令也可以按<code>ctrl-r</code>然後敲幾個字來叫出，<br>如果不是想要的那個，繼續按<code>ctrl-r</code>，選到後按<code>enter</code>。</p>
-</li>
-</ul>
-<h2 id="指令幫助"><a href="#指令幫助" class="headerlink" title="指令幫助"></a>指令幫助</h2><p>每一道指令都是一支程式，在 linux 下你可以用以下方法得到使用說明。</p>
-<ul>
-<li><p><code>man 指令名稱</code><br>其實 man 就是一支程式，它會幫你去找其他指令的相關使用說明。</p>
-</li>
-<li><p><code>指令名稱 -h</code></p>
-</li>
-<li><code>指令名稱 --help</code><br>一般來說程式會內建一些使用說明，加個 flag 試試看吧。</li>
-</ul>
-<h2 id="資料流重導向"><a href="#資料流重導向" class="headerlink" title="資料流重導向"></a>資料流重導向</h2><p>使用資料流也是一項很重要的技能。<br>簡單來說資料流可以分做 stdin , stdout , stderr。</p>
-<ul>
-<li><p>stdin 是檔案內容輸入至程式（指令）的一條流向。<br>（鍵盤輸入 — linux 下裝置也有檔案，在 /dev 中，也是 stdin）</p>
-<p>當你寫好一支簡單的程式 (output.py)，他會要求輸入，然後輸出至螢幕。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(input())</span><br></pre></td></tr></table></figure>
-<p>但你每次要輸一長串相同的東西很麻煩，<br>這時候你可以寫在檔案 (input.txt) 裡面。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hello world! It&apos;s my first python script ......</span><br></pre></td></tr></table></figure>
-<p>每次就不用執行<code>python output.py</code>再從鍵盤輸入同樣的東西了。<br>寫好 input.txt 後只要下<code>python output.py &lt; input.txt</code>，<br>它就會幫你把 input.txt 的內容輸進 output.py。</p>
-</li>
-<li><p>stdout 程式輸出至檔案的那條流向（螢幕在 linux 下也是檔案喔）。</p>
-<p>你現在下個 <code>ls</code> 的指令，它會輸出至螢幕，如果你要將它重導至檔案 (justLsOut.txt)，<br>可以下個<code>ls &gt; justLsOut.txt</code>。<br>如果本來沒有 justLsOut.txt 檔案，它會創一個 justLsOut.txt，然後把內容塞進去。<br>如果已經有 justLsOut.txt 的話，它會覆蓋掉 justLsOut.txt 的內容，然後塞 ls 的結果進去。</p>
-<p>但如果你不想要覆蓋掉原本內容呢？你也可以將 ls 的結果加在 justLsOut.txt 後面。<br>使用 <code>ls &gt;&gt; justLsOut.txt</code> 就好了。<code>&gt;&gt;</code>是 append 的用法。</p>
-</li>
-<li><p>stderr 是當有錯誤發生時，程式輸出至檔案的那條流向。<br>不過一般是跟 stdout 一起輸到螢幕。<br>如果你將 stdout 導到其他地方，螢幕剩下的就是 stderr 了。</p>
-</li>
-</ul>
-<blockquote>
-<p>更多如 <code>cat &gt; file.txt &lt;&lt; end</code> , <code>ls nonexsitfile.txt &gt; out.txt 2&amp;&gt;1</code> 用法請走<a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node14.html" target="_blank" rel="noopener">這</a><br>除此之外，你還可以學學 <a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node15.html" target="_blank" rel="noopener">pipe</a></p>
-</blockquote>
-<h2 id="使用-apt-cyg-管理套件"><a href="#使用-apt-cyg-管理套件" class="headerlink" title="使用 apt-cyg 管理套件"></a>使用 apt-cyg 管理套件</h2><p>cygwin 安裝的 setup.exe 基本上就是一個套件管理器，但是它是 GUI 的，而且還要點一堆選項，感覺很慢。</p>
-<p>如果你追求速度又 prefer Text Mode 的話，你可以試試別人寫的 shell script － apt-cyg。</p>
-<p>用起來感覺就像 apt-get 一樣。</p>
-<p>apt-cyg 如何使用呢？首先先把 <a href="https://github.com/transcode-open/apt-cyg/blob/master/apt-cyg" target="_blank" rel="noopener">apt-cyg 的 script</a> 複製下來，</p>
-<p>接著你有以下幾種方式（任選其一即可）把內容貼到檔案，放到家目錄。</p>
-<ol>
-<li>貼在記事本裡面，<strong>不要用 word</strong>，然後存到家目錄 (<code>cpath -w $HOME</code>) 中，假設存為 <code>script.txt</code>。</li>
-<li>下指令<code>cat &gt; script.txt</code> 然後滑鼠右鍵貼上，按 enter，接著<code>ctrl-d</code>跳出。<blockquote>
-<p>你可以下<code>cat script.txt</code>看貼上有沒有成功，<br><code>cat</code>指令是將檔案內容輸出至螢幕（沒有參數時是將鍵盤輸入輸出）。<br>接著可以用 <code>mv script.txt apt-cyg</code>。（別懷疑，我會將檔案叫做 script.txt 只是要你練習 mv）<br></p>
-</blockquote>
-</li>
-<li>有裝 wget 的話，在家目錄使用<blockquote>
-<p><code>wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg</code><br>  （你可以 cat 一下 apt-cyg 看看有沒有下載成功）</p>
-</blockquote>
-</li>
-</ol>
-<p>再來 <code>chmod a+x apt-cyg</code>。<br>（讓這個腳本擁有執行權限，有興趣看看關於 linux <a href="http://linux.vbird.org/linux_basic/0210filepermission.php" target="_blank" rel="noopener">檔案權限</a> 的內容）</p>
-<p>接著 <code>./apt-cyg install vim</code>。你就有 vim 可以用了。（我的 vim 入門可以走<a href="/2017/01/22/vim-0/#more">這</a>)<br>（和 Windows 不一樣的是，當前目錄可執行的檔案要執行一定要加 <code>./</code>)</p>
-<p>你可以將 <code>apt-cyg</code> 移到 <code>/bin</code> （根目錄底下的 bin 目錄），<br>這樣就能在任何地方呼叫它而不用使用<code>./</code>了。</p>
-<p><code>mv apt-cyg /bin</code>。（對這方面有興趣可以看看<code>$PATH</code>的<a href="https://www.phpini.com/linux/set-path-var" target="_blank" rel="noopener">介紹</a>）</p>
-<p>然後如果對有帶<code>$</code>號的變數有興趣的話，可以看看<a href="http://linux.vbird.org/linux_basic/0320bash.php#variable_environ" target="_blank" rel="noopener">環境變數</a>。</p>
-<blockquote>
-<p>其實如果檔案沒有執行權限，可以使用<code>bash file.sh</code> 來執行一個 shell 腳本。<br>道理和 python 一樣。</p>
-</blockquote>
-<h2 id="其他有用套件"><a href="#其他有用套件" class="headerlink" title="其他有用套件"></a>其他有用套件</h2><p><code>tmux</code> — 一項強大的終端切割螢幕工具。使用 <code>apt-cyg install tmux</code> 取得。<br>在沒有設定檔的情形下<code>ctrl-b</code>是 prefix 鍵。 使用<code>ctrl-b ?</code>開始玩玩看吧。<br>也可以使用我調校過的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/tmux.conf" target="_blank" rel="noopener">設定檔</a> (prefix 是 <code>ctrl-a</code>)，將設定檔存為 <code>~/.tmux.conf</code>。</p>
-<h2 id="結束"><a href="#結束" class="headerlink" title="結束"></a>結束</h2><p>你玩完 Cygwin 後，可以不用按右上角的<code>X</code>，你可以打個 <code>exit</code> 或按<code>ctrl-d</code>來結束它。</p>
-]]></content>
-      <categories>
-        <category>Fun</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>cygwin</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>我所理解的 continuation</title>
     <url>/2019/08/10/continuation/</url>
     <content><![CDATA[<center>
@@ -1899,11 +1769,141 @@ wait to refer:<br>
         <category>Note</category>
       </categories>
       <tags>
-        <tag>fp</tag>
-        <tag>lambda</tag>
         <tag>scheme</tag>
+        <tag>lambda</tag>
+        <tag>fp</tag>
         <tag>lisp</tag>
         <tag>continuation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cygwin Beginner Guide</title>
+    <url>/2017/05/30/basic-linux/</url>
+    <content><![CDATA[<center>
+本篇主要內容為在 Cygwin 下一些簡單的 BASH 用法。
+</center>
+
+
+<a id="more"></a>
+<p><br><br><br>事先聲明 Cygwin != Linux，它是 Windows 下一個模擬 Linux terminal 的介面。</p>
+<p>關於 Cygwin 的<a href="https://www.ubuntu-tw.org/modules/newbb/viewtopic.php?topic_id=47282" target="_blank" rel="noopener">安裝</a>。</p>
+<p>不過可以注意的是套件的部分只要多載一個 wget 就夠了，其他部分（如 vim 等）用 <a href="https://github.com/transcode-open/apt-cyg" target="_blank" rel="noopener">apt-cyg</a> 下載就好。<br>(apt-cyg 的使用置於文末）</p>
+<p>當你開啟 Cygwin 時，先不要嫌它醜，這之後可以慢慢調。<br>（或是直接抓現成的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/cygwin.bashrc.sh" target="_blank" rel="noopener">設定檔</a> 存到<code>~/.bashrc</code>）</p>
+<h2 id="WHERE-AM-I"><a href="#WHERE-AM-I" class="headerlink" title="WHERE AM I ?"></a>WHERE AM I ?</h2><p>首先，你可以看到有個命令列。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">userName@computerName ~</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+<p>記住，你現在位置為家目錄，如果沒有特別改命令列的話，你可以發現命令列是以<code>~</code>表示家目錄。</p>
+<p>你現在有的只有簡單命令列，你可以先下個<code>pwd</code>指令來確認自己現在在檔案系統中的位置。</p>
+<p>不過你會發現這個位置有點奇怪，怎麼在 windows 的檔案總管中沒有見過，</p>
+<p>這是因為 Cygwin 要模擬 linux 的檔案環境，</p>
+<p>將你當初安裝的路徑選為根目錄 (root)，長出一套類似 linux 的檔案環境（樹狀）。<br>（而且 windows 的檔案分層是使用<code>\</code>，linux 則是使用<code>/</code>）<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/                &lt;- 根目錄 (root)，為 windows 下的某個資料夾</span><br><span class="line">|</span><br><span class="line">├── bin          &lt;- 很多指令（程式）存放的位置</span><br><span class="line">├── cygdrive</span><br><span class="line">│   ├── c        &lt;- 注意！這裡可以切到 C 槽</span><br><span class="line">│   └── d        &lt;- 注意！這裡可以切到 D 槽</span><br><span class="line">├── dev          &lt;- 對 linux 來說，這裡有很多硬體裝置有關的檔案</span><br><span class="line">├── etc          &lt;- Linux 開機（這裡就是開 Cygwin) 的一些設定檔</span><br><span class="line">├── home</span><br><span class="line">│   └── ~        &lt;- 家目錄，你現在的位置</span><br><span class="line">├── lib          &lt;- 程式語言的一堆 library</span><br><span class="line">├── sbin         &lt;- 放著系統管理者常用的指令</span><br><span class="line">├── tmp          &lt;- 一般使用者暫存檔案的地方，重要的東西不要放這</span><br><span class="line">├── usr          &lt;- 跟系統息息相關的目錄</span><br><span class="line">│   ├── bin</span><br><span class="line">│   ├── etc</span><br><span class="line">│   ├── include</span><br><span class="line">│   ├── lib</span><br><span class="line">│   └── tmp</span><br><span class="line">└── var          &lt;- 系統工作預設的工作目錄。</span><br></pre></td></tr></table></figure></p>
+<p>你現在的位置其實和 windows 還是有應對關係的，</p>
+<p>你可以下個<br><code>cygpath -w $HOME</code>來確認自己家目錄在 windows 的位置。<br><code>cygpath -w $PWD</code>來確認自己當前  在 windows 的位置。</p>
+<h2 id="動身"><a href="#動身" class="headerlink" title="動身"></a>動身</h2><p>知道了自己的位置後，接下來就是改變位置了，</p>
+<p>想像一下，你現在是一個人，每個資料夾是個房間，你現在知道自己的位置，再來就是走來走去了。</p>
+<p>你可以先下個<code>ls</code>指令，看一下現在的房間和哪幾間相連著。(ls 是 list 的縮寫）</p>
+<p>沒意外的話是空空如也啊。</p>
+<p>可以再下個<code>ls -a</code>，(a 是 all 的意思），把所有隱藏的房間（和物品 -&gt;文件） show 出來。<br>(<code>ls -la</code> 可以詳列更多訊息，l 是 long list format 的意思）</p>
+<p>你可以發現多了 <code>.</code> 和 <code>..</code> 這兩個房間。</p>
+<p><code>.</code>表示當前這間房間。至於為啥要有這種設計，你之後就會知道了。<br><code>..</code>則是上一層房間。方才我們說過，linux 的檔案系統是以樹狀的結構存在。</p>
+<p>接下了可以開始切換了，可以使用<code>cd dirname</code>切換路徑。<br>使用<code>cd ..</code>切到上一層。(cd 是 change directory 的縮寫）<br>沒有任何 output，只是命令列 (prompt) 稍稍改變了一下，這代表你成功切到上一層了。</p>
+<blockquote>
+<p>沒有消息就是好消息。—— linux 的哲學</p>
+</blockquote>
+<p>沒有 output 大多就是程序正常運行。</p>
+<p>接著下<code>ls</code>，看到的目錄應該就是你的家目錄，注意一點的是，名字為什麼不是<code>~</code>呢？</p>
+<p>因為<code>~</code>只是個縮寫啦。</p>
+<p>關於回到家目錄，你可以用<code>cd ~</code> 或 <code>cd</code>。</p>
+<blockquote>
+<p>對於路徑，<a href="http://linux.vbird.org/linux_basic/0220filemanager.php#dir_pathway" target="_blank" rel="noopener">這裡</a> 有更詳細的說明。</p>
+</blockquote>
+<h2 id="建立捷徑"><a href="#建立捷徑" class="headerlink" title="建立捷徑"></a>建立捷徑</h2><p>linux 和 windows 的捷徑其實是不太一樣的，在 cygwin 中不可用 .lnk 的捷徑。</p>
+<p>在家目錄如果想要建一個到桌面的捷徑，<br>你可以下 <code>ln -s /cygdrive/c/Users/$USER/Desktop/ ~/desktop</code>。</p>
+<p>然後你在家目錄可以使用 <code>cd desktop</code> 移動到桌面了。</p>
+<h2 id="創建、刪除與移動"><a href="#創建、刪除與移動" class="headerlink" title="創建、刪除與移動"></a>創建、刪除與移動</h2><ul>
+<li><p>創建<br>當你要創建一個資料夾的時候使用 <code>mkdir dirname</code>。<br>當你要創建一個空文檔的時候使用 <code>touch filename</code>。</p>
+<blockquote>
+<p>補充一點，檔案大致分為兩種類型 text 和 binary，<br><a href="https://en.wikipedia.org/wiki/Text_file" target="_blank" rel="noopener">text</a> 是存 ASCII 和 UTF-8 一類，一般用 vim 或記事本等編輯。<br><a href="https://en.wikipedia.org/wiki/Binary_file" target="_blank" rel="noopener">binary</a> 是 non-text file，例如可執行的二進制檔案。<br>不過 .py 檔是純文本也可執行，因為它是直譯的。<br>但是說到底，在電腦裡都是以二進制的方式儲存啦 :P</p>
+</blockquote>
+</li>
+<li><p>刪除<br>當你要移除一個檔案時 <code>rm filename</code>。<br>當你要移除一個<em>空</em>資料夾的時候 <code>rmdir dirname</code>。<br>當你要移除一個資料夾（空或非空都適用）和裡面的東西 <code>rm -r dirname</code>。<br>(-r flag 是 recursively 的意思）</p>
+<blockquote>
+<p>注意！使用 rm 刪除資料就真的回不來了，它沒有資源回收垃圾桶。</p>
+</blockquote>
+</li>
+<li><p>移動（或更名）<br>當你要移動檔案（或資料夾）A 到資料夾 B 時 <code>mv a b</code>。<br>當你要重新命名檔案（或資料夾） A 為 B 時 <code>mv a b</code>。</p>
+<blockquote>
+<p>看出來了嗎，若 B <strong>資料夾</strong>不存在，則會視為更名，存在則是移動。<br>要非常小心的一點是 B 如果是已存在的<strong>檔案</strong>時，B 會被 A 覆蓋，而 A 命名為 B。<br>還有一點要注意的是，Windows 下大小寫其實是不分的。<br>（但你在 Cygwin 中打字還是要分大小寫）。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="關於強大的-TAB-和-Arrow-Keys-快捷鍵等"><a href="#關於強大的-TAB-和-Arrow-Keys-快捷鍵等" class="headerlink" title="關於強大的 TAB 和 Arrow Keys , 快捷鍵等"></a>關於強大的 TAB 和 Arrow Keys , 快捷鍵等</h2><ul>
+<li><p>tab<br>假設你要切換到一個名字很長的資料夾時，<br><code>cd aDirWithALongLongLongName</code>，你可能會打到瘋掉，<br>這時可以適時的使用 tab 鍵。<br><code>cd aDirW</code> 打幾個字後敲一下 tab 鍵，他會盡可能挑出當前可能的選項幫你補上去。</p>
+</li>
+<li><p>arrow keys<br>你方才輸過的指令可以用方向鍵上下來叫出來。</p>
+</li>
+<li><p>快捷鍵（有興趣請走<a href="https://wiki.archlinux.org/index.php/Keyboard_shortcuts" target="_blank" rel="noopener">這</a>)<br>輸過的指令也可以按<code>ctrl-r</code>然後敲幾個字來叫出，<br>如果不是想要的那個，繼續按<code>ctrl-r</code>，選到後按<code>enter</code>。</p>
+</li>
+</ul>
+<h2 id="指令幫助"><a href="#指令幫助" class="headerlink" title="指令幫助"></a>指令幫助</h2><p>每一道指令都是一支程式，在 linux 下你可以用以下方法得到使用說明。</p>
+<ul>
+<li><p><code>man 指令名稱</code><br>其實 man 就是一支程式，它會幫你去找其他指令的相關使用說明。</p>
+</li>
+<li><p><code>指令名稱 -h</code></p>
+</li>
+<li><code>指令名稱 --help</code><br>一般來說程式會內建一些使用說明，加個 flag 試試看吧。</li>
+</ul>
+<h2 id="資料流重導向"><a href="#資料流重導向" class="headerlink" title="資料流重導向"></a>資料流重導向</h2><p>使用資料流也是一項很重要的技能。<br>簡單來說資料流可以分做 stdin , stdout , stderr。</p>
+<ul>
+<li><p>stdin 是檔案內容輸入至程式（指令）的一條流向。<br>（鍵盤輸入 — linux 下裝置也有檔案，在 /dev 中，也是 stdin）</p>
+<p>當你寫好一支簡單的程式 (output.py)，他會要求輸入，然後輸出至螢幕。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(input())</span><br></pre></td></tr></table></figure>
+<p>但你每次要輸一長串相同的東西很麻煩，<br>這時候你可以寫在檔案 (input.txt) 裡面。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hello world! It&apos;s my first python script ......</span><br></pre></td></tr></table></figure>
+<p>每次就不用執行<code>python output.py</code>再從鍵盤輸入同樣的東西了。<br>寫好 input.txt 後只要下<code>python output.py &lt; input.txt</code>，<br>它就會幫你把 input.txt 的內容輸進 output.py。</p>
+</li>
+<li><p>stdout 程式輸出至檔案的那條流向（螢幕在 linux 下也是檔案喔）。</p>
+<p>你現在下個 <code>ls</code> 的指令，它會輸出至螢幕，如果你要將它重導至檔案 (justLsOut.txt)，<br>可以下個<code>ls &gt; justLsOut.txt</code>。<br>如果本來沒有 justLsOut.txt 檔案，它會創一個 justLsOut.txt，然後把內容塞進去。<br>如果已經有 justLsOut.txt 的話，它會覆蓋掉 justLsOut.txt 的內容，然後塞 ls 的結果進去。</p>
+<p>但如果你不想要覆蓋掉原本內容呢？你也可以將 ls 的結果加在 justLsOut.txt 後面。<br>使用 <code>ls &gt;&gt; justLsOut.txt</code> 就好了。<code>&gt;&gt;</code>是 append 的用法。</p>
+</li>
+<li><p>stderr 是當有錯誤發生時，程式輸出至檔案的那條流向。<br>不過一般是跟 stdout 一起輸到螢幕。<br>如果你將 stdout 導到其他地方，螢幕剩下的就是 stderr 了。</p>
+</li>
+</ul>
+<blockquote>
+<p>更多如 <code>cat &gt; file.txt &lt;&lt; end</code> , <code>ls nonexsitfile.txt &gt; out.txt 2&amp;&gt;1</code> 用法請走<a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node14.html" target="_blank" rel="noopener">這</a><br>除此之外，你還可以學學 <a href="https://www.csie.cyut.edu.tw/moodle23/dywang/linuxProgram/node15.html" target="_blank" rel="noopener">pipe</a></p>
+</blockquote>
+<h2 id="使用-apt-cyg-管理套件"><a href="#使用-apt-cyg-管理套件" class="headerlink" title="使用 apt-cyg 管理套件"></a>使用 apt-cyg 管理套件</h2><p>cygwin 安裝的 setup.exe 基本上就是一個套件管理器，但是它是 GUI 的，而且還要點一堆選項，感覺很慢。</p>
+<p>如果你追求速度又 prefer Text Mode 的話，你可以試試別人寫的 shell script － apt-cyg。</p>
+<p>用起來感覺就像 apt-get 一樣。</p>
+<p>apt-cyg 如何使用呢？首先先把 <a href="https://github.com/transcode-open/apt-cyg/blob/master/apt-cyg" target="_blank" rel="noopener">apt-cyg 的 script</a> 複製下來，</p>
+<p>接著你有以下幾種方式（任選其一即可）把內容貼到檔案，放到家目錄。</p>
+<ol>
+<li>貼在記事本裡面，<strong>不要用 word</strong>，然後存到家目錄 (<code>cpath -w $HOME</code>) 中，假設存為 <code>script.txt</code>。</li>
+<li>下指令<code>cat &gt; script.txt</code> 然後滑鼠右鍵貼上，按 enter，接著<code>ctrl-d</code>跳出。<blockquote>
+<p>你可以下<code>cat script.txt</code>看貼上有沒有成功，<br><code>cat</code>指令是將檔案內容輸出至螢幕（沒有參數時是將鍵盤輸入輸出）。<br>接著可以用 <code>mv script.txt apt-cyg</code>。（別懷疑，我會將檔案叫做 script.txt 只是要你練習 mv）<br></p>
+</blockquote>
+</li>
+<li>有裝 wget 的話，在家目錄使用<blockquote>
+<p><code>wget https://raw.githubusercontent.com/transcode-open/apt-cyg/master/apt-cyg</code><br>  （你可以 cat 一下 apt-cyg 看看有沒有下載成功）</p>
+</blockquote>
+</li>
+</ol>
+<p>再來 <code>chmod a+x apt-cyg</code>。<br>（讓這個腳本擁有執行權限，有興趣看看關於 linux <a href="http://linux.vbird.org/linux_basic/0210filepermission.php" target="_blank" rel="noopener">檔案權限</a> 的內容）</p>
+<p>接著 <code>./apt-cyg install vim</code>。你就有 vim 可以用了。（我的 vim 入門可以走<a href="/2017/01/22/vim-0/#more">這</a>)<br>（和 Windows 不一樣的是，當前目錄可執行的檔案要執行一定要加 <code>./</code>)</p>
+<p>你可以將 <code>apt-cyg</code> 移到 <code>/bin</code> （根目錄底下的 bin 目錄），<br>這樣就能在任何地方呼叫它而不用使用<code>./</code>了。</p>
+<p><code>mv apt-cyg /bin</code>。（對這方面有興趣可以看看<code>$PATH</code>的<a href="https://www.phpini.com/linux/set-path-var" target="_blank" rel="noopener">介紹</a>）</p>
+<p>然後如果對有帶<code>$</code>號的變數有興趣的話，可以看看<a href="http://linux.vbird.org/linux_basic/0320bash.php#variable_environ" target="_blank" rel="noopener">環境變數</a>。</p>
+<blockquote>
+<p>其實如果檔案沒有執行權限，可以使用<code>bash file.sh</code> 來執行一個 shell 腳本。<br>道理和 python 一樣。</p>
+</blockquote>
+<h2 id="其他有用套件"><a href="#其他有用套件" class="headerlink" title="其他有用套件"></a>其他有用套件</h2><p><code>tmux</code> — 一項強大的終端切割螢幕工具。使用 <code>apt-cyg install tmux</code> 取得。<br>在沒有設定檔的情形下<code>ctrl-b</code>是 prefix 鍵。 使用<code>ctrl-b ?</code>開始玩玩看吧。<br>也可以使用我調校過的<a href="https://github.com/nobodyzxc/MyConfFiles/blob/master/tmux.conf" target="_blank" rel="noopener">設定檔</a> (prefix 是 <code>ctrl-a</code>)，將設定檔存為 <code>~/.tmux.conf</code>。</p>
+<h2 id="結束"><a href="#結束" class="headerlink" title="結束"></a>結束</h2><p>你玩完 Cygwin 後，可以不用按右上角的<code>X</code>，你可以打個 <code>exit</code> 或按<code>ctrl-d</code>來結束它。</p>
+]]></content>
+      <categories>
+        <category>Fun</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>cygwin</tag>
       </tags>
   </entry>
   <entry>
@@ -2471,87 +2471,6 @@ wait to refer:<br>
       </tags>
   </entry>
   <entry>
-    <title>C Type Defination to English</title>
-    <url>/2017/07/15/ctype2en/</url>
-    <content><![CDATA[<center>
-PL 教授給的 <a href="https://www.google.com.tw/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwiYrNTC6orVAhXEebwKHVxyDXIQFgglMAA&amp;url=http%3A%2F%2Fwww2.mta.ac.il%2F~hbinsky%2Fc%2520content%2FFunction%2520Pointer.pdf&amp;usg=AFQjCNEzZ-0v-7fvdH5Z8sEVHbebcpV4mg" target="_blank" rel="noopener">8 頁 Func Ptr 閱讀材料</a>。<br>
-那就來玩一下吧。<br>
-wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="noopener">rule</a>
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<p><script src="/files/c-syntax-patch.js"></script></p>
-<link href="/files/c-syntax-patch.css" rel="stylesheet" type="text/css">
-
-<blockquote>
-<p>The flip side of this is that you have to deal with old mistakes and with compatibility problems. For example, I consider the C declarator syntax an experiment that failed.-Bjarne Stroustrup, in his SlashDot interview on 2/25/2000.</p>
-<p>我嘗試寫成 Haskell 的定義型態。<br>那個 Type* 能理解就好了 （逃</p>
-</blockquote>
-<p><a href="https://cdecl.org/" target="_blank" rel="noopener">https://cdecl.org/</a></p>
-<ol>
-<li><p><code class="patch">long *a(int)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare a as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">a</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*b(int))</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare b as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">b</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*c)(int)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare c as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">c</span> :: (<span class="type">Int</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long *d(int)(char)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare d as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">d</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>*)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*e(int))(char)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare e as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">e</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">long (*f)(int)(char)</code></p>
- <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare f as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> :: (<span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>))*</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><code class="patch">void qsort(void *, size_t, size_t,int (*)(const void *, const void *))</code></p>
- <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="function">declare qsort as <span class="title">function</span> <span class="params">(pointer to <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           pointer to function (pointer to <span class="keyword">const</span> <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                pointer to <span class="keyword">const</span> <span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"><span class="params">                            )</span></span></span><br><span class="line">                 returning int) returning void</span><br></pre></td></tr></table></figure>
- <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">qsort</span> :: <span class="type">Void</span>* -&gt; <span class="type">Size_t</span> -&gt; <span class="type">Size_t</span> -&gt; (<span class="type">Void</span>* -&gt; <span class="type">Void</span>*)* -&gt; <span class="type">Void</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>start with the identifier</p>
-</li>
-<li>look to the right for brackets[ ] or parentheses()</li>
-<li>look to the left for asterisks</li>
-<li>remember that parentheses group</li>
-<li>finally, look at the type (eg. int)</li>
-</ol>
-<p><a href="http://cseweb.ucsd.edu/~ricko/rt_lt.rule.html" target="_blank" rel="noopener">reference link</a></p>
-<p>重點是先往右讀，然後讀到括號，再往左讀，如此往復。<br>先找變數宣告名稱，\w+ 後跟的是 ( ，則此宣告為一函數，否則為變數。</p>
-<p>先往右，遇到 <code>(</code>，為函數，參數為 fnArg。<br>往左讀，遇到 <code>*</code>，回傳為一指標，指向 long。<br><code>long *fn(fnArg)</code> -&gt; <code>fn :: FnArg -&gt; Long*</code></p>
-<p>如果再右邊還有括號，則他的回傳指標為函數指標，其參數為該括號內容。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)</code> -&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; Long)*</code></p>
-<p>如果後面一直有括號，其指的函數類型就一直向右 eval 括號就好了。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long*))</code></p>
-<p>注意指標可能出現的位置。<br><code>long (*fn(fnArg)(argOfAfnRtnedByAFn))(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long)*)</code></p>
-<p><code>long (*fn(fnArg))(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long))*</code></p>
-<p>有時指標不只一個，看著辦吧。</p>
-<blockquote>
-<p>Illegal combinations include:<br>     <a href></a> - cannot have an array of functions<br>     ()() - cannot have a function that returns a function<br>     ()[] - cannot have a function that returns an array</p>
-</blockquote>
-<p>所以其實上面五項，應該只有幾個是 Illegal 的（from reference）</p>
-<blockquote>
-<p>其實回傳函數指標和回傳函數在 C 裡是一樣的事情</p>
-</blockquote>
-<p>變數名前有<code>*</code>代表他是一個指標，<br><code>long *ptr</code> -&gt; <code>ptr :: Long*</code></p>
-<p>如果右邊有閉括號，代表他是一個函數指標。<br><code>long (*ptr)(argOfApointedFn)</code> -&gt; <code>ptr :: (ArgOfApointedFn -&gt; Long)*</code></p>
-<p>其指的函數類型就一直向右 eval 括號就好了。<br><code>long (*ptr)(argOfApointedFn)(argOfAFnRtnedByAFnPointedByAPtr)</code><br>-&gt; <code>ptr :: (ArgOfApointedFn -&gt; (ArgOfAFnRtnedByAFnPointedByAPtr -&gt; Long))*</code></p>
-<p>一樣，有時指標不只一個，看著辦吧。</p>
-<p>我都快搞不清我在寫啥了（<br>Haskell 的 Type 表達比較好理解（</p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Cpp STL Hack</title>
     <url>/2017/10/05/cpp-stl/</url>
     <content><![CDATA[<center>
@@ -2825,6 +2744,23 @@ wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_bl
       </tags>
   </entry>
   <entry>
+    <title>My new Site</title>
+    <url>/2016/12/11/new-site/</url>
+    <content><![CDATA[<center>
+我所追求的簡單，終於在 <a href="https://github.com" target="_blank" rel="noopener">github</a> 上實現了，莫名感動。<br>
+能用 vim 寫自己的部落格，感覺更是難以言喻。<br>
+如果當初沒有用 cygwin，我大概就不會用 git，沒有 git 就不會頻繁地上 github，<br>
+沒上 github 就不會弄 git pages，沒弄 git pages 就不會使用 hexo，沒有 hexo 就不會有這篇貼文。<br>
+這一切的一切都是緣分啊！<br>
+正好，pixnet 寫的有點煩，新型態的紀錄方式，希望能帶給我更多獨特的體驗。<br>
+首先要學好的是 Markdown 吶...<br>
+自己的空間好像有點... 氾濫（笑），所以打算來個區隔。<br>
+pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
+一趟新旅途的展開，加油吧！少年。
+</center>
+]]></content>
+  </entry>
+  <entry>
     <title>feedback</title>
     <url>/2018/05/22/feedback/</url>
     <content><![CDATA[<center>
@@ -2864,6 +2800,87 @@ wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_bl
 ]]></content>
       <categories>
         <category>Thinking</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C Type Defination to English</title>
+    <url>/2017/07/15/ctype2en/</url>
+    <content><![CDATA[<center>
+PL 教授給的 <a href="https://www.google.com.tw/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwiYrNTC6orVAhXEebwKHVxyDXIQFgglMAA&amp;url=http%3A%2F%2Fwww2.mta.ac.il%2F~hbinsky%2Fc%2520content%2FFunction%2520Pointer.pdf&amp;usg=AFQjCNEzZ-0v-7fvdH5Z8sEVHbebcpV4mg" target="_blank" rel="noopener">8 頁 Func Ptr 閱讀材料</a>。<br>
+那就來玩一下吧。<br>
+wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="noopener">rule</a>
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<p><script src="/files/c-syntax-patch.js"></script></p>
+<link href="/files/c-syntax-patch.css" rel="stylesheet" type="text/css">
+
+<blockquote>
+<p>The flip side of this is that you have to deal with old mistakes and with compatibility problems. For example, I consider the C declarator syntax an experiment that failed.-Bjarne Stroustrup, in his SlashDot interview on 2/25/2000.</p>
+<p>我嘗試寫成 Haskell 的定義型態。<br>那個 Type* 能理解就好了 （逃</p>
+</blockquote>
+<p><a href="https://cdecl.org/" target="_blank" rel="noopener">https://cdecl.org/</a></p>
+<ol>
+<li><p><code class="patch">long *a(int)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare a as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">a</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*b(int))</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare b as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">b</span> :: <span class="type">Int</span> -&gt; <span class="type">Long</span>*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*c)(int)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare c as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">c</span> :: (<span class="type">Int</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long *d(int)(char)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare d as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning pointer to <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">d</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>*)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*e(int))(char)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare e as <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning pointer to <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">e</span> :: <span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>)*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">long (*f)(int)(char)</code></p>
+ <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function">declare f as pointer to <span class="title">function</span> <span class="params">(<span class="keyword">int</span>)</span> returning <span class="title">function</span> <span class="params">(<span class="keyword">char</span>)</span> returning <span class="keyword">long</span></span></span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> :: (<span class="type">Int</span> -&gt; (<span class="type">Char</span> -&gt; <span class="type">Long</span>))*</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code class="patch">void qsort(void *, size_t, size_t,int (*)(const void *, const void *))</code></p>
+ <figure class="highlight"><table><tr><td class="code"><pre><span class="line"><span class="function">declare qsort as <span class="title">function</span> <span class="params">(pointer to <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">size_t</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                           pointer to function (pointer to <span class="keyword">const</span> <span class="keyword">void</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                pointer to <span class="keyword">const</span> <span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"><span class="params">                            )</span></span></span><br><span class="line">                 returning int) returning void</span><br></pre></td></tr></table></figure>
+ <figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">qsort</span> :: <span class="type">Void</span>* -&gt; <span class="type">Size_t</span> -&gt; <span class="type">Size_t</span> -&gt; (<span class="type">Void</span>* -&gt; <span class="type">Void</span>*)* -&gt; <span class="type">Void</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>start with the identifier</p>
+</li>
+<li>look to the right for brackets[ ] or parentheses()</li>
+<li>look to the left for asterisks</li>
+<li>remember that parentheses group</li>
+<li>finally, look at the type (eg. int)</li>
+</ol>
+<p><a href="http://cseweb.ucsd.edu/~ricko/rt_lt.rule.html" target="_blank" rel="noopener">reference link</a></p>
+<p>重點是先往右讀，然後讀到括號，再往左讀，如此往復。<br>先找變數宣告名稱，\w+ 後跟的是 ( ，則此宣告為一函數，否則為變數。</p>
+<p>先往右，遇到 <code>(</code>，為函數，參數為 fnArg。<br>往左讀，遇到 <code>*</code>，回傳為一指標，指向 long。<br><code>long *fn(fnArg)</code> -&gt; <code>fn :: FnArg -&gt; Long*</code></p>
+<p>如果再右邊還有括號，則他的回傳指標為函數指標，其參數為該括號內容。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)</code> -&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; Long)*</code></p>
+<p>如果後面一直有括號，其指的函數類型就一直向右 eval 括號就好了。<br><code>long *fn(fnArg)(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: FnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long*))</code></p>
+<p>注意指標可能出現的位置。<br><code>long (*fn(fnArg)(argOfAfnRtnedByAFn))(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long)*)</code></p>
+<p><code>long (*fn(fnArg))(argOfAfnRtnedByAFn)(argOfAfnRtnedByAFnRtnedByAFn)</code><br>-&gt; <code>fn :: fnArg -&gt; (ArgOfAfnRtnedByAFn -&gt; (ArgOfAfnRtnedByAFnRtnedByAFn -&gt; Long))*</code></p>
+<p>有時指標不只一個，看著辦吧。</p>
+<blockquote>
+<p>Illegal combinations include:<br>     <a href></a> - cannot have an array of functions<br>     ()() - cannot have a function that returns a function<br>     ()[] - cannot have a function that returns an array</p>
+</blockquote>
+<p>所以其實上面五項，應該只有幾個是 Illegal 的（from reference）</p>
+<blockquote>
+<p>其實回傳函數指標和回傳函數在 C 裡是一樣的事情</p>
+</blockquote>
+<p>變數名前有<code>*</code>代表他是一個指標，<br><code>long *ptr</code> -&gt; <code>ptr :: Long*</code></p>
+<p>如果右邊有閉括號，代表他是一個函數指標。<br><code>long (*ptr)(argOfApointedFn)</code> -&gt; <code>ptr :: (ArgOfApointedFn -&gt; Long)*</code></p>
+<p>其指的函數類型就一直向右 eval 括號就好了。<br><code>long (*ptr)(argOfApointedFn)(argOfAFnRtnedByAFnPointedByAPtr)</code><br>-&gt; <code>ptr :: (ArgOfApointedFn -&gt; (ArgOfAFnRtnedByAFnPointedByAPtr -&gt; Long))*</code></p>
+<p>一樣，有時指標不只一個，看著辦吧。</p>
+<p>我都快搞不清我在寫啥了（<br>Haskell 的 Type 表達比較好理解（</p>
+]]></content>
+      <categories>
+        <category>Note</category>
       </categories>
   </entry>
   <entry>
@@ -2999,28 +3016,11 @@ wait to refer:<a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_bl
         <category>Memoir</category>
       </categories>
       <tags>
-        <tag>logic</tag>
-        <tag>fp</tag>
         <tag>lambda</tag>
+        <tag>fp</tag>
+        <tag>logic</tag>
         <tag>flolac</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>My new Site</title>
-    <url>/2016/12/11/new-site/</url>
-    <content><![CDATA[<center>
-我所追求的簡單，終於在 <a href="https://github.com" target="_blank" rel="noopener">github</a> 上實現了，莫名感動。<br>
-能用 vim 寫自己的部落格，感覺更是難以言喻。<br>
-如果當初沒有用 cygwin，我大概就不會用 git，沒有 git 就不會頻繁地上 github，<br>
-沒上 github 就不會弄 git pages，沒弄 git pages 就不會使用 hexo，沒有 hexo 就不會有這篇貼文。<br>
-這一切的一切都是緣分啊！<br>
-正好，pixnet 寫的有點煩，新型態的紀錄方式，希望能帶給我更多獨特的體驗。<br>
-首先要學好的是 Markdown 吶...<br>
-自己的空間好像有點... 氾濫（笑），所以打算來個區隔。<br>
-pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
-一趟新旅途的展開，加油吧！少年。
-</center>
-]]></content>
   </entry>
   <entry>
     <title>散人</title>
@@ -3116,82 +3116,6 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
       <categories>
         <category>Memoir</category>
       </categories>
-  </entry>
-  <entry>
-    <title>functional thursday ＃73</title>
-    <url>/2019/05/03/pi-cal/</url>
-    <content><![CDATA[<center>
-π-calculas 不負責任筆記
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
-<p>make changes on program as little as possible!</p>
-<ul>
-<li>parallelism ⇒ multi-processor, multi-processes</li>
-<li>concurrency ⇒ single-processor, multi-processes</li>
-</ul>
-<p>make write wrong program harder?</p>
-<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
-<li>CSP ⇒ process - process event</li>
-<li>π-calculas ⇒ channel - channel message passing</li>
-</ul>
-<p>process algebra</p>
-<blockquote>
-<p>π-calculas is the most complex one, but useful</p>
-</blockquote>
-<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
-<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
-<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
-<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
-<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
-<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
-<p>omit</p>
-</blockquote>
-<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
-<p>reduction rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
-<p>axiom relating restriction and parallel</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
-<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
-<li>process is untyped</li>
-<li>channel is typed</li>
-</ul>
-<p>Γ ⊢ P</p>
-<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
-<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
-<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
-<blockquote>
-<p>note x:t not x:t, y:s</p>
-</blockquote>
-<hr>
-<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
-<hr>
-<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
-<blockquote>
-<p>type preservation</p>
-</blockquote>
-<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
-<p>Γ ⊢ e : τ</p>
-<ul>
-<li>e value</li>
-<li>∃ e’, e → e’</li>
-</ul>
-<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
-]]></content>
-      <categories>
-        <category>Memoir</category>
-      </categories>
-      <tags>
-        <tag>lambda</tag>
-      </tags>
   </entry>
   <entry>
     <title>About Python&#39;s container</title>
@@ -3407,6 +3331,82 @@ Python 感覺入門很久了，但對於容器的使用一直感到很生疏，�
       <tags>
         <tag>oop</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>functional thursday ＃73</title>
+    <url>/2019/05/03/pi-cal/</url>
+    <content><![CDATA[<center>
+π-calculas 不負責任筆記
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
+<p>make changes on program as little as possible!</p>
+<ul>
+<li>parallelism ⇒ multi-processor, multi-processes</li>
+<li>concurrency ⇒ single-processor, multi-processes</li>
+</ul>
+<p>make write wrong program harder?</p>
+<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
+<li>CSP ⇒ process - process event</li>
+<li>π-calculas ⇒ channel - channel message passing</li>
+</ul>
+<p>process algebra</p>
+<blockquote>
+<p>π-calculas is the most complex one, but useful</p>
+</blockquote>
+<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
+<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
+<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
+<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
+<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
+<p>omit</p>
+</blockquote>
+<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
+<p>reduction rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>axiom relating restriction and parallel</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
+<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
+<li>process is untyped</li>
+<li>channel is typed</li>
+</ul>
+<p>Γ ⊢ P</p>
+<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
+<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
+<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
+<blockquote>
+<p>note x:t not x:t, y:s</p>
+</blockquote>
+<hr>
+<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
+<hr>
+<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
+<blockquote>
+<p>type preservation</p>
+</blockquote>
+<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
+<p>Γ ⊢ e : τ</p>
+<ul>
+<li>e value</li>
+<li>∃ e’, e → e’</li>
+</ul>
+<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
+]]></content>
+      <categories>
+        <category>Memoir</category>
+      </categories>
+      <tags>
+        <tag>lambda</tag>
       </tags>
   </entry>
   <entry>
