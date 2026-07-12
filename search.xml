@@ -562,6 +562,120 @@ A world without loop , but recursion。<br>
       </tags>
   </entry>
   <entry>
+    <title>Markdown Note</title>
+    <url>/2016/12/22/Markdown/</url>
+    <content><![CDATA[<center>
+工欲善其事，必先利其器啊，<br>
+既然 hexo 使用了 Markdown 來渲染文章，那就趕快來學個。<br>
+</center>
+
+
+<a id="more"></a>
+<p>所謂 Markdown 是種輕量級標記語言，透過簡單的語法便可將.md 轉成.html。</p>
+<p>等等！看來我對 Markdown 有誤解，<br>它的目的在於作為一個網路<strong>寫作</strong>用語言，重點在讓文檔<strong>易讀易寫</strong>，<br>至於轉成 html 是為了易於發布（當然嘛，瀏覽器讀的是 html)，<br>Markdown 宗旨是讓寫作變得容易，所以沒有 html 這麼多花招。</p>
+<p>當然，要用 html 的東西，直接用就是了，<br>其實渲染器說穿了就是文本替換罷了… 吧？<br>剛好之前對 html 有些涉獵，所以 Markdown 在做些甚麼大抵上也是摸的到的。<br>所以學完 Markdown 後，我應該也可試試寫個渲染器（咦？)</p>
+<p><br><br></p>
+<h2 id="0-轉義"><a href="#0-轉義" class="headerlink" title="0. 轉義"></a>0. 轉義</h2><p>進入各類用法前，先來個提要吧，遇到 Markdown 有歸為特殊用法的符號時，<br>如果要讓它顯示原本的意思，就需要轉義，這時只要加一個反斜線<code>\</code>，在前就好了。</p>
+<h2 id="1-標題"><a href="#1-標題" class="headerlink" title="1. 標題"></a>1. 標題</h2><p>先來個所謂的”起手式”，也是 html 都會教的第一課，就是標題啦~<br>html 的標題是用<code>&lt;h[1-6]&gt;&lt;/h[1-6]&gt;</code>（就是 h1 到 h6)，轉成 Markdown 用<code>#</code>號表示</p>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># \# is equal to h1</span><br><span class="line">h1 還可以用這樣</span><br><span class="line">===============</span><br><span class="line">## \#\# is equal to h2</span><br><span class="line">h2 也可以用這樣</span><br><span class="line">---------------</span><br><span class="line">### \#\#\# is equal to h3</span><br></pre></td></tr></table></figure>
+<p>記得井號後要空格</p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><blockquote>
+<h1 id="is-equal-to-h1"><a href="#is-equal-to-h1" class="headerlink" title="# is equal to h1"></a># is equal to h1</h1><h1 id="h1-還可以用這樣"><a href="#h1-還可以用這樣" class="headerlink" title="h1 還可以用這樣"></a>h1 還可以用這樣</h1><h2 id="is-equal-to-h2"><a href="#is-equal-to-h2" class="headerlink" title="## is equal to h2"></a>## is equal to h2</h2><h2 id="h2-也可以用這樣"><a href="#h2-也可以用這樣" class="headerlink" title="h2 也可以用這樣"></a>h2 也可以用這樣</h2><h3 id="is-equal-to-h3"><a href="#is-equal-to-h3" class="headerlink" title="### is equal to h3"></a>### is equal to h3</h3></blockquote>
+<h2 id="2-內文"><a href="#2-內文" class="headerlink" title="2. 內文"></a>2. 內文</h2><p>html 的內文 tag<code>&lt;p&gt;&lt;/p&gt;</code>，在 Markdown 即是一個簡單文章的區段，不用特別加符號，<br><code>&lt;p&gt;&lt;/p&gt;</code>的開合用空行即能達成</p>
+<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">就是一個簡單的內文，用 f12 確認一下吧</span><br></pre></td></tr></table></figure>
+<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p>就是一個簡單的內文，用 f12 確認一下吧</p>
+<h2 id="3-強調"><a href="#3-強調" class="headerlink" title="3. 強調"></a>3. 強調</h2><p>html 的強調用法有斜體<code>&lt;i&gt;&lt;/i&gt;</code>、粗體<code>&lt;b&gt;&lt;/b&gt;</code>、刪除線<code>&lt;s&gt;&lt;/s&gt;</code>，<br>Markdown 分別是使用<code>*</code>或<code>_</code>、<code>**</code>或<code>__</code>、<code>~~</code></p>
+<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*我是斜體呦* _我也是斜體_</span><br><span class="line">**我是粗體呦** __我也是粗體__</span><br><span class="line">*__兩個混著用__* _**注意遞迴式包裝**_</span><br><span class="line">_**剩下的兩種**_ *__我也幫你試過了__*</span><br><span class="line">***這種呢我也試*** ___我猜是不行___</span><br><span class="line">~~刪除線是這樣，混著用我就不試了~~</span><br></pre></td></tr></table></figure>
+<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p><em>我是斜體呦</em> <em>我也是斜體</em><br><strong>我是粗體呦</strong> <strong>我也是粗體</strong><br><em><strong>兩個混著用</strong></em> <em><strong>注意遞迴式包裝</strong></em><br><em><strong>剩下的兩種</strong></em> <em><strong>我也幫你試過了</strong></em><br><strong><em>這種呢我也試</em></strong> <strong><em>我猜是不行</em></strong><br><del>刪除線是這樣，混著用我就不試了</del></p>
+<p>誒誒，竟然可以？! 我錯了（逃<br>不行，這時不能逃，才學到一半（正經臉<br>有點好奇底線是怎樣，結果發現好像是 style/CSS 的坑，<a href="http://softwareengineering.stackexchange.com/questions/207727/why-there-is-no-markdown-for-underline" target="_blank" rel="noopener">標記語言不用理</a></p>
+<h2 id="4-清單"><a href="#4-清單" class="headerlink" title="4. 清單"></a>4. 清單</h2><p>html 的清單… 沒記錯的話，最外層都是要先包一層<code>&lt;li&gt;&lt;/li&gt;</code>，<br>再來看是要列順序 (ordered) 的<code>&lt;ol&gt;&lt;/ol&gt;</code>，還是要<code>&lt;ul&gt;&lt;/ul&gt;</code>就看尼囉。<br>Markdown 對於<code>&lt;ol&gt;</code>就編個號，例如<code>1.</code>就好，<code>&lt;ul&gt;</code>可以用<code>*</code>、<code>+</code>或<code>-</code>。</p>
+<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">基本上不用理會 li 的存在，Markdown 會判斷，恩，我猜的（逃</span><br><span class="line">巢狀清單的話用縮排達成。跟標題一樣，注意編號和*+- 號後要空格</span><br><span class="line">1. 第一大條</span><br><span class="line">  * 一大的無序一中</span><br><span class="line">  * 一大的無序二中</span><br><span class="line">2. 第二大條</span><br><span class="line">  1. 二大的有序一中</span><br><span class="line">  2. 二大的有序二中</span><br><span class="line">    * 二大二中的無序一小</span><br></pre></td></tr></table></figure>
+<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><ol>
+<li>第一大條<ul>
+<li>一大的無序一中</li>
+<li>一大的無序二中</li>
+</ul>
+</li>
+<li>第二大條<ol>
+<li>二大的有序一中</li>
+<li>二大的有序二中<ul>
+<li>二大二中的無序一小</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="5-超鏈結"><a href="#5-超鏈結" class="headerlink" title="5. 超鏈結"></a>5. 超鏈結</h2><p>再來就是 html 最重要（我覺得）的超鏈結啦~，複習一下 html 全名 <a href="https://zh.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">HyperText Markup Language</a><br>html 的超鏈結就是<code>&lt;a&gt;&lt;/a&gt;</code>tag，在 Markdown 可以用<code>[]()</code>及<code>[][] + []:</code>使用</p>
+<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href=&quot;超鏈結&quot; title=&quot;標題（可略）&quot;&gt;超鏈結名稱&lt;/a&gt;</span><br><span class="line">[超鏈結名稱](超鏈結 &quot;標題（可略）&quot;)</span><br><span class="line"></span><br><span class="line">標題就是滑鼠一到鏈結上面會顯示的東東啦</span><br><span class="line">當然，超鏈結也可以用相對路徑啦，寫過網頁的就知道了</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[It&apos;s a google link](https://www.google.com)</span><br><span class="line">[nobodyzxc github](http://github.com/nobodyzxc &quot;你瞅啥&quot;)</span><br><span class="line"></span><br><span class="line">這邊有種特殊用法，就是參考鏈結，有點像註腳，個人覺得像是變數</span><br><span class="line"></span><br><span class="line">[超鏈結名稱][參考名稱]</span><br><span class="line">『參考名稱』: 超鏈結</span><br><span class="line"></span><br><span class="line">如此一來，他的參考名稱就會去參考到超鏈結。</span><br><span class="line">兩行可以放得很開，第二習慣放最後面，當註腳（的樣子）。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[知乎][zhihu 注意大小寫，這是一個變數參考 0]</span><br><span class="line">many lines</span><br><span class="line">[zhihu 注意大小寫，這是一個變數參考 0]: http://zhihu.com</span><br></pre></td></tr></table></figure>
+<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><p><a href="https://www.google.com" target="_blank" rel="noopener">It’s a google link</a><br><a href="http://github.com/nobodyzxc" title="你瞅啥" target="_blank" rel="noopener">nobodyzxc github</a></p>
+<p><a href="http://zhihu.com" target="_blank" rel="noopener">知乎</a><br>many lines</p>
+<h2 id="6-註腳"><a href="#6-註腳" class="headerlink" title="6. 註腳"></a>6. 註腳</h2><p>“聽說！”生成 html 時會變成清單，放在檔案最下面，或是變成視窗跳出來，不太一定<br>用中括號加<code>^</code>數字，<code>[^0]</code></p>
+<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">註解零  [^0]</span><br><span class="line">[^0] 就是這樣嗎？</span><br><span class="line">一樣要注意空格啊</span><br></pre></td></tr></table></figure>
+<h3 id="效果-5"><a href="#效果-5" class="headerlink" title="效果"></a>效果</h3><p>註解零  <sup><a href="#fn_0" id="reffn_0">0</a></sup><br><sup><a href="#fn_0" id="reffn_0">0</a></sup> 就是這樣嗎？</p>
+<p>Text prior to footnote reference.<sup><a href="#fn_2" id="reffn_2">2</a></sup><br><sup><a href="#fn_2" id="reffn_2">2</a></sup> Comment to include in footnote.</p>
+<p>WTF? 好像弄不太起來… 有需要再找吧…</p>
+<h2 id="7-圖片"><a href="#7-圖片" class="headerlink" title="7. 圖片"></a>7. 圖片</h2><p>敘述最少的一個，超鏈結前加驚嘆號</p>
+<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![my logo](https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460)</span><br><span class="line">![看山醬萌萌噠][ref]</span><br><span class="line">[ref]: /images/zhi.jpg &quot;zhi~~侵刪呦&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="效果-6"><a href="#效果-6" class="headerlink" title="效果"></a>效果</h3><p><img src="https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460" alt="my logo"><br><img src="/images/zhi.jpg" alt="看山醬萌萌噠" title="zhi~~侵刪呦"></p>
+<p>Image from <a href="https://www.zhihu.com/question/35778876/answer/65568580" target="_blank" rel="noopener">zhihu</a>、<a href="http://tw.weibo.com/liukanshan" target="_blank" rel="noopener">看山微博</a></p>
+<h2 id="8-程式碼區塊"><a href="#8-程式碼區塊" class="headerlink" title="8. 程式碼區塊"></a>8. 程式碼區塊</h2><p>如果鑲嵌行間請用<code>` </code>前後包裝，一大塊則用<code>```</code>包（可以加語言名稱）</p>
+<h3 id="用法-7"><a href="#用法-7" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><div class="line">行間鑲嵌一個 &bprime;/&bprime; </div><div class="line"></div><div class="line">\`\`\`C</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">int main(void){// 對 我是不換行派的，打我啊</div><div class="line">    return 0;</div><div class="line">}</div><div class="line">\`\`\`</div></pre></td></tr></tbody></table></figure>
+
+<h3 id="效果-7"><a href="#效果-7" class="headerlink" title="效果"></a>效果</h3><p>行間鑲嵌一個<code>/</code></p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;<span class="comment">// 對 我是不換行派的，打我啊</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不要問我<code>```</code>是怎麼打出來的，<br>我絕對不會說<code><code>```</code>&lt;/code&gt;是借助 html 和反斜線之力完成的。</code></p>
+<h2 id="9-表格"><a href="#9-表格" class="headerlink" title="9. 表格"></a>9. 表格</h2><p>恩，就是 html 的<code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code>等</p>
+<h3 id="用法-8"><a href="#用法-8" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">冒號用來對齊（擺左齊左、擺右齊右，都擺置中）</span><br><span class="line"></span><br><span class="line">| editor        | intro     | comment            |</span><br><span class="line">|---------------|:---------:|-------------------:|</span><br><span class="line">| emacs         | 神的編輯器| 聽說這表格他很會畫 |</span><br><span class="line">| vim           | 編輯器之神| 本人目前用此編輯器 |</span><br><span class="line"></span><br><span class="line">最左最右的 | 不一定需要</span><br><span class="line">表格內部亦支援 Markdown 格式</span><br></pre></td></tr></table></figure>
+<h3 id="效果-8"><a href="#效果-8" class="headerlink" title="效果"></a>效果</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>editor</th>
+<th style="text-align:center">intro</th>
+<th style="text-align:right">comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emacs</td>
+<td style="text-align:center">神的編輯器</td>
+<td style="text-align:right">聽說這表格他很會畫</td>
+</tr>
+<tr>
+<td>vim</td>
+<td style="text-align:center">編輯器之神</td>
+<td style="text-align:right">本人目前用此編輯器</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="10-引言"><a href="#10-引言" class="headerlink" title="10. 引言"></a>10. 引言</h2><p>電子郵件或論壇常見到的咚咚<code>&gt;</code></p>
+<h3 id="用法-9"><a href="#用法-9" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; 引言</span><br></pre></td></tr></table></figure>
+<h3 id="效果-9"><a href="#效果-9" class="headerlink" title="效果"></a>效果</h3><blockquote>
+<p>引言</p>
+</blockquote>
+<h2 id="11-內嵌-html"><a href="#11-內嵌-html" class="headerlink" title="11. 內嵌 html"></a>11. 內嵌 html</h2><p>不用多說，用下去就對了。</p>
+<h2 id="12-水平分割線"><a href="#12-水平分割線" class="headerlink" title="12. 水平分割線"></a>12. 水平分割線</h2><h3 id="用法-10"><a href="#用法-10" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">獨立一行，大於等於三個符號接起來即可</span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line"></span><br><span class="line">***********</span><br><span class="line">___________</span><br></pre></td></tr></table></figure>
+<h3 id="效果-10"><a href="#效果-10" class="headerlink" title="效果"></a>效果</h3><hr>
+<hr>
+<hr>
+<p>凌晨四點… 我睡了… 本文的 Markdown 版本在<a href="https://github.com/nobodyzxc/BlogBackUp/blob/master/source/_posts/Markdown.md" target="_blank" rel="noopener">這裡</a>，晚安</p>
+<ul>
+<li>reference<ul>
+<li><a href="https://wastemobile.gitbooks.io/gitbook-chinese/content/format/markdown.html" target="_blank" rel="noopener">一本 gitbook</a></li>
+<li><a href="http://markdown.tw/" target="_blank" rel="noopener">domain name 像官網</a></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Memoir - Road</title>
     <url>/2016/12/31/MyRoad/</url>
     <content><![CDATA[<center>
@@ -678,120 +792,6 @@ A world without loop , but recursion。<br>
       <categories>
         <category>Memoir</category>
       </categories>
-  </entry>
-  <entry>
-    <title>Markdown Note</title>
-    <url>/2016/12/22/Markdown/</url>
-    <content><![CDATA[<center>
-工欲善其事，必先利其器啊，<br>
-既然 hexo 使用了 Markdown 來渲染文章，那就趕快來學個。<br>
-</center>
-
-
-<a id="more"></a>
-<p>所謂 Markdown 是種輕量級標記語言，透過簡單的語法便可將.md 轉成.html。</p>
-<p>等等！看來我對 Markdown 有誤解，<br>它的目的在於作為一個網路<strong>寫作</strong>用語言，重點在讓文檔<strong>易讀易寫</strong>，<br>至於轉成 html 是為了易於發布（當然嘛，瀏覽器讀的是 html)，<br>Markdown 宗旨是讓寫作變得容易，所以沒有 html 這麼多花招。</p>
-<p>當然，要用 html 的東西，直接用就是了，<br>其實渲染器說穿了就是文本替換罷了… 吧？<br>剛好之前對 html 有些涉獵，所以 Markdown 在做些甚麼大抵上也是摸的到的。<br>所以學完 Markdown 後，我應該也可試試寫個渲染器（咦？)</p>
-<p><br><br></p>
-<h2 id="0-轉義"><a href="#0-轉義" class="headerlink" title="0. 轉義"></a>0. 轉義</h2><p>進入各類用法前，先來個提要吧，遇到 Markdown 有歸為特殊用法的符號時，<br>如果要讓它顯示原本的意思，就需要轉義，這時只要加一個反斜線<code>\</code>，在前就好了。</p>
-<h2 id="1-標題"><a href="#1-標題" class="headerlink" title="1. 標題"></a>1. 標題</h2><p>先來個所謂的”起手式”，也是 html 都會教的第一課，就是標題啦~<br>html 的標題是用<code>&lt;h[1-6]&gt;&lt;/h[1-6]&gt;</code>（就是 h1 到 h6)，轉成 Markdown 用<code>#</code>號表示</p>
-<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># \# is equal to h1</span><br><span class="line">h1 還可以用這樣</span><br><span class="line">===============</span><br><span class="line">## \#\# is equal to h2</span><br><span class="line">h2 也可以用這樣</span><br><span class="line">---------------</span><br><span class="line">### \#\#\# is equal to h3</span><br></pre></td></tr></table></figure>
-<p>記得井號後要空格</p>
-<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><blockquote>
-<h1 id="is-equal-to-h1"><a href="#is-equal-to-h1" class="headerlink" title="# is equal to h1"></a># is equal to h1</h1><h1 id="h1-還可以用這樣"><a href="#h1-還可以用這樣" class="headerlink" title="h1 還可以用這樣"></a>h1 還可以用這樣</h1><h2 id="is-equal-to-h2"><a href="#is-equal-to-h2" class="headerlink" title="## is equal to h2"></a>## is equal to h2</h2><h2 id="h2-也可以用這樣"><a href="#h2-也可以用這樣" class="headerlink" title="h2 也可以用這樣"></a>h2 也可以用這樣</h2><h3 id="is-equal-to-h3"><a href="#is-equal-to-h3" class="headerlink" title="### is equal to h3"></a>### is equal to h3</h3></blockquote>
-<h2 id="2-內文"><a href="#2-內文" class="headerlink" title="2. 內文"></a>2. 內文</h2><p>html 的內文 tag<code>&lt;p&gt;&lt;/p&gt;</code>，在 Markdown 即是一個簡單文章的區段，不用特別加符號，<br><code>&lt;p&gt;&lt;/p&gt;</code>的開合用空行即能達成</p>
-<h3 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">就是一個簡單的內文，用 f12 確認一下吧</span><br></pre></td></tr></table></figure>
-<h3 id="效果-1"><a href="#效果-1" class="headerlink" title="效果"></a>效果</h3><p>就是一個簡單的內文，用 f12 確認一下吧</p>
-<h2 id="3-強調"><a href="#3-強調" class="headerlink" title="3. 強調"></a>3. 強調</h2><p>html 的強調用法有斜體<code>&lt;i&gt;&lt;/i&gt;</code>、粗體<code>&lt;b&gt;&lt;/b&gt;</code>、刪除線<code>&lt;s&gt;&lt;/s&gt;</code>，<br>Markdown 分別是使用<code>*</code>或<code>_</code>、<code>**</code>或<code>__</code>、<code>~~</code></p>
-<h3 id="用法-2"><a href="#用法-2" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*我是斜體呦* _我也是斜體_</span><br><span class="line">**我是粗體呦** __我也是粗體__</span><br><span class="line">*__兩個混著用__* _**注意遞迴式包裝**_</span><br><span class="line">_**剩下的兩種**_ *__我也幫你試過了__*</span><br><span class="line">***這種呢我也試*** ___我猜是不行___</span><br><span class="line">~~刪除線是這樣，混著用我就不試了~~</span><br></pre></td></tr></table></figure>
-<h3 id="效果-2"><a href="#效果-2" class="headerlink" title="效果"></a>效果</h3><p><em>我是斜體呦</em> <em>我也是斜體</em><br><strong>我是粗體呦</strong> <strong>我也是粗體</strong><br><em><strong>兩個混著用</strong></em> <em><strong>注意遞迴式包裝</strong></em><br><em><strong>剩下的兩種</strong></em> <em><strong>我也幫你試過了</strong></em><br><strong><em>這種呢我也試</em></strong> <strong><em>我猜是不行</em></strong><br><del>刪除線是這樣，混著用我就不試了</del></p>
-<p>誒誒，竟然可以？! 我錯了（逃<br>不行，這時不能逃，才學到一半（正經臉<br>有點好奇底線是怎樣，結果發現好像是 style/CSS 的坑，<a href="http://softwareengineering.stackexchange.com/questions/207727/why-there-is-no-markdown-for-underline" target="_blank" rel="noopener">標記語言不用理</a></p>
-<h2 id="4-清單"><a href="#4-清單" class="headerlink" title="4. 清單"></a>4. 清單</h2><p>html 的清單… 沒記錯的話，最外層都是要先包一層<code>&lt;li&gt;&lt;/li&gt;</code>，<br>再來看是要列順序 (ordered) 的<code>&lt;ol&gt;&lt;/ol&gt;</code>，還是要<code>&lt;ul&gt;&lt;/ul&gt;</code>就看尼囉。<br>Markdown 對於<code>&lt;ol&gt;</code>就編個號，例如<code>1.</code>就好，<code>&lt;ul&gt;</code>可以用<code>*</code>、<code>+</code>或<code>-</code>。</p>
-<h3 id="用法-3"><a href="#用法-3" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">基本上不用理會 li 的存在，Markdown 會判斷，恩，我猜的（逃</span><br><span class="line">巢狀清單的話用縮排達成。跟標題一樣，注意編號和*+- 號後要空格</span><br><span class="line">1. 第一大條</span><br><span class="line">  * 一大的無序一中</span><br><span class="line">  * 一大的無序二中</span><br><span class="line">2. 第二大條</span><br><span class="line">  1. 二大的有序一中</span><br><span class="line">  2. 二大的有序二中</span><br><span class="line">    * 二大二中的無序一小</span><br></pre></td></tr></table></figure>
-<h3 id="效果-3"><a href="#效果-3" class="headerlink" title="效果"></a>效果</h3><ol>
-<li>第一大條<ul>
-<li>一大的無序一中</li>
-<li>一大的無序二中</li>
-</ul>
-</li>
-<li>第二大條<ol>
-<li>二大的有序一中</li>
-<li>二大的有序二中<ul>
-<li>二大二中的無序一小</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="5-超鏈結"><a href="#5-超鏈結" class="headerlink" title="5. 超鏈結"></a>5. 超鏈結</h2><p>再來就是 html 最重要（我覺得）的超鏈結啦~，複習一下 html 全名 <a href="https://zh.wikipedia.org/wiki/HTML" target="_blank" rel="noopener">HyperText Markup Language</a><br>html 的超鏈結就是<code>&lt;a&gt;&lt;/a&gt;</code>tag，在 Markdown 可以用<code>[]()</code>及<code>[][] + []:</code>使用</p>
-<h3 id="用法-4"><a href="#用法-4" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;a href=&quot;超鏈結&quot; title=&quot;標題（可略）&quot;&gt;超鏈結名稱&lt;/a&gt;</span><br><span class="line">[超鏈結名稱](超鏈結 &quot;標題（可略）&quot;)</span><br><span class="line"></span><br><span class="line">標題就是滑鼠一到鏈結上面會顯示的東東啦</span><br><span class="line">當然，超鏈結也可以用相對路徑啦，寫過網頁的就知道了</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[It&apos;s a google link](https://www.google.com)</span><br><span class="line">[nobodyzxc github](http://github.com/nobodyzxc &quot;你瞅啥&quot;)</span><br><span class="line"></span><br><span class="line">這邊有種特殊用法，就是參考鏈結，有點像註腳，個人覺得像是變數</span><br><span class="line"></span><br><span class="line">[超鏈結名稱][參考名稱]</span><br><span class="line">『參考名稱』: 超鏈結</span><br><span class="line"></span><br><span class="line">如此一來，他的參考名稱就會去參考到超鏈結。</span><br><span class="line">兩行可以放得很開，第二習慣放最後面，當註腳（的樣子）。</span><br><span class="line"></span><br><span class="line">example:</span><br><span class="line">[知乎][zhihu 注意大小寫，這是一個變數參考 0]</span><br><span class="line">many lines</span><br><span class="line">[zhihu 注意大小寫，這是一個變數參考 0]: http://zhihu.com</span><br></pre></td></tr></table></figure>
-<h3 id="效果-4"><a href="#效果-4" class="headerlink" title="效果"></a>效果</h3><p><a href="https://www.google.com" target="_blank" rel="noopener">It’s a google link</a><br><a href="http://github.com/nobodyzxc" title="你瞅啥" target="_blank" rel="noopener">nobodyzxc github</a></p>
-<p><a href="http://zhihu.com" target="_blank" rel="noopener">知乎</a><br>many lines</p>
-<h2 id="6-註腳"><a href="#6-註腳" class="headerlink" title="6. 註腳"></a>6. 註腳</h2><p>“聽說！”生成 html 時會變成清單，放在檔案最下面，或是變成視窗跳出來，不太一定<br>用中括號加<code>^</code>數字，<code>[^0]</code></p>
-<h3 id="用法-5"><a href="#用法-5" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">註解零  [^0]</span><br><span class="line">[^0] 就是這樣嗎？</span><br><span class="line">一樣要注意空格啊</span><br></pre></td></tr></table></figure>
-<h3 id="效果-5"><a href="#效果-5" class="headerlink" title="效果"></a>效果</h3><p>註解零  <sup><a href="#fn_0" id="reffn_0">0</a></sup><br><sup><a href="#fn_0" id="reffn_0">0</a></sup> 就是這樣嗎？</p>
-<p>Text prior to footnote reference.<sup><a href="#fn_2" id="reffn_2">2</a></sup><br><sup><a href="#fn_2" id="reffn_2">2</a></sup> Comment to include in footnote.</p>
-<p>WTF? 好像弄不太起來… 有需要再找吧…</p>
-<h2 id="7-圖片"><a href="#7-圖片" class="headerlink" title="7. 圖片"></a>7. 圖片</h2><p>敘述最少的一個，超鏈結前加驚嘆號</p>
-<h3 id="用法-6"><a href="#用法-6" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![my logo](https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460)</span><br><span class="line">![看山醬萌萌噠][ref]</span><br><span class="line">[ref]: /images/zhi.jpg &quot;zhi~~侵刪呦&quot;</span><br></pre></td></tr></table></figure>
-<h3 id="效果-6"><a href="#效果-6" class="headerlink" title="效果"></a>效果</h3><p><img src="https://avatars0.githubusercontent.com/u/17202064?v=3&amp;s=460" alt="my logo"><br><img src="/images/zhi.jpg" alt="看山醬萌萌噠" title="zhi~~侵刪呦"></p>
-<p>Image from <a href="https://www.zhihu.com/question/35778876/answer/65568580" target="_blank" rel="noopener">zhihu</a>、<a href="http://tw.weibo.com/liukanshan" target="_blank" rel="noopener">看山微博</a></p>
-<h2 id="8-程式碼區塊"><a href="#8-程式碼區塊" class="headerlink" title="8. 程式碼區塊"></a>8. 程式碼區塊</h2><p>如果鑲嵌行間請用<code>` </code>前後包裝，一大塊則用<code>```</code>包（可以加語言名稱）</p>
-<h3 id="用法-7"><a href="#用法-7" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><div class="line">行間鑲嵌一個 &bprime;/&bprime; </div><div class="line"></div><div class="line">\`\`\`C</div><div class="line">#include&lt;stdio.h&gt;</div><div class="line">int main(void){// 對 我是不換行派的，打我啊</div><div class="line">    return 0;</div><div class="line">}</div><div class="line">\`\`\`</div></pre></td></tr></tbody></table></figure>
-
-<h3 id="效果-7"><a href="#效果-7" class="headerlink" title="效果"></a>效果</h3><p>行間鑲嵌一個<code>/</code></p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;<span class="comment">// 對 我是不換行派的，打我啊</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不要問我<code>```</code>是怎麼打出來的，<br>我絕對不會說<code><code>```</code>&lt;/code&gt;是借助 html 和反斜線之力完成的。</code></p>
-<h2 id="9-表格"><a href="#9-表格" class="headerlink" title="9. 表格"></a>9. 表格</h2><p>恩，就是 html 的<code>&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</code>等</p>
-<h3 id="用法-8"><a href="#用法-8" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">冒號用來對齊（擺左齊左、擺右齊右，都擺置中）</span><br><span class="line"></span><br><span class="line">| editor        | intro     | comment            |</span><br><span class="line">|---------------|:---------:|-------------------:|</span><br><span class="line">| emacs         | 神的編輯器| 聽說這表格他很會畫 |</span><br><span class="line">| vim           | 編輯器之神| 本人目前用此編輯器 |</span><br><span class="line"></span><br><span class="line">最左最右的 | 不一定需要</span><br><span class="line">表格內部亦支援 Markdown 格式</span><br></pre></td></tr></table></figure>
-<h3 id="效果-8"><a href="#效果-8" class="headerlink" title="效果"></a>效果</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>editor</th>
-<th style="text-align:center">intro</th>
-<th style="text-align:right">comment</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>emacs</td>
-<td style="text-align:center">神的編輯器</td>
-<td style="text-align:right">聽說這表格他很會畫</td>
-</tr>
-<tr>
-<td>vim</td>
-<td style="text-align:center">編輯器之神</td>
-<td style="text-align:right">本人目前用此編輯器</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="10-引言"><a href="#10-引言" class="headerlink" title="10. 引言"></a>10. 引言</h2><p>電子郵件或論壇常見到的咚咚<code>&gt;</code></p>
-<h3 id="用法-9"><a href="#用法-9" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; 引言</span><br></pre></td></tr></table></figure>
-<h3 id="效果-9"><a href="#效果-9" class="headerlink" title="效果"></a>效果</h3><blockquote>
-<p>引言</p>
-</blockquote>
-<h2 id="11-內嵌-html"><a href="#11-內嵌-html" class="headerlink" title="11. 內嵌 html"></a>11. 內嵌 html</h2><p>不用多說，用下去就對了。</p>
-<h2 id="12-水平分割線"><a href="#12-水平分割線" class="headerlink" title="12. 水平分割線"></a>12. 水平分割線</h2><h3 id="用法-10"><a href="#用法-10" class="headerlink" title="用法"></a>用法</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">獨立一行，大於等於三個符號接起來即可</span><br><span class="line"></span><br><span class="line">-----------</span><br><span class="line"></span><br><span class="line">***********</span><br><span class="line">___________</span><br></pre></td></tr></table></figure>
-<h3 id="效果-10"><a href="#效果-10" class="headerlink" title="效果"></a>效果</h3><hr>
-<hr>
-<hr>
-<p>凌晨四點… 我睡了… 本文的 Markdown 版本在<a href="https://github.com/nobodyzxc/BlogBackUp/blob/master/source/_posts/Markdown.md" target="_blank" rel="noopener">這裡</a>，晚安</p>
-<ul>
-<li>reference<ul>
-<li><a href="https://wastemobile.gitbooks.io/gitbook-chinese/content/format/markdown.html" target="_blank" rel="noopener">一本 gitbook</a></li>
-<li><a href="http://markdown.tw/" target="_blank" rel="noopener">domain name 像官網</a></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>markdown</tag>
-      </tags>
   </entry>
   <entry>
     <title>MySQL Note</title>
@@ -1448,228 +1448,6 @@ wait to refer:<br>
       </categories>
   </entry>
   <entry>
-    <title>我所理解的 continuation</title>
-    <url>/2019/08/10/continuation/</url>
-    <content><![CDATA[<center>
-對，就是那個 continuation。
-</center>
-
-<link href="/files/scheme-syntax-patch.css" rel="stylesheet" type="text/css">
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h1 id="About-Scheme"><a href="#About-Scheme" class="headerlink" title="About Scheme"></a>About Scheme</h1><p>學校 scheme 學了大半學期，continuation 這個詞估計同學連聽都沒聽過。</p>
-<p>說到底我們學 scheme 也就是為了寫那個 eval/apply (mini scheme) 罷了，<br>頂多還有 oop 那個 vtable 而已（就是實作那個傳統 oo 的 message passing）。</p>
-<p>用 scheme 寫 compiler 什麼的根本是夢想（艸<br>當初如果學的是 yscheme 的 p523(p423) 該有多好（<br>反正現在入坑還來得及（？</p>
-<p>總結一下目前為止，除了老師的教材，我學習過的 scheme 資源好了。</p>
-<ul>
-<li><a href="https://sarabander.github.io/sicp/html/index.xhtml" target="_blank" rel="noopener">SICP</a></li>
-<li><a href="https://deathking.github.io/yast-cn/" target="_blank" rel="noopener">Yet Another Scheme Tutorial</a></li>
-<li><a href="https://scheme.com/tspl4" target="_blank" rel="noopener">The Scheme Programming Language</a></li>
-</ul>
-<p>其中在學校老師推薦的閱讀是 SICP，我讀完第一章就讀不下去了。<br>後來看到 yast，就先跳過去讀，第一次看到 continuation 就是在這裡，<br>還有 promise 之類的東西，才了解到原來 scheme 除了 S-expression 外，還有這麼多有趣的特性。</p>
-<p>不過讀 yast 跳過了蠻多 macro 的部份，因為有許多內容是基於實作 (MIT Scheme) 的。<br>後來我就去寫我的 scheme interpreter in C， 雖然是個玩具，不過也玩了很久。</p>
-<p>目前因為 Lab 同學介紹，我得知了 <a href="https://github.com/tiancaiamao/yscheme" target="_blank" rel="noopener">yscheme</a>，但在研究時發現自己對 syntax 還是不太熟，<br>所以又找了 tspl ，準備詳細地再學一次。</p>
-<p>目前對於 Scheme 的計畫是 tspl &gt; yscheme &gt; SICP &gt; The Little Schemer（沒有官方版本，只有找到<a href="https://the-little-schemer.readthedocs.io/zh_CN/latest/commandments_and_rules.html" target="_blank" rel="noopener">筆記</a>）。<br>不過要完成大概需要很久吧（</p>
-<p>此外，我來說一下我接觸過的 lisp 實作吧。</p>
-<p>scheme:</p>
-<ul>
-<li><a href="https://www.gnu.org/software/guile/" target="_blank" rel="noopener">Guile</a> 出自 GNU ，強調其腳本結合性，可以寫 C/Cpp 去擴展它，編譯器前端還支持 JS, elisp, Lua。</li>
-<li><a href="https://plt-scheme.org/" target="_blank" rel="noopener">Racket</a> 又稱 plt-scheme, DrScheme，其底下有一堆小語言，<a href="/2018/07/27/flolac18/#Talk-Racket">flolac’18</a> 有介紹，我寫作業用的 impl。</li>
-<li><a href="https://www.biwascheme.org/" target="_blank" rel="noopener">BiwaScheme</a> JS 寫的，當初學校教學用的是這個的 <a href="https://repl.it/languages/scheme" target="_blank" rel="noopener">REPL</a>。</li>
-<li><a href="https://www.gnu.org/software/mit-scheme/" target="_blank" rel="noopener">GNU/MIT-scheme</a> yast 用的就是這個。</li>
-<li><a href="https://scheme.com/download/" target="_blank" rel="noopener">Chez Scheme</a> Petite 是他的免費版本。此 impl 聽說很快，可以看看<a href="https://www.yinwang.org/blog-cn/2013/03/28/chez-scheme" target="_blank" rel="noopener">大神介紹</a>。</li>
-<li><a href="https://www.call-cc.org/" target="_blank" rel="noopener">CHICKEN Scheme</a> 這我聽很久了，但一直沒去了解它（</li>
-</ul>
-<p>common lisp:</p>
-<ul>
-<li><a href="https://clisp.sourceforge.io/" target="_blank" rel="noopener">CLISP</a> GNU 的 Common Lisp 的實作，Common Lisp 和 Scheme 為 Lisp 兩大流派，彼此影響。</li>
-</ul>
-<p>others:</p>
-<ul>
-<li><a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/" target="_blank" rel="noopener">elisp</a> Emacs Lisp，神之編輯器的內建語言，神的語言果然不能太平凡啊。</li>
-<li><a href="https://clojure.org/" target="_blank" rel="noopener">Clojure</a> 跑在 JVM 上的 lisp 方言。</li>
-</ul>
-<h1 id="About-evaluation"><a href="#About-evaluation" class="headerlink" title="About evaluation"></a>About evaluation</h1><p>要理解 continuation，我們必須先了解 scheme 的 eval/apply。<br>continuation 和 evaluation strategy 是習習相關的。</p>
-<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><blockquote>
-<p><code>(procedure arg ...)</code></p>
-</blockquote>
-<p>假設現在有個簡單的 application: <code>(+ 1 2)</code>，interpreter 要去解釋他：</p>
-<ul>
-<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
-<li>eval <code>1</code> literal，convert it to number instance</li>
-<li>eval <code>2</code> literal，convert it to number instance</li>
-<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
-<li>return 3</li>
-</ul>
-<p>複雜一點的例子 <code>(cons (+ 1 2) (list 3))</code>：</p>
-<ul>
-<li>eval <code>cons</code>, find the procedure that bind to it</li>
-<li>eval <code>(+ 1 2)</code><ul>
-<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
-<li>eval <code>1</code> literal，convert it to number instance</li>
-<li>eval <code>2</code> literal，convert it to number instance</li>
-<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
-<li>return 3</li>
-</ul>
-</li>
-<li>eval <code>(list 3)</code><ul>
-<li>eval <code>list</code>, find the procedure(list constructor) bind to it</li>
-<li>eval <code>3</code> literal, convert it to number instance</li>
-<li>return (3 . nil)</li>
-</ul>
-</li>
-<li>apply cons on 3 and 3</li>
-<li>return (3 . (3 . nil))</li>
-</ul>
-<h2 id="special-form-if"><a href="#special-form-if" class="headerlink" title="special form - if"></a>special form - if</h2><blockquote>
-<p><code>(if test-expr then-expr)</code><br><code>(if test-expr then-expr else-expr)</code></p>
-</blockquote>
-<p>叫做 special form 的原因是因為它的 evaluation strategy 和 application 不同，<br>凡是 special form 的 keyword 都有一套屬於自己的 evaluation strategy。</p>
-<p>舉個例子，如果把 <code>if</code> 實作成 application 的話，每個參數都要被 eval。<br>考慮此情況：<code>(if #t (+ 1 2) (1 2))</code>。</p>
-<p>在 application 中 <code>(1 2)</code> 不能被 eval，因為 <code>1</code> 並不是一個 procedure，他不能 apply 到 <code>2</code> 上。<br>這會讓 interpreter 拋出一個 exception 來警告你。<br>但實際上 interpreter 卻沒有。為什麼呢？</p>
-<p>因為 <code>if</code> 是 special form，他只會 eval 關心的部份，剩下的部份他不進行 eval，所以不噴 exception。<br>所以對於 <code>if</code> 的 evaluation 是：</p>
-<ul>
-<li>eval <code>if</code>, use the if special form evaluation strategy</li>
-<li>eval <code>#t</code> literal, convert it to boolean value</li>
-<li>because the test-expr is true, we select then-expr to eval</li>
-<li>eval <code>(+ 1 2)</code><ul>
-<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
-<li>eval <code>1</code> literal，convert it to number instance</li>
-<li>eval <code>2</code> literal，convert it to number instance</li>
-<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
-<li>return 3</li>
-</ul>
-</li>
-</ul>
-<p>但是如果是 <code>(if #f (+ 1 2) (1 2))</code>，就會噴 exception 了。<br>下面例子會用到 <code>cond</code>，他跟 <code>if</code> 很像，這邊就不再贅述。</p>
-<h2 id="special-form-lambda"><a href="#special-form-lambda" class="headerlink" title="special form - lambda"></a>special form - lambda</h2><blockquote>
-<p><code>(lambda (arg-id ...) body ...+)</code><br><code>(lambda rest-id body ...+)</code><br><code>(lambda (arg-id ...+ . rest-id) body ...+)</code></p>
-</blockquote>
-<p><code>lambda</code> 此 special form 用於構造一個 procedure，一個 procedure 包含 arguments 和 procedure body。</p>
-<p>對於 <code>(lambda (x) (+ x 1))</code>：</p>
-<ul>
-<li>eval <code>lambda</code>, construct a lambda procedure</li>
-<li>take arg list as procedure arguments</li>
-<li>take body expressions as procedure body</li>
-<li>return the constructed procedure</li>
-</ul>
-<p>而當我們 apply 這個 procedure 為 <code>((lambda (x) (+ x 1)) 3)</code> 時：</p>
-<ul>
-<li>eval <code>(lambda (x) (+ x 1))</code><ul>
-<li>eval <code>lambda</code>, construct a lambda procedure</li>
-<li>take arg list as procedure arguments</li>
-<li>take body expressions as procedure body</li>
-<li>return the constructed procedure</li>
-</ul>
-</li>
-<li>eval <code>3</code> literal, convert it to number instance</li>
-<li>apply procedure on 3<ul>
-<li>bind 3 to <code>x</code>, extend the binding to environment</li>
-<li>eval <code>(+ x 1)</code><ul>
-<li>eval <code>+</code> symbol，find the procedure bind to it</li>
-<li>eval <code>x</code> symbol, lookup the value(3) bind to it</li>
-<li>eval <code>1</code> literal, convert it to number instance</li>
-<li>apply procedure that bind to <code>+</code> to 3(x) and 1</li>
-<li>return 4</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="special-form-define"><a href="#special-form-define" class="headerlink" title="special form - define"></a>special form - define</h2><blockquote>
-<p><code>(define id expr)</code><br><code>(define (head arg ...) body ...+)</code><br><code>(define (head arg ... . rest-id) body ...+)</code></p>
-</blockquote>
-<p><code>define</code> 可以用來綁定變數，他也提供了 short form 來定義函數。</p>
-<p>舉個例子，<code>(define x (+ 1 2 3))</code>：</p>
-<ul>
-<li>eval <code>define</code></li>
-<li>take <code>x</code> as binding symbol</li>
-<li>eval <code>(+ 1 2)</code> as binding value<ul>
-<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
-<li>eval <code>1</code> literal，convert it to number instance</li>
-<li>eval <code>2</code> literal，convert it to number instance</li>
-<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
-<li>return 3</li>
-</ul>
-</li>
-<li>bind 3 to x, extend the binding to environment</li>
-</ul>
-<p>至於他的 short form 就是 macro 變換：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">head</span> arg ...) body ...+)</span><br><span class="line"><span class="comment">;=&gt; (define head (lambda (arg ...) body ...+))</span></span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">head</span> arg ... . rest-id) body ...+)</span><br><span class="line"><span class="comment">;=&gt; (define head (lambda (arg ... . rest-id) body ...+))</span></span><br></pre></td></tr></table></figure>
-<h2 id="special-form-let"><a href="#special-form-let" class="headerlink" title="special form - let"></a>special form - let</h2><blockquote>
-<p><code>(let ([id expr] ...) body ...+)</code><br><code>(let proc-id ([arg-id init-expr] ...) body ...+)</code></p>
-</blockquote>
-<p><code>let</code> 則可以寫成一種 lambda + application 的 macro 變換。</p>
-<p>比如 <code>(let [(x 3) (y 4)] (+ x y))</code> 會被轉成 <code>((lambda (x y) (+ x y)) 3 4)</code><br>而像上面的例子 <code>((lambda (x) (+ x 1)) 3)</code> 則可以寫作 <code>(let [(x 3)] (+ x 1))</code></p>
-<p>由於 <code>let</code> 都會被轉成 lambda + application，<br>所以他的 evaluation strategy 就是先做 macro 轉換，再加上 lambda, application。<br>在此不再贅述。</p>
-<h1 id="About-continuation"><a href="#About-continuation" class="headerlink" title="About continuation"></a>About continuation</h1><p>前面廢話那麼多，終於要來講講 continuation 了。<br>我記得當初我在跟教授講我在看 continuation 時，他說可以去看看 Kent 的論文（</p>
-<blockquote>
-<p>Kent 就是寫 tspl 和 Chez Scheme compiler 的那位</p>
-</blockquote>
-<p>continuation 在編譯器上應用似乎比較多，CPS 和 SSA 似乎有某種關係，<br>我覺得和 currying 也有，不過我還沒有看到那（<br>這邊大概只會對 <code>call/cc</code> 做探討，畢竟要讀懂一段 <code>call/cc</code> 的 scheme 我不知打了多少次結。</p>
-<h2 id="what-is-continuation"><a href="#what-is-continuation" class="headerlink" title="what is continuation?"></a>what is continuation?</h2><p>continuation 代表在 evaluation 過程中的一個點，你可以在那點代入新值，重啟計算。</p>
-<p>在方才長長的 evaluation list 中，只要有 eval 的地方就可以捕捉他的 continuation，紀錄下該 eval 的位置，<br>下次直接利用捕捉到的 continuation, 從剛剛那個位置代成新的值，重新 eval 出另一個結果。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">                   <span class="comment">; +-- continuation, the k</span></span><br><span class="line">(<span class="name"><span class="builtin-name">...</span></span>               <span class="comment">; v</span></span><br><span class="line">   (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) first-time-eval-val))<span class="comment">;&lt;-+ 1. the (call/cc ...)</span></span><br><span class="line">        <span class="comment">;                                       |    re-evaled as restart-val</span></span><br><span class="line">   ...) <span class="comment">;-----+- 2. get the re-eval-val of      |</span></span><br><span class="line">          <span class="comment">;   |    whole expr contains call/cc  |</span></span><br><span class="line">(<span class="name"><span class="builtin-name">...</span></span> ...) <span class="comment">;   |                                 |</span></span><br><span class="line">          <span class="comment">;   v                                 |</span></span><br><span class="line">(<span class="name">k</span> restart-val) <span class="comment">;-- 0. when apply the k expr ---+</span></span><br></pre></td></tr></table></figure>
-<p>continuation 在 scheme 中是頭等公民 (first-class)，屬於一種資料型態，像 function 一樣可以被傳來傳去的。<br><code>call/cc</code> 是捕捉 continuation 的一個 procedure，全名是 <code>call-with-current-continuation</code>。</p>
-<h2 id="call-cc-with-application"><a href="#call-cc-with-application" class="headerlink" title="call/cc with application"></a>call/cc with application</h2><p>現在我們看個 lambda 的例子：<code>(lambda (x) (* 2 x))</code>，我們感興趣的地方是那個 <code>x</code>，<br>我們希望之後計算可以從 x 帶入新值，再次進行計算。那就來捕捉他的 continuation 吧。</p>
-<p>上述例子使用 lambda 只是為了說明，我們還是需要一個實際的 application 來做 evaluation。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> x <span class="number">4</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">*</span></span> <span class="number">2</span> (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) x))) <span class="comment">;=&gt; 8</span></span><br></pre></td></tr></table></figure>
-<p>可以看到 <code>call/cc</code> 需要一個單參數的 lambda 作為參數，其中那個 k 就是 continuation 了。<br>我們在上例沒有把 k 存起來，而且在第一次 evaluation 中，<br>我們照舊傳了 x 回去給 <code>(lambda (e) (* 2 e))</code> 這個 procedure。</p>
-<p>現在試著將 continuation 帶出來。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> kon <span class="literal">#f</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> x <span class="number">2</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">*</span></span> <span class="number">2</span> (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k)</span><br><span class="line">                  (<span class="name"><span class="builtin-name">set!</span></span> kon k)</span><br><span class="line">                  x <span class="comment">;=&gt; x is 2, it's the value that first time eval returned</span></span><br><span class="line">               ))) <span class="comment">;=&gt; 4</span></span><br><span class="line"></span><br><span class="line">kon ;=&gt; #&lt;system continuation&gt;</span><br><span class="line"></span><br><span class="line">(<span class="name">kon</span> <span class="number">4</span>) <span class="comment">;=&gt; 8, use 4 replace the (call/cc ...) segment in previous evaluation</span></span><br><span class="line">(<span class="name">kon</span> <span class="number">8</span>) <span class="comment">;=&gt; 16, use 8 replace the (call/cc ...) segment in previous evaluation</span></span><br></pre></td></tr></table></figure>
-<p>可以觀察到，我們用 <code>set!</code> 將 x 的位置用 continuation 記錄下來，並帶入新值。<br>在使用 <code>call/cc</code> 時，就把感興趣的點用 <code>call/cc</code> 的 lambda 參數的 procedure body 包起來就好了，<br>而該點在第一次做 evaluation 時的傳回值，也是由 procedure body 這個 expression eval 出來的結果而定。<br>該點的值可以在其後重新用 continuation 以不同的值帶入。</p>
-<p>那對於 <code>call/cc</code> 首次 evaluation 回傳的 value 能不能直接是那個 continuation 呢？當然可以。<br>我們在這裡使用一個 id function: <code>(lambda (x) x)</code>。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">((<span class="name"><span class="builtin-name">lambda</span></span> (x) x) (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k))) <span class="comment">;=&gt; #&lt;system continuation&gt;</span></span><br></pre></td></tr></table></figure>
-<p>前面說到，可以 eval 的地方，就可以 <code>call/cc</code>，那在 application 裡，我們已經試過 arguments 的位置了。<br>那 procedure 的位置呢？</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">((<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k)) (<span class="name"><span class="builtin-name">lambda</span></span> (x) <span class="string">"hello"</span>)) <span class="comment">;=&gt; "hello"</span></span><br></pre></td></tr></table></figure>
-<p>看得出來，做 procedure eval 時，我們得到的 procedure 是該位置的 continuation，<br>而那個 continuation 被 apply 到 <code>(lambda (x) &quot;hello&quot;)</code> 上。<br>所以 <code>call/cc</code> 的部份被替換為 <code>(lambda (x) &quot;hello&quot;)</code>，<br>所以我們得到：<br><figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">((<span class="name"><span class="builtin-name">lambda</span></span> (x) <span class="string">"hello"</span>) (<span class="name"><span class="builtin-name">lambda</span></span> (x) <span class="string">"hello"</span>)) <span class="comment">;=&gt; "hello"</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="call-cc-with-special-form"><a href="#call-cc-with-special-form" class="headerlink" title="call/cc with special form"></a>call/cc with special form</h2><h3 id="define"><a href="#define" class="headerlink" title="define"></a>define</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> x (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k)))</span><br><span class="line">x ;=&gt; #&lt;system continuation&gt;</span><br><span class="line"></span><br><span class="line">(<span class="name">x</span> <span class="number">4</span>)</span><br><span class="line">x ;=&gt; 4</span><br></pre></td></tr></table></figure>
-<p>看懂發生什麼事了嗎？<br>第一次的 evaluation 把 continuation 綁到 <code>x</code> 上。<br>而 call continuation 時，將 <code>call/cc</code> 換成 <code>4</code> 重新傳給 <code>define</code>，<code>x</code> 被重新綁定為 4。<br>注意一點，<code>(define x ...)</code> 中，<code>call/cc</code> 並不能擺在 x 的位置，因為那個地方不做 evaluation。</p>
-<h3 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h3><p>我們剛剛把 continuation 帶出 <code>call/cc</code> 外呼叫，那在 <code>call/cc</code> 內呼叫會有什麼效果呢？<br>參考以下 tspl 中的例子：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> product</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (ls)</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (break)</span><br><span class="line">        (<span class="name"><span class="builtin-name">let</span></span> f ([<span class="name">ls</span> ls])</span><br><span class="line">          (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">            [(<span class="name"><span class="builtin-name">null?</span></span> ls) <span class="number">1</span>]</span><br><span class="line">            [(<span class="name"><span class="builtin-name">=</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) <span class="number">0</span>) (<span class="name">break</span> <span class="number">0</span>)]</span><br><span class="line">            [<span class="name"><span class="builtin-name">else</span></span> (<span class="name">print</span> (<span class="name"><span class="builtin-name">car</span></span> ls) (<span class="name">f</span> (<span class="name"><span class="builtin-name">cdr</span></span> ls)))]))))))</span><br></pre></td></tr></table></figure>
-<p>他定義了一個 product，將整條 list 乘起來。<br>他在 product 的 lambda 回傳 body 用一個 call/cc 包起來，捕捉那點 continuation。<br>然後在其中定義一個 named let 來做 recursion，遇到 0 時，直接返回 0 到外層的 continuation。<br>省略回傳，做乘法的部份。</p>
-<p>我們看一下，如果不用 <code>break</code> ，也就是<strong>正常的 <code>product</code></strong> 的結果。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line"><span class="comment">;; product.ss</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> normal-product</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (ls)</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (break)</span><br><span class="line">        (<span class="name"><span class="builtin-name">let</span></span> f ([<span class="name">ls</span> ls])</span><br><span class="line">          (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">            [(<span class="name"><span class="builtin-name">null?</span></span> ls) <span class="number">1</span>]</span><br><span class="line">            [(<span class="name"><span class="builtin-name">=</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) <span class="number">0</span>) <span class="number">0</span>]</span><br><span class="line">            [<span class="name"><span class="builtin-name">else</span></span> (<span class="name"><span class="builtin-name">*</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) (<span class="name">f</span> (<span class="name"><span class="builtin-name">cdr</span></span> ls)))]))))))</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(normal-product (5 4 0 2))</span><br><span class="line">|(call/cc ...)</span><br><span class="line">&gt;(f (5 4 0 2))</span><br><span class="line">&gt;(* 5 (f (4 0 2)))</span><br><span class="line">|    |(f (4 0 2))</span><br><span class="line">|    &gt;(* 4 (f (0 2)))</span><br><span class="line">|    |    |(f (0 2))</span><br><span class="line">|    |    &gt;0</span><br><span class="line">|    &gt;(* 4 0) ; do multiplication</span><br><span class="line">|    &gt;0</span><br><span class="line">&gt;(* 5 0) ; do multiplication</span><br><span class="line">&gt;0</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
-<p>如果是原本使用 <code>(break 0)</code> 的話：<br><figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line"><span class="comment">;; product.ss</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> product</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (ls)</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (break)</span><br><span class="line">        (<span class="name"><span class="builtin-name">let</span></span> f ([<span class="name">ls</span> ls])</span><br><span class="line">          (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">            [(<span class="name"><span class="builtin-name">null?</span></span> ls) <span class="number">1</span>]</span><br><span class="line">            [(<span class="name"><span class="builtin-name">=</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) <span class="number">0</span>) (<span class="name">break</span> <span class="number">0</span>)]</span><br><span class="line">            [<span class="name"><span class="builtin-name">else</span></span> (<span class="name">print</span> (<span class="name"><span class="builtin-name">car</span></span> ls) (<span class="name">f</span> (<span class="name"><span class="builtin-name">cdr</span></span> ls)))]))))))</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(product (5 4 0 2))</span><br><span class="line">|(call/cc ...)</span><br><span class="line">&gt;(f (5 4 0 2))</span><br><span class="line">&gt;(* 5 (f (4 0 2)))</span><br><span class="line">|    |(f (4 0 2))</span><br><span class="line">|    &gt;(* 4 (f (0 2)))</span><br><span class="line">|    |    |(f (0 2))</span><br><span class="line">|    |    &gt;(break 0) -+</span><br><span class="line">|                     |</span><br><span class="line">&gt;0 &lt;------------------+</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
-<p>真的會這樣嗎？<br>把 <code>*</code> 重新定義成以下這個具有 side-effect 的 <code>*</code> 來測試看看。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line"><span class="comment">;; mul.ss</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> mul *)</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name"><span class="builtin-name">*</span></span> a b)</span><br><span class="line">   (<span class="name"><span class="builtin-name">let</span></span> [(<span class="name">v</span> (<span class="name">mul</span> a b))]</span><br><span class="line">         (<span class="name">printf</span> <span class="string">"~A * ~A = ~A~%"</span> a b v) v))</span><br></pre></td></tr></table></figure>
-<p>用 petite repl 測試一下：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">load</span></span> <span class="string">"mul.ss"</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">load</span></span> <span class="string">"product.ss"</span>)</span><br><span class="line">(<span class="name">normal-product</span> '(<span class="number">5</span> <span class="number">4</span> <span class="number">0</span> <span class="number">2</span>))</span><br><span class="line"><span class="comment">;; 4 * 0 = 0</span></span><br><span class="line"><span class="comment">;; 5 * 0 = 0</span></span><br><span class="line"><span class="comment">;=&gt; 0</span></span><br><span class="line">(<span class="name">product</span> '(<span class="number">5</span> <span class="number">4</span> <span class="number">0</span> <span class="number">2</span>))</span><br><span class="line"><span class="comment">;=&gt; 0</span></span><br></pre></td></tr></table></figure>
-<h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><p>而在 <code>let</code> 中會有什麼效果呢？<br>大概是有點 <code>define</code> + <code>application</code> 的味道吧。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">let</span></span> ([<span class="name">x</span> (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k))])</span><br><span class="line">  (<span class="name">x</span> (<span class="name"><span class="builtin-name">lambda</span></span> (ignore) <span class="string">"hi"</span>))) <span class="comment">;=&gt; "hi"</span></span><br></pre></td></tr></table></figure>
-<p>另一個可以 <code>call/cc</code> 的地方就是 body-expr 的地方了，<br>不過效果大概就像是 <code>lambda</code> 的 body-expr，因為 <code>let</code> 的 body 就是轉成 <code>lambda</code> 的 body。</p>
-<p>至此，<code>call/cc</code> 可以放的地方就差不多說明過了，其餘 special form 的概念也就差不多一樣了。</p>
-<h1 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h1><p>來看看其他 continuation 的例子。</p>
-<h2 id="light-weight-process"><a href="#light-weight-process" class="headerlink" title="light-weight process"></a>light-weight process</h2><p>在 tspl 中提到，continuation 可用於 multi-tasking，<br>以下是書裡面的例子：</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> lwp-list '())</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> lwp</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (thunk)</span><br><span class="line">    (<span class="name"><span class="builtin-name">set!</span></span> lwp-list (<span class="name"><span class="builtin-name">append</span></span> lwp-list (<span class="name"><span class="builtin-name">list</span></span> thunk)))))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> start</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> ()</span><br><span class="line">    (<span class="name"><span class="builtin-name">let</span></span> ([<span class="name">p</span> (<span class="name"><span class="builtin-name">car</span></span> lwp-list)])</span><br><span class="line">      (<span class="name"><span class="builtin-name">set!</span></span> lwp-list (<span class="name"><span class="builtin-name">cdr</span></span> lwp-list))</span><br><span class="line">      (<span class="name">p</span>))))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> pause</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> ()</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (k)</span><br><span class="line">        (<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name">k</span> <span class="literal">#f</span>)))</span><br><span class="line">        (<span class="name">start</span>)))))</span><br><span class="line"></span><br><span class="line">(<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name"><span class="builtin-name">let</span></span> f () (<span class="name">pause</span>) (<span class="name"><span class="builtin-name">display</span></span> <span class="string">"h"</span>) (<span class="name">f</span>))))</span><br><span class="line">(<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name"><span class="builtin-name">let</span></span> f () (<span class="name">pause</span>) (<span class="name"><span class="builtin-name">display</span></span> <span class="string">"i"</span>) (<span class="name">f</span>))))</span><br><span class="line">(<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name"><span class="builtin-name">let</span></span> f () (<span class="name">pause</span>) (<span class="name"><span class="builtin-name">newline</span></span>) (<span class="name">f</span>))))</span><br><span class="line">(<span class="name">start</span>)</span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br></pre></td></tr></table></figure>
-<p>來 trace 一下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">;=&gt; lwp-list &lt;display h&gt; &lt;display i&gt; &lt;newline&gt;</span><br><span class="line">(start)</span><br><span class="line">|    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">|    |(p)</span><br><span class="line">|    &gt;((lambda () (let f () (pause) (display &quot;h&quot;) (f))))</span><br><span class="line">|    &gt;(let f () (pause) (display &quot;h&quot;) (f))</span><br><span class="line">|    |    |(pause)</span><br><span class="line">|    |    &gt;(call/cc ...) # continuation1 here</span><br><span class="line">|    |    |    |(lwp (lambda () (k #f)))</span><br><span class="line">|    |    |    |        ;=&gt; &lt;display i&gt; &lt;newline&gt; &lt;k of h&gt;</span><br><span class="line">|    |    |    |(start)</span><br><span class="line">                   |</span><br><span class="line">       +-----------+</span><br><span class="line">       |</span><br><span class="line">       v</span><br><span class="line">... (start)</span><br><span class="line">... |    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">... |    |(p)</span><br><span class="line">... |    &gt;((lambda () (let f () (pause) (display &quot;h&quot;) (f))))</span><br><span class="line">... |    &gt;(let f () (pause) (display &quot;h&quot;) (f))</span><br><span class="line">... |    |    |(pause)</span><br><span class="line">... |    |    &gt;(call/cc ...) # continuation2 here</span><br><span class="line">... |    |    |    |(lwp (lambda () (k #f)))</span><br><span class="line">... |    |    |    |        ;=&gt; &lt;newline&gt; &lt;k of h&gt; &lt;k of i&gt;</span><br><span class="line">... |    |    |    |(start)</span><br><span class="line">                       |</span><br><span class="line">       +---------------+</span><br><span class="line">       |</span><br><span class="line">       v</span><br><span class="line">... (start)</span><br><span class="line">... |    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">... |    |(p)</span><br><span class="line">... |    &gt;((lambda () (let f () (pause) (display &quot;h&quot;) (f))))</span><br><span class="line">... |    &gt;(let f () (pause) (display &quot;h&quot;) (f))</span><br><span class="line">... |    |    |(pause)</span><br><span class="line">... |    |    &gt;(call/cc ...) # continuation3 here</span><br><span class="line">... |    |    |    |(lwp (lambda () (k #f)))</span><br><span class="line">... |    |    |    |        ;=&gt; &lt;k of h&gt; &lt;k of i&gt; &lt;k of \n&gt;</span><br><span class="line">... |    |    |    |(start)</span><br><span class="line">                       |</span><br><span class="line">       +---------------+</span><br><span class="line">       |</span><br><span class="line">       v</span><br><span class="line">... (start)</span><br><span class="line">... |    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">... |    |(p)</span><br><span class="line">... |    &gt;(continuation of display h)</span><br><span class="line">... |    |    |(display &quot;h&quot;)</span><br><span class="line">... |    |    | (f) in let-expr ; recursive call</span><br><span class="line">... |    |    | (pause)</span><br><span class="line">... |    |    |     | (append continuation to lwp-list)</span><br><span class="line">... |    |    |     | (start)</span><br><span class="line">                         |</span><br><span class="line">    +--------------------+</span><br><span class="line">    |</span><br><span class="line">    v</span><br><span class="line">... continuation of i</span><br><span class="line">... (display &quot;i&quot;)</span><br><span class="line">... (pause)</span><br><span class="line">... ... (append continuation of i)</span><br><span class="line">... ... (start)</span><br><span class="line">           |</span><br><span class="line">    +------+</span><br><span class="line">    |</span><br><span class="line">    v</span><br><span class="line">... continuation of newline</span><br><span class="line">... (newline)</span><br><span class="line">... (pause)</span><br><span class="line">... ... (append continuation of \n)</span><br><span class="line">... ... (start)</span><br><span class="line"></span><br><span class="line">... inf looping</span><br></pre></td></tr></table></figure>
-<p>抽象點來看，task 大概可以分成兩個部份，<code>pause</code> 前和後。<br>每次遇到 <code>pause</code> 時，就會把 continuation 保存起來，然後 switch task，<br>然後每個 task 跑過一遍，就會回來 <code>pause</code> 這個位置，<code>pause</code> 會被 <code>#f</code> 取代掉，<br>接著 <code>display</code>，do named let recursive call，接著重新從開始跑到 <code>pause</code>，<br>reserve continuation, switch task… inf looping…</p>
-<h2 id="Yin-Yang-Puzzle"><a href="#Yin-Yang-Puzzle" class="headerlink" title="Yin-Yang Puzzle"></a>Yin-Yang Puzzle</h2><p>陰陽謎題 (Yin-Yang Puzzle) 據說是 David Madore 在 1999 年時，試圖去輸出的一個序列。<br>用他發明的語言 <a href="https://en.wikipedia.org/wiki/Unlambda" target="_blank" rel="noopener">Unlambda</a>（沒有 lambda operation 的 lambda calculas 實作，當時是用 scheme 寫的），<br>他一開始用了 600 個字元，後來為他的語言加上 <code>call/cc</code> 機制後，程序長度縮短到 12 個字元。<a href="https://stackoverflow.com/questions/30409800/any-history-background-about-the-yin-yang-puzzle-in-detail#answer-30412273" target="_blank" rel="noopener">ref</a></p>
-<p>後來下面這個版本便是他由 Unlambda 轉成 scheme 的版本。</p>
-<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">let*</span></span> ((<span class="name">yin</span> ((<span class="name"><span class="builtin-name">lambda</span></span> (foo) (<span class="name"><span class="builtin-name">newline</span></span>) foo)</span><br><span class="line">             (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (bar) bar))))</span><br><span class="line">       (<span class="name">yang</span> ((<span class="name"><span class="builtin-name">lambda</span></span> (foo) (<span class="name"><span class="builtin-name">write-char</span></span> <span class="literal">#\*</span>) foo)</span><br><span class="line">              (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (bar) bar)))))</span><br><span class="line">  (<span class="name">yin</span> yang))</span><br><span class="line"></span><br><span class="line"><span class="comment">;=&gt;</span></span><br><span class="line"><span class="comment">;=&gt; *</span></span><br><span class="line"><span class="comment">;=&gt; **</span></span><br><span class="line"><span class="comment">;=&gt; ***</span></span><br><span class="line"><span class="comment">;=&gt; ****</span></span><br><span class="line"><span class="comment">;=&gt; *****</span></span><br><span class="line"><span class="comment">;=&gt; ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 有的版本會用 (display '@) (display '*) 取代</span></span><br><span class="line"><span class="comment">;=&gt; @*@**@***@****@*****@******@*******@********@*********@ ...</span></span><br></pre></td></tr></table></figure>
-<p>trace 上面這段：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let*</span><br><span class="line">  ;; k0@yin, k0@yang</span><br><span class="line">  yin = k0@yin                              ;=&gt; @</span><br><span class="line">  yang = k0@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yin k@0yang)</span><br><span class="line">             ;; back to k0@yin with k0@yang</span><br><span class="line"></span><br><span class="line">  ;; k1@yang</span><br><span class="line">  yin = ((begin (display &apos;@) k0@yang))      ;=&gt; @</span><br><span class="line">  yang = k1@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k1@yang)</span><br><span class="line">             ;; back to k0@yang with k1@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k0@yang, so prev yin is k0@yin</span><br><span class="line">  yang = k1@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yin k1@yang)</span><br><span class="line">             ;; back to k0@yin with k1@yang</span><br><span class="line"></span><br><span class="line">  ;; k2@yang</span><br><span class="line">  yin = k1@yang                             ;=&gt; @</span><br><span class="line">  yang = k2@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k1@yang k2@yang)</span><br><span class="line">             ;; back to k1@yang with k2@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k1@yang, so prev yin is k0@yang</span><br><span class="line">  yang = k2@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k2@yang)</span><br><span class="line">             ;; back to k0@yang with k2@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k0@yang, so prev yin is k0@yin</span><br><span class="line">  yang = k2@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yin k2@yang)</span><br><span class="line">             ;; back to k0@yin with k2@yang</span><br><span class="line"></span><br><span class="line">  yin = k2@yang                             ;=&gt; @</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k2@yang k3@yang)</span><br><span class="line">             ;; back to k2@yang with k3@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k2@yang, so prev yin is k1@yang</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k1@yang k3@yang)</span><br><span class="line">             ;; back to k1@yang with k3@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k1@yang, so prev yin is k0@yang</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k3@yang)           </span><br><span class="line">             ;; back to k0@yang with k3@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k0@yang, so prev yin is k0@yin</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k3@yang)</span><br><span class="line">             ;; back to k0@yin with k3@yang</span><br><span class="line"></span><br><span class="line">  yin = k3@yang                             ;=&gt; @</span><br><span class="line">  yang = k4@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k3@yang k4@yang)</span><br><span class="line">             ;; back to k3@yang with k4@yang</span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></p>
-<p>感覺大概就是來來回回，每次到 k0@yin 時，就會產生 k(n+1)@yang，<br>然後拿這個 k(n+1)@yang 跳到最遠端的 k(n)@yang 重新往回滾，就像海浪一般。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(yin0&gt;yang0)</span><br><span class="line">     |</span><br><span class="line">     +-------------+</span><br><span class="line">                   v</span><br><span class="line">(yin0&gt;yang1)&lt;-(yin0 yang0)</span><br><span class="line">     |</span><br><span class="line">     +----------------------------+</span><br><span class="line">                                  v</span><br><span class="line">(yin0&gt;yang2)&lt;-(yin0 yang1)&lt;-(yang0 yang1)</span><br><span class="line">     |</span><br><span class="line">     +-------------------------------------------+</span><br><span class="line">                                                 v</span><br><span class="line">(yin0&gt;yang3)&lt;-(yin0 yang2)&lt;-(yang0 yang2)&lt;-(yang0 yang2)</span><br><span class="line">     |</span><br><span class="line">     +----------------------------------------------------------+</span><br><span class="line">                                                                v</span><br><span class="line">(yin0&gt;yang4)&lt;-(yin0 yang3)&lt;-(yang0 yang3)&lt;-(yang0 yang3)&lt;-(yang0 yang3)</span><br><span class="line">     |</span><br><span class="line">     +--- ... ... ...</span><br></pre></td></tr></table></figure>
-<p>continuation 的紀錄大概就到這裡，tspl 裡面有<a href="https://scheme.com/tspl4/further.html" target="_blank" rel="noopener">五個練習</a>，<br>Exercise 3.3.[1-5]，這裡有 Exercise 3.3.[1-4] 的<a href="https://scheme.com/tspl4/answers.html" target="_blank" rel="noopener">解答</a>。</p>
-<p>之後應該會對 CPS 的部份做一次探討。</p>
-]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>fp</tag>
-        <tag>lambda</tag>
-        <tag>scheme</tag>
-        <tag>lisp</tag>
-        <tag>continuation</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>簡明 Arch 安裝指南</title>
     <url>/2019/06/06/arch-install/</url>
     <content><![CDATA[<center>
@@ -1904,6 +1682,228 @@ wait to refer:<br>
       <tags>
         <tag>linux</tag>
         <tag>cygwin</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我所理解的 continuation</title>
+    <url>/2019/08/10/continuation/</url>
+    <content><![CDATA[<center>
+對，就是那個 continuation。
+</center>
+
+<link href="/files/scheme-syntax-patch.css" rel="stylesheet" type="text/css">
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h1 id="About-Scheme"><a href="#About-Scheme" class="headerlink" title="About Scheme"></a>About Scheme</h1><p>學校 scheme 學了大半學期，continuation 這個詞估計同學連聽都沒聽過。</p>
+<p>說到底我們學 scheme 也就是為了寫那個 eval/apply (mini scheme) 罷了，<br>頂多還有 oop 那個 vtable 而已（就是實作那個傳統 oo 的 message passing）。</p>
+<p>用 scheme 寫 compiler 什麼的根本是夢想（艸<br>當初如果學的是 yscheme 的 p523(p423) 該有多好（<br>反正現在入坑還來得及（？</p>
+<p>總結一下目前為止，除了老師的教材，我學習過的 scheme 資源好了。</p>
+<ul>
+<li><a href="https://sarabander.github.io/sicp/html/index.xhtml" target="_blank" rel="noopener">SICP</a></li>
+<li><a href="https://deathking.github.io/yast-cn/" target="_blank" rel="noopener">Yet Another Scheme Tutorial</a></li>
+<li><a href="https://scheme.com/tspl4" target="_blank" rel="noopener">The Scheme Programming Language</a></li>
+</ul>
+<p>其中在學校老師推薦的閱讀是 SICP，我讀完第一章就讀不下去了。<br>後來看到 yast，就先跳過去讀，第一次看到 continuation 就是在這裡，<br>還有 promise 之類的東西，才了解到原來 scheme 除了 S-expression 外，還有這麼多有趣的特性。</p>
+<p>不過讀 yast 跳過了蠻多 macro 的部份，因為有許多內容是基於實作 (MIT Scheme) 的。<br>後來我就去寫我的 scheme interpreter in C， 雖然是個玩具，不過也玩了很久。</p>
+<p>目前因為 Lab 同學介紹，我得知了 <a href="https://github.com/tiancaiamao/yscheme" target="_blank" rel="noopener">yscheme</a>，但在研究時發現自己對 syntax 還是不太熟，<br>所以又找了 tspl ，準備詳細地再學一次。</p>
+<p>目前對於 Scheme 的計畫是 tspl &gt; yscheme &gt; SICP &gt; The Little Schemer（沒有官方版本，只有找到<a href="https://the-little-schemer.readthedocs.io/zh_CN/latest/commandments_and_rules.html" target="_blank" rel="noopener">筆記</a>）。<br>不過要完成大概需要很久吧（</p>
+<p>此外，我來說一下我接觸過的 lisp 實作吧。</p>
+<p>scheme:</p>
+<ul>
+<li><a href="https://www.gnu.org/software/guile/" target="_blank" rel="noopener">Guile</a> 出自 GNU ，強調其腳本結合性，可以寫 C/Cpp 去擴展它，編譯器前端還支持 JS, elisp, Lua。</li>
+<li><a href="https://plt-scheme.org/" target="_blank" rel="noopener">Racket</a> 又稱 plt-scheme, DrScheme，其底下有一堆小語言，<a href="/2018/07/27/flolac18/#Talk-Racket">flolac’18</a> 有介紹，我寫作業用的 impl。</li>
+<li><a href="https://www.biwascheme.org/" target="_blank" rel="noopener">BiwaScheme</a> JS 寫的，當初學校教學用的是這個的 <a href="https://repl.it/languages/scheme" target="_blank" rel="noopener">REPL</a>。</li>
+<li><a href="https://www.gnu.org/software/mit-scheme/" target="_blank" rel="noopener">GNU/MIT-scheme</a> yast 用的就是這個。</li>
+<li><a href="https://scheme.com/download/" target="_blank" rel="noopener">Chez Scheme</a> Petite 是他的免費版本。此 impl 聽說很快，可以看看<a href="https://www.yinwang.org/blog-cn/2013/03/28/chez-scheme" target="_blank" rel="noopener">大神介紹</a>。</li>
+<li><a href="https://www.call-cc.org/" target="_blank" rel="noopener">CHICKEN Scheme</a> 這我聽很久了，但一直沒去了解它（</li>
+</ul>
+<p>common lisp:</p>
+<ul>
+<li><a href="https://clisp.sourceforge.io/" target="_blank" rel="noopener">CLISP</a> GNU 的 Common Lisp 的實作，Common Lisp 和 Scheme 為 Lisp 兩大流派，彼此影響。</li>
+</ul>
+<p>others:</p>
+<ul>
+<li><a href="https://www.gnu.org/software/emacs/manual/html_node/eintr/" target="_blank" rel="noopener">elisp</a> Emacs Lisp，神之編輯器的內建語言，神的語言果然不能太平凡啊。</li>
+<li><a href="https://clojure.org/" target="_blank" rel="noopener">Clojure</a> 跑在 JVM 上的 lisp 方言。</li>
+</ul>
+<h1 id="About-evaluation"><a href="#About-evaluation" class="headerlink" title="About evaluation"></a>About evaluation</h1><p>要理解 continuation，我們必須先了解 scheme 的 eval/apply。<br>continuation 和 evaluation strategy 是習習相關的。</p>
+<h2 id="application"><a href="#application" class="headerlink" title="application"></a>application</h2><blockquote>
+<p><code>(procedure arg ...)</code></p>
+</blockquote>
+<p>假設現在有個簡單的 application: <code>(+ 1 2)</code>，interpreter 要去解釋他：</p>
+<ul>
+<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
+<li>eval <code>1</code> literal，convert it to number instance</li>
+<li>eval <code>2</code> literal，convert it to number instance</li>
+<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
+<li>return 3</li>
+</ul>
+<p>複雜一點的例子 <code>(cons (+ 1 2) (list 3))</code>：</p>
+<ul>
+<li>eval <code>cons</code>, find the procedure that bind to it</li>
+<li>eval <code>(+ 1 2)</code><ul>
+<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
+<li>eval <code>1</code> literal，convert it to number instance</li>
+<li>eval <code>2</code> literal，convert it to number instance</li>
+<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
+<li>return 3</li>
+</ul>
+</li>
+<li>eval <code>(list 3)</code><ul>
+<li>eval <code>list</code>, find the procedure(list constructor) bind to it</li>
+<li>eval <code>3</code> literal, convert it to number instance</li>
+<li>return (3 . nil)</li>
+</ul>
+</li>
+<li>apply cons on 3 and 3</li>
+<li>return (3 . (3 . nil))</li>
+</ul>
+<h2 id="special-form-if"><a href="#special-form-if" class="headerlink" title="special form - if"></a>special form - if</h2><blockquote>
+<p><code>(if test-expr then-expr)</code><br><code>(if test-expr then-expr else-expr)</code></p>
+</blockquote>
+<p>叫做 special form 的原因是因為它的 evaluation strategy 和 application 不同，<br>凡是 special form 的 keyword 都有一套屬於自己的 evaluation strategy。</p>
+<p>舉個例子，如果把 <code>if</code> 實作成 application 的話，每個參數都要被 eval。<br>考慮此情況：<code>(if #t (+ 1 2) (1 2))</code>。</p>
+<p>在 application 中 <code>(1 2)</code> 不能被 eval，因為 <code>1</code> 並不是一個 procedure，他不能 apply 到 <code>2</code> 上。<br>這會讓 interpreter 拋出一個 exception 來警告你。<br>但實際上 interpreter 卻沒有。為什麼呢？</p>
+<p>因為 <code>if</code> 是 special form，他只會 eval 關心的部份，剩下的部份他不進行 eval，所以不噴 exception。<br>所以對於 <code>if</code> 的 evaluation 是：</p>
+<ul>
+<li>eval <code>if</code>, use the if special form evaluation strategy</li>
+<li>eval <code>#t</code> literal, convert it to boolean value</li>
+<li>because the test-expr is true, we select then-expr to eval</li>
+<li>eval <code>(+ 1 2)</code><ul>
+<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
+<li>eval <code>1</code> literal，convert it to number instance</li>
+<li>eval <code>2</code> literal，convert it to number instance</li>
+<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
+<li>return 3</li>
+</ul>
+</li>
+</ul>
+<p>但是如果是 <code>(if #f (+ 1 2) (1 2))</code>，就會噴 exception 了。<br>下面例子會用到 <code>cond</code>，他跟 <code>if</code> 很像，這邊就不再贅述。</p>
+<h2 id="special-form-lambda"><a href="#special-form-lambda" class="headerlink" title="special form - lambda"></a>special form - lambda</h2><blockquote>
+<p><code>(lambda (arg-id ...) body ...+)</code><br><code>(lambda rest-id body ...+)</code><br><code>(lambda (arg-id ...+ . rest-id) body ...+)</code></p>
+</blockquote>
+<p><code>lambda</code> 此 special form 用於構造一個 procedure，一個 procedure 包含 arguments 和 procedure body。</p>
+<p>對於 <code>(lambda (x) (+ x 1))</code>：</p>
+<ul>
+<li>eval <code>lambda</code>, construct a lambda procedure</li>
+<li>take arg list as procedure arguments</li>
+<li>take body expressions as procedure body</li>
+<li>return the constructed procedure</li>
+</ul>
+<p>而當我們 apply 這個 procedure 為 <code>((lambda (x) (+ x 1)) 3)</code> 時：</p>
+<ul>
+<li>eval <code>(lambda (x) (+ x 1))</code><ul>
+<li>eval <code>lambda</code>, construct a lambda procedure</li>
+<li>take arg list as procedure arguments</li>
+<li>take body expressions as procedure body</li>
+<li>return the constructed procedure</li>
+</ul>
+</li>
+<li>eval <code>3</code> literal, convert it to number instance</li>
+<li>apply procedure on 3<ul>
+<li>bind 3 to <code>x</code>, extend the binding to environment</li>
+<li>eval <code>(+ x 1)</code><ul>
+<li>eval <code>+</code> symbol，find the procedure bind to it</li>
+<li>eval <code>x</code> symbol, lookup the value(3) bind to it</li>
+<li>eval <code>1</code> literal, convert it to number instance</li>
+<li>apply procedure that bind to <code>+</code> to 3(x) and 1</li>
+<li>return 4</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="special-form-define"><a href="#special-form-define" class="headerlink" title="special form - define"></a>special form - define</h2><blockquote>
+<p><code>(define id expr)</code><br><code>(define (head arg ...) body ...+)</code><br><code>(define (head arg ... . rest-id) body ...+)</code></p>
+</blockquote>
+<p><code>define</code> 可以用來綁定變數，他也提供了 short form 來定義函數。</p>
+<p>舉個例子，<code>(define x (+ 1 2 3))</code>：</p>
+<ul>
+<li>eval <code>define</code></li>
+<li>take <code>x</code> as binding symbol</li>
+<li>eval <code>(+ 1 2)</code> as binding value<ul>
+<li>eval <code>+</code> symbol，find the procedure bind to it.</li>
+<li>eval <code>1</code> literal，convert it to number instance</li>
+<li>eval <code>2</code> literal，convert it to number instance</li>
+<li>apply procedure that bind to <code>+</code> to 1 and 2</li>
+<li>return 3</li>
+</ul>
+</li>
+<li>bind 3 to x, extend the binding to environment</li>
+</ul>
+<p>至於他的 short form 就是 macro 變換：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">head</span> arg ...) body ...+)</span><br><span class="line"><span class="comment">;=&gt; (define head (lambda (arg ...) body ...+))</span></span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name">head</span> arg ... . rest-id) body ...+)</span><br><span class="line"><span class="comment">;=&gt; (define head (lambda (arg ... . rest-id) body ...+))</span></span><br></pre></td></tr></table></figure>
+<h2 id="special-form-let"><a href="#special-form-let" class="headerlink" title="special form - let"></a>special form - let</h2><blockquote>
+<p><code>(let ([id expr] ...) body ...+)</code><br><code>(let proc-id ([arg-id init-expr] ...) body ...+)</code></p>
+</blockquote>
+<p><code>let</code> 則可以寫成一種 lambda + application 的 macro 變換。</p>
+<p>比如 <code>(let [(x 3) (y 4)] (+ x y))</code> 會被轉成 <code>((lambda (x y) (+ x y)) 3 4)</code><br>而像上面的例子 <code>((lambda (x) (+ x 1)) 3)</code> 則可以寫作 <code>(let [(x 3)] (+ x 1))</code></p>
+<p>由於 <code>let</code> 都會被轉成 lambda + application，<br>所以他的 evaluation strategy 就是先做 macro 轉換，再加上 lambda, application。<br>在此不再贅述。</p>
+<h1 id="About-continuation"><a href="#About-continuation" class="headerlink" title="About continuation"></a>About continuation</h1><p>前面廢話那麼多，終於要來講講 continuation 了。<br>我記得當初我在跟教授講我在看 continuation 時，他說可以去看看 Kent 的論文（</p>
+<blockquote>
+<p>Kent 就是寫 tspl 和 Chez Scheme compiler 的那位</p>
+</blockquote>
+<p>continuation 在編譯器上應用似乎比較多，CPS 和 SSA 似乎有某種關係，<br>我覺得和 currying 也有，不過我還沒有看到那（<br>這邊大概只會對 <code>call/cc</code> 做探討，畢竟要讀懂一段 <code>call/cc</code> 的 scheme 我不知打了多少次結。</p>
+<h2 id="what-is-continuation"><a href="#what-is-continuation" class="headerlink" title="what is continuation?"></a>what is continuation?</h2><p>continuation 代表在 evaluation 過程中的一個點，你可以在那點代入新值，重啟計算。</p>
+<p>在方才長長的 evaluation list 中，只要有 eval 的地方就可以捕捉他的 continuation，紀錄下該 eval 的位置，<br>下次直接利用捕捉到的 continuation, 從剛剛那個位置代成新的值，重新 eval 出另一個結果。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">                   <span class="comment">; +-- continuation, the k</span></span><br><span class="line">(<span class="name"><span class="builtin-name">...</span></span>               <span class="comment">; v</span></span><br><span class="line">   (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) first-time-eval-val))<span class="comment">;&lt;-+ 1. the (call/cc ...)</span></span><br><span class="line">        <span class="comment">;                                       |    re-evaled as restart-val</span></span><br><span class="line">   ...) <span class="comment">;-----+- 2. get the re-eval-val of      |</span></span><br><span class="line">          <span class="comment">;   |    whole expr contains call/cc  |</span></span><br><span class="line">(<span class="name"><span class="builtin-name">...</span></span> ...) <span class="comment">;   |                                 |</span></span><br><span class="line">          <span class="comment">;   v                                 |</span></span><br><span class="line">(<span class="name">k</span> restart-val) <span class="comment">;-- 0. when apply the k expr ---+</span></span><br></pre></td></tr></table></figure>
+<p>continuation 在 scheme 中是頭等公民 (first-class)，屬於一種資料型態，像 function 一樣可以被傳來傳去的。<br><code>call/cc</code> 是捕捉 continuation 的一個 procedure，全名是 <code>call-with-current-continuation</code>。</p>
+<h2 id="call-cc-with-application"><a href="#call-cc-with-application" class="headerlink" title="call/cc with application"></a>call/cc with application</h2><p>現在我們看個 lambda 的例子：<code>(lambda (x) (* 2 x))</code>，我們感興趣的地方是那個 <code>x</code>，<br>我們希望之後計算可以從 x 帶入新值，再次進行計算。那就來捕捉他的 continuation 吧。</p>
+<p>上述例子使用 lambda 只是為了說明，我們還是需要一個實際的 application 來做 evaluation。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> x <span class="number">4</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">*</span></span> <span class="number">2</span> (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) x))) <span class="comment">;=&gt; 8</span></span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>call/cc</code> 需要一個單參數的 lambda 作為參數，其中那個 k 就是 continuation 了。<br>我們在上例沒有把 k 存起來，而且在第一次 evaluation 中，<br>我們照舊傳了 x 回去給 <code>(lambda (e) (* 2 e))</code> 這個 procedure。</p>
+<p>現在試著將 continuation 帶出來。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> kon <span class="literal">#f</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> x <span class="number">2</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">*</span></span> <span class="number">2</span> (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k)</span><br><span class="line">                  (<span class="name"><span class="builtin-name">set!</span></span> kon k)</span><br><span class="line">                  x <span class="comment">;=&gt; x is 2, it's the value that first time eval returned</span></span><br><span class="line">               ))) <span class="comment">;=&gt; 4</span></span><br><span class="line"></span><br><span class="line">kon ;=&gt; #&lt;system continuation&gt;</span><br><span class="line"></span><br><span class="line">(<span class="name">kon</span> <span class="number">4</span>) <span class="comment">;=&gt; 8, use 4 replace the (call/cc ...) segment in previous evaluation</span></span><br><span class="line">(<span class="name">kon</span> <span class="number">8</span>) <span class="comment">;=&gt; 16, use 8 replace the (call/cc ...) segment in previous evaluation</span></span><br></pre></td></tr></table></figure>
+<p>可以觀察到，我們用 <code>set!</code> 將 x 的位置用 continuation 記錄下來，並帶入新值。<br>在使用 <code>call/cc</code> 時，就把感興趣的點用 <code>call/cc</code> 的 lambda 參數的 procedure body 包起來就好了，<br>而該點在第一次做 evaluation 時的傳回值，也是由 procedure body 這個 expression eval 出來的結果而定。<br>該點的值可以在其後重新用 continuation 以不同的值帶入。</p>
+<p>那對於 <code>call/cc</code> 首次 evaluation 回傳的 value 能不能直接是那個 continuation 呢？當然可以。<br>我們在這裡使用一個 id function: <code>(lambda (x) x)</code>。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">((<span class="name"><span class="builtin-name">lambda</span></span> (x) x) (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k))) <span class="comment">;=&gt; #&lt;system continuation&gt;</span></span><br></pre></td></tr></table></figure>
+<p>前面說到，可以 eval 的地方，就可以 <code>call/cc</code>，那在 application 裡，我們已經試過 arguments 的位置了。<br>那 procedure 的位置呢？</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">((<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k)) (<span class="name"><span class="builtin-name">lambda</span></span> (x) <span class="string">"hello"</span>)) <span class="comment">;=&gt; "hello"</span></span><br></pre></td></tr></table></figure>
+<p>看得出來，做 procedure eval 時，我們得到的 procedure 是該位置的 continuation，<br>而那個 continuation 被 apply 到 <code>(lambda (x) &quot;hello&quot;)</code> 上。<br>所以 <code>call/cc</code> 的部份被替換為 <code>(lambda (x) &quot;hello&quot;)</code>，<br>所以我們得到：<br><figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">((<span class="name"><span class="builtin-name">lambda</span></span> (x) <span class="string">"hello"</span>) (<span class="name"><span class="builtin-name">lambda</span></span> (x) <span class="string">"hello"</span>)) <span class="comment">;=&gt; "hello"</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="call-cc-with-special-form"><a href="#call-cc-with-special-form" class="headerlink" title="call/cc with special form"></a>call/cc with special form</h2><h3 id="define"><a href="#define" class="headerlink" title="define"></a>define</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> x (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k)))</span><br><span class="line">x ;=&gt; #&lt;system continuation&gt;</span><br><span class="line"></span><br><span class="line">(<span class="name">x</span> <span class="number">4</span>)</span><br><span class="line">x ;=&gt; 4</span><br></pre></td></tr></table></figure>
+<p>看懂發生什麼事了嗎？<br>第一次的 evaluation 把 continuation 綁到 <code>x</code> 上。<br>而 call continuation 時，將 <code>call/cc</code> 換成 <code>4</code> 重新傳給 <code>define</code>，<code>x</code> 被重新綁定為 4。<br>注意一點，<code>(define x ...)</code> 中，<code>call/cc</code> 並不能擺在 x 的位置，因為那個地方不做 evaluation。</p>
+<h3 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h3><p>我們剛剛把 continuation 帶出 <code>call/cc</code> 外呼叫，那在 <code>call/cc</code> 內呼叫會有什麼效果呢？<br>參考以下 tspl 中的例子：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> product</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (ls)</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (break)</span><br><span class="line">        (<span class="name"><span class="builtin-name">let</span></span> f ([<span class="name">ls</span> ls])</span><br><span class="line">          (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">            [(<span class="name"><span class="builtin-name">null?</span></span> ls) <span class="number">1</span>]</span><br><span class="line">            [(<span class="name"><span class="builtin-name">=</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) <span class="number">0</span>) (<span class="name">break</span> <span class="number">0</span>)]</span><br><span class="line">            [<span class="name"><span class="builtin-name">else</span></span> (<span class="name">print</span> (<span class="name"><span class="builtin-name">car</span></span> ls) (<span class="name">f</span> (<span class="name"><span class="builtin-name">cdr</span></span> ls)))]))))))</span><br></pre></td></tr></table></figure>
+<p>他定義了一個 product，將整條 list 乘起來。<br>他在 product 的 lambda 回傳 body 用一個 call/cc 包起來，捕捉那點 continuation。<br>然後在其中定義一個 named let 來做 recursion，遇到 0 時，直接返回 0 到外層的 continuation。<br>省略回傳，做乘法的部份。</p>
+<p>我們看一下，如果不用 <code>break</code> ，也就是<strong>正常的 <code>product</code></strong> 的結果。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line"><span class="comment">;; product.ss</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> normal-product</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (ls)</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (break)</span><br><span class="line">        (<span class="name"><span class="builtin-name">let</span></span> f ([<span class="name">ls</span> ls])</span><br><span class="line">          (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">            [(<span class="name"><span class="builtin-name">null?</span></span> ls) <span class="number">1</span>]</span><br><span class="line">            [(<span class="name"><span class="builtin-name">=</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) <span class="number">0</span>) <span class="number">0</span>]</span><br><span class="line">            [<span class="name"><span class="builtin-name">else</span></span> (<span class="name"><span class="builtin-name">*</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) (<span class="name">f</span> (<span class="name"><span class="builtin-name">cdr</span></span> ls)))]))))))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(normal-product (5 4 0 2))</span><br><span class="line">|(call/cc ...)</span><br><span class="line">&gt;(f (5 4 0 2))</span><br><span class="line">&gt;(* 5 (f (4 0 2)))</span><br><span class="line">|    |(f (4 0 2))</span><br><span class="line">|    &gt;(* 4 (f (0 2)))</span><br><span class="line">|    |    |(f (0 2))</span><br><span class="line">|    |    &gt;0</span><br><span class="line">|    &gt;(* 4 0) ; do multiplication</span><br><span class="line">|    &gt;0</span><br><span class="line">&gt;(* 5 0) ; do multiplication</span><br><span class="line">&gt;0</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>如果是原本使用 <code>(break 0)</code> 的話：<br><figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line"><span class="comment">;; product.ss</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> product</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (ls)</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (break)</span><br><span class="line">        (<span class="name"><span class="builtin-name">let</span></span> f ([<span class="name">ls</span> ls])</span><br><span class="line">          (<span class="name"><span class="builtin-name">cond</span></span></span><br><span class="line">            [(<span class="name"><span class="builtin-name">null?</span></span> ls) <span class="number">1</span>]</span><br><span class="line">            [(<span class="name"><span class="builtin-name">=</span></span> (<span class="name"><span class="builtin-name">car</span></span> ls) <span class="number">0</span>) (<span class="name">break</span> <span class="number">0</span>)]</span><br><span class="line">            [<span class="name"><span class="builtin-name">else</span></span> (<span class="name">print</span> (<span class="name"><span class="builtin-name">car</span></span> ls) (<span class="name">f</span> (<span class="name"><span class="builtin-name">cdr</span></span> ls)))]))))))</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(product (5 4 0 2))</span><br><span class="line">|(call/cc ...)</span><br><span class="line">&gt;(f (5 4 0 2))</span><br><span class="line">&gt;(* 5 (f (4 0 2)))</span><br><span class="line">|    |(f (4 0 2))</span><br><span class="line">|    &gt;(* 4 (f (0 2)))</span><br><span class="line">|    |    |(f (0 2))</span><br><span class="line">|    |    &gt;(break 0) -+</span><br><span class="line">|                     |</span><br><span class="line">&gt;0 &lt;------------------+</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>真的會這樣嗎？<br>把 <code>*</code> 重新定義成以下這個具有 side-effect 的 <code>*</code> 來測試看看。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line"><span class="comment">;; mul.ss</span></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> mul *)</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> (<span class="name"><span class="builtin-name">*</span></span> a b)</span><br><span class="line">   (<span class="name"><span class="builtin-name">let</span></span> [(<span class="name">v</span> (<span class="name">mul</span> a b))]</span><br><span class="line">         (<span class="name">printf</span> <span class="string">"~A * ~A = ~A~%"</span> a b v) v))</span><br></pre></td></tr></table></figure>
+<p>用 petite repl 測試一下：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">load</span></span> <span class="string">"mul.ss"</span>)</span><br><span class="line">(<span class="name"><span class="builtin-name">load</span></span> <span class="string">"product.ss"</span>)</span><br><span class="line">(<span class="name">normal-product</span> '(<span class="number">5</span> <span class="number">4</span> <span class="number">0</span> <span class="number">2</span>))</span><br><span class="line"><span class="comment">;; 4 * 0 = 0</span></span><br><span class="line"><span class="comment">;; 5 * 0 = 0</span></span><br><span class="line"><span class="comment">;=&gt; 0</span></span><br><span class="line">(<span class="name">product</span> '(<span class="number">5</span> <span class="number">4</span> <span class="number">0</span> <span class="number">2</span>))</span><br><span class="line"><span class="comment">;=&gt; 0</span></span><br></pre></td></tr></table></figure>
+<h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><p>而在 <code>let</code> 中會有什麼效果呢？<br>大概是有點 <code>define</code> + <code>application</code> 的味道吧。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">let</span></span> ([<span class="name">x</span> (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (k) k))])</span><br><span class="line">  (<span class="name">x</span> (<span class="name"><span class="builtin-name">lambda</span></span> (ignore) <span class="string">"hi"</span>))) <span class="comment">;=&gt; "hi"</span></span><br></pre></td></tr></table></figure>
+<p>另一個可以 <code>call/cc</code> 的地方就是 body-expr 的地方了，<br>不過效果大概就像是 <code>lambda</code> 的 body-expr，因為 <code>let</code> 的 body 就是轉成 <code>lambda</code> 的 body。</p>
+<p>至此，<code>call/cc</code> 可以放的地方就差不多說明過了，其餘 special form 的概念也就差不多一樣了。</p>
+<h1 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h1><p>來看看其他 continuation 的例子。</p>
+<h2 id="light-weight-process"><a href="#light-weight-process" class="headerlink" title="light-weight process"></a>light-weight process</h2><p>在 tspl 中提到，continuation 可用於 multi-tasking，<br>以下是書裡面的例子：</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">define</span></span> lwp-list '())</span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> lwp</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> (thunk)</span><br><span class="line">    (<span class="name"><span class="builtin-name">set!</span></span> lwp-list (<span class="name"><span class="builtin-name">append</span></span> lwp-list (<span class="name"><span class="builtin-name">list</span></span> thunk)))))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> start</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> ()</span><br><span class="line">    (<span class="name"><span class="builtin-name">let</span></span> ([<span class="name">p</span> (<span class="name"><span class="builtin-name">car</span></span> lwp-list)])</span><br><span class="line">      (<span class="name"><span class="builtin-name">set!</span></span> lwp-list (<span class="name"><span class="builtin-name">cdr</span></span> lwp-list))</span><br><span class="line">      (<span class="name">p</span>))))</span><br><span class="line"></span><br><span class="line">(<span class="name"><span class="builtin-name">define</span></span> pause</span><br><span class="line">  (<span class="name"><span class="builtin-name">lambda</span></span> ()</span><br><span class="line">    (<span class="name"><span class="builtin-name">call/cc</span></span></span><br><span class="line">      (<span class="name"><span class="builtin-name">lambda</span></span> (k)</span><br><span class="line">        (<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name">k</span> <span class="literal">#f</span>)))</span><br><span class="line">        (<span class="name">start</span>)))))</span><br><span class="line"></span><br><span class="line">(<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name"><span class="builtin-name">let</span></span> f () (<span class="name">pause</span>) (<span class="name"><span class="builtin-name">display</span></span> <span class="string">"h"</span>) (<span class="name">f</span>))))</span><br><span class="line">(<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name"><span class="builtin-name">let</span></span> f () (<span class="name">pause</span>) (<span class="name"><span class="builtin-name">display</span></span> <span class="string">"i"</span>) (<span class="name">f</span>))))</span><br><span class="line">(<span class="name">lwp</span> (<span class="name"><span class="builtin-name">lambda</span></span> () (<span class="name"><span class="builtin-name">let</span></span> f () (<span class="name">pause</span>) (<span class="name"><span class="builtin-name">newline</span></span>) (<span class="name">f</span>))))</span><br><span class="line">(<span class="name">start</span>)</span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br><span class="line"><span class="comment">;=&gt; hi</span></span><br></pre></td></tr></table></figure>
+<p>來 trace 一下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">;=&gt; lwp-list &lt;display h&gt; &lt;display i&gt; &lt;newline&gt;</span><br><span class="line">(start)</span><br><span class="line">|    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">|    |(p)</span><br><span class="line">|    &gt;((lambda () (let f () (pause) (display &quot;h&quot;) (f))))</span><br><span class="line">|    &gt;(let f () (pause) (display &quot;h&quot;) (f))</span><br><span class="line">|    |    |(pause)</span><br><span class="line">|    |    &gt;(call/cc ...) # continuation1 here</span><br><span class="line">|    |    |    |(lwp (lambda () (k #f)))</span><br><span class="line">|    |    |    |        ;=&gt; &lt;display i&gt; &lt;newline&gt; &lt;k of h&gt;</span><br><span class="line">|    |    |    |(start)</span><br><span class="line">                   |</span><br><span class="line">       +-----------+</span><br><span class="line">       |</span><br><span class="line">       v</span><br><span class="line">... (start)</span><br><span class="line">... |    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">... |    |(p)</span><br><span class="line">... |    &gt;((lambda () (let f () (pause) (display &quot;h&quot;) (f))))</span><br><span class="line">... |    &gt;(let f () (pause) (display &quot;h&quot;) (f))</span><br><span class="line">... |    |    |(pause)</span><br><span class="line">... |    |    &gt;(call/cc ...) # continuation2 here</span><br><span class="line">... |    |    |    |(lwp (lambda () (k #f)))</span><br><span class="line">... |    |    |    |        ;=&gt; &lt;newline&gt; &lt;k of h&gt; &lt;k of i&gt;</span><br><span class="line">... |    |    |    |(start)</span><br><span class="line">                       |</span><br><span class="line">       +---------------+</span><br><span class="line">       |</span><br><span class="line">       v</span><br><span class="line">... (start)</span><br><span class="line">... |    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">... |    |(p)</span><br><span class="line">... |    &gt;((lambda () (let f () (pause) (display &quot;h&quot;) (f))))</span><br><span class="line">... |    &gt;(let f () (pause) (display &quot;h&quot;) (f))</span><br><span class="line">... |    |    |(pause)</span><br><span class="line">... |    |    &gt;(call/cc ...) # continuation3 here</span><br><span class="line">... |    |    |    |(lwp (lambda () (k #f)))</span><br><span class="line">... |    |    |    |        ;=&gt; &lt;k of h&gt; &lt;k of i&gt; &lt;k of \n&gt;</span><br><span class="line">... |    |    |    |(start)</span><br><span class="line">                       |</span><br><span class="line">       +---------------+</span><br><span class="line">       |</span><br><span class="line">       v</span><br><span class="line">... (start)</span><br><span class="line">... |    |(set! lwp-list (cdr lwp-list))</span><br><span class="line">... |    |(p)</span><br><span class="line">... |    &gt;(continuation of display h)</span><br><span class="line">... |    |    |(display &quot;h&quot;)</span><br><span class="line">... |    |    | (f) in let-expr ; recursive call</span><br><span class="line">... |    |    | (pause)</span><br><span class="line">... |    |    |     | (append continuation to lwp-list)</span><br><span class="line">... |    |    |     | (start)</span><br><span class="line">                         |</span><br><span class="line">    +--------------------+</span><br><span class="line">    |</span><br><span class="line">    v</span><br><span class="line">... continuation of i</span><br><span class="line">... (display &quot;i&quot;)</span><br><span class="line">... (pause)</span><br><span class="line">... ... (append continuation of i)</span><br><span class="line">... ... (start)</span><br><span class="line">           |</span><br><span class="line">    +------+</span><br><span class="line">    |</span><br><span class="line">    v</span><br><span class="line">... continuation of newline</span><br><span class="line">... (newline)</span><br><span class="line">... (pause)</span><br><span class="line">... ... (append continuation of \n)</span><br><span class="line">... ... (start)</span><br><span class="line"></span><br><span class="line">... inf looping</span><br></pre></td></tr></table></figure>
+<p>抽象點來看，task 大概可以分成兩個部份，<code>pause</code> 前和後。<br>每次遇到 <code>pause</code> 時，就會把 continuation 保存起來，然後 switch task，<br>然後每個 task 跑過一遍，就會回來 <code>pause</code> 這個位置，<code>pause</code> 會被 <code>#f</code> 取代掉，<br>接著 <code>display</code>，do named let recursive call，接著重新從開始跑到 <code>pause</code>，<br>reserve continuation, switch task… inf looping…</p>
+<h2 id="Yin-Yang-Puzzle"><a href="#Yin-Yang-Puzzle" class="headerlink" title="Yin-Yang Puzzle"></a>Yin-Yang Puzzle</h2><p>陰陽謎題 (Yin-Yang Puzzle) 據說是 David Madore 在 1999 年時，試圖去輸出的一個序列。<br>用他發明的語言 <a href="https://en.wikipedia.org/wiki/Unlambda" target="_blank" rel="noopener">Unlambda</a>（沒有 lambda operation 的 lambda calculas 實作，當時是用 scheme 寫的），<br>他一開始用了 600 個字元，後來為他的語言加上 <code>call/cc</code> 機制後，程序長度縮短到 12 個字元。<a href="https://stackoverflow.com/questions/30409800/any-history-background-about-the-yin-yang-puzzle-in-detail#answer-30412273" target="_blank" rel="noopener">ref</a></p>
+<p>後來下面這個版本便是他由 Unlambda 轉成 scheme 的版本。</p>
+<figure class="highlight scheme"><table><tr><td class="code"><pre><span class="line">(<span class="name"><span class="builtin-name">let*</span></span> ((<span class="name">yin</span> ((<span class="name"><span class="builtin-name">lambda</span></span> (foo) (<span class="name"><span class="builtin-name">newline</span></span>) foo)</span><br><span class="line">             (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (bar) bar))))</span><br><span class="line">       (<span class="name">yang</span> ((<span class="name"><span class="builtin-name">lambda</span></span> (foo) (<span class="name"><span class="builtin-name">write-char</span></span> <span class="literal">#\*</span>) foo)</span><br><span class="line">              (<span class="name"><span class="builtin-name">call/cc</span></span> (<span class="name"><span class="builtin-name">lambda</span></span> (bar) bar)))))</span><br><span class="line">  (<span class="name">yin</span> yang))</span><br><span class="line"></span><br><span class="line"><span class="comment">;=&gt;</span></span><br><span class="line"><span class="comment">;=&gt; *</span></span><br><span class="line"><span class="comment">;=&gt; **</span></span><br><span class="line"><span class="comment">;=&gt; ***</span></span><br><span class="line"><span class="comment">;=&gt; ****</span></span><br><span class="line"><span class="comment">;=&gt; *****</span></span><br><span class="line"><span class="comment">;=&gt; ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">;; 有的版本會用 (display '@) (display '*) 取代</span></span><br><span class="line"><span class="comment">;=&gt; @*@**@***@****@*****@******@*******@********@*********@ ...</span></span><br></pre></td></tr></table></figure>
+<p>trace 上面這段：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let*</span><br><span class="line">  ;; k0@yin, k0@yang</span><br><span class="line">  yin = k0@yin                              ;=&gt; @</span><br><span class="line">  yang = k0@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yin k@0yang)</span><br><span class="line">             ;; back to k0@yin with k0@yang</span><br><span class="line"></span><br><span class="line">  ;; k1@yang</span><br><span class="line">  yin = ((begin (display &apos;@) k0@yang))      ;=&gt; @</span><br><span class="line">  yang = k1@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k1@yang)</span><br><span class="line">             ;; back to k0@yang with k1@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k0@yang, so prev yin is k0@yin</span><br><span class="line">  yang = k1@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yin k1@yang)</span><br><span class="line">             ;; back to k0@yin with k1@yang</span><br><span class="line"></span><br><span class="line">  ;; k2@yang</span><br><span class="line">  yin = k1@yang                             ;=&gt; @</span><br><span class="line">  yang = k2@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k1@yang k2@yang)</span><br><span class="line">             ;; back to k1@yang with k2@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k1@yang, so prev yin is k0@yang</span><br><span class="line">  yang = k2@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k2@yang)</span><br><span class="line">             ;; back to k0@yang with k2@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k0@yang, so prev yin is k0@yin</span><br><span class="line">  yang = k2@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yin k2@yang)</span><br><span class="line">             ;; back to k0@yin with k2@yang</span><br><span class="line"></span><br><span class="line">  yin = k2@yang                             ;=&gt; @</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k2@yang k3@yang)</span><br><span class="line">             ;; back to k2@yang with k3@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k2@yang, so prev yin is k1@yang</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k1@yang k3@yang)</span><br><span class="line">             ;; back to k1@yang with k3@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k1@yang, so prev yin is k0@yang</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k3@yang)           </span><br><span class="line">             ;; back to k0@yang with k3@yang</span><br><span class="line"></span><br><span class="line">  ;; back to k0@yang, so prev yin is k0@yin</span><br><span class="line">  yang = k3@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k0@yang k3@yang)</span><br><span class="line">             ;; back to k0@yin with k3@yang</span><br><span class="line"></span><br><span class="line">  yin = k3@yang                             ;=&gt; @</span><br><span class="line">  yang = k4@yang                            ;=&gt; *</span><br><span class="line">  (yin yang) ;; (k3@yang k4@yang)</span><br><span class="line">             ;; back to k3@yang with k4@yang</span><br><span class="line"></span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></p>
+<p>感覺大概就是來來回回，每次到 k0@yin 時，就會產生 k(n+1)@yang，<br>然後拿這個 k(n+1)@yang 跳到最遠端的 k(n)@yang 重新往回滾，就像海浪一般。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(yin0&gt;yang0)</span><br><span class="line">     |</span><br><span class="line">     +-------------+</span><br><span class="line">                   v</span><br><span class="line">(yin0&gt;yang1)&lt;-(yin0 yang0)</span><br><span class="line">     |</span><br><span class="line">     +----------------------------+</span><br><span class="line">                                  v</span><br><span class="line">(yin0&gt;yang2)&lt;-(yin0 yang1)&lt;-(yang0 yang1)</span><br><span class="line">     |</span><br><span class="line">     +-------------------------------------------+</span><br><span class="line">                                                 v</span><br><span class="line">(yin0&gt;yang3)&lt;-(yin0 yang2)&lt;-(yang0 yang2)&lt;-(yang0 yang2)</span><br><span class="line">     |</span><br><span class="line">     +----------------------------------------------------------+</span><br><span class="line">                                                                v</span><br><span class="line">(yin0&gt;yang4)&lt;-(yin0 yang3)&lt;-(yang0 yang3)&lt;-(yang0 yang3)&lt;-(yang0 yang3)</span><br><span class="line">     |</span><br><span class="line">     +--- ... ... ...</span><br></pre></td></tr></table></figure>
+<p>continuation 的紀錄大概就到這裡，tspl 裡面有<a href="https://scheme.com/tspl4/further.html" target="_blank" rel="noopener">五個練習</a>，<br>Exercise 3.3.[1-5]，這裡有 Exercise 3.3.[1-4] 的<a href="https://scheme.com/tspl4/answers.html" target="_blank" rel="noopener">解答</a>。</p>
+<p>之後應該會對 CPS 的部份做一次探討。</p>
+]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>fp</tag>
+        <tag>lambda</tag>
+        <tag>scheme</tag>
+        <tag>lisp</tag>
+        <tag>continuation</tag>
       </tags>
   </entry>
   <entry>
@@ -3118,6 +3118,82 @@ pixnet 就放些實作成果，這裡就放些自己學習足跡吧。<br>
       </categories>
   </entry>
   <entry>
+    <title>functional thursday ＃73</title>
+    <url>/2019/05/03/pi-cal/</url>
+    <content><![CDATA[<center>
+π-calculas 不負責任筆記
+</center>
+
+
+<a id="more"></a>
+<p><br><br></p>
+<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
+<p>make changes on program as little as possible!</p>
+<ul>
+<li>parallelism ⇒ multi-processor, multi-processes</li>
+<li>concurrency ⇒ single-processor, multi-processes</li>
+</ul>
+<p>make write wrong program harder?</p>
+<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
+<li>CSP ⇒ process - process event</li>
+<li>π-calculas ⇒ channel - channel message passing</li>
+</ul>
+<p>process algebra</p>
+<blockquote>
+<p>π-calculas is the most complex one, but useful</p>
+</blockquote>
+<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
+<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
+<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
+<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
+<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
+<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
+<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
+<p>omit</p>
+</blockquote>
+<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
+<p>reduction rule</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>axiom relating restriction and parallel</p>
+<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
+<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
+<li>process is untyped</li>
+<li>channel is typed</li>
+</ul>
+<p>Γ ⊢ P</p>
+<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
+<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
+<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
+<blockquote>
+<p>note x:t not x:t, y:s</p>
+</blockquote>
+<hr>
+<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
+<hr>
+<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
+<blockquote>
+<p>type preservation</p>
+</blockquote>
+<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
+<p>Γ ⊢ e : τ</p>
+<ul>
+<li>e value</li>
+<li>∃ e’, e → e’</li>
+</ul>
+<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
+]]></content>
+      <categories>
+        <category>Memoir</category>
+      </categories>
+      <tags>
+        <tag>lambda</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>About Python&#39;s container</title>
     <url>/2017/05/29/python-container/</url>
     <content><![CDATA[<center>
@@ -3424,82 +3500,6 @@ Chrome 有 Vimium ， Firefox 有 VimFx 可以內化功力，快入我大 Vim �
       <tags>
         <tag>linux</tag>
         <tag>vim</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>functional thursday ＃73</title>
-    <url>/2019/05/03/pi-cal/</url>
-    <content><![CDATA[<center>
-π-calculas 不負責任筆記
-</center>
-
-
-<a id="more"></a>
-<p><br><br></p>
-<h2 id="Concurrency-vs-Parallelism"><a href="#Concurrency-vs-Parallelism" class="headerlink" title="Concurrency vs Parallelism"></a>Concurrency vs Parallelism</h2><p>compile normal program into parallelism program? Hard!</p>
-<p>make changes on program as little as possible!</p>
-<ul>
-<li>parallelism ⇒ multi-processor, multi-processes</li>
-<li>concurrency ⇒ single-processor, multi-processes</li>
-</ul>
-<p>make write wrong program harder?</p>
-<h3 id="Concurrent-model"><a href="#Concurrent-model" class="headerlink" title="Concurrent model"></a>Concurrent model</h3><ul>
-<li>CSP ⇒ process - process event</li>
-<li>π-calculas ⇒ channel - channel message passing</li>
-</ul>
-<p>process algebra</p>
-<blockquote>
-<p>π-calculas is the most complex one, but useful</p>
-</blockquote>
-<h2 id="π-calculas"><a href="#π-calculas" class="headerlink" title="π-calculas"></a>π-calculas</h2><h3 id="Send-and-receive-are-atomic-operation"><a href="#Send-and-receive-are-atomic-operation" class="headerlink" title="Send and receive are atomic operation"></a>Send and receive are atomic operation</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SquareServer</span> = c(x) . c&lt;x^<span class="number">2</span>&gt; . <span class="type">SquareServer</span></span><br><span class="line"><span class="comment">-- SquareServer is recursive</span></span><br><span class="line"></span><br><span class="line"><span class="type">P1</span> = c&lt;<span class="number">3</span>&gt; . c(x) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 3</span></span><br><span class="line"></span><br><span class="line"><span class="type">P2</span> = c&lt;<span class="number">4</span>&gt; . c(y) . ∅</span><br><span class="line"><span class="comment">-- a client want to get square of 4</span></span><br><span class="line"></span><br><span class="line"><span class="title">main</span> = <span class="type">SquareServer</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- run SquareServer, P1 at the smae time.</span></span><br><span class="line"></span><br><span class="line"><span class="title">let</span> &lt; &gt; = send</span><br><span class="line"><span class="title">let</span> ( ) = receive</span><br><span class="line"><span class="title">let</span>  c  = channel</span><br><span class="line"><span class="title">let</span>  .  = end</span><br><span class="line"><span class="title">let</span>  ∅  = stop</span><br></pre></td></tr></table></figure>
-<h3 id="Error"><a href="#Error" class="headerlink" title="Error?"></a>Error?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = <span class="type">C</span>(x) . <span class="type">C</span>(y) . <span class="type">C</span>(x + y) . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">3</span>&gt; . <span class="type">C</span>&lt;<span class="number">5</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"><span class="type">P1</span> = <span class="type">C</span>&lt;<span class="number">4</span>&gt; . <span class="type">C</span>&lt;<span class="number">6</span>&gt; . <span class="type">C</span>(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="comment">-- may cause race or deadlock</span></span><br></pre></td></tr></table></figure>
-<h3 id="Give-every-process-unique-channel"><a href="#Give-every-process-unique-channel" class="headerlink" title="Give every process unique channel!"></a>Give every process unique channel!</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . <span class="type">SumServer</span></span><br><span class="line"><span class="type">P1</span> = c(d) . d&lt;<span class="number">3</span>&gt; . d&lt;<span class="number">5</span>&gt; . d(x) . ∅</span><br><span class="line"><span class="type">P2</span> = c(d) . d&lt;<span class="number">6</span>&gt; . d&lt;<span class="number">4</span>&gt; . d(x) . ∅</span><br><span class="line"></span><br><span class="line"><span class="type">SumServer</span> | <span class="type">P2</span> | <span class="type">P1</span></span><br><span class="line"><span class="comment">-- no race or deadlock!</span></span><br></pre></td></tr></table></figure>
-<h3 id="More-powerful-server"><a href="#More-powerful-server" class="headerlink" title="More powerful server?"></a>More powerful server?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">SumServer</span> = (νd . c&lt;d&gt; . d(x) . d(y) . d&lt;x + y&gt; . ∅) | <span class="type">SumServer</span></span><br><span class="line"><span class="comment">-- calculate and provide other service at the same time!</span></span><br></pre></td></tr></table></figure>
-<h3 id="Define-such-operator"><a href="#Define-such-operator" class="headerlink" title="Define such operator"></a>Define such operator</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">P</span> = !<span class="type">Q</span> = <span class="type">Q</span> | <span class="type">P</span> = <span class="type">Q</span> | <span class="type">Q</span> | <span class="type">Q</span> | ...</span><br></pre></td></tr></table></figure>
-<h3 id="Math-server"><a href="#Math-server" class="headerlink" title="Math server"></a>Math server</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- ⊳ select</span></span><br><span class="line"><span class="comment">-- ⊲ choice</span></span><br><span class="line"></span><br><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt;</span><br><span class="line"></span><br><span class="line"><span class="title">where</span></span><br><span class="line">   c ⊳ &#123; <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . ∅;</span><br><span class="line">         <span class="type">NEG</span> → c(x) . c(-x) . ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="MathServer-throw-select-operation-how"><a href="#MathServer-throw-select-operation-how" class="headerlink" title="MathServer throw select operation? how?"></a>MathServer throw select operation? how?</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . worker c | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> c = c ⊳ &#123;</span><br><span class="line">     <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . worker c;</span><br><span class="line">     <span class="type">NEG</span> → c(x) . c(-x) . worker c;</span><br><span class="line">     <span class="type">END</span> → ∅&#125; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- worker need to receive "c" ?! function call?</span></span><br><span class="line"></span><br><span class="line"><span class="title">user</span> = ms(c) . c ⊲ <span class="type">ADD</span> . c&lt;<span class="number">3</span>&gt; . c&lt;<span class="number">4</span>&gt; . c(x) . ∅</span><br></pre></td></tr></table></figure>
-<h3 id="No-function-call-use-a-w-orker-channel-to-pass-“c”"><a href="#No-function-call-use-a-w-orker-channel-to-pass-“c”" class="headerlink" title="No function call! use a w(orker) channel to pass “c”"></a>No function call! use a w(orker) channel to pass “c”</h3><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">MathServer</span> = νc . ms&lt;c&gt; . w&lt;c&gt; | <span class="type">MathServer</span></span><br><span class="line"></span><br><span class="line"><span class="title">worker</span> = !(w(c) . c ⊳ &#123;</span><br><span class="line">           <span class="type">ADD</span> → c(x) . c(y) . c&lt;x + y&gt; . w&lt;c&gt; . ∅ ;</span><br><span class="line">           <span class="type">NEG</span> → c(x) . c(-x) . w&lt;c&gt; . ∅;</span><br><span class="line">           <span class="type">END</span> → ∅&#125;)</span><br></pre></td></tr></table></figure>
-<h3 id="Dinning-phylosophers-in-π-calculas"><a href="#Dinning-phylosophers-in-π-calculas" class="headerlink" title="Dinning phylosophers in π-calculas"></a>Dinning phylosophers in π-calculas</h3><blockquote>
-<p>omit</p>
-</blockquote>
-<h3 id="Basic-Rules"><a href="#Basic-Rules" class="headerlink" title="Basic Rules"></a>Basic Rules</h3><p>identity and association rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(<span class="type">P</span> | <span class="type">Q</span>) | <span class="type">R</span> ≡ <span class="type">P</span> (<span class="type">Q</span> | <span class="type">R</span>)</span><br><span class="line"><span class="type">P</span> | <span class="type">Q</span> ≡ <span class="type">Q</span> | <span class="type">P</span></span><br><span class="line"><span class="type">P</span> | ∅ ≡ <span class="type">P</span></span><br><span class="line"></span><br><span class="line"><span class="type">P</span> ≡ <span class="type">Q</span> ⇒ <span class="type">R</span> | <span class="type">P</span> == <span class="type">R</span> | <span class="type">Q</span></span><br></pre></td></tr></table></figure>
-<p>reduction rule</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">proc</span> = a&lt;x&gt; . <span class="type">P</span> | a(y) . <span class="type">Q</span> → <span class="type">P</span> | <span class="type">Q</span> [x / y]</span><br><span class="line"><span class="comment">-- should substitute y to x fisrt(?)</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">w</span>&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">→ a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | a(x) . b&lt;x + <span class="number">3</span>&gt;</span><br></pre></td></tr></table></figure>
-<p>axiom relating restriction and parallel</p>
-<figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line">(νx . <span class="type">P</span>) | <span class="type">Q</span> ≡ νx . (<span class="type">P</span> | <span class="type">Q</span>) <span class="keyword">if</span> <span class="type">Q</span> not contains x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(νa . w&lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span>) | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;</span><br><span class="line">≡ νa(w &lt;a&gt; . a&lt;<span class="number">3</span>&gt; . <span class="type">P</span> | w(z) . z(x) . b&lt;x + <span class="number">3</span>&gt;)</span><br><span class="line">→ νa(<span class="type">P</span> | b&lt;<span class="number">6</span>&gt;)</span><br><span class="line">...</span><br><span class="line">→ νa . ∅</span><br><span class="line">→ ∅</span><br></pre></td></tr></table></figure>
-<h2 id="Type-system-in-π-calculas"><a href="#Type-system-in-π-calculas" class="headerlink" title="Type system in π-calculas"></a>Type system in π-calculas</h2><ul>
-<li>process is untyped</li>
-<li>channel is typed</li>
-</ul>
-<p>Γ ⊢ P</p>
-<h3 id="Dual-type"><a href="#Dual-type" class="headerlink" title="Dual type"></a>Dual type</h3><p>$c : (?Int . !Int . ∅)^{⊥} = !Int . ?Int . ∅$</p>
-<h3 id="Type-inference"><a href="#Type-inference" class="headerlink" title="Type inference"></a>Type inference</h3><p>$\frac{Γ, x:t, y:s ⊢ P}{Γ, x:?s . t ⊢ x(y) . P}$</p>
-<p>$\frac{Γ ⊢ y:s \quad Γ, x:t ⊢ P}{Γ, x:!s . t ⊢ x \langle y . P}$</p>
-<blockquote>
-<p>note x:t not x:t, y:s</p>
-</blockquote>
-<hr>
-<p>$\frac{Γ_{1} ⊢ P \quad Γ_{2} ⊢ Q}{Γ_{1} ∘ Γ_{2} ⊢ P | Q}$</p>
-<hr>
-<p>if $x ∈ Γ_{1}$ is $t$<br>then $x ∈ Γ_{2}$ need to be $t^{⊥}$</p>
-<blockquote>
-<p>type preservation</p>
-</blockquote>
-<p>Γ ⊢ e : τ ∧ e -&gt; e’ ⇒ Γ ⊢ e’ : τ</p>
-<p>Γ ⊢ e : τ</p>
-<ul>
-<li>e value</li>
-<li>∃ e’, e → e’</li>
-</ul>
-<h3 id="linear-logic"><a href="#linear-logic" class="headerlink" title="linear logic"></a>linear logic</h3><p>cut rule</p>
-]]></content>
-      <categories>
-        <category>Memoir</category>
-      </categories>
-      <tags>
-        <tag>lambda</tag>
       </tags>
   </entry>
   <entry>
